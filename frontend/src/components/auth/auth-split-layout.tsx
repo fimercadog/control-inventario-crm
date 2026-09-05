@@ -11,9 +11,9 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
           <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
           <div className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
           <div className="relative max-w-lg">
-            <h2 className="text-4xl font-semibold leading-tight tracking-tight text-navy">Gestiona tu equipo desde un solo lugar</h2>
+            <h2 className="text-4xl font-semibold leading-tight tracking-tight text-navy">Gestiona tu negocio desde un solo lugar</h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              Empleados, asistencia, documentos, vacaciones, permisos y reclutamiento en una sola plataforma.
+              Clientes, deals, pedidos, productos, bodegas y ordenes de compra en una sola plataforma.
             </p>
             <div className="mt-10 space-y-4">
               {trustItems.map((item) => {
