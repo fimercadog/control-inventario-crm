@@ -1,24 +1,23 @@
 # Modulos
 
-Implementados con base API y UI inicial:
+Implementados con base API y UI:
 
 - Dashboard
-- Empleados
-- Asistencia
-- Vacaciones
-- Permisos
-- Incapacidades
-- Documentos
-- Turnos
+- Clientes
+- Deals (pipeline de ventas)
+- Actividades (seguimiento comercial)
+- Pedidos (venta a cliente; al confirmarse descuenta stock)
+- Productos
+- Bodegas
+- Movimientos de inventario
+- Proveedores
+- Ordenes de compra (al recibirse suman stock)
+- Leads (formulario publico de contacto/demo)
 - Auditoria
-- Reportes catalogo
-- IA preparada sin proveedor
+- Usuarios y roles
+- Reportes
 
-Pendientes o parciales:
+Pendientes:
 
-- Reclutamiento con Kanban
-- Novedades laborales
-- Usuarios y roles UI completa
-- Configuracion UI completa
-- Perfil de empleado conectado por tabs
+- Modo contingencia (offline) para modulos de CRM/Inventario: la infraestructura sigue activa pero sin ningun modulo elegible todavia
 - Formularios complejos con Dialog/AlertDialog y validacion visual completa

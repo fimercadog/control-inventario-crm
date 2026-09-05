@@ -2,22 +2,22 @@
 
 SQLite es la persistencia inicial. Las migraciones evitan logica especifica de SQLite para facilitar migracion posterior a MySQL.
 
-Tablas HRMS implementadas:
+Tablas CRM + Inventario implementadas:
 
-- `companies`
-- `departments`
-- `positions`
-- `employees`
-- `attendances`
-- `vacation_requests`
-- `permission_requests`
-- `sick_leaves`
-- `employee_documents`
-- `shifts`
-- `shift_assignments`
+- `companies` (tenant)
+- `leads`
+- `clients`
+- `deals`
+- `activities`
+- `products`
+- `warehouses`
+- `suppliers`
+- `purchase_orders` / `purchase_order_items`
+- `stock_movements`
+- `orders` / `order_items` (puente CRM-Inventario: al confirmarse un pedido genera `stock_movements` tipo `out`; al recibirse una orden de compra genera tipo `in`)
 - `audit_logs`
 - `users`
 - tablas de Sanctum
 - tablas de Spatie Permissions
 
-`Employee` y `User` son entidades separadas. `users.employee_id` es nullable.
+El stock disponible por producto+bodega se calcula como `SUM(quantity)` sobre `stock_movements` — no existe una tabla `stock` denormalizada.

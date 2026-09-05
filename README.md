@@ -1,8 +1,14 @@
-# DFC Talento Humano — Plataforma de Recursos Humanos
+# DFC — Plataforma de CRM + Control de Inventario
 
-Monorepo de un sistema HRMS (Human Resources Management System) para PYMES:
-API REST en Laravel + panel privado y sitio público de marketing en Next.js.
-Marca actual: **DFC Talento Humano**.
+Monorepo de un sistema de **CRM + Control de Inventario** para PYMES: API REST
+en Laravel + panel privado y sitio público de marketing en Next.js. El CRM
+(leads, clientes, deals, actividades) y el inventario (productos, bodegas,
+proveedores, órdenes de compra) están conectados por un **pedido de venta**:
+al confirmarse descuenta stock de la bodega elegida.
+
+> Nota: el sitio público de marketing (landing, `/producto/*`, blog) todavía
+> muestra el copy original de RRHH — no se reescribió en el pivote a CRM +
+> Inventario. Lo que cambió es el panel privado (`/app`) y todo el backend.
 
 - `backend/` — Laravel 12 (PHP 8.2+), API REST, Sanctum, Spatie `laravel-permission`.
 - `frontend/` — Next.js 16 (App Router, TypeScript, TailwindCSS v4), panel privado `/app` + sitio público de marketing.
@@ -12,12 +18,12 @@ Marca actual: **DFC Talento Humano**.
 
 **Panel privado (`/app`)**
 
-- Empleados, departamentos y cargos.
-- Asistencia, vacaciones, permisos e incapacidades (con flujos de solicitud/aprobación).
-- Documentos por empleado, turnos y asignación de turnos.
+- CRM: leads (formulario público), clientes, deals (pipeline de ventas) y actividades de seguimiento.
+- Inventario: productos, bodegas, proveedores, órdenes de compra y la bitácora de movimientos de stock.
+- Pedidos de venta: al confirmarse generan salidas de stock; las órdenes de compra recibidas generan entradas.
 - Usuarios y roles (crear/editar/deshabilitar), con permisos vía Spatie `laravel-permission`.
 - Auditoría de acciones (`audit-logs`).
-- Dashboard con métricas, exportaciones CSV/PDF por módulo y tablas con búsqueda/paginación (TanStack Table).
+- Dashboard con métricas de CRM + Inventario, exportaciones CSV/PDF por módulo y tablas con búsqueda/paginación (TanStack Table).
 - Asistente de IA (interfaz lista, sin proveedor conectado todavía).
 
 **Sitio público de marketing** (`/`, `/producto`, `/soluciones`, `/precios`, `/reclutamiento`, `/nosotros`, `/blog`, `/contacto`, `/demo`)
@@ -60,8 +66,8 @@ Si el puerto 3000 ya está ocupado, `next dev` toma automáticamente el
 siguiente disponible (3001, etc.) — revisa el puerto real que imprime la
 consola al arrancar.
 
-Usuarios demo (uno por rol: Super Admin, Administrador de empresa, RRHH,
-Supervisor, Empleado) en [docs/demo-users.md](docs/demo-users.md).
+Usuarios demo (uno por rol: Super Admin, Administrador de empresa, Ventas,
+Inventario, Usuario) en [docs/demo-users.md](docs/demo-users.md).
 
 ## Variables de entorno
 
