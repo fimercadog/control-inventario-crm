@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fbf7f8;
+  --foreground: #26262e;
+  --card: #ffffff;
+  --card-foreground: #26262e;
+  --primary: #a3175a;
+  --primary-foreground: #ffffff;
+  --muted: #f3eaee;
+  --muted-foreground: #7a6b71;
+  --border: #e7dce0;
+  --accent: #f7e4ec;
+  --destructive: #c23b2b;
+  --navy: #26262e;
+  --success: #0e8f5c;
+  --warning: #b9770e;
+  --marketing-shadow: 0 24px 70px rgb(38 20 30 / 14%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-destructive: var(--destructive);
+  --color-navy: var(--navy);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@keyframes marketing-float {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -18px); }
+}
+
+.animate-marketing-float {
+  animation: marketing-float 6s ease-in-out infinite;
+}
+
+@keyframes marketing-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -24px) scale(1.1); }
+}
+
+.animate-marketing-drift {
+  animation: marketing-drift 10s ease-in-out infinite;
+}
+
+@keyframes marketing-pulse-glow {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.65; transform: scale(1.2); }
+}
+
+.animate-marketing-pulse-glow {
+  animation: marketing-pulse-glow 4.5s ease-in-out infinite;
+}
+
+@keyframes marketing-grid-pan {
+  0% { background-position: 0 0; }
+  100% { background-position: 48px 48px; }
+}
+
+.animate-marketing-grid {
+  background-image: radial-gradient(circle, var(--border) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  animation: marketing-grid-pan 14s linear infinite;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 0%, transparent 75%);
+}
+
+@keyframes marketing-gradient-text {
+  to { background-position: 200% center; }
+}
+
+.animate-marketing-gradient-text {
+  background-image: linear-gradient(90deg, var(--primary), #e8579a, var(--navy), var(--primary));
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: marketing-gradient-text 5s linear infinite;
+}
+
+.dark {
+  --background: #17151a;
+  --foreground: #edeaec;
+  --card: #211f26;
+  --card-foreground: #edeaec;
+  --primary: #e8579a;
+  --primary-foreground: #2b0f1c;
+  --muted: #2a2731;
+  --muted-foreground: #b3a6ac;
+  --border: #332e36;
+  --accent: #3a1f2c;
+  --destructive: #f97066;
+  --success: #34d399;
+  --warning: #fbbf24;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+button, input, select { font: inherit; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
