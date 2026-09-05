@@ -80,7 +80,8 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm'])->middleware('can:orders.manage');
 
     Route::apiResource('audit-logs', AuditLogController::class)->only(['index', 'show'])->middleware('can:audit.view');
-    Route::apiResource('roles', RoleController::class)->only(['index', 'store', 'update'])->middleware('can:roles.manage');
+    Route::get('/permissions', [RoleController::class, 'permissions'])->middleware('can:roles.manage');
+    Route::apiResource('roles', RoleController::class)->only(['index', 'show', 'store', 'update'])->middleware('can:roles.manage');
     Route::apiResource('users', UserController::class)->only(['index', 'store', 'update'])->middleware('can:users.manage');
 
     // El permiso por recurso se valida dentro del controlador.

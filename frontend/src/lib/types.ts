@@ -121,6 +121,7 @@ export type Role = {
   guard_name: string;
   status: string;
   permissions_count?: number;
+  permissions?: string[];
 };
 
 export type AppUser = {

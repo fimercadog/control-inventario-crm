@@ -1,5 +1,7 @@
 "use client";
 
+import { Eye } from "lucide-react";
+import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ToggleStatusAction } from "@/components/crud/toggle-status-action";
 import { ModuleTablePage } from "@/components/module-table-page";
@@ -31,14 +33,19 @@ export default function AppRolesPage() {
   return (
     <ModuleTablePage
       title="Roles y permisos"
-      description="Arquitectura visual conectable a permisos backend."
+      description="Crea roles propios y define que puede hacer cada uno desde su detalle."
       resource="/roles"
       columns={columns}
       fields={fields}
       actionLabel="Nuevo rol"
-      modalDescription="Los permisos finos por recurso se asignan luego desde el detalle del rol."
+      modalDescription="Los permisos del rol se marcan despues, desde su detalle."
       extraRowActions={(row, refresh) => (
-        <ToggleStatusAction resource="/roles" id={row.id} active={row.status === "active"} refresh={refresh} />
+        <>
+          <Link href={`/app/roles/${row.id}`} className="inline-flex h-8 items-center gap-2 rounded-md px-2 text-sm hover:bg-muted">
+            <Eye className="h-4 w-4" /> Permisos
+          </Link>
+          <ToggleStatusAction resource="/roles" id={row.id} active={row.status === "active"} refresh={refresh} />
+        </>
       )}
     />
   );
