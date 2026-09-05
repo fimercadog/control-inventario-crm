@@ -4,30 +4,30 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  Activity,
-  BadgeCheck,
+  ArrowLeftRight,
   BarChart3,
   Bot,
-  BriefcaseBusiness,
-  Building2,
-  CalendarDays,
   ClipboardList,
-  Clock3,
-  FileText,
+  Handshake,
   Inbox,
   LayoutDashboard,
+  ListChecks,
   Lock,
   LogOut,
   Menu,
   MessageSquarePlus,
   Moon,
+  Package,
+  Receipt,
   Settings,
   Shield,
   ShieldAlert,
-  Stethoscope,
+  ShoppingCart,
   Sun,
+  Truck,
   UserCircle,
   Users,
+  Warehouse,
   WifiOff,
   X,
   type LucideIcon,
@@ -75,21 +75,21 @@ type NavItem = {
 
 const mainNav: NavItem[] = [
   { href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] },
-  { href: "/app/empleados", label: "Empleados", icon: Users, permissions: ["employees.manage"] },
-  { href: "/app/asistencia", label: "Asistencia", icon: Clock3, permissions: ["attendance.manage"] },
-  { href: "/app/vacaciones", label: "Vacaciones", icon: CalendarDays, permissions: ["requests.approve"] },
-  { href: "/app/permisos", label: "Permisos", icon: BadgeCheck, permissions: ["requests.approve"] },
-  { href: "/app/incapacidades", label: "Incapacidades", icon: Stethoscope, permissions: ["requests.approve"] },
-  { href: "/app/documentos", label: "Documentos", icon: FileText, permissions: ["documents.manage"] },
-  { href: "/app/turnos", label: "Turnos", icon: Activity, permissions: ["attendance.manage"] },
+  { href: "/app/clientes", label: "Clientes", icon: Users, permissions: ["clients.manage"] },
+  { href: "/app/deals", label: "Deals", icon: Handshake, permissions: ["deals.manage"] },
+  { href: "/app/actividades", label: "Actividades", icon: ListChecks, permissions: ["activities.manage"] },
+  { href: "/app/pedidos", label: "Pedidos", icon: Receipt, permissions: ["orders.manage"] },
+  { href: "/app/productos", label: "Productos", icon: Package, permissions: ["products.manage"] },
+  { href: "/app/bodegas", label: "Bodegas", icon: Warehouse, permissions: ["warehouses.manage"] },
+  { href: "/app/movimientos-inventario", label: "Movimientos", icon: ArrowLeftRight, permissions: ["stock.manage"] },
+  { href: "/app/proveedores", label: "Proveedores", icon: Truck, permissions: ["suppliers.manage"] },
+  { href: "/app/ordenes-compra", label: "Ordenes de compra", icon: ShoppingCart, permissions: ["purchase_orders.manage"] },
   { href: "/app/reportes", label: "Reportes", icon: BarChart3, permissions: ["reports.view"] },
   { href: "/app/contingencia", label: "Modo contingencia", icon: WifiOff, alert: true },
-  { href: "/app/ia", label: "IA para RRHH", icon: Bot, premium: true },
+  { href: "/app/ia", label: "Asistente IA", icon: Bot, premium: true },
 ];
 
 const adminNav: NavItem[] = [
-  { href: "/app/organizacion", label: "Organizacion", icon: Building2, permissions: ["settings.manage"] },
-  { href: "/app/reclutamiento", label: "Reclutamiento", icon: BriefcaseBusiness, permissions: ["employees.manage"] },
   { href: "/app/leads", label: "Leads", icon: Inbox, permissions: ["leads.view"] },
   { href: "/app/auditoria", label: "Auditoria", icon: ClipboardList, permissions: ["audit.view"] },
   { href: "/app/usuarios", label: "Usuarios", icon: UserCircle, permissions: ["users.manage"] },
@@ -146,11 +146,11 @@ function NavLink({ item }: { item: NavItem }) {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Inteligencia Artificial para Recursos Humanos</DialogTitle>
+            <DialogTitle>Inteligencia Artificial para Ventas e Inventario</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 text-sm text-muted-foreground">
             <p>
-              Potenciá la gestión de Recursos Humanos con una herramienta de inteligencia artificial diseñada
+              Potenciá la gestión comercial y de inventario con una herramienta de inteligencia artificial diseñada
               para{" "}
               <strong className="font-semibold text-foreground">
                 apoyar tus procesos, facilitar el análisis de información y ayudarte en la toma de decisiones
@@ -158,14 +158,13 @@ function NavLink({ item }: { item: NavItem }) {
               .
             </p>
             <p>
-              Podés utilizarla para analizar información del área, identificar tendencias, resumir datos
-              relevantes, generar documentos y comunicados, consultar información relacionada con los procesos
-              de RR. HH. y obtener apoyo para interpretar indicadores como ausentismo, rotación y novedades del
-              personal.
+              Podés utilizarla para analizar el pipeline de ventas, identificar tendencias, resumir datos
+              relevantes, generar reportes y comunicados, y obtener apoyo para interpretar indicadores como
+              rotación de inventario, productos con bajo stock y desempeño de ventas.
             </p>
             <p>
               La inteligencia artificial funciona como un{" "}
-              <strong className="font-semibold text-foreground">asistente para el equipo de Recursos Humanos</strong>,
+              <strong className="font-semibold text-foreground">asistente para los equipos de ventas e inventario</strong>,
               permitiendo trabajar de forma más ágil y obtener información útil a partir de los datos disponibles
               en el sistema.
             </p>
@@ -287,7 +286,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             Beta
           </span>
         </p>
-        <p className="text-xs text-muted-foreground">Talento Humano</p>
+        <p className="text-xs text-muted-foreground">CRM + Inventario</p>
       </div>
     </div>
   );
@@ -352,9 +351,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <Menu className="h-4 w-4" />
             </Button>
             <div className="min-w-0 max-w-24 sm:max-w-none">
-              <p className="truncate text-sm font-medium">{user?.company?.name ?? "DFC Talento Humano"}</p>
+              <p className="truncate text-sm font-medium">{user?.company?.name ?? "DFC"}</p>
               <p className="hidden truncate text-xs text-muted-foreground sm:block">
-                Panel privado de Recursos Humanos
+                Panel privado de CRM e Inventario
               </p>
             </div>
           </div>

@@ -1,44 +1,118 @@
-export type Employee = {
+export type Client = {
   id: number;
-  employee_code: string;
-  full_name?: string;
-  first_name: string;
-  last_name: string;
-  email?: string;
-  employment_status: string;
-  department?: { id: number; name: string };
-  position?: { id: number; name: string };
-  hire_date?: string;
-};
-
-export type Attendance = {
-  id: number;
-  employee?: Employee;
-  date: string;
-  status: string;
-  check_in?: string;
-  check_out?: string;
-  late_minutes: number;
-};
-
-export type RequestRow = {
-  id: number;
-  employee?: Employee;
-  type?: string;
-  start_date: string;
-  end_date: string;
-  status: string;
-  requested_days?: number;
-  days?: number;
-};
-
-export type DocumentRow = {
-  id: number;
-  employee?: Employee;
-  document_type: string;
   name: string;
-  expiration_date?: string;
+  company_name?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
   status: string;
+  notes?: string | null;
+};
+
+export type Deal = {
+  id: number;
+  client_id: number;
+  client?: Client;
+  title: string;
+  amount: number;
+  stage: string;
+  expected_close_date?: string | null;
+};
+
+export type ActivityRow = {
+  id: number;
+  client_id?: number | null;
+  client?: Client;
+  deal_id?: number | null;
+  type: string;
+  subject: string;
+  notes?: string | null;
+  due_date?: string | null;
+  completed: boolean;
+};
+
+export type Warehouse = {
+  id: number;
+  name: string;
+  location?: string | null;
+  status: string;
+};
+
+export type Product = {
+  id: number;
+  sku: string;
+  name: string;
+  category?: string | null;
+  unit: string;
+  unit_price: number;
+  cost_price: number;
+  reorder_level: number;
+  stock_on_hand?: number;
+  status: string;
+};
+
+export type Supplier = {
+  id: number;
+  name: string;
+  contact_name?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  status: string;
+};
+
+export type StockMovement = {
+  id: number;
+  product_id: number;
+  product?: Product;
+  warehouse_id: number;
+  warehouse?: Warehouse;
+  type: "in" | "out" | "adjustment";
+  quantity: number;
+  reason?: string | null;
+  reference?: string | null;
+  created_at: string;
+};
+
+export type OrderLineItem = {
+  id: number;
+  product_id: number;
+  product?: Product;
+  quantity: number;
+  unit_price: number;
+};
+
+export type Order = {
+  id: number;
+  client_id: number;
+  client?: Client;
+  deal_id?: number | null;
+  warehouse_id: number;
+  warehouse?: Warehouse;
+  status: "draft" | "confirmed" | "cancelled";
+  total: number;
+  items?: OrderLineItem[];
+};
+
+export type PurchaseOrderLineItem = {
+  id: number;
+  product_id: number;
+  product?: Product;
+  quantity: number;
+  unit_cost: number;
+};
+
+export type PurchaseOrder = {
+  id: number;
+  supplier_id: number;
+  supplier?: Supplier;
+  warehouse_id: number;
+  warehouse?: Warehouse;
+  status: "draft" | "ordered" | "received" | "cancelled";
+  order_date?: string | null;
+  expected_date?: string | null;
+  total: number;
+  items?: PurchaseOrderLineItem[];
 };
 
 export type Role = {
@@ -54,7 +128,6 @@ export type AppUser = {
   name: string;
   email: string;
   status: string;
-  employee?: Employee;
   role?: string;
   roles: string[];
 };

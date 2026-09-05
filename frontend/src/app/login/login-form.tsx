@@ -11,11 +11,11 @@ import { api, primeCsrfCookie } from "@/lib/api";
 import { AuthUser, storeAuthSession } from "@/lib/auth";
 
 const demoUsers = [
-  ["Super Admin", "superadmin@andespeople.co"],
-  ["Admin empresa", "admin@andespeople.co"],
-  ["RRHH", "rrhh@andespeople.co"],
-  ["Supervisor", "supervisor@andespeople.co"],
-  ["Empleado", "empleado@andespeople.co"],
+  ["Super Admin", "superadmin@andescomercial.co"],
+  ["Admin empresa", "admin@andescomercial.co"],
+  ["Ventas", "ventas@andescomercial.co"],
+  ["Inventario", "inventario@andescomercial.co"],
+  ["Usuario", "usuario@andescomercial.co"],
 ];
 
 type LoginResponse = {

@@ -7,11 +7,11 @@ import { LoginForm } from "./login-form";
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
 
 const demoEmails: Record<string, string> = {
-  superadmin: "superadmin@andespeople.co",
-  admin: "admin@andespeople.co",
-  rrhh: "rrhh@andespeople.co",
-  supervisor: "supervisor@andespeople.co",
-  empleado: "empleado@andespeople.co",
+  superadmin: "superadmin@andescomercial.co",
+  admin: "admin@andescomercial.co",
+  ventas: "ventas@andescomercial.co",
+  inventario: "inventario@andescomercial.co",
+  usuario: "usuario@andescomercial.co",
 };
 
 export default async function LoginPage({

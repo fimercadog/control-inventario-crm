@@ -12,7 +12,6 @@ import { AppUser, Role } from "@/lib/types";
 const columns: AppColumnDef<AppUser>[] = [
   { accessorKey: "name", header: "Nombre" },
   { accessorKey: "email", header: "Correo" },
-  { header: "Empleado", cell: ({ row }) => row.original.employee?.full_name ?? "Sin vincular" },
   { header: "Roles", cell: ({ row }) => row.original.roles?.join(", ") || "Sin rol" },
   { header: "Estado", cell: ({ row }) => <Badge>{row.original.status}</Badge> },
 ];
@@ -21,7 +20,6 @@ const baseFields: CrudField[] = [
   { name: "name", label: "Nombre", required: true },
   { name: "email", label: "Correo", type: "email", required: true },
   { name: "password", label: "Contrasena", type: "password", placeholder: "Dejar en blanco para generar una automatica", omitWhenEmpty: true },
-  { name: "employee_id", label: "ID empleado", type: "number" },
   {
     name: "status",
     label: "Estado",
@@ -53,13 +51,13 @@ export default function AppUsersPage() {
       options: roles.map((role) => ({ label: role.name, value: role.name })),
     };
 
-    return [...baseFields.slice(0, 4), roleField, ...baseFields.slice(4)];
+    return [...baseFields.slice(0, 3), roleField, ...baseFields.slice(3)];
   }, [roles]);
 
   return (
     <ModuleTablePage
       title="Usuarios"
-      description="Cuentas de acceso al panel, vinculadas opcionalmente a un empleado."
+      description="Cuentas de acceso al panel, con su rol asignado."
       resource="/users"
       columns={columns}
       fields={fields}

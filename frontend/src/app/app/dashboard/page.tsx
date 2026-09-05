@@ -3,25 +3,21 @@
 import * as React from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
-  Activity,
   ArrowDownRight,
   ArrowUpRight,
-  Building2,
-  CalendarDays,
-  Cake,
+  Boxes,
   ChartPie,
-  Clock3,
-  FileWarning,
   Filter,
-  HeartPulse,
+  Handshake,
   Minus,
-  Plane,
+  Package,
+  Receipt,
   RefreshCw,
   ShieldCheck,
+  ShoppingCart,
+  Trophy,
   TrendingUp,
-  UserMinus,
   UserPlus,
-  UserRound,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -56,17 +52,24 @@ const TONE = {
   wine: "#a3175a",
 };
 const CATEGORICAL = [TONE.indigo, TONE.sky, TONE.green, TONE.amber, TONE.violet, TONE.wine, TONE.slate];
-const STATUS_META: Record<string, { label: string; color: string }> = {
-  active: { label: "Activos", color: TONE.green },
-  on_leave: { label: "En licencia", color: TONE.amber },
-  terminated: { label: "Retirados", color: TONE.slate },
+const STAGE_META: Record<string, { label: string; color: string }> = {
+  prospecting: { label: "Prospeccion", color: TONE.slate },
+  qualification: { label: "Calificacion", color: TONE.sky },
+  proposal: { label: "Propuesta", color: TONE.violet },
+  negotiation: { label: "Negociacion", color: TONE.amber },
+  won: { label: "Ganado", color: TONE.green },
+  lost: { label: "Perdido", color: TONE.red },
 };
+const FUNNEL_STAGES = ["prospecting", "qualification", "proposal", "negotiation", "won"];
 
 function monthShort(ym: string) {
   return new Date(`${ym}-01T00:00:00`).toLocaleDateString("es-CO", { month: "short" }).replace(".", "");
 }
 function fmt(n: number) {
   return Math.round(n).toLocaleString("es-CO");
+}
+function money(n: number) {
+  return `$${Math.round(n).toLocaleString("es-CO")}`;
 }
 function timeAgo(from: Date | undefined, nowMs: number) {
   if (!from) return "";
@@ -263,17 +266,15 @@ function EmptyChart({ label }: { label: string }) {
 
 /* ---------------- charts ---------------- */
 
-function AttendanceTrend({ data }: { data: DashboardData["trends"]["attendance_monthly"] }) {
-  // El mes en curso es parcial: se excluye para que la linea no caiga en picado.
-  const closed = data.filter((d) => !d.partial);
-  const rows = (closed.length >= 2 ? closed : data).map((d) => ({ ...d, label: monthShort(d.month) }));
-  if (rows.every((d) => d.present + d.late + d.absent === 0)) return <EmptyChart label="Sin datos de asistencia." />;
+function RevenueTrend({ data }: { data: DashboardData["trends"]["revenue_monthly"] }) {
+  const rows = data.map((d) => ({ ...d, label: monthShort(d.month) }));
+  if (rows.every((d) => d.revenue === 0)) return <EmptyChart label="Sin ingresos registrados." />;
   return (
     <div className="h-64">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={rows} margin={{ top: 4, right: 12, bottom: 0, left: 0 }}>
           <defs>
-            <linearGradient id="rate-fill" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="revenue-fill" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={TONE.indigo} stopOpacity={0.35} />
               <stop offset="100%" stopColor={TONE.indigo} stopOpacity={0} />
             </linearGradient>
@@ -281,22 +282,20 @@ function AttendanceTrend({ data }: { data: DashboardData["trends"]["attendance_m
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" strokeOpacity={0.5} />
           <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
           <YAxis
-            domain={[80, 100]}
-            ticks={[80, 85, 90, 95, 100]}
-            width={40}
+            width={48}
             tickLine={false}
             axisLine={false}
             tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
-            tickFormatter={(v) => `${v}%`}
+            tickFormatter={(v) => money(v)}
           />
           <Tooltip content={<ChartTip />} />
           <Area
             type="monotone"
-            dataKey="rate"
-            name="Asistencia"
+            dataKey="revenue"
+            name="Ingresos"
             stroke={TONE.indigo}
             strokeWidth={2}
-            fill="url(#rate-fill)"
+            fill="url(#revenue-fill)"
             dot={{ r: 2.5, strokeWidth: 0, fill: TONE.indigo }}
             activeDot={{ r: 4 }}
           />
@@ -327,12 +326,12 @@ function renderDonutLabel(props: DonutLabelProps) {
   );
 }
 
-function DonutStatus({ rows }: { rows: DashboardData["headcount_by_status"] }) {
+function DonutStages({ rows }: { rows: DashboardData["deals_by_stage"] }) {
   const data = rows
     .filter((r) => r.total > 0)
-    .map((r) => ({ name: STATUS_META[r.status]?.label ?? r.status, value: r.total, color: STATUS_META[r.status]?.color ?? TONE.slate }));
+    .map((r) => ({ name: STAGE_META[r.stage]?.label ?? r.stage, value: r.total, color: STAGE_META[r.stage]?.color ?? TONE.slate }));
   const total = data.reduce((s, d) => s + d.value, 0);
-  if (total === 0) return <EmptyChart label="Sin plantilla registrada." />;
+  if (total === 0) return <EmptyChart label="Sin deals registrados." />;
   return (
     <div className="flex flex-col items-center gap-4 sm:flex-row">
       <div className="relative h-40 w-40 shrink-0">
@@ -378,22 +377,24 @@ function DonutStatus({ rows }: { rows: DashboardData["headcount_by_status"] }) {
   );
 }
 
-function AttendanceFunnel({ stages }: { stages: DashboardData["attendance_funnel"] }) {
+function PipelineFunnel({ rows }: { rows: DashboardData["deals_by_stage"] }) {
+  const byStage = new Map(rows.map((r) => [r.stage, r.total]));
+  const stages = FUNNEL_STAGES.map((stage) => ({ stage, count: byStage.get(stage) ?? 0 }));
   const top = stages[0]?.count || 1;
   return (
     <div className="space-y-4">
-      {stages.map((stage, i) => {
+      {stages.map((s, i) => {
         const prev = i === 0 ? null : stages[i - 1].count;
-        const conv = prev && prev > 0 ? Math.round((stage.count / prev) * 100) : null;
+        const conv = prev && prev > 0 ? Math.round((s.count / prev) * 100) : null;
         return (
-          <div key={stage.stage} className="flex items-center gap-3">
-            <span className="w-24 shrink-0 text-sm text-muted-foreground sm:w-36">{stage.stage}</span>
+          <div key={s.stage} className="flex items-center gap-3">
+            <span className="w-24 shrink-0 text-sm text-muted-foreground sm:w-36">{STAGE_META[s.stage]?.label ?? s.stage}</span>
             <div className="h-9 flex-1 overflow-hidden rounded-lg bg-muted">
               <div
                 className="flex h-full items-center rounded-lg pl-3 text-xs font-semibold text-white/90 transition-[width]"
-                style={{ width: `${Math.max(12, (stage.count / top) * 100)}%`, backgroundColor: CATEGORICAL[i % CATEGORICAL.length] }}
+                style={{ width: `${Math.max(12, (s.count / top) * 100)}%`, backgroundColor: CATEGORICAL[i % CATEGORICAL.length] }}
               >
-                {stage.count}
+                {s.count}
               </div>
             </div>
             <span
@@ -408,25 +409,23 @@ function AttendanceFunnel({ stages }: { stages: DashboardData["attendance_funnel
       })}
       <p className="pt-1 text-xs text-muted-foreground">
         Conversion total:{" "}
-        <span className="font-medium text-foreground">
-          {top > 0 ? Math.round(((stages.at(-1)?.count ?? 0) / top) * 100) : 0}%
-        </span>{" "}
-        de la plantilla activa llega a tiempo.
+        <span className="font-medium text-foreground">{top > 0 ? Math.round(((stages.at(-1)?.count ?? 0) / top) * 100) : 0}%</span>{" "}
+        de las oportunidades llega a ganado.
       </p>
     </div>
   );
 }
 
-function HeadcountFlow({ data }: { data: DashboardData["trends"]["headcount_flow"] }) {
+function DealsWonLost({ data }: { data: DashboardData["trends"]["deals_monthly"] }) {
   const rows = data.map((d) => ({ ...d, label: monthShort(d.month) }));
   return (
     <>
       <div className="mb-3 flex gap-4 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full" style={{ backgroundColor: TONE.green }} /> Contrataciones
+          <span className="size-2.5 rounded-full" style={{ backgroundColor: TONE.green }} /> Ganados
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full" style={{ backgroundColor: TONE.slate }} /> Retiros
+          <span className="size-2.5 rounded-full" style={{ backgroundColor: TONE.red }} /> Perdidos
         </span>
       </div>
       <div className="h-52">
@@ -436,8 +435,8 @@ function HeadcountFlow({ data }: { data: DashboardData["trends"]["headcount_flow
             <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
             <YAxis allowDecimals={false} width={24} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
             <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.4 }} content={<ChartTip />} />
-            <Bar dataKey="hires" name="Contrataciones" fill={TONE.green} radius={[3, 3, 0, 0]} maxBarSize={16} />
-            <Bar dataKey="terminations" name="Retiros" fill={TONE.slate} radius={[3, 3, 0, 0]} maxBarSize={16} />
+            <Bar dataKey="won" name="Ganados" fill={TONE.green} radius={[3, 3, 0, 0]} maxBarSize={16} />
+            <Bar dataKey="lost" name="Perdidos" fill={TONE.red} radius={[3, 3, 0, 0]} maxBarSize={16} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -445,8 +444,8 @@ function HeadcountFlow({ data }: { data: DashboardData["trends"]["headcount_flow
   );
 }
 
-function DepartmentBars({ rows }: { rows: DashboardData["headcount_by_department"] }) {
-  if (rows.length === 0) return <EmptyChart label="Sin departamentos." />;
+function TopProductsBars({ rows }: { rows: DashboardData["top_products"] }) {
+  if (rows.length === 0) return <EmptyChart label="Sin productos." />;
   const data = rows.map((r, i) => ({ ...r, fill: CATEGORICAL[i % CATEGORICAL.length] }));
   return (
     <div style={{ height: Math.max(140, data.length * 44) }}>
@@ -456,18 +455,18 @@ function DepartmentBars({ rows }: { rows: DashboardData["headcount_by_department
           <XAxis type="number" allowDecimals={false} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
           <YAxis
             type="category"
-            dataKey="department"
+            dataKey="name"
             width={104}
             tickLine={false}
             axisLine={false}
             tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
           />
           <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.4 }} content={<ChartTip />} />
-          <Bar dataKey="total" name="Empleados" radius={[0, 5, 5, 0]} maxBarSize={26}>
+          <Bar dataKey="stock_on_hand" name="Existencia" radius={[0, 5, 5, 0]} maxBarSize={26}>
             {data.map((r) => (
-              <Cell key={r.department} fill={r.fill} />
+              <Cell key={r.name} fill={r.fill} />
             ))}
-            <LabelList dataKey="total" position="right" className="fill-foreground" fontSize={11} />
+            <LabelList dataKey="stock_on_hand" position="right" className="fill-foreground" fontSize={11} />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
@@ -479,17 +478,16 @@ function DepartmentBars({ rows }: { rows: DashboardData["headcount_by_department
 
 const ACTIVITY_META: { match: string; icon: LucideIcon; tone: string }[] = [
   { match: "login", icon: ShieldCheck, tone: TONE.slate },
-  { match: "employee", icon: Users, tone: TONE.indigo },
-  { match: "vacation", icon: Plane, tone: TONE.sky },
-  { match: "permission", icon: CalendarDays, tone: TONE.violet },
-  { match: "sick", icon: HeartPulse, tone: TONE.red },
-  { match: "document", icon: FileWarning, tone: TONE.amber },
-  { match: "attendance", icon: Activity, tone: TONE.green },
+  { match: "client", icon: Users, tone: TONE.indigo },
+  { match: "deal", icon: Handshake, tone: TONE.violet },
+  { match: "order", icon: Receipt, tone: TONE.green },
+  { match: "purchase_order", icon: ShoppingCart, tone: TONE.sky },
+  { match: "product", icon: Package, tone: TONE.amber },
   { match: "user", icon: UserPlus, tone: TONE.indigo },
   { match: "role", icon: ShieldCheck, tone: TONE.wine },
 ];
 function activityMeta(action: string) {
-  return ACTIVITY_META.find((m) => action.toLowerCase().includes(m.match)) ?? { icon: Activity, tone: TONE.slate };
+  return ACTIVITY_META.find((m) => action.toLowerCase().includes(m.match)) ?? { icon: Receipt, tone: TONE.slate };
 }
 function humanize(action: string) {
   const t = action.replace(/[._]/g, " ").trim();
@@ -526,67 +524,22 @@ function ActivityTimeline({ items }: { items: DashboardData["recent_activity"] }
   );
 }
 
-function daysUntilBirthday(iso: string, nowMs: number) {
-  const now = new Date(nowMs);
-  const b = new Date(iso);
-  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const next = new Date(now.getFullYear(), b.getMonth(), b.getDate());
-  if (next < startOfToday) next.setFullYear(now.getFullYear() + 1);
-  return Math.round((next.getTime() - startOfToday.getTime()) / 86_400_000);
-}
-
-function BirthdayList({ people, nowMs }: { people: DashboardData["upcoming_events"]["birthdays"]; nowMs: number }) {
-  if (!people.length) return <p className="text-sm text-muted-foreground">Sin cumpleanos proximos.</p>;
+function LowStockList({ products }: { products: DashboardData["low_stock_alerts"] }) {
+  if (!products.length) return <p className="text-sm text-muted-foreground">Ningun producto por debajo de su punto de reorden.</p>;
   return (
     <ul className="space-y-3">
-      {people.map((p) => {
-        const left = daysUntilBirthday(p.birth_date, nowMs);
-        return (
-          <li key={p.id} className="flex items-center gap-3">
-            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-muted text-xs font-semibold">
-              {p.first_name[0]}
-              {p.last_name[0]}
-            </span>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-medium">
-                {p.first_name} {p.last_name}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {new Date(p.birth_date).toLocaleDateString("es-CO", { day: "2-digit", month: "long" })}
-              </p>
-            </div>
-            <Badge className="ml-auto shrink-0">{left === 0 ? "Hoy" : `${left} d`}</Badge>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function DocsList({ docs, nowMs }: { docs: DashboardData["upcoming_events"]["documents"]; nowMs: number }) {
-  if (!docs.length) return <p className="text-sm text-muted-foreground">Sin documentos proximos a vencer.</p>;
-  return (
-    <ul className="space-y-3">
-      {docs.map((doc) => {
-        const left = Math.ceil((new Date(doc.expiration_date).getTime() - nowMs) / 86_400_000);
-        const tone = left <= 7 ? TONE.red : left <= 21 ? TONE.amber : TONE.slate;
-        return (
-          <li key={doc.id} className="flex items-center gap-3">
-            <IconBadge tone={tone} size={9}>
-              <FileWarning className="size-4" />
-            </IconBadge>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-medium">{doc.name}</p>
-              <p className="text-xs text-muted-foreground">
-                Vence {new Date(doc.expiration_date).toLocaleDateString("es-CO")}
-              </p>
-            </div>
-            <Badge className="ml-auto shrink-0" style={{ backgroundColor: `${tone}1f`, color: tone }}>
-              {left <= 0 ? "Vencido" : `${left} d`}
-            </Badge>
-          </li>
-        );
-      })}
+      {products.map((p) => (
+        <li key={p.id} className="flex items-center gap-3">
+          <IconBadge tone={TONE.red} size={9}>
+            <Boxes className="size-4" />
+          </IconBadge>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium">{p.name}</p>
+            <p className="text-xs text-muted-foreground">SKU {p.sku} · reorden en {p.reorder_level}</p>
+          </div>
+          <Badge className="ml-auto shrink-0 bg-destructive/15 text-destructive">Bajo stock</Badge>
+        </li>
+      ))}
     </ul>
   );
 }
@@ -612,19 +565,17 @@ function LoadingState() {
 
 /* ---------------- page ---------------- */
 
-const PERIODS = [3, 6, 12] as const;
-
 export default function DashboardPage() {
   const { data, loading, error, fetchedAt, refresh } = useDashboard();
-  const [months, setMonths] = React.useState<(typeof PERIODS)[number]>(6);
   const [nowMs, setNowMs] = React.useState(() => Date.now());
   const reduce = useReducedMotion();
 
-  // Mantiene "hace Xs" y los conteos de dias al dia sin leer el reloj en render.
+  // Mantiene "hace Xs" al dia sin leer el reloj en cada render.
   React.useEffect(() => {
     const t = setInterval(() => setNowMs(Date.now()), 30_000);
     return () => clearInterval(t);
   }, []);
+  void nowMs;
 
   if (loading && !data) return <LoadingState />;
   if (error && !data) {
@@ -640,10 +591,7 @@ export default function DashboardPage() {
   if (!data) return <LoadingState />;
 
   const m = data.metrics;
-  // +1: la tendencia excluye el mes en curso (parcial), asi quedan `months` cerrados.
-  const attendanceTrend = data.trends.attendance_monthly.slice(-(months + 1));
-  const headcountFlow = data.trends.headcount_flow.slice(-months);
-  const onLeave = data.headcount_by_status.find((s) => s.status === "on_leave")?.total ?? 0;
+  const stageCount = (stage: string) => data.deals_by_stage.find((s) => s.stage === stage)?.total ?? 0;
 
   return (
     <motion.div
@@ -656,21 +604,9 @@ export default function DashboardPage() {
       <motion.div variants={item} className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">Vista general de Recursos Humanos.</p>
+          <p className="text-sm text-muted-foreground">Vista general de CRM e inventario.</p>
         </div>
         <div className="flex items-center gap-2">
-          <select
-            value={months}
-            onChange={(e) => setMonths(Number(e.target.value) as (typeof PERIODS)[number])}
-            className="h-9 rounded-md border border-border bg-card px-3 text-sm outline-none focus-visible:border-primary"
-            aria-label="Periodo"
-          >
-            {PERIODS.map((p) => (
-              <option key={p} value={p}>
-                Ultimos {p} meses
-              </option>
-            ))}
-          </select>
           <button
             onClick={refresh}
             className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-card px-3 text-sm font-medium hover:bg-muted"
@@ -685,31 +621,33 @@ export default function DashboardPage() {
       <motion.div variants={item}>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <KpiCard
-            label="Tasa de asistencia · 30 dias"
-            value={data.deltas.attendance_rate.current}
-            suffix="%"
+            label="Ingresos del mes"
+            value={m.revenue_month ?? 0}
             icon={TrendingUp}
             tone={TONE.indigo}
-            delta={data.deltas.attendance_rate}
+            delta={data.deltas.revenue}
             emphasis
           />
-          <KpiCard label="Empleados activos" value={m.active_employees ?? 0} icon={Users} tone={TONE.green} hint={`${m.total_employees ?? 0} en total`} />
-          <KpiCard label="Presentes hoy" value={m.present_today ?? 0} icon={Activity} tone={TONE.green} hint={`${m.late_today ?? 0} tarde`} />
-          <KpiCard label="Solicitudes pendientes" value={m.pending_requests ?? 0} icon={CalendarDays} tone={TONE.wine} delta={data.deltas.requests} />
-          <KpiCard label="Contrataciones (30d)" value={data.deltas.hires.current} icon={UserPlus} tone={TONE.sky} delta={data.deltas.hires} />
+          <KpiCard label="Clientes" value={m.total_clients ?? 0} icon={Users} tone={TONE.green} />
+          <KpiCard
+            label="Deals abiertos"
+            value={m.open_deals ?? 0}
+            icon={Handshake}
+            tone={TONE.sky}
+            hint={money(m.open_deals_value ?? 0)}
+          />
+          <KpiCard label="Deals ganados (mes)" value={m.deals_won_month ?? 0} icon={Trophy} tone={TONE.wine} delta={data.deltas.deals_won} />
+          <KpiCard label="Ordenes de compra pendientes" value={m.pending_purchase_orders ?? 0} icon={ShoppingCart} tone={TONE.amber} />
         </div>
       </motion.div>
 
-      {/* Second metrics */}
+      {/* Second metrics: pipeline por etapa */}
       <motion.div variants={item}>
-        <SectionLabel>Detalle operativo</SectionLabel>
+        <SectionLabel>Pipeline por etapa</SectionLabel>
         <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
-          <MiniStat label="Ausentes hoy" value={m.absent_today ?? 0} icon={UserRound} tone={TONE.red} />
-          <MiniStat label="Llegadas tarde" value={m.late_today ?? 0} icon={Clock3} tone={TONE.amber} />
-          <MiniStat label="Incapacidades activas" value={m.active_sick_leaves ?? 0} icon={HeartPulse} tone={TONE.red} />
-          <MiniStat label="Vacaciones proximas" value={m.upcoming_vacations ?? 0} icon={Plane} tone={TONE.sky} />
-          <MiniStat label="En licencia" value={onLeave} icon={UserMinus} tone={TONE.amber} />
-          <MiniStat label="Docs. por vencer" value={data.upcoming_events.documents.length} icon={FileWarning} tone={TONE.slate} />
+          {Object.entries(STAGE_META).map(([stage, meta]) => (
+            <MiniStat key={stage} label={meta.label} value={stageCount(stage)} icon={Handshake} tone={meta.color} />
+          ))}
         </div>
       </motion.div>
 
@@ -719,32 +657,32 @@ export default function DashboardPage() {
         <div className="grid gap-4 lg:grid-cols-3">
           <ChartFrame
             className="lg:col-span-2"
-            title="Rendimiento de asistencia"
-            description={`Tasa mensual de asistencia a tiempo — ultimos ${months} meses.`}
+            title="Ingresos"
+            description="Ingresos mensuales por pedidos confirmados — ultimos 12 meses."
             icon={TrendingUp}
             tone={TONE.indigo}
           >
-            <AttendanceTrend data={attendanceTrend} />
+            <RevenueTrend data={data.trends.revenue_monthly} />
           </ChartFrame>
 
-          <ChartFrame title="Plantilla por estado" description="Distribucion actual de colaboradores." icon={ChartPie} tone={TONE.violet}>
-            <DonutStatus rows={data.headcount_by_status} />
+          <ChartFrame title="Deals por etapa" description="Distribucion actual del pipeline." icon={ChartPie} tone={TONE.violet}>
+            <DonutStages rows={data.deals_by_stage} />
           </ChartFrame>
         </div>
 
         <div className="mt-4 grid gap-4 lg:grid-cols-2">
-          <ChartFrame title="Embudo de asistencia (hoy)" description="Plantilla activa que registra entrada y llega a tiempo." icon={Filter} tone={TONE.wine}>
-            <AttendanceFunnel stages={data.attendance_funnel} />
+          <ChartFrame title="Embudo de ventas" description="Oportunidades activas por etapa del pipeline." icon={Filter} tone={TONE.wine}>
+            <PipelineFunnel rows={data.deals_by_stage} />
           </ChartFrame>
 
-          <ChartFrame title="Contrataciones vs retiros" description={`Movimiento de plantilla — ultimos ${months} meses.`} icon={Users} tone={TONE.green}>
-            <HeadcountFlow data={headcountFlow} />
+          <ChartFrame title="Deals ganados vs perdidos" description="Cierre de oportunidades — ultimos 12 meses." icon={Handshake} tone={TONE.green}>
+            <DealsWonLost data={data.trends.deals_monthly} />
           </ChartFrame>
         </div>
 
         <div className="mt-4">
-          <ChartFrame title="Plantilla por area" description="Colaboradores por departamento." icon={Building2} tone={TONE.indigo}>
-            <DepartmentBars rows={data.headcount_by_department} />
+          <ChartFrame title="Top productos por existencia" description="Productos con mayor stock disponible." icon={Package} tone={TONE.indigo}>
+            <TopProductsBars rows={data.top_products} />
           </ChartFrame>
         </div>
       </motion.div>
@@ -762,30 +700,17 @@ export default function DashboardPage() {
 
       {/* Secondary */}
       <motion.div variants={item}>
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Card className="border-border/70">
-            <CardContent className="p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-sm font-semibold">Proximos cumpleanos</h3>
-                <IconBadge tone={TONE.sky} size={9}>
-                  <Cake className="size-4" />
-                </IconBadge>
-              </div>
-              <BirthdayList people={data.upcoming_events.birthdays} nowMs={nowMs} />
-            </CardContent>
-          </Card>
-          <Card className="border-border/70">
-            <CardContent className="p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-sm font-semibold">Documentos por vencer</h3>
-                <IconBadge tone={TONE.amber} size={9}>
-                  <FileWarning className="size-4" />
-                </IconBadge>
-              </div>
-              <DocsList docs={data.upcoming_events.documents} nowMs={nowMs} />
-            </CardContent>
-          </Card>
-        </div>
+        <Card className="border-border/70">
+          <CardContent className="p-5">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-sm font-semibold">Productos con stock bajo</h3>
+              <IconBadge tone={TONE.red} size={9}>
+                <Boxes className="size-4" />
+              </IconBadge>
+            </div>
+            <LowStockList products={data.low_stock_alerts} />
+          </CardContent>
+        </Card>
       </motion.div>
     </motion.div>
   );

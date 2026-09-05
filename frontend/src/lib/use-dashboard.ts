@@ -8,21 +8,15 @@ export type Delta = { current: number; previous: number; pct: number | null };
 export type DashboardData = {
   generated_at: string;
   metrics: Record<string, number>;
-  deltas: Record<"hires" | "requests" | "attendance_rate", Delta>;
-  attendance_funnel: { stage: string; count: number }[];
-  weekly_attendance: { date: string; status: string; total: number }[];
-  headcount_by_department: { department: string; total: number }[];
-  headcount_by_status: { status: string; total: number }[];
+  deltas: Record<"revenue" | "deals_won", Delta>;
+  deals_by_stage: { stage: string; total: number; amount: number }[];
+  top_products: { id: number; name: string; sku: string; stock_on_hand: number }[];
   trends: {
-    attendance_monthly: { month: string; present: number; late: number; absent: number; rate: number; partial: boolean }[];
-    headcount_flow: { month: string; hires: number; terminations: number }[];
-    requests_monthly: { month: string; vacations: number; permissions: number; sick_leaves: number }[];
+    revenue_monthly: { month: string; revenue: number }[];
+    deals_monthly: { month: string; won: number; lost: number }[];
   };
+  low_stock_alerts: { id: number; name: string; sku: string; reorder_level: number }[];
   recent_activity: { id: number; action: string; module?: string; user?: string | null; created_at: string }[];
-  upcoming_events: {
-    documents: { id: number; name: string; expiration_date: string }[];
-    birthdays: { id: number; first_name: string; last_name: string; birth_date: string }[];
-  };
 };
 
 export function useDashboard() {
@@ -40,7 +34,7 @@ export function useDashboard() {
       .then((response) => {
         // Un backend desactualizado responde 200 sin `trends`: no rompas toda la
         // pagina, cae en el estado de error con reintentar.
-        if (!response.data?.trends?.attendance_monthly) {
+        if (!response.data?.trends?.revenue_monthly) {
           throw new Error("shape");
         }
         setData(response.data);

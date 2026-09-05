@@ -1,6 +1,4 @@
-import { api } from "@/lib/api";
-
-type Payload = Record<string, unknown>;
+export type Payload = Record<string, unknown>;
 
 // Un adaptador por modulo elegible. `sync` reproduce la transaccion contra el
 // endpoint real del API (misma validacion y logica que un alta online), mas el
@@ -11,21 +9,10 @@ export type ContingencyAdapter = {
   sync: (payload: Payload, clientUuid: string) => Promise<void>;
 };
 
-const attendances: ContingencyAdapter = {
-  key: "attendances",
-  summarize: (p) => {
-    const emp = p.employee_id ? `Empleado #${p.employee_id}` : "Empleado";
-    const date = typeof p.date === "string" ? p.date : "";
-    return `${emp} — ${p.status ?? "asistencia"}${date ? ` (${date})` : ""}`;
-  },
-  sync: async (payload, clientUuid) => {
-    await api.post("/attendances", { ...payload, client_uuid: clientUuid });
-  },
-};
-
-const adapters: Record<string, ContingencyAdapter> = {
-  [attendances.key]: attendances,
-};
+// Vacio: el pivote a CRM + Inventario no definio todavia un flujo de
+// escritura offline propio para esos dominios (ver ContingencyModuleRegistry
+// en el backend). Se agrega un adapter aqui cuando se diseñe uno.
+const adapters: Record<string, ContingencyAdapter> = {};
 
 export function getAdapter(moduleKey: string): ContingencyAdapter | undefined {
   return adapters[moduleKey];

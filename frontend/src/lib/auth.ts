@@ -4,7 +4,6 @@ export type AuthUser = {
   email: string;
   status: string;
   company?: { id: number; name: string } | null;
-  employee_id?: number | null;
   roles: string[];
   permissions: string[];
 };

@@ -21,6 +21,8 @@ type ModuleTablePageProps<T extends object & RowWithId> = {
   fields?: CrudField[];
   modalDescription?: string;
   extraRowActions?: (row: T, refresh: () => void) => React.ReactNode;
+  /** false para un recurso solo de alta (p.ej. una bitacora): oculta "Editar" sin afectar el boton de creacion. */
+  editable?: boolean;
 };
 
 export function ModuleTablePage<T extends object & RowWithId>({
@@ -33,6 +35,7 @@ export function ModuleTablePage<T extends object & RowWithId>({
   fields,
   modalDescription,
   extraRowActions,
+  editable = true,
 }: ModuleTablePageProps<T>) {
   const table = useApiTable<T>(resource);
   const { isActive: contingencyActive, moduleEnabled, enqueue } = useContingency();
@@ -59,7 +62,8 @@ export function ModuleTablePage<T extends object & RowWithId>({
 
   const tableColumns = React.useMemo(() => {
     // En solo-lectura no se muestran acciones de escritura (editar / extras).
-    if (readOnly || (!fields?.length && !extraRowActions)) return columns;
+    const showEdit = editable && !!fields?.length;
+    if (readOnly || (!showEdit && !extraRowActions)) return columns;
 
     return [
       ...columns,
@@ -69,7 +73,7 @@ export function ModuleTablePage<T extends object & RowWithId>({
         cell: ({ row }: { row: { original: T } }) => (
           <div className="flex justify-end gap-1">
             {extraRowActions?.(row.original, table.refresh)}
-            {fields?.length ? (
+            {showEdit ? (
               <Button variant="ghost" size="sm" onClick={() => openEditModal(row.original)}>
                 <Pencil className="h-4 w-4" /> Editar
               </Button>
@@ -78,7 +82,7 @@ export function ModuleTablePage<T extends object & RowWithId>({
         ),
       } satisfies AppColumnDef<T>,
     ];
-  }, [columns, extraRowActions, fields, openEditModal, readOnly, table.refresh]);
+  }, [columns, editable, extraRowActions, fields, openEditModal, readOnly, table.refresh]);
 
   return (
     <div className="space-y-6">
