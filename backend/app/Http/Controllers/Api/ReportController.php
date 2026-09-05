@@ -4,14 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Concerns\ResolvesCompany;
 use App\Http\Controllers\Controller;
-use App\Models\Attendance;
-use App\Models\Department;
-use App\Models\Employee;
-use App\Models\EmployeeDocument;
-use App\Models\PermissionRequest;
-use App\Models\Position;
-use App\Models\SickLeave;
-use App\Models\VacationRequest;
+use App\Models\Client;
+use App\Models\Deal;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -24,53 +21,35 @@ class ReportController extends Controller
         $companyId = $this->companyId($request);
         $today = Carbon::today();
         $monthStart = $today->copy()->startOfMonth();
-        $from30 = $today->copy()->subDays(30);
 
-        $employees = fn () => Employee::where('company_id', $companyId);
-        $attendance30 = fn () => Attendance::where('company_id', $companyId)->whereBetween('date', [$from30, $today]);
-        $activeEmployees = fn () => ['employees' => fn ($q) => $q->where('employment_status', 'active')];
+        $deals = fn () => Deal::where('company_id', $companyId);
+        $products = fn () => Product::where('company_id', $companyId)->withSum('stockMovements as stock_on_hand', 'quantity');
 
         return response()->json([
             'generated_at' => now(),
-            'headcount' => [
-                'total' => $employees()->count(),
-                'active' => $employees()->where('employment_status', 'active')->count(),
-                'inactive' => $employees()->where('employment_status', '!=', 'active')->count(),
-                'hires_month' => $employees()->whereBetween('hire_date', [$monthStart, $today])->count(),
-                'terminations_month' => $employees()->whereNotNull('termination_date')->whereBetween('termination_date', [$monthStart, $today])->count(),
-                'birthdays_month' => $employees()->whereNotNull('birth_date')->whereMonth('birth_date', $today->month)->count(),
+            'pipeline' => [
+                'total_deals' => $deals()->count(),
+                'open_value' => (float) $deals()->whereNotIn('stage', ['won', 'lost'])->sum('amount'),
+                'won_month' => $deals()->where('stage', 'won')->whereBetween('updated_at', [$monthStart, $today])->count(),
+                'lost_month' => $deals()->where('stage', 'lost')->whereBetween('updated_at', [$monthStart, $today])->count(),
+                'by_stage' => $deals()->selectRaw('stage, count(*) as total, coalesce(sum(amount), 0) as amount')->groupBy('stage')->get(),
             ],
-            'attendance_30d' => [
-                'present' => $attendance30()->where('status', 'present')->count(),
-                'late' => $attendance30()->where('status', 'late')->count(),
-                'absent' => $attendance30()->where('status', 'absent')->count(),
-                'late_minutes' => (int) $attendance30()->sum('late_minutes'),
+            'clients' => [
+                'total' => Client::where('company_id', $companyId)->count(),
+                'active' => Client::where('company_id', $companyId)->where('status', 'active')->count(),
             ],
-            'requests' => [
-                'vacations_pending' => VacationRequest::where('company_id', $companyId)->where('status', 'pending')->count(),
-                'permissions_pending' => PermissionRequest::where('company_id', $companyId)->where('status', 'pending')->count(),
-                'sick_leaves_active' => SickLeave::where('company_id', $companyId)->where('status', 'active')->count(),
+            'sales' => [
+                'orders_month' => Order::where('company_id', $companyId)->where('status', 'confirmed')->whereBetween('updated_at', [$monthStart, $today])->count(),
+                'revenue_month' => (float) Order::where('company_id', $companyId)->where('status', 'confirmed')->whereBetween('updated_at', [$monthStart, $today])->sum('total'),
+                'draft_orders' => Order::where('company_id', $companyId)->where('status', 'draft')->count(),
             ],
-            'documents' => [
-                'expired' => EmployeeDocument::where('company_id', $companyId)->whereNotNull('expiration_date')->whereDate('expiration_date', '<', $today)->count(),
-                'expiring_30d' => EmployeeDocument::where('company_id', $companyId)->whereBetween('expiration_date', [$today, $today->copy()->addDays(30)])->count(),
+            'inventory' => [
+                'total_products' => $products()->count(),
+                'low_stock' => $products()->get()->filter(fn (Product $p) => (int) ($p->stock_on_hand ?? 0) < $p->reorder_level)->count(),
+                'pending_purchase_orders' => PurchaseOrder::where('company_id', $companyId)->whereIn('status', ['draft', 'ordered'])->count(),
             ],
-            'contracts' => $employees()
-                ->where('employment_status', 'active')
-                ->selectRaw('contract_type, count(*) as total')
-                ->groupBy('contract_type')
-                ->pluck('total', 'contract_type')
-                ->mapWithKeys(fn ($total, $type) => [($type ?: 'Sin definir') => $total]),
-            'by_department' => Department::where('company_id', $companyId)
-                ->withCount($activeEmployees())
-                ->orderByDesc('employees_count')
-                ->get(['id', 'name'])
-                ->map(fn ($d) => ['name' => $d->name, 'employees' => $d->employees_count]),
-            'by_position' => Position::where('company_id', $companyId)
-                ->withCount($activeEmployees())
-                ->orderByDesc('employees_count')
-                ->get(['id', 'name'])
-                ->map(fn ($p) => ['name' => $p->name, 'employees' => $p->employees_count]),
+            'top_products_by_stock' => $products()->orderByDesc('stock_on_hand')->limit(10)->get(['id', 'name', 'sku'])
+                ->map(fn (Product $p) => ['name' => $p->name, 'sku' => $p->sku, 'stock_on_hand' => (int) ($p->stock_on_hand ?? 0)]),
         ]);
     }
 }

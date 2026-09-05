@@ -36,15 +36,14 @@ class DashboardTest extends TestCase
             ->assertOk()
             ->assertJsonStructure([
                 'generated_at',
-                'metrics' => ['total_employees', 'active_employees', 'present_today'],
-                'deltas' => ['hires' => ['current', 'previous', 'pct'], 'requests', 'attendance_rate'],
-                'attendance_funnel',
-                'headcount_by_department',
-                'headcount_by_status',
-                'trends' => ['attendance_monthly', 'headcount_flow', 'requests_monthly'],
+                'metrics' => ['total_clients', 'open_deals', 'open_deals_value', 'deals_won_month', 'low_stock_products', 'pending_purchase_orders', 'orders_confirmed_month', 'revenue_month'],
+                'deltas' => ['revenue' => ['current', 'previous', 'pct'], 'deals_won'],
+                'deals_by_stage',
+                'top_products',
+                'trends' => ['revenue_monthly', 'deals_monthly'],
+                'low_stock_alerts',
                 'recent_activity',
-                'upcoming_events' => ['documents', 'birthdays'],
             ])
-            ->assertJsonCount(12, 'trends.attendance_monthly');
+            ->assertJsonCount(12, 'trends.revenue_monthly');
     }
 }

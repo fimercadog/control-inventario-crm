@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Company;
 use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +16,8 @@ class LeadTest extends TestCase
 
     public function test_public_can_submit_a_lead_with_consent(): void
     {
+        Company::factory()->create(['name' => 'Test SA']);
+
         $this->postJson('/api/leads', [
             'name' => 'Ana Prueba',
             'email' => 'ana@empresa.co',
@@ -45,11 +48,12 @@ class LeadTest extends TestCase
     public function test_user_with_permission_lists_and_updates_status(): void
     {
         Permission::firstOrCreate(['name' => 'leads.view', 'guard_name' => 'web']);
-        $user = User::factory()->create();
+        $company = Company::factory()->create(['name' => 'Test SA']);
+        $user = User::factory()->create(['company_id' => $company->id]);
         $user->givePermissionTo('leads.view');
         Sanctum::actingAs($user, ['*']);
 
-        $lead = Lead::create(['name' => 'X', 'email' => 'x@y.co', 'source' => 'contact', 'status' => 'new', 'ip_address' => '203.0.113.5']);
+        $lead = Lead::create(['company_id' => $company->id, 'name' => 'X', 'email' => 'x@y.co', 'source' => 'contact', 'status' => 'new', 'ip_address' => '203.0.113.5']);
 
         $this->getJson('/api/leads')->assertOk()
             ->assertJsonPath('data.0.id', $lead->id)

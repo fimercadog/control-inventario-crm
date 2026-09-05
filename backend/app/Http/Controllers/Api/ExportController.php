@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\Concerns\ResolvesCompany;
-use App\Models\Attendance;
 use App\Models\AuditLog;
-use App\Models\Employee;
-use App\Models\EmployeeDocument;
-use App\Models\PermissionRequest;
-use App\Models\SickLeave;
-use App\Models\VacationRequest;
+use App\Models\Client;
+use App\Models\Deal;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\PurchaseOrder;
+use App\Models\Supplier;
 use App\Services\TableQueryService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -20,22 +20,22 @@ class ExportController extends Controller
     use ResolvesCompany;
 
     private array $map = [
-        'employees' => [Employee::class, ['employee_code', 'first_name', 'last_name', 'email', 'employment_status']],
-        'attendances' => [Attendance::class, ['employee_id', 'date', 'status', 'check_in', 'check_out', 'late_minutes']],
-        'vacation-requests' => [VacationRequest::class, ['employee_id', 'start_date', 'end_date', 'requested_days', 'status']],
-        'permission-requests' => [PermissionRequest::class, ['employee_id', 'type', 'start_date', 'end_date', 'status']],
-        'sick-leaves' => [SickLeave::class, ['employee_id', 'start_date', 'end_date', 'days', 'type', 'status']],
-        'employee-documents' => [EmployeeDocument::class, ['employee_id', 'document_type', 'name', 'expiration_date', 'status']],
+        'clients' => [Client::class, ['name', 'company_name', 'email', 'phone', 'status']],
+        'deals' => [Deal::class, ['client_id', 'title', 'amount', 'stage', 'expected_close_date']],
+        'products' => [Product::class, ['sku', 'name', 'category', 'unit_price', 'cost_price', 'status']],
+        'suppliers' => [Supplier::class, ['name', 'contact_name', 'email', 'phone', 'status']],
+        'purchase-orders' => [PurchaseOrder::class, ['supplier_id', 'warehouse_id', 'status', 'order_date', 'total']],
+        'orders' => [Order::class, ['client_id', 'warehouse_id', 'status', 'total']],
         'audit-logs' => [AuditLog::class, ['user_id', 'action', 'module', 'entity', 'entity_id', 'created_at']],
     ];
 
     private array $permissionByResource = [
-        'employees' => 'employees.manage',
-        'attendances' => 'attendance.manage',
-        'vacation-requests' => 'requests.approve',
-        'permission-requests' => 'requests.approve',
-        'sick-leaves' => 'requests.approve',
-        'employee-documents' => 'documents.manage',
+        'clients' => 'clients.manage',
+        'deals' => 'deals.manage',
+        'products' => 'products.manage',
+        'suppliers' => 'suppliers.manage',
+        'purchase-orders' => 'purchase_orders.manage',
+        'orders' => 'orders.manage',
         'audit-logs' => 'audit.view',
     ];
 

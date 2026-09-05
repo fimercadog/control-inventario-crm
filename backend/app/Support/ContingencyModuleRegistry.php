@@ -18,13 +18,10 @@ class ContingencyModuleRegistry
      */
     public static function all(): array
     {
-        return [
-            [
-                'key' => 'attendances',
-                'label' => 'Asistencia',
-                'description' => 'Registro diario de asistencia. Solo creacion; cada fila es independiente.',
-            ],
-        ];
+        // Sin modulos elegibles todavia: el pivote a CRM + Inventario no definio
+        // un flujo de escritura offline propio para esos dominios. La
+        // infraestructura de contingencia queda activa, solo vacia.
+        return [];
     }
 
     /**

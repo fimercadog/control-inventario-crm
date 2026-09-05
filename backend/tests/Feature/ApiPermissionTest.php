@@ -21,7 +21,7 @@ class ApiPermissionTest extends TestCase
 
         $this->company = Company::factory()->create(['name' => 'Test SA']);
 
-        foreach (['employees.manage', 'dashboard.view'] as $name) {
+        foreach (['clients.manage', 'dashboard.view'] as $name) {
             Permission::firstOrCreate(['name' => $name, 'guard_name' => 'web']);
         }
     }
@@ -40,28 +40,28 @@ class ApiPermissionTest extends TestCase
     {
         $this->loginWith([]);
 
-        $this->getJson('/api/employees')->assertForbidden();
+        $this->getJson('/api/clients')->assertForbidden();
     }
 
     public function test_route_with_permission_is_allowed(): void
     {
-        $this->loginWith(['employees.manage']);
+        $this->loginWith(['clients.manage']);
 
-        $this->getJson('/api/employees')->assertOk();
+        $this->getJson('/api/clients')->assertOk();
     }
 
     public function test_export_without_permission_returns_403(): void
     {
         $this->loginWith(['dashboard.view']);
 
-        $this->get('/api/exports/employees.csv')->assertForbidden();
+        $this->get('/api/exports/clients.csv')->assertForbidden();
     }
 
     public function test_export_with_permission_is_allowed(): void
     {
-        $this->loginWith(['employees.manage']);
+        $this->loginWith(['clients.manage']);
 
-        $this->get('/api/exports/employees.csv')->assertOk();
+        $this->get('/api/exports/clients.csv')->assertOk();
     }
 
     public function test_open_route_needs_no_permission(): void

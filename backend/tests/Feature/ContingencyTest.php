@@ -2,9 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\Attendance;
 use App\Models\Company;
-use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
@@ -23,9 +21,7 @@ class ContingencyTest extends TestCase
 
         $this->company = Company::factory()->create(['name' => 'Test SA']);
 
-        foreach (['settings.manage', 'attendance.manage'] as $name) {
-            Permission::firstOrCreate(['name' => $name, 'guard_name' => 'web']);
-        }
+        Permission::firstOrCreate(['name' => 'settings.manage', 'guard_name' => 'web']);
     }
 
     private function login(array $permissions = []): User
@@ -43,70 +39,36 @@ class ContingencyTest extends TestCase
 
         $this->getJson('/api/contingency/status')
             ->assertOk()
-            ->assertJsonPath('active', false);
+            ->assertJsonPath('active', false)
+            ->assertJsonPath('modules', []);
     }
 
     public function test_activate_requires_settings_manage(): void
     {
         $this->login([]);
 
-        $this->postJson('/api/contingency/activate', ['enabled_modules' => ['attendances']])
+        $this->postJson('/api/contingency/activate', ['enabled_modules' => ['clients']])
             ->assertForbidden();
     }
 
-    public function test_activate_validates_modules_against_registry(): void
+    /**
+     * El pivote a CRM + Inventario dejo el registro de modulos elegibles
+     * vacio (ver ContingencyModuleRegistry) hasta que se diseñe un flujo de
+     * escritura offline propio para esos dominios: cualquier modulo pedido
+     * hoy es invalido por definicion.
+     */
+    public function test_activate_rejects_any_module_while_registry_is_empty(): void
     {
         $this->login(['settings.manage']);
 
-        $this->postJson('/api/contingency/activate', ['enabled_modules' => ['payroll']])
+        $this->postJson('/api/contingency/activate', ['enabled_modules' => ['clients']])
             ->assertStatus(422);
     }
 
-    public function test_full_session_lifecycle(): void
+    public function test_deactivate_without_active_session_returns_409(): void
     {
         $this->login(['settings.manage']);
 
-        $this->postJson('/api/contingency/activate', ['enabled_modules' => ['attendances']])
-            ->assertCreated()
-            ->assertJsonPath('active', true)
-            ->assertJsonPath('session.enabled_modules', ['attendances']);
-
-        // Segunda activacion mientras hay una activa -> 409.
-        $this->postJson('/api/contingency/activate', ['enabled_modules' => ['attendances']])
-            ->assertStatus(409);
-
-        $this->postJson('/api/contingency/deactivate')
-            ->assertOk()
-            ->assertJsonPath('active', false);
-
-        // Desactivar sin sesion activa -> 409.
         $this->postJson('/api/contingency/deactivate')->assertStatus(409);
-    }
-
-    public function test_attendance_create_is_idempotent_by_client_uuid(): void
-    {
-        $this->login(['attendance.manage']);
-        $employee = Employee::factory()->create([
-            'company_id' => $this->company->id,
-            'employee_code' => 'EMP-0001',
-            'first_name' => 'Ana',
-            'last_name' => 'Diaz',
-            'identification_type' => 'CC',
-            'identification_number' => '1000000001',
-            'hire_date' => '2026-01-01',
-        ]);
-
-        $uuid = (string) \Illuminate\Support\Str::uuid();
-        $payload = [
-            'client_uuid' => $uuid,
-            'employee_id' => $employee->id,
-            'date' => '2026-09-01',
-            'status' => 'present',
-        ];
-
-        $this->postJson('/api/attendances', $payload)->assertCreated();
-        $this->postJson('/api/attendances', $payload)->assertOk();
-
-        $this->assertSame(1, Attendance::where('client_uuid', $uuid)->count());
     }
 }

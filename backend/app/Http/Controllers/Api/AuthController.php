@@ -20,7 +20,7 @@ class AuthController extends Controller
         ]);
 
         $user = User::query()
-            ->with(['company', 'employee'])
+            ->with(['company'])
             ->where('email', $credentials['email'])
             ->where('status', 'active')
             ->first();
@@ -75,7 +75,7 @@ class AuthController extends Controller
     public function me(Request $request)
     {
         return response()->json([
-            'user' => $this->userPayload($request->user()->load(['company', 'employee'])),
+            'user' => $this->userPayload($request->user()->load(['company'])),
         ]);
     }
 
@@ -96,7 +96,6 @@ class AuthController extends Controller
             'email' => $user->email,
             'status' => $user->status,
             'company' => $user->company?->only(['id', 'name']),
-            'employee_id' => $user->employee_id,
             'roles' => $user->getRoleNames()->values(),
             'permissions' => $user->getAllPermissions()->pluck('name')->values(),
         ];

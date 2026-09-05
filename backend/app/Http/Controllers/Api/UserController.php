@@ -12,7 +12,6 @@ class UserController extends BaseCrudController
 {
     protected string $model = User::class;
     protected string $resource = UserResource::class;
-    protected array $with = ['employee'];
     protected array $searchable = ['name', 'email'];
     protected array $filterable = ['status' => 'status'];
 

@@ -10,8 +10,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId('company_id')->nullable()->after('id')->constrained()->nullOnDelete();
-            $table->foreignId('employee_id')->nullable()->after('password')->constrained()->nullOnDelete();
-            $table->string('status')->default('active')->after('employee_id');
+            $table->string('status')->default('active')->after('password');
         });
     }
 
@@ -19,7 +18,6 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropConstrainedForeignId('company_id');
-            $table->dropConstrainedForeignId('employee_id');
             $table->dropColumn('status');
         });
     }
