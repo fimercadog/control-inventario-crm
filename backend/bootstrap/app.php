@@ -1,12 +1,14 @@
 <?php
 
+use App\Http\Middleware\SecurityHeaders;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Http\Middleware\SecurityHeaders;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -42,5 +44,33 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             return null;
+        });
+
+        // Red de seguridad de la API: ninguna respuesta de error debe llevar
+        // stack trace, rutas del disco, usuario del SO ni clases internas del
+        // framework — ni siquiera con APP_DEBUG=true (la depuracion local vive
+        // en storage/logs, no en el cuerpo HTTP). Las de validacion (422) ya
+        // salen saneadas por Laravel (solo message + errors), se dejan pasar.
+        $exceptions->render(function (Throwable $e, Request $request) {
+            if (! $request->is('api/*') || $e instanceof ValidationException) {
+                return null;
+            }
+
+            if ($e instanceof HttpExceptionInterface) {
+                // Se conserva el status real y las cabeceras utiles (Retry-After
+                // en 429/503, Allow en 405). El mensaje del 4xx ya esta pensado
+                // para el cliente; el de un 5xx puede filtrar internos -> generico.
+                $status = $e->getStatusCode();
+
+                return response()->json(
+                    ['message' => $status < 500 ? ($e->getMessage() ?: 'Solicitud no valida.') : 'Error interno del servidor.'],
+                    $status,
+                    $e->getHeaders(),
+                );
+            }
+
+            report($e);
+
+            return response()->json(['message' => 'Error interno del servidor.'], 500);
         });
     })->create();

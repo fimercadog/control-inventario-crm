@@ -46,6 +46,40 @@ class PublicCatalogTest extends TestCase
             ->assertJsonMissingPath('data.0.reorder_level');
     }
 
+    /**
+     * El filtro de categorias del catalogo se deriva de la BD: solo aparecen
+     * categorias que tienen al menos un producto publico y activo. Agregar una
+     * categoria nueva con un producto publico la hace aparecer sin tocar el front.
+     */
+    public function test_categories_are_served_dynamically_from_the_database(): void
+    {
+        $conProducto = \App\Models\Category::create([
+            'company_id' => $this->company->id, 'name' => 'Con producto', 'status' => 'active',
+        ]);
+        $sinProducto = \App\Models\Category::create([
+            'company_id' => $this->company->id, 'name' => 'Sin producto', 'status' => 'active',
+        ]);
+        $this->publicProduct(['category_id' => $conProducto->id]);
+
+        $this->getJson('/api/public/catalog/categories')
+            ->assertOk()
+            ->assertJsonCount(1)
+            ->assertJsonPath('0.id', $conProducto->id)
+            ->assertJsonPath('0.name', 'Con producto')
+            ->assertJsonMissing(['id' => $sinProducto->id]);
+
+        // Nace una categoria nueva con un producto publico -> el filtro la refleja.
+        $nueva = \App\Models\Category::create([
+            'company_id' => $this->company->id, 'name' => 'Recien creada', 'status' => 'active',
+        ]);
+        $this->publicProduct(['category_id' => $nueva->id]);
+
+        $this->getJson('/api/public/catalog/categories')
+            ->assertOk()
+            ->assertJsonCount(2)
+            ->assertJsonFragment(['id' => $nueva->id, 'name' => 'Recien creada']);
+    }
+
     public function test_catalog_survives_a_degenerate_per_page(): void
     {
         $this->publicProduct();
@@ -140,6 +174,42 @@ class PublicCatalogTest extends TestCase
         ])->assertStatus(422)->assertJsonValidationErrors('items.0.product_id');
     }
 
+    /**
+     * AUD-08: el visitante no controla a que empresa entra su solicitud.
+     * `company_id` (y `status`, `client_id`, `owner_id`) del payload se ignoran:
+     * la empresa se resuelve del servidor (primera del tenant), no del request.
+     */
+    public function test_public_quote_request_ignores_company_id_and_other_server_fields_from_payload(): void
+    {
+        $product = $this->publicProduct();
+        $otherCompany = Company::factory()->create(['name' => 'Empresa Ajena']);
+        $otherClient = Client::factory()->create(['company_id' => $otherCompany->id]);
+
+        $this->postJson('/api/public/catalog/quote-requests', [
+            'name' => 'Ana', 'email' => 'ana@empresa.co', 'consent' => true,
+            'items' => [['product_id' => $product->id, 'quantity' => 1]],
+            // Campos que el visitante NO debe poder fijar:
+            'company_id' => $otherCompany->id,
+            'status' => 'accepted',
+            'client_id' => $otherClient->id,
+            'owner_id' => 999,
+        ])->assertCreated();
+
+        $client = Client::where('email', 'ana@empresa.co')->sole();
+        $this->assertSame($this->company->id, $client->company_id);
+        $this->assertNotSame($otherClient->id, $client->id);
+
+        $quote = Quote::sole();
+        $this->assertSame($this->company->id, $quote->company_id);
+        $this->assertSame($client->id, $quote->client_id);
+        $this->assertSame('draft', $quote->status);
+        $this->assertSame('catalog', $quote->source);
+
+        // Nada entro a la empresa ajena.
+        $this->assertSame(0, Quote::where('company_id', $otherCompany->id)->count());
+        $this->assertSame(1, Client::where('company_id', $otherCompany->id)->count()); // solo el sembrado
+    }
+
     public function test_repeat_request_does_not_duplicate_client(): void
     {
         $product = $this->publicProduct();
@@ -153,5 +223,87 @@ class PublicCatalogTest extends TestCase
 
         $this->assertSame(1, Client::where('email', 'ana@empresa.co')->count());
         $this->assertSame(2, Quote::count());
+    }
+
+    /**
+     * AUD-04: un contacto NUEVO creado desde el catalogo publico entra como
+     * `inactive` (prospecto sin verificar), no infla el conteo de clientes
+     * activos. La cotizacion si queda asociada.
+     */
+    public function test_a_new_client_from_the_public_catalog_is_created_inactive(): void
+    {
+        $product = $this->publicProduct();
+
+        $this->postJson('/api/public/catalog/quote-requests', [
+            'name' => 'Prospecto Nuevo', 'email' => 'prospecto@nuevo.co', 'consent' => true,
+            'items' => [['product_id' => $product->id, 'quantity' => 2]],
+        ])->assertCreated();
+
+        $client = Client::where('email', 'prospecto@nuevo.co')->sole();
+        $this->assertSame('inactive', $client->status);
+        $this->assertSame(1, Quote::where('client_id', $client->id)->count());
+    }
+
+    /**
+     * AUD-04: si el correo ya pertenece a un cliente existente y activo, la
+     * solicitud publica NO lo degrada a inactive ni le pisa los datos.
+     */
+    public function test_an_existing_active_client_is_not_downgraded_by_a_public_quote_request(): void
+    {
+        $product = $this->publicProduct();
+        $existing = Client::factory()->create([
+            'company_id' => $this->company->id,
+            'email' => 'cliente@real.co',
+            'name' => 'Cliente Real',
+            'status' => 'active',
+        ]);
+
+        $this->postJson('/api/public/catalog/quote-requests', [
+            'name' => 'Otro Nombre Distinto', 'email' => 'cliente@real.co', 'consent' => true,
+            'items' => [['product_id' => $product->id, 'quantity' => 1]],
+        ])->assertCreated();
+
+        $existing->refresh();
+        $this->assertSame('active', $existing->status);
+        $this->assertSame('Cliente Real', $existing->name);
+        $this->assertSame(1, Client::where('email', 'cliente@real.co')->count());
+        $this->assertSame(1, Quote::where('client_id', $existing->id)->count());
+    }
+
+    /**
+     * Concurrencia (hallazgo de code-review): el get-or-create del cliente corre
+     * FUERA de la transaccion de la cotizacion. Prueba estructural: si la
+     * creacion de la Quote falla, la transaccion hace rollback pero el Cliente
+     * (creado antes y fuera de ella) persiste. Con el bug anterior — cliente
+     * dentro del mismo DB::transaction — el rollback tambien lo habria borrado.
+     *
+     * Lo que este entorno NO puede reproducir: el snapshot REPEATABLE READ de
+     * MySQL/MariaDB que hacia fallar la re-lectura de recuperacion de
+     * `firstOrCreate` cuando corria dentro de la transaccion (SQLite en memoria,
+     * conexion unica, envuelta por RefreshDatabase). La correccion es
+     * estructural — sacar el get-or-create de la transaccion — y esa propiedad
+     * es la que verifica este test. La recuperacion ante unique violation la
+     * cubre la suite del propio framework (Builder::createOrFirst).
+     */
+    public function test_client_is_created_outside_the_quote_transaction(): void
+    {
+        $product = $this->publicProduct();
+        $email = 'fuera-de-txn@empresa.co';
+
+        $listenerKey = 'eloquent.creating: '.Quote::class;
+        Quote::creating(fn () => throw new \RuntimeException('fallo simulado al crear la cotizacion'));
+
+        try {
+            $this->postJson('/api/public/catalog/quote-requests', [
+                'name' => 'Ana', 'email' => $email, 'consent' => true,
+                'items' => [['product_id' => $product->id, 'quantity' => 1]],
+            ])->assertStatus(500);
+        } finally {
+            $this->app['events']->forget($listenerKey);
+        }
+
+        // El cliente sobrevive al rollback de la cotizacion.
+        $this->assertDatabaseHas('clients', ['email' => $email, 'status' => 'inactive']);
+        $this->assertSame(0, Quote::count());
     }
 }

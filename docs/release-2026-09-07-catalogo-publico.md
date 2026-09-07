@@ -15,7 +15,7 @@ Roadmap: [roadmap-modulos.md](roadmap-modulos.md) · Plan de la feature en `.cla
 | **Ficha de producto** (`/catalogo/[id]`) | Imagen, descripción, marca, unidad, precio, selector de cantidad → "Agregar a cotización". |
 | **Solicitar cotización** (`/catalogo/cotizacion`) | Carrito local (`localStorage` vía `useSyncExternalStore`), tabla editable, formulario con consentimiento Ley 1581. |
 | **Integración con CRM** | `POST /public/catalog/quote-requests` → `Client` (`firstOrCreate` por email, dentro de la transacción) + `Quote` `draft` con `source=catalog` y líneas snapshot. El vendedor la trabaja desde `/app/cotizaciones/[id]`. |
-| **Imágenes de producto** | Acción "Imagen" por fila en `/app/productos` → sube a `storage/app/public/products/` (`POST /products/{id}/image`), miniatura en la tabla, se ve en el catálogo. El campo "URL externa" sigue disponible para CDN. |
+| **Imágenes de producto** | Acción "Imagen" por fila en `/app/productos` → sube a `storage/app/public/products/{companyId}/` (`POST /products/{id}/image`), miniatura en la tabla, se ve en el catálogo. La imagen solo se gestiona por ese endpoint: `image_url` no se acepta en el payload de producto (ver `hallazgos-auditoria-externa.md`, Ronda 4). |
 
 ### Endpoints nuevos
 

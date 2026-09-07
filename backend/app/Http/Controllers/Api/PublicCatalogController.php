@@ -12,7 +12,6 @@ use App\Models\Product;
 use App\Models\Quote;
 use App\Services\AuditService;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -71,25 +70,33 @@ class PublicCatalogController extends Controller
             ->get()
             ->keyBy('id');
 
-        $quote = DB::transaction(function () use ($data, $companyId, $productsById) {
-            // Dentro de la transaccion: si la cotizacion falla no queda un
-            // cliente huerfano. unique(company_id, email) respalda el firstOrCreate;
-            // si dos envios casi simultaneos corren la carrera, el perdedor
-            // recupera el cliente ya creado.
-            try {
-                $client = Client::firstOrCreate(
-                    ['company_id' => $companyId, 'email' => $data['email']],
-                    [
-                        'name' => $data['name'],
-                        'company_name' => $data['company_name'] ?? null,
-                        'phone' => $data['phone'] ?? null,
-                        'status' => 'active',
-                    ],
-                );
-            } catch (QueryException) {
-                $client = Client::where('company_id', $companyId)->where('email', $data['email'])->firstOrFail();
-            }
+        // Todos los productos deben seguir disponibles antes de crear nada (uno
+        // pudo borrarse entre la validacion `exists` y aca): 422 controlado.
+        foreach ($data['items'] as $item) {
+            abort_unless($productsById->has($item['product_id']), 422, 'Un producto de la solicitud ya no esta disponible.');
+        }
 
+        // Cliente: get-or-create FUERA de la transaccion de la cotizacion.
+        //  - AUD-04: un contacto nuevo del catalogo entra como `inactive`
+        //    (prospecto); no cuenta como cliente activo hasta que el equipo le da
+        //    seguimiento. Si el correo ya es de un cliente, firstOrCreate lo
+        //    devuelve sin tocar su estado ni sus datos.
+        //  - Concurrencia: dos envios casi simultaneos con el mismo correo -> el
+        //    perdedor del unique(company_id, email) recupera la fila via el
+        //    createOrFirst interno de firstOrCreate (Laravel 12). Tiene que
+        //    correr fuera de la transaccion: dentro, esa relectura quedaria
+        //    atrapada en el snapshot REPEATABLE READ de MySQL/MariaDB y lanzaria.
+        $client = Client::firstOrCreate(
+            ['company_id' => $companyId, 'email' => $data['email']],
+            [
+                'name' => $data['name'],
+                'company_name' => $data['company_name'] ?? null,
+                'phone' => $data['phone'] ?? null,
+                'status' => 'inactive',
+            ],
+        );
+
+        $quote = DB::transaction(function () use ($data, $companyId, $client, $productsById) {
             $noteLines = array_filter([
                 $data['message'] ?? null,
                 'Solicitud desde el catalogo publico.',
@@ -109,9 +116,7 @@ class PublicCatalogController extends Controller
 
             $total = 0;
             foreach ($data['items'] as $item) {
-                // El producto ya paso la validacion `exists`; si desaparecio entre
-                // medias (borrado por un admin) se corta con 422, no con un 500.
-                $product = $productsById->get($item['product_id']) ?? abort(422, 'Un producto de la solicitud ya no esta disponible.');
+                $product = $productsById->get($item['product_id']); // disponibilidad ya verificada arriba
                 $quote->items()->create([
                     'product_id' => $product->id,
                     'product_name' => $product->name,

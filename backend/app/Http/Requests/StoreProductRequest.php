@@ -15,7 +15,8 @@ class StoreProductRequest extends ApiFormRequest
             'sku' => ['required', 'string', 'max:50'],
             'name' => ['required', 'string', 'max:150'],
             'description' => ['nullable', 'string', 'max:2000'],
-            'image_url' => ['nullable', 'url', 'max:500'],
+            // `image_url` no se acepta por el payload: la imagen se gestiona solo
+            // por POST /products/{id}/image (archivo subido -> ruta del servidor).
             'is_public' => ['boolean'],
             'category_id' => ['nullable', 'integer', $inCompany('categories')],
             'brand_id' => ['nullable', 'integer', $inCompany('brands')],

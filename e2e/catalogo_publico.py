@@ -23,6 +23,15 @@ from pathlib import Path
 
 from playwright.sync_api import expect, sync_playwright
 
+# Windows: la consola/redireccion por defecto es cp1252 y revienta al imprimir
+# "✓" o acentos (UnicodeEncodeError). Forzar UTF-8 en la salida sin depender de
+# que se exporte PYTHONIOENCODING a mano.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
+
 ROOT = Path(__file__).resolve().parent.parent
 BACKEND = ROOT / "backend"
 FRONTEND = ROOT / "frontend"

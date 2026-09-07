@@ -11,7 +11,6 @@ use App\Models\ClientNote;
 use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Deal;
-use App\Models\Unit;
 use App\Models\Lead;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -24,6 +23,7 @@ use App\Models\Segment;
 use App\Models\StockMovement;
 use App\Models\StockTransfer;
 use App\Models\Supplier;
+use App\Models\Unit;
 use App\Models\User;
 use App\Models\Warehouse;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $permissionNames = [
-            'dashboard.view', 'leads.view', 'clients.manage', 'deals.manage', 'activities.manage',
+            'dashboard.view', 'leads.view', 'clients.manage', 'clients.delete', 'deals.manage', 'activities.manage',
             'products.manage', 'warehouses.manage', 'stock.manage', 'suppliers.manage', 'purchase_orders.manage',
             'orders.manage', 'reports.view', 'users.manage', 'roles.manage', 'audit.view', 'settings.manage',
         ];

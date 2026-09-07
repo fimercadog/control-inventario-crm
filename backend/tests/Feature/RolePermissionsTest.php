@@ -32,9 +32,13 @@ class RolePermissionsTest extends TestCase
 
     public function test_permissions_catalog_is_listable(): void
     {
-        $this->getJson('/api/permissions')
-            ->assertOk()
-            ->assertJsonFragment(['data' => ['clients.manage', 'orders.manage', 'roles.manage']]);
+        $data = $this->getJson('/api/permissions')->assertOk()->json('data');
+
+        // `clients.delete` lo backfillea su migracion (AUD-03), no el setUp: si el
+        // catalogo lo lista, la migracion corrio y el permiso esta disponible.
+        foreach (['clients.delete', 'clients.manage', 'orders.manage', 'roles.manage'] as $permission) {
+            $this->assertContains($permission, $data);
+        }
     }
 
     public function test_creating_a_role_can_assign_permissions_immediately(): void

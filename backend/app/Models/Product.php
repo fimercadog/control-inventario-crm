@@ -12,8 +12,11 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
+    // `image_url` NO es asignable en masa: lo fija solo el servidor en
+    // ProductController::image() tras subir el archivo por el endpoint de upload.
+    // Asi un POST/PUT/PATCH no puede meter una URL externa arbitraria en el catalogo.
     protected $fillable = [
-        'company_id', 'client_uuid', 'sku', 'name', 'description', 'image_url',
+        'company_id', 'client_uuid', 'sku', 'name', 'description',
         'category_id', 'brand_id', 'unit_id',
         'unit_price', 'cost_price', 'reorder_level', 'status', 'is_public',
     ];

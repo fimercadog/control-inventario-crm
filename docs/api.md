@@ -17,7 +17,8 @@ Endpoints:
 - `GET|POST /deals`, `GET|PUT|DELETE /deals/{id}`
 - `GET|POST /activities`, `GET|PUT|DELETE /activities/{id}`
 - `GET|POST /products`, `GET|PUT|DELETE /products/{id}`
-  - `POST /products/{id}/image` (multipart `image`: jpg/png/webp, ≤ 2 MB; guarda en el disco `public` y setea `image_url`)
+  - `image_url` es de solo lectura vía el payload de producto: no es fillable y `POST/PUT/PATCH /products` lo ignoran. Solo lo fija el servidor por el endpoint de imagen.
+  - `POST /products/{id}/image` (multipart `image`: jpg/png/webp, ≤ 2 MB; guarda en `products/{companyId}/` del disco `public` con nombre generado por el servidor y setea `image_url`)
 - `GET|POST /warehouses`, `GET|PUT|DELETE /warehouses/{id}`
 - `GET|POST /suppliers`, `GET|PUT|DELETE /suppliers/{id}`
 - `GET|POST /stock-movements` (solo alta, es una bitacora inmutable)

@@ -47,7 +47,9 @@ const fields: CrudField[] = [
   { name: "sku", label: "SKU", required: true },
   { name: "name", label: "Nombre", required: true },
   { name: "description", label: "Descripcion (catalogo)", type: "textarea", colSpan: "full", omitWhenEmpty: true },
-  { name: "image_url", label: "URL de imagen externa", colSpan: "full", omitWhenEmpty: true, hint: "Opcional. Para subir un archivo usa la accion “Imagen” en la fila." },
+  // La imagen del producto se gestiona solo con la accion "Imagen" de la fila
+  // (sube un archivo -> el backend guarda y controla la ruta). No hay campo de
+  // URL externa: el catalogo no acepta imagenes fuera del endpoint de upload.
   {
     name: "is_public",
     label: "Visible en catalogo publico",

@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Product;
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -49,8 +51,8 @@ class InventoryCatalogTest extends TestCase
     public function test_product_links_to_catalogs_and_resource_exposes_names(): void
     {
         $category = Category::create(['company_id' => $this->company->id, 'name' => 'Herramientas', 'status' => 'active']);
-        $brand = \App\Models\Brand::create(['company_id' => $this->company->id, 'name' => 'Bosch', 'status' => 'active']);
-        $unit = \App\Models\Unit::create(['company_id' => $this->company->id, 'name' => 'Unidad', 'status' => 'active']);
+        $brand = Brand::create(['company_id' => $this->company->id, 'name' => 'Bosch', 'status' => 'active']);
+        $unit = Unit::create(['company_id' => $this->company->id, 'name' => 'Unidad', 'status' => 'active']);
 
         $this->postJson('/api/products', [
             'sku' => 'TAL-001', 'name' => 'Taladro', 'status' => 'active',
@@ -72,7 +74,7 @@ class InventoryCatalogTest extends TestCase
         $this->postJson('/api/products', [
             'sku' => 'PUB-1', 'name' => 'Publicable', 'status' => 'active',
             'unit_price' => 100, 'cost_price' => 60, 'reorder_level' => 5,
-            'description' => 'Ficha para el catalogo', 'image_url' => 'https://ejemplo.co/img.jpg',
+            'description' => 'Ficha para el catalogo',
             'is_public' => '1',
         ])->assertCreated();
 
@@ -82,23 +84,72 @@ class InventoryCatalogTest extends TestCase
             ->assertJsonPath('data.0.description', 'Ficha para el catalogo');
     }
 
+    /**
+     * `image_url` es contenido del catalogo pero SOLO lo fija el servidor por el
+     * endpoint de upload. Un `image_url` en el payload de crear/editar un
+     * producto (URL externa arbitraria) se ignora: no se guarda ni se sirve.
+     */
+    public function test_image_url_cannot_be_set_through_the_product_payload(): void
+    {
+        $evil = 'https://malicioso.example/tracker.gif';
+
+        $created = $this->postJson('/api/products', [
+            'sku' => 'IMG-1', 'name' => 'Sin imagen', 'status' => 'active',
+            'unit_price' => 100, 'cost_price' => 60, 'reorder_level' => 5,
+            'image_url' => $evil,
+        ])->assertCreated()->json('data.id');
+
+        $this->assertNull(Product::find($created)->image_url);
+
+        // Tampoco por PUT ni PATCH.
+        $this->putJson("/api/products/{$created}", [
+            'sku' => 'IMG-1', 'name' => 'Sin imagen', 'status' => 'active',
+            'unit_price' => 100, 'cost_price' => 60, 'reorder_level' => 5,
+            'image_url' => $evil,
+        ])->assertOk();
+        $this->patchJson("/api/products/{$created}", ['image_url' => $evil])->assertOk();
+
+        $this->assertNull(Product::find($created)->image_url);
+        $this->getJson('/api/products')->assertOk()->assertJsonPath('data.0.image_url', null);
+    }
+
+    /** Una imagen subida por el endpoint SI queda disponible dinamicamente en la API. */
+    public function test_an_uploaded_image_is_served_dynamically_by_the_api(): void
+    {
+        Storage::fake('public');
+        $product = Product::factory()->create(['company_id' => $this->company->id]);
+
+        $this->postJson("/api/products/{$product->id}/image", [
+            'image' => $this->fixtureUpload('pixel.jpg', 'foto.jpg', 'image/jpeg'),
+        ])->assertOk();
+
+        $served = $this->getJson('/api/products')->assertOk()->json('data.0.image_url');
+        $this->assertMatchesRegularExpression('#^/storage/products/'.$this->company->id.'/[A-Za-z0-9]{40}\.jpg$#', $served);
+    }
+
+    /** UploadedFile real desde un fixture: la validacion mira el contenido, no el nombre. */
+    private function fixtureUpload(string $fixture, string $uploadName, string $clientMime): UploadedFile
+    {
+        return new UploadedFile(base_path("tests/Fixtures/{$fixture}"), $uploadName, $clientMime, null, true);
+    }
+
     public function test_uploads_and_replaces_a_product_image(): void
     {
         Storage::fake('public');
         $product = Product::factory()->create(['company_id' => $this->company->id]);
 
-        // UploadedFile::fake()->image() necesita la extension GD (no instalada);
-        // create() con mime explicito basta para las reglas image + mimes.
         $first = $this->postJson("/api/products/{$product->id}/image", [
-            'image' => UploadedFile::fake()->create('foto.jpg', 120, 'image/jpeg'),
+            'image' => $this->fixtureUpload('pixel.jpg', 'foto.jpg', 'image/jpeg'),
         ])->assertOk()->json('data.image_url');
 
         $firstPath = explode('/storage/', $first)[1];
-        $this->assertStringStartsWith('products/', $firstPath);
+        // Carpeta propia de la empresa + nombre generado por el servidor + extension
+        // segun el contenido real.
+        $this->assertMatchesRegularExpression('#^products/'.$this->company->id.'/[A-Za-z0-9]{40}\.jpg$#', $firstPath);
         Storage::disk('public')->assertExists($firstPath);
 
         $second = $this->postJson("/api/products/{$product->id}/image", [
-            'image' => UploadedFile::fake()->create('otra.png', 120, 'image/png'),
+            'image' => $this->fixtureUpload('pixel.png', 'otra.png', 'image/png'),
         ])->assertOk()->json('data.image_url');
 
         $this->assertNotSame($first, $second);
@@ -113,6 +164,28 @@ class InventoryCatalogTest extends TestCase
         $this->postJson("/api/products/{$product->id}/image", [
             'image' => UploadedFile::fake()->create('lista.txt', 10, 'text/plain'),
         ])->assertStatus(422)->assertJsonValidationErrors('image');
+    }
+
+    /**
+     * AUD-02: la auditoria envio un binario que NO era una imagen presentado
+     * como image/png. Antes reventaba en la ruta de finfo -> HTTP 500 con
+     * informacion interna. Debe ser un rechazo controlado 422 y sin fugas.
+     */
+    public function test_a_disguised_non_image_is_rejected_with_422_not_500(): void
+    {
+        Storage::fake('public');
+        $product = Product::factory()->create(['company_id' => $this->company->id]);
+
+        $response = $this->postJson("/api/products/{$product->id}/image", [
+            'image' => $this->fixtureUpload('not-an-image.png', 'captura.png', 'image/png'),
+        ]);
+
+        $response->assertStatus(422)->assertJsonValidationErrors('image');
+        $this->assertArrayNotHasKey('trace', $response->json());
+        $this->assertArrayNotHasKey('exception', $response->json());
+        $this->assertStringNotContainsString('vendor', $response->getContent());
+        $this->assertStringNotContainsString(base_path(), $response->getContent());
+        $this->assertNull($product->fresh()->image_url);
     }
 
     public function test_rejects_a_product_with_a_nonexistent_category(): void

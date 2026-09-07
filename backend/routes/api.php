@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ActivityController;
 use App\Http\Controllers\Api\AuditLogController;
 use App\Http\Controllers\Api\AuthController;
@@ -9,8 +7,8 @@ use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ClientNoteController;
-use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContingencyController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DealController;
@@ -31,6 +29,8 @@ use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\UnitController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WarehouseController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -82,7 +82,12 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::put('/company', [CompanyController::class, 'update'])->middleware('can:settings.manage');
 
     // CRM
-    Route::apiResource('clients', ClientController::class)->middleware('can:clients.manage');
+    // El borrado permanente de clientes exige su propio permiso: Ventas crea y
+    // edita (clients.manage) pero no hace hard-delete (solo roles administrativos
+    // tienen clients.delete). Sin historial -> se borra; con historial la FK
+    // RESTRICT del BaseCrudController responde 422 ("marcalo como inactivo").
+    Route::apiResource('clients', ClientController::class)->except('destroy')->middleware('can:clients.manage');
+    Route::delete('/clients/{client}', [ClientController::class, 'destroy'])->middleware('can:clients.delete');
     Route::get('/clients/{client}/history', [ClientController::class, 'history'])->middleware('can:clients.manage');
     Route::apiResource('contacts', ContactController::class)->middleware('can:clients.manage');
     Route::apiResource('segments', SegmentController::class)->middleware('can:clients.manage');

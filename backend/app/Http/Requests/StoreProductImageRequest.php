@@ -2,20 +2,25 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ImageFile;
+
 class StoreProductImageRequest extends ApiFormRequest
 {
     public function rules(): array
     {
+        // `file` + `max` no tocan fileinfo. La validacion de imagen/contenido la
+        // hace ImageFile mirando la cabecera del binario (ver esa clase: las
+        // reglas `image`/`mimes` podian devolver 500 si fileinfo no estaba).
         return [
-            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'image' => ['required', 'file', 'max:2048', new ImageFile],
         ];
     }
 
     public function messages(): array
     {
         return parent::messages() + [
-            'image.image' => 'El archivo debe ser una imagen.',
-            'image.mimes' => 'Formatos aceptados: JPG, PNG o WEBP.',
+            'image.required' => 'Selecciona una imagen.',
+            'image.file' => 'El archivo subido no es valido.',
             'image.max' => 'La imagen no puede pesar mas de 2 MB.',
         ];
     }
