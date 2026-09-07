@@ -17,6 +17,7 @@ class QuoteResource extends JsonResource
             'deal_id' => $this->deal_id,
             'deal' => $this->whenLoaded('deal', fn () => $this->deal?->title),
             'status' => $this->status,
+            'source' => $this->source,
             'valid_until' => $this->valid_until?->toDateString(),
             'notes' => $this->notes,
             'total' => $this->total,

@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/producto/compras",
     "/producto/reportes",
     "/producto/ia",
+    "/catalogo",
     "/precios",
     "/documentacion",
     "/nosotros",

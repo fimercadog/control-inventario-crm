@@ -13,13 +13,15 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'company_id', 'client_uuid', 'sku', 'name', 'category_id', 'brand_id', 'unit_id',
-        'unit_price', 'cost_price', 'reorder_level', 'status',
+        'company_id', 'client_uuid', 'sku', 'name', 'description', 'image_url',
+        'category_id', 'brand_id', 'unit_id',
+        'unit_price', 'cost_price', 'reorder_level', 'status', 'is_public',
     ];
 
     protected $casts = [
         'unit_price' => 'decimal:2',
         'cost_price' => 'decimal:2',
+        'is_public' => 'boolean',
     ];
 
     public function company(): BelongsTo

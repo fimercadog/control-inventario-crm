@@ -18,6 +18,15 @@ const STATUS_LABEL: Record<Quote["status"], string> = {
 const columns: AppColumnDef<Quote>[] = [
   { accessorKey: "title", header: "Titulo" },
   { header: "Cliente", cell: ({ row }) => row.original.client ?? `#${row.original.client_id}` },
+  {
+    header: "Origen",
+    cell: ({ row }) =>
+      row.original.source === "catalog" ? (
+        <Badge className="bg-primary/15 text-primary">Sitio web</Badge>
+      ) : (
+        <Badge>Interna</Badge>
+      ),
+  },
   { header: "Estado", cell: ({ row }) => <Badge>{STATUS_LABEL[row.original.status]}</Badge> },
   dateColumn<Quote>("valid_until", "Valida hasta"),
   { header: "Total", cell: ({ row }) => `$${Number(row.original.total).toLocaleString("es-CO")}` },

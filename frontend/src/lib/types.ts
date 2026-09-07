@@ -95,6 +95,9 @@ export type Product = {
   id: number;
   sku: string;
   name: string;
+  description?: string | null;
+  image_url?: string | null;
+  is_public?: boolean;
   category?: string | null;
   brand?: string | null;
   unit?: string | null;
@@ -163,6 +166,7 @@ export type Quote = {
   deal_id?: number | null;
   deal?: string | null;
   status: "draft" | "sent" | "accepted" | "rejected";
+  source?: "internal" | "catalog";
   valid_until?: string | null;
   notes?: string | null;
   total: number;

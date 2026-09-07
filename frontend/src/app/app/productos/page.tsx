@@ -21,11 +21,28 @@ const columns: AppColumnDef<Product>[] = [
     },
   },
   { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
+  {
+    header: "Catalogo",
+    cell: ({ row }) =>
+      row.original.is_public ? <Badge className="bg-primary/15 text-primary">Publico</Badge> : "—",
+  },
 ];
 
 const fields: CrudField[] = [
   { name: "sku", label: "SKU", required: true },
   { name: "name", label: "Nombre", required: true },
+  { name: "description", label: "Descripcion (catalogo)", type: "textarea", colSpan: "full", omitWhenEmpty: true },
+  { name: "image_url", label: "URL de imagen (catalogo)", colSpan: "full", omitWhenEmpty: true, hint: "https://..." },
+  {
+    name: "is_public",
+    label: "Visible en catalogo publico",
+    type: "select",
+    required: true,
+    options: [
+      { label: "No", value: "false" },
+      { label: "Si", value: "true" },
+    ],
+  },
   { name: "category_id", label: "Categoria", type: "select", optionsResource: "/categories", omitWhenEmpty: true },
   { name: "brand_id", label: "Marca", type: "select", optionsResource: "/brands", omitWhenEmpty: true },
   { name: "unit_id", label: "Unidad", type: "select", optionsResource: "/units", omitWhenEmpty: true },
