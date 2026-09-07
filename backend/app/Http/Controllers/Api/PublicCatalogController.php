@@ -34,7 +34,8 @@ class PublicCatalogController extends Controller
                 $q->where(fn ($sub) => $sub->where('name', 'like', $term)->orWhere('sku', 'like', $term));
             })
             ->orderBy('name')
-            ->paginate(min($request->integer('per_page', 12), 24));
+            ->orderBy('id')
+            ->paginate(max(1, min($request->integer('per_page', 12), 24)));
 
         return PublicProductResource::collection($products);
     }

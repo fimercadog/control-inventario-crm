@@ -14,7 +14,9 @@ class StorePublicQuoteRequest extends ApiFormRequest
 {
     public function rules(): array
     {
-        $companyId = Company::query()->value('id');
+        // Mismo criterio que ResolvesCompany::companyId en el controlador, para
+        // que la validacion y la escritura miren siempre la misma empresa.
+        $companyId = $this->user()?->company_id ?? Company::query()->value('id');
 
         return [
             'name' => ['required', 'string', 'max:150'],

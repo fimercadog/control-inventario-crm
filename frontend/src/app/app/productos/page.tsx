@@ -37,10 +37,10 @@ const fields: CrudField[] = [
     name: "is_public",
     label: "Visible en catalogo publico",
     type: "select",
-    required: true,
+    omitWhenEmpty: true,
     options: [
-      { label: "No", value: "false" },
-      { label: "Si", value: "true" },
+      { label: "No", value: "0" },
+      { label: "Si", value: "1" },
     ],
   },
   { name: "category_id", label: "Categoria", type: "select", optionsResource: "/categories", omitWhenEmpty: true },

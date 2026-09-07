@@ -46,6 +46,14 @@ class PublicCatalogTest extends TestCase
             ->assertJsonMissingPath('data.0.reorder_level');
     }
 
+    public function test_catalog_survives_a_degenerate_per_page(): void
+    {
+        $this->publicProduct();
+
+        $this->getJson('/api/public/catalog/products?per_page=0')->assertOk()->assertJsonCount(1, 'data');
+        $this->getJson('/api/public/catalog/products?per_page=-5')->assertOk()->assertJsonCount(1, 'data');
+    }
+
     public function test_non_public_product_detail_is_not_found(): void
     {
         $hidden = $this->publicProduct(['is_public' => false]);

@@ -63,6 +63,23 @@ class InventoryCatalogTest extends TestCase
             ->assertJsonPath('data.0.unit', 'Unidad');
     }
 
+    public function test_product_accepts_public_catalog_fields(): void
+    {
+        // El form del panel manda is_public como "0"/"1" (string) -> la regla
+        // `boolean` debe aceptarlo, si no el CRUD de Productos queda roto.
+        $this->postJson('/api/products', [
+            'sku' => 'PUB-1', 'name' => 'Publicable', 'status' => 'active',
+            'unit_price' => 100, 'cost_price' => 60, 'reorder_level' => 5,
+            'description' => 'Ficha para el catalogo', 'image_url' => 'https://ejemplo.co/img.jpg',
+            'is_public' => '1',
+        ])->assertCreated();
+
+        $this->getJson('/api/products')
+            ->assertOk()
+            ->assertJsonPath('data.0.is_public', true)
+            ->assertJsonPath('data.0.description', 'Ficha para el catalogo');
+    }
+
     public function test_rejects_a_product_with_a_nonexistent_category(): void
     {
         $this->postJson('/api/products', [
