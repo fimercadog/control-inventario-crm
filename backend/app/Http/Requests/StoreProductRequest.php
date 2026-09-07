@@ -14,6 +14,9 @@ class StoreProductRequest extends ApiFormRequest
         return [
             'sku' => ['required', 'string', 'max:50'],
             'name' => ['required', 'string', 'max:150'],
+            'description' => ['nullable', 'string', 'max:2000'],
+            'image_url' => ['nullable', 'url', 'max:500'],
+            'is_public' => ['boolean'],
             'category_id' => ['nullable', 'integer', $inCompany('categories')],
             'brand_id' => ['nullable', 'integer', $inCompany('brands')],
             'unit_id' => ['nullable', 'integer', $inCompany('units')],

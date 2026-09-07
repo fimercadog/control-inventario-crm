@@ -45,7 +45,11 @@ abstract class BaseCrudController extends Controller
             return app($class)->validated();
         }
 
-        $form = new $class;
+        // createFrom copia los resolvers de usuario y ruta (sin disparar la
+        // validacion automatica): las reglas que dependen de $this->user() o
+        // $this->route() —company scoping, unique con ignore— funcionan igual
+        // que en el alta.
+        $form = $class::createFrom($request, new $class);
         $rules = collect($form->rules())
             ->map(fn ($rule) => array_values(array_unique(['sometimes', ...(array) $rule])))
             ->all();

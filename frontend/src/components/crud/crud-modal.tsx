@@ -71,7 +71,10 @@ function normalizeValue(value: FormDataEntryValue | null, field: CrudField) {
 
 function fieldDefault(row: CrudRow | null | undefined, field: CrudField) {
   const value = row?.[field.name];
-  return value == null ? "" : String(value);
+  if (value == null) return "";
+  // Los selects booleanos usan opciones "0"/"1"; un booleano del API no casa con String(bool).
+  if (typeof value === "boolean") return value ? "1" : "0";
+  return String(value);
 }
 
 type ApiErrors = Record<string, string[]>;

@@ -13,6 +13,7 @@ Implementados con base API y UI:
 - Proveedores
 - Ordenes de compra (al recibirse suman stock)
 - Leads (formulario publico de contacto/demo)
+- Catalogo publico (sitio de marketing): catalogo navegable, ficha de producto y "Solicitar cotizacion" (carrito local) que entra al CRM como Cliente + Cotizacion en borrador (`source=catalog`). Subida de imagen de producto desde el panel (disco `public`).
 - Auditoria
 - Usuarios y roles
 - Reportes

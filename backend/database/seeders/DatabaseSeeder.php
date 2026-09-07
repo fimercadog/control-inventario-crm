@@ -115,18 +115,19 @@ class DatabaseSeeder extends Seeder
 
         // Productos.
         $products = collect([
-            ['sku' => 'SKU-1001', 'name' => 'Resma papel carta', 'category' => 'Oficina', 'brand' => 'Generica', 'cost' => 8500, 'price' => 12500, 'reorder' => 20],
-            ['sku' => 'SKU-1002', 'name' => 'Toner impresora HP 12A', 'category' => 'Oficina', 'brand' => 'HP', 'cost' => 65000, 'price' => 98000, 'reorder' => 5],
-            ['sku' => 'SKU-1003', 'name' => 'Silla ergonomica', 'category' => 'Mobiliario', 'brand' => 'Ergo', 'cost' => 210000, 'price' => 320000, 'reorder' => 3],
-            ['sku' => 'SKU-1004', 'name' => 'Monitor 24" LED', 'category' => 'Electronica', 'brand' => 'HP', 'cost' => 480000, 'price' => 650000, 'reorder' => 4],
-            ['sku' => 'SKU-1005', 'name' => 'Teclado inalambrico', 'category' => 'Electronica', 'brand' => 'Logitech', 'cost' => 45000, 'price' => 72000, 'reorder' => 10],
-            ['sku' => 'SKU-1006', 'name' => 'Mouse optico', 'category' => 'Electronica', 'brand' => 'Logitech', 'cost' => 22000, 'price' => 38000, 'reorder' => 15],
+            ['sku' => 'SKU-1001', 'name' => 'Resma papel carta', 'category' => 'Oficina', 'brand' => 'Generica', 'cost' => 8500, 'price' => 12500, 'reorder' => 20, 'public' => true, 'description' => 'Resma de 500 hojas tamano carta, 75 g/m2, blancura alta para impresion laser e inkjet.'],
+            ['sku' => 'SKU-1002', 'name' => 'Toner impresora HP 12A', 'category' => 'Oficina', 'brand' => 'HP', 'cost' => 65000, 'price' => 98000, 'reorder' => 5, 'public' => true, 'description' => 'Cartucho de toner negro compatible con LaserJet 1010/1020/3050, rendimiento aproximado 2.000 paginas.'],
+            ['sku' => 'SKU-1003', 'name' => 'Silla ergonomica', 'category' => 'Mobiliario', 'brand' => 'Ergo', 'cost' => 210000, 'price' => 320000, 'reorder' => 3, 'public' => true, 'description' => 'Silla de oficina con soporte lumbar ajustable, apoyabrazos 3D y base metalica con ruedas para piso duro.'],
+            ['sku' => 'SKU-1004', 'name' => 'Monitor 24" LED', 'category' => 'Electronica', 'brand' => 'HP', 'cost' => 480000, 'price' => 650000, 'reorder' => 4, 'public' => true, 'description' => 'Monitor IPS Full HD de 24 pulgadas, 75 Hz, entradas HDMI y VGA, base con ajuste de inclinacion.'],
+            ['sku' => 'SKU-1005', 'name' => 'Teclado inalambrico', 'category' => 'Electronica', 'brand' => 'Logitech', 'cost' => 45000, 'price' => 72000, 'reorder' => 10, 'public' => true, 'description' => 'Teclado inalambrico 2.4 GHz con distribucion en espanol, teclas silenciosas y hasta 24 meses de bateria.'],
+            ['sku' => 'SKU-1006', 'name' => 'Mouse optico', 'category' => 'Electronica', 'brand' => 'Logitech', 'cost' => 22000, 'price' => 38000, 'reorder' => 15, 'public' => true, 'description' => 'Mouse optico USB de 1.000 DPI, diseno ambidiestro y cable de 1,5 m.'],
             ['sku' => 'SKU-1007', 'name' => 'Dispensador de gel antibacterial', 'category' => 'Aseo', 'brand' => 'Generica', 'cost' => 18000, 'price' => 29000, 'reorder' => 8],
             ['sku' => 'SKU-1008', 'name' => 'Caja archivador oficio', 'category' => 'Oficina', 'brand' => 'Generica', 'cost' => 9000, 'price' => 15000, 'reorder' => 12],
         ])->map(fn ($data) => Product::firstOrCreate(
             ['company_id' => $company->id, 'sku' => $data['sku']],
             [
                 'name' => $data['name'],
+                'description' => $data['description'] ?? null,
                 'category_id' => $categories[$data['category']]->id,
                 'brand_id' => $brands[$data['brand']]->id,
                 'unit_id' => $unidadUnit->id,
@@ -134,6 +135,7 @@ class DatabaseSeeder extends Seeder
                 'unit_price' => $data['price'],
                 'reorder_level' => $data['reorder'],
                 'status' => 'active',
+                'is_public' => $data['public'] ?? false,
             ],
         ));
 

@@ -7,10 +7,17 @@ Endpoints:
 - `GET /dashboard`
 - `GET /reports`
 - `GET|POST /leads`, `GET|PUT|DELETE /leads/{id}` (alta publica sin auth en `POST /leads`)
+- Catalogo publico (sin auth, throttle):
+  - `GET /public/catalog/products` (params `category_id`, `q`, `page`; solo productos `is_public` + `active`, sin costo ni existencia)
+  - `GET /public/catalog/products/{id}`
+  - `GET /public/catalog/categories` (categorias con al menos un producto publico)
+  - Limiters con nombre: `catalog-read` (120/min) para lectura, `catalog-quote` (5/min) para el envio; exentos de CSRF
+  - `POST /public/catalog/quote-requests` (`name`, `email`, `phone?`, `company_name?`, `message?`, `consent`, `items[] {product_id, quantity}`) -> crea Cliente (`firstOrCreate` por email) + `Quote` `draft` con `source=catalog`
 - `GET|POST /clients`, `GET|PUT|DELETE /clients/{id}`
 - `GET|POST /deals`, `GET|PUT|DELETE /deals/{id}`
 - `GET|POST /activities`, `GET|PUT|DELETE /activities/{id}`
 - `GET|POST /products`, `GET|PUT|DELETE /products/{id}`
+  - `POST /products/{id}/image` (multipart `image`: jpg/png/webp, ≤ 2 MB; guarda en el disco `public` y setea `image_url`)
 - `GET|POST /warehouses`, `GET|PUT|DELETE /warehouses/{id}`
 - `GET|POST /suppliers`, `GET|PUT|DELETE /suppliers/{id}`
 - `GET|POST /stock-movements` (solo alta, es una bitacora inmutable)

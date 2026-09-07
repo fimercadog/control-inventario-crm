@@ -10,7 +10,7 @@ class Quote extends Model
 {
     protected $fillable = [
         'company_id', 'client_id', 'deal_id', 'converted_order_id',
-        'title', 'status', 'valid_until', 'notes', 'total',
+        'title', 'status', 'source', 'valid_until', 'notes', 'total',
     ];
 
     protected $casts = [

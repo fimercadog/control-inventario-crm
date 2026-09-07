@@ -1,12 +1,27 @@
 "use client";
 
+import { ImageOff } from "lucide-react";
 import { CrudField } from "@/components/crud/crud-modal";
+import { ProductImageAction } from "@/components/crud/product-image-action";
 import { ModuleTablePage } from "@/components/module-table-page";
 import { Badge } from "@/components/ui/badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Product } from "@/lib/types";
 
 const columns: AppColumnDef<Product>[] = [
+  {
+    id: "image",
+    header: "",
+    cell: ({ row }) =>
+      row.original.image_url ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={row.original.image_url} alt="" className="size-9 rounded-md border border-border object-cover" />
+      ) : (
+        <span className="grid size-9 place-items-center rounded-md border border-border text-muted-foreground">
+          <ImageOff className="size-4" />
+        </span>
+      ),
+  },
   { accessorKey: "sku", header: "SKU" },
   { accessorKey: "name", header: "Nombre" },
   { header: "Categoria", cell: ({ row }) => row.original.category ?? "—" },
@@ -21,11 +36,28 @@ const columns: AppColumnDef<Product>[] = [
     },
   },
   { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
+  {
+    header: "Catalogo",
+    cell: ({ row }) =>
+      row.original.is_public ? <Badge className="bg-primary/15 text-primary">Publico</Badge> : "—",
+  },
 ];
 
 const fields: CrudField[] = [
   { name: "sku", label: "SKU", required: true },
   { name: "name", label: "Nombre", required: true },
+  { name: "description", label: "Descripcion (catalogo)", type: "textarea", colSpan: "full", omitWhenEmpty: true },
+  { name: "image_url", label: "URL de imagen externa", colSpan: "full", omitWhenEmpty: true, hint: "Opcional. Para subir un archivo usa la accion “Imagen” en la fila." },
+  {
+    name: "is_public",
+    label: "Visible en catalogo publico",
+    type: "select",
+    omitWhenEmpty: true,
+    options: [
+      { label: "No", value: "0" },
+      { label: "Si", value: "1" },
+    ],
+  },
   { name: "category_id", label: "Categoria", type: "select", optionsResource: "/categories", omitWhenEmpty: true },
   { name: "brand_id", label: "Marca", type: "select", optionsResource: "/brands", omitWhenEmpty: true },
   { name: "unit_id", label: "Unidad", type: "select", optionsResource: "/units", omitWhenEmpty: true },
@@ -55,6 +87,7 @@ export default function ProductsPage() {
       fields={fields}
       actionLabel="Nuevo producto"
       modalDescription="Producto del catalogo de inventario."
+      extraRowActions={(row, refresh) => <ProductImageAction product={row} onDone={refresh} />}
     />
   );
 }

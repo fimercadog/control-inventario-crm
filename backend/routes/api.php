@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ExportController;
 use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\PublicCatalogController;
 use App\Http\Controllers\Api\PurchaseOrderController;
 use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\ReportController;
@@ -42,6 +43,19 @@ Route::post('/auth/reset-password', [AuthController::class, 'resetPassword'])->m
 
 // Formularios publicos del sitio de marketing (demo / contacto).
 Route::post('/leads', [LeadController::class, 'store'])->middleware('throttle:5,1');
+
+// Catalogo publico: navegable por visitantes anonimos. La solicitud de
+// cotizacion entra al CRM como Cliente + Quote en borrador.
+Route::prefix('public/catalog')->group(function (): void {
+    // Limiters con nombre (contador propio, ver AppServiceProvider): navegar el
+    // catalogo no consume la cuota de "solicitar cotizacion".
+    Route::middleware('throttle:catalog-read')->group(function (): void {
+        Route::get('/products', [PublicCatalogController::class, 'products']);
+        Route::get('/products/{id}', [PublicCatalogController::class, 'product'])->whereNumber('id');
+        Route::get('/categories', [PublicCatalogController::class, 'categories']);
+    });
+    Route::post('/quote-requests', [PublicCatalogController::class, 'storeQuoteRequest'])->middleware('throttle:catalog-quote');
+});
 
 Route::middleware('auth:sanctum')->group(function (): void {
     // Sin permiso: cualquier usuario autenticado.
@@ -85,6 +99,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
 
     // Inventario
     Route::apiResource('products', ProductController::class)->middleware('can:products.manage');
+    Route::post('/products/{id}/image', [ProductController::class, 'image'])->middleware('can:products.manage')->whereNumber('id');
     Route::apiResource('categories', CategoryController::class)->middleware('can:products.manage');
     Route::apiResource('brands', BrandController::class)->middleware('can:products.manage');
     Route::apiResource('units', UnitController::class)->middleware('can:products.manage');

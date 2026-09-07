@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 const nav = [
   ["Producto", "/producto"],
+  ["Catalogo", "/catalogo"],
   ["Precios", "/precios"],
   ["Documentacion", "/documentacion"],
   ["Blog", "/blog"],
