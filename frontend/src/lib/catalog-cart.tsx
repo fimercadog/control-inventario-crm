@@ -24,7 +24,17 @@ function readStorage(): CartItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return EMPTY;
+    // Descartar entradas con forma invalida (schema viejo, escritura parcial):
+    // evita "$NaN" y payloads con undefined al cotizar.
+    return parsed.filter(
+      (item): item is CartItem =>
+        item &&
+        Number.isFinite(item.id) &&
+        Number.isFinite(item.unit_price) &&
+        Number.isFinite(item.quantity) &&
+        item.quantity > 0,
+    );
   } catch {
     return EMPTY;
   }

@@ -17,7 +17,7 @@ class ClientFactory extends Factory
             'company_id' => Company::factory(),
             'name' => $this->faker->name(),
             'company_name' => $this->faker->company(),
-            'email' => $this->faker->safeEmail(),
+            'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),
             'status' => 'active',

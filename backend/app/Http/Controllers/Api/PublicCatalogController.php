@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Quote;
 use App\Services\AuditService;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -30,7 +31,8 @@ class PublicCatalogController extends Controller
             ->with(['category', 'brand', 'unit'])
             ->when($request->filled('category_id'), fn ($q) => $q->where('category_id', $request->integer('category_id')))
             ->when($request->filled('q'), function ($q) use ($request) {
-                $term = '%'.$request->string('q').'%';
+                // Escapar %/_ para que no actuen como comodines del LIKE.
+                $term = '%'.addcslashes((string) $request->string('q'), '%_\\').'%';
                 $q->where(fn ($sub) => $sub->where('name', 'like', $term)->orWhere('sku', 'like', $term));
             })
             ->orderBy('name')
@@ -63,23 +65,31 @@ class PublicCatalogController extends Controller
         $companyId = $this->companyId($request);
         $data = $request->validated();
 
-        $client = Client::firstOrCreate(
-            ['company_id' => $companyId, 'email' => $data['email']],
-            [
-                'name' => $data['name'],
-                'company_name' => $data['company_name'] ?? null,
-                'phone' => $data['phone'] ?? null,
-                'status' => 'active',
-            ],
-        );
-
         $productsById = Product::query()
             ->where('company_id', $companyId)
             ->whereIn('id', collect($data['items'])->pluck('product_id'))
             ->get()
             ->keyBy('id');
 
-        $quote = DB::transaction(function () use ($data, $companyId, $client, $productsById) {
+        $quote = DB::transaction(function () use ($data, $companyId, $productsById) {
+            // Dentro de la transaccion: si la cotizacion falla no queda un
+            // cliente huerfano. unique(company_id, email) respalda el firstOrCreate;
+            // si dos envios casi simultaneos corren la carrera, el perdedor
+            // recupera el cliente ya creado.
+            try {
+                $client = Client::firstOrCreate(
+                    ['company_id' => $companyId, 'email' => $data['email']],
+                    [
+                        'name' => $data['name'],
+                        'company_name' => $data['company_name'] ?? null,
+                        'phone' => $data['phone'] ?? null,
+                        'status' => 'active',
+                    ],
+                );
+            } catch (QueryException) {
+                $client = Client::where('company_id', $companyId)->where('email', $data['email'])->firstOrFail();
+            }
+
             $noteLines = array_filter([
                 $data['message'] ?? null,
                 'Solicitud desde el catalogo publico.',
@@ -99,7 +109,9 @@ class PublicCatalogController extends Controller
 
             $total = 0;
             foreach ($data['items'] as $item) {
-                $product = $productsById[$item['product_id']];
+                // El producto ya paso la validacion `exists`; si desaparecio entre
+                // medias (borrado por un admin) se corta con 422, no con un 500.
+                $product = $productsById->get($item['product_id']) ?? abort(422, 'Un producto de la solicitud ya no esta disponible.');
                 $quote->items()->create([
                     'product_id' => $product->id,
                     'product_name' => $product->name,

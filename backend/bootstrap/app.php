@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // Cookie httpOnly de sesion en vez de bearer token: habilita CSRF +
         // auth por cookie para los dominios en SANCTUM_STATEFUL_DOMAINS.
         $middleware->statefulApi();
+        // Formularios publicos del sitio (sin sesion): la proteccion es el
+        // throttle por IP, no el token CSRF de una sesion que no existe.
+        $middleware->validateCsrfTokens(except: ['api/leads', 'api/public/*']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (AuthenticationException $exception, Request $request) {

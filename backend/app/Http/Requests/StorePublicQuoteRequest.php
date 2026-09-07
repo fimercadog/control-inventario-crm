@@ -26,9 +26,9 @@ class StorePublicQuoteRequest extends ApiFormRequest
             'message' => ['nullable', 'string', 'max:2000'],
             // Ley 1581: sin consentimiento no se guardan datos de contacto.
             'consent' => ['accepted'],
-            'items' => ['required', 'array', 'min:1'],
+            'items' => ['required', 'array', 'min:1', 'max:100'],
             'items.*.product_id' => [
-                'required', 'integer',
+                'required', 'integer', 'distinct',
                 Rule::exists('products', 'id')
                     ->where('company_id', $companyId)
                     ->where('is_public', true)

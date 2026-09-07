@@ -7,6 +7,8 @@ use App\Models\Company;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
@@ -78,6 +80,39 @@ class InventoryCatalogTest extends TestCase
             ->assertOk()
             ->assertJsonPath('data.0.is_public', true)
             ->assertJsonPath('data.0.description', 'Ficha para el catalogo');
+    }
+
+    public function test_uploads_and_replaces_a_product_image(): void
+    {
+        Storage::fake('public');
+        $product = Product::factory()->create(['company_id' => $this->company->id]);
+
+        // UploadedFile::fake()->image() necesita la extension GD (no instalada);
+        // create() con mime explicito basta para las reglas image + mimes.
+        $first = $this->postJson("/api/products/{$product->id}/image", [
+            'image' => UploadedFile::fake()->create('foto.jpg', 120, 'image/jpeg'),
+        ])->assertOk()->json('data.image_url');
+
+        $firstPath = explode('/storage/', $first)[1];
+        $this->assertStringStartsWith('products/', $firstPath);
+        Storage::disk('public')->assertExists($firstPath);
+
+        $second = $this->postJson("/api/products/{$product->id}/image", [
+            'image' => UploadedFile::fake()->create('otra.png', 120, 'image/png'),
+        ])->assertOk()->json('data.image_url');
+
+        $this->assertNotSame($first, $second);
+        Storage::disk('public')->assertMissing($firstPath);
+    }
+
+    public function test_rejects_a_non_image_upload(): void
+    {
+        Storage::fake('public');
+        $product = Product::factory()->create(['company_id' => $this->company->id]);
+
+        $this->postJson("/api/products/{$product->id}/image", [
+            'image' => UploadedFile::fake()->create('lista.txt', 10, 'text/plain'),
+        ])->assertStatus(422)->assertJsonValidationErrors('image');
     }
 
     public function test_rejects_a_product_with_a_nonexistent_category(): void

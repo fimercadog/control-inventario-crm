@@ -47,10 +47,14 @@ Route::post('/leads', [LeadController::class, 'store'])->middleware('throttle:5,
 // Catalogo publico: navegable por visitantes anonimos. La solicitud de
 // cotizacion entra al CRM como Cliente + Quote en borrador.
 Route::prefix('public/catalog')->group(function (): void {
-    Route::get('/products', [PublicCatalogController::class, 'products']);
-    Route::get('/products/{id}', [PublicCatalogController::class, 'product'])->whereNumber('id');
-    Route::get('/categories', [PublicCatalogController::class, 'categories']);
-    Route::post('/quote-requests', [PublicCatalogController::class, 'storeQuoteRequest'])->middleware('throttle:5,1');
+    // Limiters con nombre (contador propio, ver AppServiceProvider): navegar el
+    // catalogo no consume la cuota de "solicitar cotizacion".
+    Route::middleware('throttle:catalog-read')->group(function (): void {
+        Route::get('/products', [PublicCatalogController::class, 'products']);
+        Route::get('/products/{id}', [PublicCatalogController::class, 'product'])->whereNumber('id');
+        Route::get('/categories', [PublicCatalogController::class, 'categories']);
+    });
+    Route::post('/quote-requests', [PublicCatalogController::class, 'storeQuoteRequest'])->middleware('throttle:catalog-quote');
 });
 
 Route::middleware('auth:sanctum')->group(function (): void {
@@ -95,6 +99,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
 
     // Inventario
     Route::apiResource('products', ProductController::class)->middleware('can:products.manage');
+    Route::post('/products/{id}/image', [ProductController::class, 'image'])->middleware('can:products.manage')->whereNumber('id');
     Route::apiResource('categories', CategoryController::class)->middleware('can:products.manage');
     Route::apiResource('brands', BrandController::class)->middleware('can:products.manage');
     Route::apiResource('units', UnitController::class)->middleware('can:products.manage');

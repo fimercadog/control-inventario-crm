@@ -30,23 +30,25 @@ CRUD + entrada de nav en el frontend, con tests del flujo crítico.
 | Reportes comerciales | Conversión, ventas por vendedor, embudo. Endpoints nuevos. |
 | WhatsApp Web | Botón que abre `https://web.whatsapp.com/send?phone=…&text=…` (o `wa.me`) con el teléfono del cliente/contacto y un mensaje prellenado. Sin backend extra. |
 
-## Catálogo público — hecho (rama `feature/catalogo-publico`)
+## Catálogo público — CERRADO (rama `feature/catalogo-publico`, v0.2.0)
 
-Sitio de marketing → CRM, todo end-to-end + tests.
+Sitio de marketing → CRM, end-to-end + tests + E2E. Detalle:
+[release-2026-09-07-catalogo-publico.md](release-2026-09-07-catalogo-publico.md).
 
-- **Backend**: `products` gana `description` / `image_url` / `is_public` (solo `is_public && active`
-  se muestra en el sitio); `quotes` gana `source` (`internal` | `catalog`).
-  `PublicCatalogController` (sin auth, `throttle`, `ResolvesCompany`):
+- **Backend**: `products` gana `description` / `image_url` / `is_public`; `quotes` gana `source`
+  (`internal` | `catalog`); `clients` gana `unique(company_id, email)`.
+  `PublicCatalogController` (sin auth, limiters con nombre, exento de CSRF):
   `GET /public/catalog/products|products/{id}|categories` con `PublicProductResource` (sin costo ni stock)
-  y `POST /public/catalog/quote-requests` → `Client::firstOrCreate` por email + `Quote` `draft`
-  `source=catalog` con `quote_items` (snapshot nombre/sku/precio), consentimiento Ley 1581 obligatorio.
-  Seeder marca 6 productos como públicos con descripción. 6 tests (`PublicCatalogTest`).
-- **Frontend**: `/catalogo` (grid + filtro por categoría + búsqueda), `/catalogo/[id]` (ficha),
-  `/catalogo/cotizacion` (carrito editable + formulario + consent). Carrito en `localStorage`
-  vía `useSyncExternalStore` (`lib/catalog-cart.tsx`). Nav "Catalogo" + sitemap.
-  Panel: form de Productos con descripción / URL imagen / "visible en catálogo"; columna "Público".
-  Lista de Cotizaciones con badge de origen ("Sitio web" / "Interna").
-- **Pendiente menor**: E2E Playwright del flujo público; subir imágenes reales (hoy `image_url` es una URL manual).
+  y `POST /public/catalog/quote-requests` → `Client` (`firstOrCreate` por email, en la transacción)
+  + `Quote` `draft` `source=catalog` con líneas snapshot, consentimiento Ley 1581.
+  `POST /products/{id}/image` sube al disco `public`. Seeder: 6 productos públicos con descripción.
+- **Frontend**: `/catalogo` (grid + filtro + búsqueda), `/catalogo/[id]` (ficha),
+  `/catalogo/cotizacion` (carrito `useSyncExternalStore` + formulario). Nav "Catalogo" + sitemap.
+  Panel: form de Productos (descripción / URL externa / "visible en catálogo") + acción "Imagen"
+  por fila + miniatura + columna "Público". Cotizaciones con badge de origen.
+- **Tests**: 78 backend (SQLite + MariaDB), E2E Playwright en `e2e/catalogo_publico.py`.
+- **Deuda para venta/despliegue**: dedup de correos antes de la migración `unique`, `storage:link`
+  + `APP_URL` real, GD/Imagick en el servidor. Ver el release doc.
 
 ## Contingencia Básica (con cola local de transacciones)
 

@@ -1,1 +1,3 @@
 graphify-out/
+e2e/artifacts/
+e2e/__pycache__/

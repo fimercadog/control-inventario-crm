@@ -105,7 +105,11 @@ export default function CatalogoPage() {
       try {
         const res = await fetchCatalog({ category_id: categoryId ?? undefined, q: query || undefined, page });
         if (cancelled) return;
-        setProducts((prev) => (page === 1 ? res.data : [...prev, ...res.data]));
+        setProducts((prev) =>
+          page === 1
+            ? res.data
+            : [...prev, ...res.data.filter((p) => !prev.some((x) => x.id === p.id))],
+        );
         setLastPage(res.meta.last_page);
       } catch {
         if (!cancelled) setError(true);

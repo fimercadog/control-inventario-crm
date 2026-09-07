@@ -92,6 +92,21 @@ class PublicCatalogTest extends TestCase
         ]);
     }
 
+    public function test_browsing_the_catalog_does_not_consume_the_quote_quota(): void
+    {
+        $product = $this->publicProduct();
+
+        // Navegar bastante (mas que el limite de cotizaciones) no debe bloquear el envio.
+        for ($i = 0; $i < 12; $i++) {
+            $this->getJson('/api/public/catalog/products')->assertOk();
+        }
+
+        $this->postJson('/api/public/catalog/quote-requests', [
+            'name' => 'Ana', 'email' => 'ana@empresa.co', 'consent' => true,
+            'items' => [['product_id' => $product->id, 'quantity' => 1]],
+        ])->assertCreated();
+    }
+
     public function test_quote_request_requires_consent(): void
     {
         $product = $this->publicProduct();
@@ -100,6 +115,19 @@ class PublicCatalogTest extends TestCase
             'name' => 'Ana', 'email' => 'ana@empresa.co',
             'items' => [['product_id' => $product->id, 'quantity' => 1]],
         ])->assertStatus(422)->assertJsonValidationErrors('consent');
+    }
+
+    public function test_quote_request_rejects_repeated_product_lines(): void
+    {
+        $product = $this->publicProduct();
+
+        $this->postJson('/api/public/catalog/quote-requests', [
+            'name' => 'Ana', 'email' => 'ana@empresa.co', 'consent' => true,
+            'items' => [
+                ['product_id' => $product->id, 'quantity' => 1],
+                ['product_id' => $product->id, 'quantity' => 2],
+            ],
+        ])->assertStatus(422)->assertJsonValidationErrors('items.0.product_id');
     }
 
     public function test_quote_request_rejects_non_public_product(): void
