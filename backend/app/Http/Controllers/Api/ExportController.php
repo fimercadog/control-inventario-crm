@@ -22,7 +22,7 @@ class ExportController extends Controller
     private array $map = [
         'clients' => [Client::class, ['name', 'company_name', 'email', 'phone', 'status']],
         'deals' => [Deal::class, ['client_id', 'title', 'amount', 'stage', 'expected_close_date']],
-        'products' => [Product::class, ['sku', 'name', 'category', 'unit_price', 'cost_price', 'status']],
+        'products' => [Product::class, ['sku', 'name', 'unit_price', 'cost_price', 'reorder_level', 'status']],
         'suppliers' => [Supplier::class, ['name', 'contact_name', 'email', 'phone', 'status']],
         'purchase-orders' => [PurchaseOrder::class, ['supplier_id', 'warehouse_id', 'status', 'order_date', 'total']],
         'orders' => [Order::class, ['client_id', 'warehouse_id', 'status', 'total']],

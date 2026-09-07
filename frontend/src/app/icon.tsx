@@ -1,14 +1,9 @@
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
-export default async function Icon() {
-  const logoMark = await readFile(join(process.cwd(), "public", "logo-mark.png"));
-  const logoMarkSrc = `data:image/png;base64,${logoMark.toString("base64")}`;
-
+export default function Icon() {
   return new ImageResponse(
     (
       <div
@@ -18,13 +13,15 @@ export default async function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#ffffff",
-          borderRadius: 8,
-          padding: 3,
+          background: "#0f1012",
+          borderRadius: 7,
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={logoMarkSrc} width="100%" height="100%" style={{ objectFit: "contain" }} alt="" />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+          <path d="m3.3 7 8.7 5 8.7-5" />
+          <path d="M12 22V12" />
+        </svg>
       </div>
     ),
     size,

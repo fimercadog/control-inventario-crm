@@ -33,8 +33,14 @@ export default function PurchaseOrderDetailPage() {
   }, [id]);
 
   React.useEffect(() => {
-    load();
-  }, [load]);
+    const controller = new AbortController();
+    api
+      .get<{ data: PurchaseOrder }>(`/purchase-orders/${id}`, { signal: controller.signal })
+      .then((r) => setOrder(r.data.data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+    return () => controller.abort();
+  }, [id]);
 
   async function addItem(event: React.FormEvent) {
     event.preventDefault();
@@ -115,7 +121,7 @@ export default function PurchaseOrderDetailPage() {
               <tbody>
                 {(order.items ?? []).map((item) => (
                   <tr key={item.id} className="border-t">
-                    <td className="py-2">{item.product?.name ?? `#${item.product_id}`}</td>
+                    <td className="py-2">{item.product ?? `#${item.product_id}`}</td>
                     <td className="py-2">{item.quantity}</td>
                     <td className="py-2">${Number(item.unit_cost).toLocaleString("es-CO")}</td>
                     <td className="py-2">${(item.quantity * Number(item.unit_cost)).toLocaleString("es-CO")}</td>

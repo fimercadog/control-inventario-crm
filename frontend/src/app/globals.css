@@ -1,21 +1,133 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
+/* ------------------------------------------------------------------ *
+ * Paleta Divi "SaaS Product" (Elegant Themes) — superficies blancas,
+ * tinta casi negra, acento verde, bandas/tarjetas navy. Una sola
+ * paleta para el sitio publico, el login y el panel. El sitio y el
+ * login se congelan en claro via `.site-theme`.
+ * ------------------------------------------------------------------ */
 :root {
-  --background: #fbf7f8;
-  --foreground: #26262e;
+  --background: #ffffff;
+  --foreground: #0f1012;
   --card: #ffffff;
-  --card-foreground: #26262e;
-  --primary: #a3175a;
+  --card-foreground: #0f1012;
+  --popover: #ffffff;
+  --popover-foreground: #0f1012;
+  --primary: #15803d;
+  --primary-hover: #166534;
   --primary-foreground: #ffffff;
-  --muted: #f3eaee;
-  --muted-foreground: #7a6b71;
-  --border: #e7dce0;
-  --accent: #f7e4ec;
-  --destructive: #c23b2b;
-  --navy: #26262e;
-  --success: #0e8f5c;
-  --warning: #b9770e;
-  --marketing-shadow: 0 24px 70px rgb(38 20 30 / 14%);
+  --secondary: #f1f5f0;
+  --secondary-foreground: #14532d;
+  --muted: #f4f4f5;
+  --muted-foreground: #6b7280;
+  --accent: #ecfdf3;
+  --accent-foreground: #15803d;
+  --destructive: #dc2626;
+  --success: #15803d;
+  --warning: #b45309;
+  --border: #e6e7ea;
+  --input: #d9dade;
+  --ring: #15803d;
+  --navy: #0f1012;
+  --navy-foreground: #f4f4f5;
+  --ink: #0f1012;
+  --ink-foreground: #f4f4f5;
+  --chart-1: #15803d;
+  --chart-2: #0f1012;
+  --chart-3: #f59e0b;
+  --chart-4: #3b82f6;
+  --chart-5: #ec4899;
+  --radius: 0.875rem;
+  --blob: linear-gradient(140deg, #16a34a 0%, #4ade80 35%, #a3e635 70%, #e3f0a0 100%);
+  --blob-warm: linear-gradient(140deg, #f59e0b 0%, #fb923c 45%, #fda4af 100%);
+  --elevation-1: 0 1px 2px 0 rgb(15 16 18 / 0.06), 0 1px 3px 1px rgb(15 16 18 / 0.04);
+  --elevation-2: 0 2px 4px 0 rgb(15 16 18 / 0.06), 0 4px 12px 2px rgb(15 16 18 / 0.06);
+  --elevation-3: 0 4px 8px 0 rgb(15 16 18 / 0.07), 0 12px 28px 4px rgb(15 16 18 / 0.08);
+  --elevation-4: 0 6px 12px 0 rgb(15 16 18 / 0.08), 0 18px 36px 6px rgb(15 16 18 / 0.10);
+  --elevation-5: 0 10px 20px 0 rgb(15 16 18 / 0.09), 0 28px 52px 10px rgb(15 16 18 / 0.12);
+  --marketing-shadow: 0 30px 60px -12px rgb(15 16 18 / 0.22);
+}
+
+.dark {
+  --background: #0d0d0f;
+  --foreground: #f4f4f5;
+  --card: #161618;
+  --card-foreground: #f4f4f5;
+  --popover: #161618;
+  --popover-foreground: #f4f4f5;
+  --primary: #4ade80;
+  --primary-hover: #22c55e;
+  --primary-foreground: #052e14;
+  --secondary: #1f1f22;
+  --secondary-foreground: #f4f4f5;
+  --muted: #1c1c1f;
+  --muted-foreground: #a1a1aa;
+  --accent: #14311f;
+  --accent-foreground: #86efac;
+  --destructive: #f2555a;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --border: #2a2a2e;
+  --input: #323236;
+  --ring: #4ade80;
+  --navy: #000000;
+  --navy-foreground: #f4f4f5;
+  --ink: #000000;
+  --ink-foreground: #f4f4f5;
+  --chart-1: #4ade80;
+  --chart-2: #f4f4f5;
+  --chart-3: #fbbf24;
+  --chart-4: #60a5fa;
+  --chart-5: #f472b6;
+  --elevation-1: 0 1px 2px 0 rgb(0 0 0 / 0.5), 0 1px 3px 1px rgb(0 0 0 / 0.35);
+  --elevation-2: 0 1px 2px 0 rgb(0 0 0 / 0.5), 0 2px 6px 2px rgb(0 0 0 / 0.4);
+  --elevation-3: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 4px 8px 3px rgb(0 0 0 / 0.42);
+  --elevation-4: 0 2px 3px 0 rgb(0 0 0 / 0.5), 0 6px 10px 4px rgb(0 0 0 / 0.44);
+  --elevation-5: 0 4px 4px 0 rgb(0 0 0 / 0.5), 0 8px 12px 6px rgb(0 0 0 / 0.46);
+  --marketing-shadow: 0 24px 70px rgb(0 0 0 / 0.45);
+}
+
+/* El sitio publico + login se comprometen con el look claro de Divi:
+   re-declaran la paleta clara para que `.dark` en <html> (toggle del panel)
+   no llegue hasta aca. */
+.site-theme {
+  color-scheme: light;
+  /* Re-aplica color/fondo con las variables ya sobrescritas: sin esto, si el
+     SO/panel esta en oscuro, el subarbol hereda el `color` claro del body. */
+  background-color: var(--background);
+  color: var(--foreground);
+  --background: #ffffff;
+  --foreground: #0f1012;
+  --card: #ffffff;
+  --card-foreground: #0f1012;
+  --popover: #ffffff;
+  --popover-foreground: #0f1012;
+  --primary: #15803d;
+  --primary-hover: #166534;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f0;
+  --secondary-foreground: #14532d;
+  --muted: #f4f4f5;
+  --muted-foreground: #6b7280;
+  --accent: #ecfdf3;
+  --accent-foreground: #15803d;
+  --destructive: #dc2626;
+  --success: #15803d;
+  --warning: #b45309;
+  --border: #e6e7ea;
+  --input: #d9dade;
+  --ring: #15803d;
+  --navy: #0f1012;
+  --navy-foreground: #f4f4f5;
+  --ink: #0f1012;
+  --ink-foreground: #f4f4f5;
+  --chart-1: #15803d;
+  --chart-2: #0f1012;
+  --chart-3: #f59e0b;
+  --chart-4: #3b82f6;
+  --chart-5: #ec4899;
 }
 
 @theme inline {
@@ -23,65 +135,103 @@
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
   --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-navy: var(--navy);
+  --color-navy-foreground: var(--navy-foreground);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
   --color-success: var(--success);
   --color-warning: var(--warning);
-  --font-sans: var(--font-geist-sans);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --shadow-elevation-1: var(--elevation-1);
+  --shadow-elevation-2: var(--elevation-2);
+  --shadow-elevation-3: var(--elevation-3);
+  --shadow-elevation-4: var(--elevation-4);
+  --shadow-elevation-5: var(--elevation-5);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ---- Marketing motion ---- */
+@theme {
+  --animate-marketing-float: marketing-float 5s ease-in-out infinite;
+  --animate-marketing-drift: marketing-drift 9s ease-in-out infinite;
+  --animate-marketing-pulse-glow: marketing-pulse-glow 4s ease-in-out infinite;
+  --animate-marketing-grid: marketing-grid 9s linear infinite;
+  --animate-marketing-gradient-text: marketing-gradient-text 4s ease infinite;
+  --animate-marketing-aurora: marketing-aurora 14s ease-in-out infinite;
+  --animate-marketing-orbit: marketing-orbit 20s linear infinite;
+  --animate-marketing-sheen: marketing-sheen 6s ease-in-out 1.2s infinite;
+  --animate-mat-ripple: mat-ripple 0.55s cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 
 @keyframes marketing-float {
-  0%, 100% { transform: translate(-50%, 0); }
-  50% { transform: translate(-50%, -18px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-24px) rotate(-0.6deg); }
 }
-
-.animate-marketing-float {
-  animation: marketing-float 6s ease-in-out infinite;
-}
-
 @keyframes marketing-drift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(40px, -24px) scale(1.1); }
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(36px, -30px); }
 }
-
-.animate-marketing-drift {
-  animation: marketing-drift 10s ease-in-out infinite;
-}
-
 @keyframes marketing-pulse-glow {
-  0%, 100% { opacity: 0.35; transform: scale(1); }
-  50% { opacity: 0.65; transform: scale(1.2); }
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.18); }
 }
-
-.animate-marketing-pulse-glow {
-  animation: marketing-pulse-glow 4.5s ease-in-out infinite;
+@keyframes marketing-grid {
+  from { background-position: 0 0; }
+  to { background-position: 46px 46px; }
 }
-
-@keyframes marketing-grid-pan {
-  0% { background-position: 0 0; }
-  100% { background-position: 48px 48px; }
-}
-
-.animate-marketing-grid {
-  background-image: radial-gradient(circle, var(--border) 1.5px, transparent 1.5px);
-  background-size: 28px 28px;
-  animation: marketing-grid-pan 14s linear infinite;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 0%, transparent 75%);
-}
-
 @keyframes marketing-gradient-text {
-  to { background-position: 200% center; }
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+}
+@keyframes marketing-aurora {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.85; }
+  33% { transform: translate3d(9%, -8%, 0) scale(1.25); opacity: 1; }
+  66% { transform: translate3d(-8%, 7%, 0) scale(1.1); opacity: 0.75; }
+}
+@keyframes marketing-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes marketing-sheen {
+  0% { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+  8% { opacity: 0.75; }
+  22% { opacity: 0; }
+  100% { transform: translateX(320%) skewX(-18deg); opacity: 0; }
+}
+@keyframes mat-ripple {
+  from { transform: scale(0); opacity: 0.3; }
+  to { transform: scale(1); opacity: 0; }
 }
 
 .animate-marketing-gradient-text {
-  background-image: linear-gradient(90deg, var(--primary), #e8579a, var(--navy), var(--primary));
+  background-image: linear-gradient(90deg, var(--primary), #4ade80, var(--ink), var(--primary));
   background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
@@ -89,20 +239,8 @@
   animation: marketing-gradient-text 5s linear infinite;
 }
 
-.dark {
-  --background: #17151a;
-  --foreground: #edeaec;
-  --card: #211f26;
-  --card-foreground: #edeaec;
-  --primary: #e8579a;
-  --primary-foreground: #2b0f1c;
-  --muted: #2a2731;
-  --muted-foreground: #b3a6ac;
-  --border: #332e36;
-  --accent: #3a1f2c;
-  --destructive: #f97066;
-  --success: #34d399;
-  --warning: #fbbf24;
+@media (prefers-reduced-motion: reduce) {
+  .animate-marketing-sheen { animation: none !important; }
 }
 
 body {

@@ -18,7 +18,7 @@ class ActivityResource extends JsonResource
             'type' => $this->type,
             'subject' => $this->subject,
             'notes' => $this->notes,
-            'due_date' => $this->due_date,
+            'due_date' => $this->due_date?->toDateString(),
             'completed' => $this->completed,
             'created_at' => $this->created_at,
         ];

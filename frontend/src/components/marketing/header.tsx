@@ -1,96 +1,130 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Logo } from "@/components/brand/logo";
-import { Button } from "@/components/ui/button";
-import { navProduct, navSolutions } from "./marketing-data";
+import { Boxes, Menu, X } from "lucide-react";
+import { CtaLink } from "@/components/marketing/cta-link";
+import { cn } from "@/lib/utils";
 
-function Dropdown({ label, items }: { label: string; items: string[][] }) {
+const nav = [
+  ["Producto", "/producto"],
+  ["Precios", "/precios"],
+  ["Documentacion", "/documentacion"],
+  ["Blog", "/blog"],
+  ["Nosotros", "/nosotros"],
+  ["Contacto", "/contacto"],
+];
+
+function Wordmark() {
   return (
-    <div className="group relative">
-      <button className="flex h-10 items-center gap-1 text-sm font-medium text-navy">
-        {label} <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
-      </button>
-      <div className="invisible absolute left-0 top-10 z-40 w-72 translate-y-2 rounded-2xl border border-border bg-white p-3 opacity-0 shadow-(--marketing-shadow) transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-        {items.map(([itemLabel, href]) => (
-          <Link key={href} href={href} className="block rounded-xl px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-navy">
-            {itemLabel}
-          </Link>
-        ))}
-      </div>
-    </div>
+    <Link href="/" className="flex items-center gap-2.5" aria-label="CRM + Inventario — inicio">
+      <span className="flex size-9 items-center justify-center rounded-xl bg-ink text-primary">
+        <Boxes className="size-5" />
+      </span>
+      <span className="text-base font-black leading-none tracking-tight">
+        CRM<span className="text-primary">+</span>Inventario
+      </span>
+    </Link>
   );
 }
 
 export function MarketingHeader() {
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const links = [
-    ["Reclutamiento", "/reclutamiento"],
-    ["Precios", "/precios"],
-    ["Recursos", "/blog"],
-    ["Nosotros", "/nosotros"],
-    ["Contacto", "/contacto"],
-  ];
 
-  // Cierra el menu movil al cambiar de ruta.
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-white/90 backdrop-blur">
-      <div className="relative z-50 mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link className="shrink-0" href="/">
-          <Logo size="lg" />
-        </Link>
-        <nav className="hidden items-center gap-6 xl:flex">
-          <Dropdown label="Producto" items={navProduct} />
-          <Dropdown label="Soluciones" items={navSolutions} />
-          {links.map(([label, href]) => (
-            <Link className="group relative whitespace-nowrap text-sm font-medium text-navy" key={href} href={href}>
-              {label}
-              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary transition-all duration-200 group-hover:w-full" />
-            </Link>
-          ))}
+    <header
+      className={cn(
+        "sticky top-0 z-40 border-b transition-colors",
+        scrolled ? "border-border bg-background/90 backdrop-blur" : "border-transparent bg-background",
+      )}
+    >
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <Wordmark />
+
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Principal">
+          {nav.map(([label, href]) => {
+            const active = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "group relative text-sm transition-colors hover:text-foreground",
+                  active ? "text-foreground" : "text-muted-foreground",
+                )}
+              >
+                {label}
+                <span
+                  className={cn(
+                    "absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 group-hover:w-full motion-reduce:transition-none",
+                    active ? "w-full" : "w-0",
+                  )}
+                />
+              </Link>
+            );
+          })}
         </nav>
-        <div className="hidden items-center gap-3 xl:flex">
-          <Link className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md px-4 text-sm font-medium text-navy transition-colors hover:bg-muted" href="/login" target="_blank" rel="noopener noreferrer">Iniciar sesion</Link>
-          <Link className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md bg-primary px-4 text-sm font-medium text-white transition-transform duration-200 hover:scale-105 hover:opacity-90 active:scale-95" href="/demo">Solicitar demo</Link>
-        </div>
-        <div className="flex items-center gap-2 xl:hidden">
+
+        <div className="hidden items-center gap-3 lg:flex">
           <Link
-            className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md px-3 text-sm font-medium text-navy transition-colors hover:bg-muted"
             href="/login"
-            target="_blank"
-            rel="noopener noreferrer"
+            className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
           >
             Iniciar sesion
           </Link>
-          <Button
-            type="button"
-            variant="outline"
-            size="icon"
-            onClick={() => setOpen((value) => !value)}
-            aria-label={open ? "Cerrar menu" : "Abrir menu"}
-            aria-expanded={open}
-          >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          <CtaLink href="/demo" size="sm">
+            Solicitar demo
+          </CtaLink>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? "Cerrar menu" : "Abrir menu"}
+          aria-expanded={open}
+          className="grid size-10 place-items-center rounded-full border border-border lg:hidden"
+        >
+          {open ? <X className="size-5" /> : <Menu className="size-5" />}
+        </button>
       </div>
+
       {open ? (
-        <div className="relative z-50 border-t border-border bg-white px-4 py-4 shadow-lg xl:hidden">
-          {[...navProduct, ...navSolutions, ...links].map(([label, href]) => (
-            <Link key={href} href={href} className="block rounded-xl px-3 py-3 text-sm font-medium text-navy hover:bg-accent" onClick={() => setOpen(false)}>
-              {label}
+        <div className="border-t border-border bg-background px-4 py-4 lg:hidden">
+          <nav className="flex flex-col gap-1" aria-label="Movil">
+            {nav.map(([label, href]) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                aria-current={pathname === href ? "page" : undefined}
+                className={cn(
+                  "rounded-lg px-3 py-2 text-sm hover:bg-accent",
+                  pathname === href && "bg-accent font-medium text-accent-foreground",
+                )}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+          <div className="mt-3 flex flex-col gap-2">
+            <Link
+              href="/login"
+              className="inline-flex h-11 items-center justify-center rounded-full border-2 border-current text-sm font-semibold"
+            >
+              Iniciar sesion
             </Link>
-          ))}
-          <div className="mt-3">
-            <Link className="block whitespace-nowrap rounded-xl bg-primary px-3 py-3 text-center text-sm font-medium text-white" href="/demo">Solicitar demo</Link>
+            <CtaLink href="/demo">Solicitar demo</CtaLink>
           </div>
         </div>
       ) : null}

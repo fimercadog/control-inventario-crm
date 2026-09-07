@@ -49,8 +49,20 @@ export default function RoleDetailPage() {
   }, [id]);
 
   React.useEffect(() => {
-    load();
-  }, [load]);
+    const controller = new AbortController();
+    Promise.all([
+      api.get<{ data: Role }>(`/roles/${id}`, { signal: controller.signal }),
+      api.get<{ data: string[] }>("/permissions", { signal: controller.signal }),
+    ])
+      .then(([roleRes, permsRes]) => {
+        setRole(roleRes.data.data);
+        setAllPermissions(permsRes.data.data);
+        setSelected(new Set(roleRes.data.data.permissions ?? []));
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+    return () => controller.abort();
+  }, [id]);
 
   function toggle(name: string) {
     setSelected((prev) => {

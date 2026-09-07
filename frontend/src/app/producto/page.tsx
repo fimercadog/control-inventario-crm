@@ -1,34 +1,71 @@
-import { CTASection } from "@/components/marketing/cta-section";
-import { DashboardPreview } from "@/components/marketing/dashboard-preview";
-import { FeatureGrid } from "@/components/marketing/feature-grid";
+import { BarChart3, Boxes, Bot, ClipboardList, Handshake, Truck } from "lucide-react";
+import { CtaLink } from "@/components/marketing/cta-link";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
-import { ProblemSolution } from "@/components/marketing/problem-solution";
+import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
-import { SectionHeading } from "@/components/marketing/section-heading";
+import {
+  DemoCta,
+  FeatureCard,
+  ProblemGrid,
+  Section,
+  SectionHeading,
+  TourGrid,
+} from "@/components/marketing/marketing-ui";
+
+const modules = [
+  { icon: Handshake, title: "CRM", text: "Leads, clientes, deals y actividades de seguimiento en un solo pipeline.", href: "/producto/crm" },
+  { icon: Boxes, title: "Inventario", text: "Productos, bodegas y la bitacora de cada movimiento de stock.", href: "/producto/inventario" },
+  { icon: ClipboardList, title: "Pedidos de venta", text: "Al confirmarse descuentan stock de la bodega elegida.", href: "/producto/pedidos" },
+  { icon: Truck, title: "Compras", text: "Proveedores y ordenes de compra que reponen inventario al recibirse.", href: "/producto/compras" },
+  { icon: BarChart3, title: "Reportes", text: "Metricas de CRM e inventario con exportaciones CSV y PDF.", href: "/producto/reportes" },
+  { icon: Bot, title: "Asistente de IA", text: "Capa conversacional para consultar stock, clientes y pedidos.", href: "/producto/ia" },
+];
 
 export default function ProductOverviewPage() {
   return (
     <MarketingLayout>
-      <main>
-        <section className="bg-[linear-gradient(180deg,#ffffff_0%,#fbe9f0_100%)] px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
-            <Reveal>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Producto</p>
-                <h1 className="mt-4 text-5xl font-semibold tracking-tight text-navy">Software completo para administrar Recursos Humanos</h1>
-                <p className="mt-5 text-lg leading-8 text-muted-foreground">Una plataforma SaaS para centralizar empleados, asistencia, vacaciones, permisos, documentos, turnos, reclutamiento, reportes e IA.</p>
-              </div>
+      <PageHero
+        eyebrow="Producto"
+        title="Software de CRM y control de inventario para PYMES"
+        lead="Una plataforma SaaS que centraliza leads, clientes, deals, productos, bodegas, pedidos de venta, compras, reportes e IA, con el inventario y las ventas conectados."
+        actions={
+          <>
+            <CtaLink href="/demo">Solicitar demo</CtaLink>
+            <CtaLink href="/precios" variant="outline">
+              Ver precios
+            </CtaLink>
+          </>
+        }
+      />
+
+      <Section>
+        <Reveal>
+          <SectionHeading
+            eyebrow="Modulos conectados"
+            title="CRM e inventario en una sola plataforma"
+            lead="Cada modulo resuelve una parte concreta de la operacion diaria y comparte datos con el resto."
+          />
+        </Reveal>
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {modules.map((m, i) => (
+            <Reveal key={m.title} delay={i * 0.05}>
+              <a href={m.href} className="block h-full">
+                <FeatureCard icon={m.icon} title={m.title} text={m.text} />
+              </a>
             </Reveal>
-            <Reveal><DashboardPreview /></Reveal>
-          </div>
-        </section>
-        <FeatureGrid />
-        <ProblemSolution />
-        <section className="px-4 py-20 sm:px-6 lg:px-8">
-          <Reveal><SectionHeading eyebrow="Seguridad y automatizacion" title="Preparado para crecer con tu empresa" description="Base visual lista para conectarse a Laravel API, multiempresa, roles, permisos, auditoria e integraciones como WhatsApp." /></Reveal>
-        </section>
-        <CTASection />
-      </main>
+          ))}
+        </div>
+      </Section>
+
+      <Section className="bg-secondary/40">
+        <ProblemGrid />
+      </Section>
+
+      <Section>
+        <TourGrid />
+      </Section>
+
+      <DemoCta />
     </MarketingLayout>
   );
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AuthSplitLayout } from "@/components/auth/auth-split-layout";
 import { LoginForm } from "./login-form";
 
-export const metadata: Metadata = { title: { absolute: "Iniciar sesion | DFC CRM + Inventario" } };
+export const metadata: Metadata = { title: { absolute: "Iniciar sesion | CRM + Inventario" } };
 
 // Este dominio es un showcase: los atajos de usuarios demo se muestran por
 // defecto para que cualquiera entre y pruebe roles. Para un despliegue con

@@ -1,108 +1,190 @@
-import {
-  Activity,
-  Bot,
-  BriefcaseBusiness,
-  CalendarCheck,
-  Clock3,
-  FileText,
-  FolderKanban,
-  LayoutDashboard,
-  MessageCircle,
-  ShieldCheck,
-  Users,
-} from "lucide-react";
-
-export const navProduct = [
-  ["Gestion de empleados", "/producto/empleados"],
-  ["Asistencia", "/producto/asistencia"],
-  ["Vacaciones y permisos", "/producto/vacaciones"],
-  ["Documentos", "/producto/documentos"],
-  ["Turnos", "/producto/turnos"],
-  ["Reportes", "/producto/reportes"],
-  ["IA para RRHH", "/producto/ia"],
-];
-
-export const navSolutions = [
-  ["Para pequenas empresas", "/soluciones#pymes"],
-  ["Para equipos de RRHH", "/soluciones#rrhh"],
-  ["Para empresas con turnos", "/soluciones#turnos"],
-  ["Para reclutamiento", "/soluciones#reclutamiento"],
-];
-
-export const features = [
-  { title: "Empleados", description: "Centraliza toda la informacion de tus colaboradores.", icon: Users, href: "/producto/empleados" },
-  { title: "Asistencia", description: "Controla entradas, salidas, retrasos y ausencias.", icon: Clock3, href: "/producto/asistencia" },
-  { title: "Vacaciones y permisos", description: "Gestiona solicitudes, aprobaciones y saldos.", icon: CalendarCheck, href: "/producto/vacaciones" },
-  { title: "Documentos", description: "Organiza contratos, certificados y archivos laborales.", icon: FileText, href: "/producto/documentos" },
-  { title: "Turnos", description: "Planifica horarios, jornadas y descansos.", icon: Activity, href: "/producto/turnos" },
-  { title: "Reportes", description: "Obtén metricas utiles para tomar decisiones.", icon: LayoutDashboard, href: "/producto/reportes" },
-  { title: "Reclutamiento", description: "Gestiona candidatos y procesos de seleccion.", icon: BriefcaseBusiness, href: "/reclutamiento" },
-  { title: "IA para RRHH", description: "Automatiza consultas y procesos internos.", icon: Bot, href: "/producto/ia" },
-];
+import { BarChart3, ClipboardList, Contact, Package, ShoppingCart, Warehouse } from "lucide-react";
 
 export const productPages = {
-  empleados: {
-    title: "Expediente digital de cada empleado",
-    eyebrow: "Gestion de empleados",
-    description: "Toda la informacion personal, laboral, documental e historica de tus colaboradores en una ficha clara y accionable.",
-    icon: Users,
-    bullets: ["Datos personales y laborales", "Cargo, area, contrato y jefe", "Documentos e historial por colaborador", "Tabs para asistencia, vacaciones y novedades"],
+  crm: {
+    eyebrow: "CRM de ventas",
+    title: "Leads y clientes en un pipeline que se sigue solo",
+    description:
+      "Captura leads desde el formulario publico, conviertelos en clientes y mueve cada deal por etapas con actividades de seguimiento visibles para todo el equipo.",
+    bullets: [
+      "Formulario publico de leads",
+      "Clientes con historial de contacto",
+      "Pipeline de deals por etapa",
+      "Actividades y recordatorios de seguimiento",
+    ],
+    screenshot: "/product/pipeline.png",
   },
-  asistencia: {
-    title: "Asistencia clara, diaria y reportable",
-    eyebrow: "Control de asistencia",
-    description: "Visualiza presentes, ausentes, llegadas tarde e incapacidades con filtros por fecha, area y empleado.",
-    icon: Clock3,
-    bullets: ["Entradas y salidas", "Retrasos y ausencias", "Historial por colaborador", "Reportes exportables"],
+  inventario: {
+    eyebrow: "Control de inventario",
+    title: "Sabes cuanto stock tienes y donde esta",
+    description:
+      "Un catalogo de productos, varias bodegas y una bitacora que registra cada entrada, salida y ajuste para que el inventario del sistema coincida con el fisico.",
+    bullets: [
+      "Catalogo de productos con SKU y costo",
+      "Stock por bodega",
+      "Bitacora de movimientos",
+      "Alertas de stock bajo",
+    ],
+    screenshot: "/product/stock.png",
   },
-  vacaciones: {
-    title: "Vacaciones y permisos sin cadenas de correos",
-    eyebrow: "Solicitudes y aprobaciones",
-    description: "Convierte solicitudes dispersas en flujos aprobables, trazables y visibles para RRHH.",
-    icon: CalendarCheck,
-    bullets: ["Empleado solicita", "Jefe aprueba o rechaza", "RRHH queda informado", "Saldo y calendario actualizados"],
+  pedidos: {
+    eyebrow: "Pedidos de venta",
+    title: "El pedido de venta que descuenta stock al confirmarse",
+    description:
+      "El puente entre CRM e inventario: eliges cliente, agregas lineas de producto y al confirmar el pedido el sistema descuenta el stock de la bodega elegida.",
+    bullets: [
+      "Cliente tomado del CRM",
+      "Lineas de producto con precio",
+      "Confirmar genera salida de stock",
+      "Detalle del pedido siempre trazable",
+    ],
+    screenshot: "/product/movimientos.png",
   },
-  documentos: {
-    title: "Documentos laborales siempre ubicables",
-    eyebrow: "Gestion documental",
-    description: "Contratos, certificados, anexos y soportes con alertas de vencimiento y expediente asociado.",
-    icon: FileText,
-    bullets: ["Contratos y anexos", "Certificados laborales", "Soportes personales", "Alertas por vencimiento"],
-  },
-  turnos: {
-    title: "Planificacion semanal de turnos",
-    eyebrow: "Turnos y jornadas",
-    description: "Asigna horarios, controla descansos y detecta conflictos antes de que lleguen a la operacion.",
-    icon: Activity,
-    bullets: ["Vista semanal", "Asignacion por empleado", "Horarios y descansos", "Conflictos basicos"],
+  compras: {
+    eyebrow: "Compras y proveedores",
+    title: "Compras que reponen el inventario sin cuadrar a mano",
+    description:
+      "Registra proveedores, crea ordenes de compra y al marcarlas como recibidas el stock de la bodega entra automaticamente con su movimiento asociado.",
+    bullets: [
+      "Directorio de proveedores",
+      "Ordenes de compra con lineas",
+      "Recibir genera entrada de stock",
+      "Costo y trazabilidad por orden",
+    ],
+    screenshot: "/product/productos.png",
   },
   reportes: {
-    title: "Reportes para decidir, no solo almacenar",
-    eyebrow: "Analitica de RRHH",
-    description: "Indicadores de asistencia, ausentismo, vacaciones, documentos, altas, bajas y distribucion por area.",
-    icon: LayoutDashboard,
-    bullets: ["Ausentismo y tardanzas", "Distribucion por area", "Documentos vencidos", "Exportaciones CSV/PDF"],
+    eyebrow: "Analitica de operacion",
+    title: "Reportes para decidir, no solo para archivar",
+    description:
+      "Indicadores de ventas, pipeline, rotacion de inventario, stock bajo, compras y movimientos, con exportaciones CSV y PDF por modulo.",
+    bullets: [
+      "Ventas y pipeline de deals",
+      "Rotacion y stock bajo",
+      "Compras por proveedor",
+      "Exportaciones CSV / PDF",
+    ],
+    screenshot: "/product/reportes.png",
   },
   ia: {
-    title: "Tu asistente de Recursos Humanos disponible 24/7",
-    eyebrow: "IA para RRHH",
-    description: "Prepara una capa conversacional para responder politicas, vacaciones, turnos, certificados y solicitudes.",
-    icon: Bot,
-    bullets: ["Consultas de vacaciones", "Certificados laborales", "Politicas internas", "Solicitudes guiadas"],
+    eyebrow: "Asistente de IA",
+    title: "Tu asistente de operacion comercial y de inventario",
+    description:
+      "Prepara una capa conversacional para consultar stock disponible, datos de clientes, estado de pedidos y ordenes de compra sin entrar a cada modulo.",
+    bullets: [
+      "Consultas de stock por bodega",
+      "Ficha rapida de cliente",
+      "Estado de pedidos y compras",
+      "Interfaz lista, sin proveedor conectado todavia",
+    ],
+    screenshot: "/product/ia.png",
   },
-};
+} as const;
 
 export const blogPosts = [
-  { slug: "como-digitalizar-rrhh-sin-caos", title: "Como digitalizar RRHH sin convertirlo en otro caos", category: "Recursos Humanos", excerpt: "Contenido inicial ficticio para explicar una ruta realista de adopcion digital en pequenas empresas." },
-  { slug: "asistencia-y-ausentismo", title: "Asistencia y ausentismo: metricas que si sirven", category: "Asistencia", excerpt: "Contenido inicial ficticio sobre indicadores accionables para equipos de talento humano." },
-  { slug: "vacaciones-sin-excel", title: "Vacaciones sin Excel: aprobaciones claras y trazables", category: "Productividad", excerpt: "Contenido inicial ficticio sobre como ordenar solicitudes y saldos de vacaciones." },
-  { slug: "pipeline-de-reclutamiento", title: "Pipeline de reclutamiento para PYMES", category: "Reclutamiento", excerpt: "Contenido inicial ficticio para convertir procesos de seleccion dispersos en un flujo visual." },
-  { slug: "documentos-laborales", title: "Documentos laborales: como evitar vencimientos invisibles", category: "Gestion de talento", excerpt: "Contenido inicial ficticio sobre expediente digital y alertas preventivas." },
-  { slug: "ia-en-recursos-humanos", title: "IA en Recursos Humanos: casos utiles antes del hype", category: "IA", excerpt: "Contenido inicial ficticio sobre asistentes internos para consultas y solicitudes frecuentes." },
+  {
+    slug: "conectar-crm-e-inventario",
+    title: "Por que el CRM y el inventario deben hablar entre si",
+    category: "Operacion",
+    excerpt: "Contenido inicial ficticio sobre como el pedido de venta une ventas y bodega en un solo flujo.",
+  },
+  {
+    slug: "stock-que-no-cuadra",
+    title: "Stock que no cuadra: como cerrar la brecha entre el sistema y la bodega",
+    category: "Inventario",
+    excerpt: "Contenido inicial ficticio sobre bitacora de movimientos, ajustes y conteos ciclicos.",
+  },
+  {
+    slug: "pipeline-de-ventas-para-pymes",
+    title: "Un pipeline de ventas simple para PYMES",
+    category: "CRM",
+    excerpt: "Contenido inicial ficticio para convertir leads dispersos en deals con etapas y seguimiento.",
+  },
+  {
+    slug: "ordenes-de-compra-sin-excel",
+    title: "Ordenes de compra sin Excel: reponer stock con trazabilidad",
+    category: "Compras",
+    excerpt: "Contenido inicial ficticio sobre proveedores, ordenes y entradas automaticas de inventario.",
+  },
+  {
+    slug: "reportes-de-rotacion",
+    title: "Rotacion de inventario: las metricas que si sirven",
+    category: "Reportes",
+    excerpt: "Contenido inicial ficticio sobre indicadores accionables de stock y ventas.",
+  },
+  {
+    slug: "ia-en-la-operacion-diaria",
+    title: "IA en la operacion diaria: casos utiles antes del hype",
+    category: "IA",
+    excerpt: "Contenido inicial ficticio sobre asistentes internos para consultar stock, clientes y pedidos.",
+  },
 ];
 
-export const trustItems = [
-  { label: "Seguro", icon: ShieldCheck },
-  { label: "WhatsApp futuro", icon: MessageCircle },
-  { label: "Flujos claros", icon: FolderKanban },
+export const docSections = [
+  {
+    id: "primeros-pasos",
+    title: "Primeros pasos",
+    icon: Package,
+    items: [
+      "Crear la empresa y los primeros usuarios",
+      "Roles y permisos (Spatie laravel-permission)",
+      "Cargar el catalogo de productos",
+      "Crear bodegas y saldos iniciales",
+    ],
+  },
+  {
+    id: "crm",
+    title: "CRM",
+    icon: Contact,
+    items: [
+      "Leads desde el formulario publico",
+      "Convertir un lead en cliente",
+      "Mover deals por el pipeline",
+      "Registrar actividades de seguimiento",
+    ],
+  },
+  {
+    id: "inventario",
+    title: "Inventario",
+    icon: Warehouse,
+    items: [
+      "Productos, SKU y costo",
+      "Stock por bodega",
+      "Registrar un movimiento manual",
+      "Leer la bitacora de movimientos",
+    ],
+  },
+  {
+    id: "pedidos",
+    title: "Pedidos de venta",
+    icon: ClipboardList,
+    items: [
+      "Crear un pedido para un cliente",
+      "Agregar lineas de producto",
+      "Confirmar el pedido y descontar stock",
+      "Anular un pedido confirmado",
+    ],
+  },
+  {
+    id: "compras",
+    title: "Compras",
+    icon: ShoppingCart,
+    items: [
+      "Registrar un proveedor",
+      "Crear una orden de compra",
+      "Recibir la orden y reponer stock",
+      "Costo por orden",
+    ],
+  },
+  {
+    id: "reportes",
+    title: "Reportes y API",
+    icon: BarChart3,
+    items: [
+      "Reportes de ventas e inventario",
+      "Exportar a CSV y PDF",
+      "Autenticacion de la API (Sanctum)",
+      "Endpoints principales",
+    ],
+  },
 ];

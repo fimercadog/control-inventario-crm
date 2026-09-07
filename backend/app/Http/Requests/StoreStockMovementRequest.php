@@ -2,13 +2,17 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
+
 class StoreStockMovementRequest extends ApiFormRequest
 {
     public function rules(): array
     {
+        $companyId = $this->user()?->company_id;
+
         return [
-            'product_id' => ['required', 'exists:products,id'],
-            'warehouse_id' => ['required', 'exists:warehouses,id'],
+            'product_id' => ['required', Rule::exists('products', 'id')->where('company_id', $companyId)],
+            'warehouse_id' => ['required', Rule::exists('warehouses', 'id')->where('company_id', $companyId)],
             'type' => ['required', 'in:in,out,adjustment'],
             'quantity' => ['required', 'integer', 'min:1'],
             'reason' => ['nullable', 'string', 'max:255'],

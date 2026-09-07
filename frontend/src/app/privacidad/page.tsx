@@ -4,7 +4,7 @@ import { LegalPage } from "@/components/marketing/legal-page";
 export const metadata: Metadata = {
   title: "Politica de Tratamiento de Datos Personales",
   description:
-    "Como DFC Talento Humano recolecta, usa y protege los datos personales, y como ejercer tus derechos conforme a la Ley 1581 de 2012.",
+    "Como la plataforma recolecta, usa y protege los datos personales, y como ejercer tus derechos conforme a la Ley 1581 de 2012.",
 };
 
 export default function PrivacyPage() {
@@ -12,7 +12,7 @@ export default function PrivacyPage() {
     <LegalPage
       title="Politica de Tratamiento de Datos Personales"
       updated="30 de agosto de 2026"
-      intro="Esta politica describe el tratamiento que DFC Talento Humano da a los datos personales que recibe a traves de este sitio web, en cumplimiento de la Ley Estatutaria 1581 de 2012, el Decreto 1074 de 2015 y demas normas concordantes de la Republica de Colombia."
+      intro="Esta politica describe el tratamiento que la plataforma da a los datos personales que recibe a traves de este sitio web, en cumplimiento de la Ley Estatutaria 1581 de 2012, el Decreto 1074 de 2015 y demas normas concordantes de la Republica de Colombia."
       sections={[
         {
           heading: "1. Responsable del tratamiento",
@@ -24,7 +24,7 @@ export default function PrivacyPage() {
         {
           heading: "2. Datos que recolectamos",
           body: [
-            "A traves de los formularios de contacto y de solicitud de demostracion recolectamos: nombre, empresa, correo electronico, numero de telefono o WhatsApp, numero aproximado de empleados, modulo de interes y el contenido del mensaje que nos envies.",
+            "A traves de los formularios de contacto y de solicitud de demostracion recolectamos: nombre, empresa, correo electronico, numero de telefono o WhatsApp, numero aproximado de usuarios o bodegas, modulo de interes y el contenido del mensaje que nos envies.",
             "No solicitamos datos sensibles a traves de este sitio. Si decides incluirlos en un campo de texto libre, se entendera que autorizas su tratamiento para los fines aqui descritos.",
           ],
         },

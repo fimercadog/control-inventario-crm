@@ -12,11 +12,16 @@ class Client extends Model
     /** @use HasFactory<\Database\Factories\ClientFactory> */
     use HasFactory;
 
-    protected $fillable = ['company_id', 'name', 'company_name', 'email', 'phone', 'address', 'status', 'notes'];
+    protected $fillable = ['company_id', 'segment_id', 'name', 'company_name', 'email', 'phone', 'address', 'status', 'notes'];
 
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function segment(): BelongsTo
+    {
+        return $this->belongsTo(Segment::class);
     }
 
     public function deals(): HasMany

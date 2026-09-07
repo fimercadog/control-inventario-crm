@@ -10,6 +10,7 @@ const columns: AppColumnDef<Product>[] = [
   { accessorKey: "sku", header: "SKU" },
   { accessorKey: "name", header: "Nombre" },
   { header: "Categoria", cell: ({ row }) => row.original.category ?? "—" },
+  { header: "Marca", cell: ({ row }) => row.original.brand ?? "—" },
   { header: "Precio", cell: ({ row }) => `$${Number(row.original.unit_price).toLocaleString("es-CO")}` },
   {
     header: "Existencia",
@@ -25,8 +26,9 @@ const columns: AppColumnDef<Product>[] = [
 const fields: CrudField[] = [
   { name: "sku", label: "SKU", required: true },
   { name: "name", label: "Nombre", required: true },
-  { name: "category", label: "Categoria", omitWhenEmpty: true },
-  { name: "unit", label: "Unidad", required: true, placeholder: "unidad" },
+  { name: "category_id", label: "Categoria", type: "select", optionsResource: "/categories", omitWhenEmpty: true },
+  { name: "brand_id", label: "Marca", type: "select", optionsResource: "/brands", omitWhenEmpty: true },
+  { name: "unit_id", label: "Unidad", type: "select", optionsResource: "/units", omitWhenEmpty: true },
   { name: "unit_price", label: "Precio de venta", type: "number", required: true, min: 0, step: 100 },
   { name: "cost_price", label: "Precio de costo", type: "number", required: true, min: 0, step: 100 },
   { name: "reorder_level", label: "Punto de reorden", type: "number", required: true, min: 0 },

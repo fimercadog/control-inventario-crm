@@ -12,7 +12,7 @@ class Order extends Model
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
 
-    protected $fillable = ['company_id', 'client_id', 'deal_id', 'warehouse_id', 'status', 'total'];
+    protected $fillable = ['company_id', 'owner_id', 'client_id', 'deal_id', 'warehouse_id', 'status', 'total'];
 
     protected $casts = [
         'total' => 'decimal:2',
@@ -26,6 +26,11 @@ class Order extends Model
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function deal(): BelongsTo

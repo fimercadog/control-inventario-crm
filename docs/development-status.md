@@ -23,6 +23,14 @@
 - El puente CRM-Inventario (confirmar pedido descuenta stock, recibir orden de compra lo repone) esta implementado y cubierto por un test end-to-end.
 - Exportaciones CSV/PDF backend.
 - Documentacion actualizada al dominio CRM + Inventario.
+- Sitio publico reescrito al dominio CRM + Inventario y restilado con el sistema
+  visual Divi "SaaS Product" (verde `#15803d` / navy / peso 900 / tarjetas widget
+  sobre blobs / capturas en perspectiva 3D). 8 plantillas: Home `/`, Features
+  `/producto` + `/producto/{crm,inventario,pedidos,compras,reportes,ia}`, Pricing
+  `/precios`, About `/nosotros`, Blog `/blog`, Contact `/contacto`, Documentation
+  `/documentacion`, Landing `/demo`. Paleta aplicada a todo (`:root`) incluido el
+  panel `/app`; unica excepcion: los colores de series de los graficos del
+  dashboard interno. Ref: [docs/referencia-visual.md](referencia-visual.md).
 
 ## Parcial
 
@@ -34,7 +42,7 @@
 - Reportes muestran catalogo, no todos los reportes tabulares dedicados.
 - IA tiene interfaz preparada, sin proveedor conectado.
 - Modo contingencia (offline) sigue activo como infraestructura, pero sin ningun modulo de CRM/Inventario elegible todavia (`ContingencyModuleRegistry` vacio).
-- El sitio publico de marketing (landing, `/producto/*`, blog) sigue con copy de RRHH; no se reescribio en el pivote a CRM + Inventario.
+- Screenshots del producto en `frontend/public/product/*.png` son placeholders traidos del proyecto `crm y contro de inventario1`; falta recapturar el panel real (backend arriba).
 
 ## Pendiente
 

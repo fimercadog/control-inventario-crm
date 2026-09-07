@@ -27,6 +27,8 @@ export type CrudField = {
   required?: boolean;
   placeholder?: string;
   options?: FieldOption[];
+  /** select con opciones dinamicas: GET `${optionsResource}` -> [{id, name}]. */
+  optionsResource?: string;
   colSpan?: "full";
   /** Skip sending this field when left blank, instead of overwriting the stored value with null. */
   omitWhenEmpty?: boolean;
@@ -51,10 +53,14 @@ type CrudModalProps = {
   row?: CrudRow | null;
   onSaved: () => void;
   /**
-   * Modo contingencia: si viene definido y es un alta, el registro se encola
-   * localmente en vez de llamar al API. Solo aplica a mode === "create".
+   * Modo contingencia: si viene definido, crear y editar se encolan en local
+   * en vez de llamar al API. En edicion se pasa el snapshot base (la fila tal
+   * como esta ahora) para detectar conflictos al sincronizar.
    */
-  queueSubmit?: (payload: Record<string, unknown>) => Promise<void>;
+  queueSubmit?: (
+    payload: Record<string, unknown>,
+    opts?: { op: "create" | "update"; recordId?: number; baseSnapshot?: Record<string, unknown> },
+  ) => Promise<void>;
 };
 
 function normalizeValue(value: FormDataEntryValue | null, field: CrudField) {
@@ -70,10 +76,53 @@ function fieldDefault(row: CrudRow | null | undefined, field: CrudField) {
 
 type ApiErrors = Record<string, string[]>;
 
+function useDynamicOptions(fields: CrudField[], open: boolean) {
+  const [fetched, setFetched] = React.useState<Record<string, FieldOption[]>>({});
+  const resources = fields
+    .map((f) => f.optionsResource)
+    .filter((r): r is string => Boolean(r));
+  const key = resources.join("|");
+
+  React.useEffect(() => {
+    if (!open || !resources.length) return;
+    let cancelled = false;
+    Promise.all(
+      resources.map((res) =>
+        api
+          .get<{ data: Record<string, unknown>[] }>(`${res}?per_page=100`)
+          .then(
+            (r) =>
+              [
+                res,
+                (r.data.data ?? []).map((i) => ({
+                  label: String(i.name ?? i.title ?? i.subject ?? i.id),
+                  value: i.id as number,
+                })),
+              ] as const,
+          )
+          .catch(() => [res, []] as const),
+      ),
+    ).then((pairs) => {
+      if (!cancelled) setFetched(Object.fromEntries(pairs));
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, open]);
+
+  return React.useCallback(
+    (field: CrudField) =>
+      field.optionsResource ? [...(field.options ?? []), ...(fetched[field.optionsResource] ?? [])] : field.options,
+    [fetched],
+  );
+}
+
 export function CrudModal({ open, onOpenChange, mode, title, description, resource, fields, row, onSaved, queueSubmit }: CrudModalProps) {
   const [saving, setSaving] = React.useState(false);
   const [errors, setErrors] = React.useState<ApiErrors>({});
   const formId = React.useId();
+  const optionsFor = useDynamicOptions(fields, open);
 
   // Cierra limpiando errores (sin efecto: el cierre siempre pasa por aqui).
   const handleOpenChange = React.useCallback(
@@ -96,8 +145,16 @@ export function CrudModal({ open, onOpenChange, mode, title, description, resour
     setSaving(true);
     setErrors({});
     try {
-      if (mode === "create" && queueSubmit) {
-        await queueSubmit(payload);
+      if (queueSubmit) {
+        if (mode === "edit" && row?.id != null) {
+          await queueSubmit(payload, {
+            op: "update",
+            recordId: Number(row.id),
+            baseSnapshot: row as Record<string, unknown>,
+          });
+        } else {
+          await queueSubmit(payload, { op: "create" });
+        }
         toast.success("Registro encolado en modo contingencia. Se sincronizara al restablecer la conexion.");
         onSaved();
         handleOpenChange(false);
@@ -163,7 +220,7 @@ export function CrudModal({ open, onOpenChange, mode, title, description, resour
                     )}
                   >
                     <option value="">Seleccionar</option>
-                    {field.options?.map((option) => (
+                    {optionsFor(field)?.map((option) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
                       </option>

@@ -23,7 +23,8 @@ export function BetaNotice() {
   React.useEffect(() => {
     try {
       if (!window.sessionStorage.getItem(SEEN_KEY)) {
-        setOpen(true);
+        // Deferido: no hacer setState sincrono dentro del efecto.
+        queueMicrotask(() => setOpen(true));
         window.sessionStorage.setItem(SEEN_KEY, "1");
       }
     } catch {
@@ -48,7 +49,7 @@ export function BetaNotice() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-warning" />
-              DFC CRM + Inventario — Beta
+              CRM + Inventario — Beta
             </DialogTitle>
             <DialogDescription>Estado del panel y que esperar.</DialogDescription>
           </DialogHeader>

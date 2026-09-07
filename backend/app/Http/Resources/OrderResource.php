@@ -13,6 +13,8 @@ class OrderResource extends JsonResource
             'id' => $this->id,
             'client_id' => $this->client_id,
             'client' => new ClientResource($this->whenLoaded('client')),
+            'owner_id' => $this->owner_id,
+            'owner' => $this->whenLoaded('owner', fn () => $this->owner?->name),
             'deal_id' => $this->deal_id,
             'warehouse_id' => $this->warehouse_id,
             'warehouse' => new WarehouseResource($this->whenLoaded('warehouse')),

@@ -13,10 +13,12 @@ class DealResource extends JsonResource
             'id' => $this->id,
             'client_id' => $this->client_id,
             'client' => new ClientResource($this->whenLoaded('client')),
+            'owner_id' => $this->owner_id,
+            'owner' => $this->whenLoaded('owner', fn () => $this->owner?->name),
             'title' => $this->title,
             'amount' => $this->amount,
             'stage' => $this->stage,
-            'expected_close_date' => $this->expected_close_date,
+            'expected_close_date' => $this->expected_close_date?->toDateString(),
             'created_at' => $this->created_at,
         ];
     }

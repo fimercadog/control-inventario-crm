@@ -23,6 +23,8 @@ type ModuleTablePageProps<T extends object & RowWithId> = {
   extraRowActions?: (row: T, refresh: () => void) => React.ReactNode;
   /** false para un recurso solo de alta (p.ej. una bitacora): oculta "Editar" sin afectar el boton de creacion. */
   editable?: boolean;
+  /** query params fijos que se anexan a cada peticion (p.ej. { completed: 0 }). */
+  params?: Record<string, string | number | boolean>;
 };
 
 export function ModuleTablePage<T extends object & RowWithId>({
@@ -36,12 +38,13 @@ export function ModuleTablePage<T extends object & RowWithId>({
   modalDescription,
   extraRowActions,
   editable = true,
+  params,
 }: ModuleTablePageProps<T>) {
-  const table = useApiTable<T>(resource);
+  const table = useApiTable<T>(resource, params);
   const { isActive: contingencyActive, moduleEnabled, enqueue } = useContingency();
   const moduleKey = resource.replace(/^\//, "");
-  // Modulo habilitado en contingencia: los altas se encolan en local.
-  const queueCreates = contingencyActive && moduleEnabled(resource);
+  // Modulo habilitado en contingencia: crear y editar se encolan en local.
+  const queueWrites = contingencyActive && moduleEnabled(resource);
   // Contingencia activa pero este modulo NO habilitado: solo lectura.
   const readOnly = contingencyActive && !moduleEnabled(resource);
   const [modalMode, setModalMode] = React.useState<"create" | "edit">("create");
@@ -106,7 +109,7 @@ export function ModuleTablePage<T extends object & RowWithId>({
           <span>Modo contingencia activo. Este modulo esta en solo lectura hasta que se restablezca la operacion normal.</span>
         </div>
       ) : null}
-      {queueCreates ? (
+      {queueWrites ? (
         <div className="flex items-start gap-2 rounded-md border border-warning/40 bg-warning/10 px-3 py-2 text-sm text-warning">
           <WifiOff className="mt-0.5 h-4 w-4 shrink-0" />
           <span>Modo contingencia activo. Los nuevos registros se guardan localmente y se sincronizan desde &ldquo;Modo contingencia&rdquo;.</span>
@@ -135,7 +138,7 @@ export function ModuleTablePage<T extends object & RowWithId>({
           fields={fields}
           row={selectedRow}
           onSaved={table.refresh}
-          queueSubmit={queueCreates ? (payload) => enqueue(moduleKey, payload) : undefined}
+          queueSubmit={queueWrites ? (payload, opts) => enqueue(moduleKey, payload, opts) : undefined}
         />
       ) : null}
     </div>

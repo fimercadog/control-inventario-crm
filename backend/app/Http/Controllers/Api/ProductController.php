@@ -11,14 +11,16 @@ class ProductController extends BaseCrudController
 {
     protected string $model = Product::class;
     protected string $resource = ProductResource::class;
-    protected array $searchable = ['sku', 'name', 'category'];
-    protected array $filterable = ['status' => 'status', 'category' => 'category'];
+    protected array $with = ['category', 'brand', 'unit'];
+    protected array $searchable = ['sku', 'name'];
+    protected array $filterable = ['status' => 'status', 'category_id' => 'category_id', 'brand_id' => 'brand_id'];
 
     /** Igual al index generico, mas `stock_on_hand` (suma de movimientos) por fila. */
     public function index(Request $request, TableQueryService $tables)
     {
         $query = Product::query()
             ->where('company_id', $this->companyId($request))
+            ->with($this->with)
             ->withSum('stockMovements as stock_on_hand', 'quantity');
 
         $tables->apply($request, $query, $this->searchable, $this->filterable);

@@ -1,36 +1,44 @@
 import Link from "next/link";
-import { Logo } from "@/components/brand/logo";
+import { Boxes, Check } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
-import { trustItems } from "@/components/marketing/marketing-data";
+import { HeroBackdrop } from "@/components/marketing/hero-backdrop";
+
+const points = ["CRM y ventas", "Control de inventario por bodega", "Pedidos que descuentan stock", "Reportes CSV y PDF"];
 
 export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
-      <main className="grid min-h-screen lg:grid-cols-2">
-        <section className="relative hidden overflow-hidden bg-[linear-gradient(160deg,#fbe9f0_0%,#f0c9da_100%)] px-12 py-16 lg:flex lg:flex-col lg:justify-center">
-          <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
-          <div className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
+      <main className="site-theme grid min-h-screen bg-background text-foreground lg:grid-cols-2">
+        <section className="relative isolate hidden overflow-hidden bg-ink px-12 py-16 text-ink-foreground lg:flex lg:flex-col lg:justify-center">
+          <HeroBackdrop variant="navy" />
           <div className="relative max-w-lg">
-            <h2 className="text-4xl font-semibold leading-tight tracking-tight text-navy">Gestiona tu negocio desde un solo lugar</h2>
-            <p className="mt-4 text-lg leading-8 text-muted-foreground">
+            <span className="flex size-11 items-center justify-center rounded-xl bg-white/10 text-primary">
+              <Boxes className="size-6" />
+            </span>
+            <h2 className="mt-6 text-4xl font-black leading-tight tracking-tight">
+              Vende y controla tu inventario desde un solo lugar
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-white/70">
               Clientes, deals, pedidos, productos, bodegas y ordenes de compra en una sola plataforma.
             </p>
-            <div className="mt-10 space-y-4">
-              {trustItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div key={item.label} className="flex items-center gap-3 rounded-2xl bg-white/70 p-4 text-sm font-medium text-navy shadow-sm">
-                    <Icon className="h-5 w-5 text-primary" /> {item.label}
-                  </div>
-                );
-              })}
-            </div>
+            <ul className="mt-10 space-y-3">
+              {points.map((p) => (
+                <li key={p} className="flex items-center gap-3 text-sm font-medium">
+                  <Check className="size-4 text-primary" /> {p}
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
         <section className="flex items-center justify-center bg-background px-4 py-12 sm:px-6">
           <div className="w-full max-w-md">
-            <Link href="/" className="mb-8 flex justify-center">
-              <Logo size="xl" />
+            <Link href="/" className="mb-8 flex items-center justify-center gap-2.5">
+              <span className="flex size-9 items-center justify-center rounded-xl bg-ink text-primary">
+                <Boxes className="size-5" />
+              </span>
+              <span className="text-base font-black tracking-tight">
+                CRM<span className="text-primary">+</span>Inventario
+              </span>
             </Link>
             {children}
           </div>

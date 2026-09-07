@@ -19,7 +19,7 @@ class OrderController extends BaseCrudController
 {
     protected string $model = Order::class;
     protected string $resource = OrderResource::class;
-    protected array $with = ['client', 'warehouse', 'items.product'];
+    protected array $with = ['client', 'owner', 'warehouse', 'items.product'];
     protected array $searchable = [];
     protected array $filterable = ['status' => 'status', 'client_id' => 'client_id'];
 
@@ -48,7 +48,8 @@ class OrderController extends BaseCrudController
             'unit_price' => ['required', 'numeric', 'min:0'],
         ]);
 
-        $order->items()->create($data);
+        $product = \App\Models\Product::find($data['product_id']);
+        $order->items()->create($data + ['product_name' => $product?->name, 'sku' => $product?->sku]);
         $this->recalculateTotal($order);
 
         return new OrderResource($order->load($this->with));

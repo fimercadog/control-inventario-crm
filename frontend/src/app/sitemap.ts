@@ -1,22 +1,21 @@
 import type { MetadataRoute } from "next";
 import { blogPosts } from "@/components/marketing/marketing-data";
+import { SITE_URL } from "@/lib/site";
 
-const baseUrl = "https://dfctalentohumano.fidelmercadotech.com";
+const baseUrl = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
     "/producto",
-    "/producto/empleados",
-    "/producto/asistencia",
-    "/producto/vacaciones",
-    "/producto/documentos",
-    "/producto/turnos",
+    "/producto/crm",
+    "/producto/inventario",
+    "/producto/pedidos",
+    "/producto/compras",
     "/producto/reportes",
     "/producto/ia",
-    "/soluciones",
-    "/reclutamiento",
     "/precios",
+    "/documentacion",
     "/nosotros",
     "/blog",
     "/contacto",

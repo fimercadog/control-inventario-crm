@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { api } from "@/lib/api";
+
+const inputClass =
+  "h-11 w-full rounded-lg border border-input bg-card px-3.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary";
 
 export function ContactForm({ demo = false }: { demo?: boolean }) {
   const [loading, setLoading] = useState(false);
@@ -49,9 +50,9 @@ export function ContactForm({ demo = false }: { demo?: boolean }) {
 
   if (done) {
     return (
-      <div className="rounded-4xl border border-border bg-white p-6 shadow-(--marketing-shadow)">
-        <div className="flex items-center gap-2 rounded-xl bg-success/10 px-3 py-2 text-sm text-success">
-          <CheckCircle2 className="h-4 w-4" />
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
+        <div className="flex items-center gap-2 rounded-lg bg-success/10 px-3 py-2 text-sm text-success">
+          <CheckCircle2 className="size-4" />
           Recibimos tu solicitud. Te contactaremos pronto.
         </div>
       </div>
@@ -59,26 +60,36 @@ export function ContactForm({ demo = false }: { demo?: boolean }) {
   }
 
   return (
-    <form onSubmit={submit} className="rounded-4xl border border-border bg-white p-6 shadow-(--marketing-shadow)">
+    <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Input name="name" placeholder="Nombre" aria-label="Nombre" required />
-        <Input name="company_name" placeholder="Empresa" aria-label="Empresa" />
-        <Input name="email" placeholder="Email" aria-label="Email" type="email" required />
-        <Input name="phone" placeholder="WhatsApp" aria-label="WhatsApp" />
-        <Input name="employee_count" placeholder="Numero de empleados" aria-label="Numero de empleados" />
-        <Input name="priority_module" placeholder="Modulo prioritario" aria-label="Modulo prioritario" />
+        <input name="name" placeholder="Nombre" aria-label="Nombre" required className={inputClass} />
+        <input name="company_name" placeholder="Empresa" aria-label="Empresa" className={inputClass} />
+        <input name="email" type="email" placeholder="Email" aria-label="Email" required className={inputClass} />
+        <input name="phone" placeholder="WhatsApp" aria-label="WhatsApp" className={inputClass} />
+        <input
+          name="employee_count"
+          placeholder="Numero de usuarios / bodegas"
+          aria-label="Numero de usuarios o bodegas"
+          className={inputClass}
+        />
+        <input
+          name="priority_module"
+          placeholder="Modulo prioritario (CRM, inventario...)"
+          aria-label="Modulo prioritario"
+          className={inputClass}
+        />
       </div>
       <textarea
         name="message"
-        className="mt-4 min-h-32 w-full rounded-md border border-border bg-card px-3 py-3 text-sm outline-none placeholder:text-muted-foreground"
-        placeholder="Mensaje"
+        className="mt-4 min-h-32 w-full rounded-lg border border-input bg-card px-3.5 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
+        placeholder="Cuentanos que procesos son mas manuales hoy"
         aria-label="Mensaje"
       />
       <label className="mt-4 flex items-start gap-2 text-xs leading-5 text-muted-foreground">
-        <input type="checkbox" name="consent" required className="mt-0.5 h-4 w-4 shrink-0 accent-primary" />
+        <input type="checkbox" name="consent" required className="mt-0.5 size-4 shrink-0 accent-primary" />
         <span>
-          Autorizo el tratamiento de mis datos personales para ser contactado con fines
-          comerciales, conforme a la Ley 1581 de 2012 y a la{" "}
+          Autorizo el tratamiento de mis datos personales para ser contactado con fines comerciales, conforme a la
+          Ley 1581 de 2012 y a la{" "}
           <Link href="/privacidad" className="font-medium text-primary underline">
             Politica de Tratamiento de Datos
           </Link>
@@ -86,13 +97,17 @@ export function ContactForm({ demo = false }: { demo?: boolean }) {
         </span>
       </label>
       {error ? (
-        <div className="mt-4 flex items-center gap-2 rounded-xl bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          <AlertCircle className="h-4 w-4" /> {error}
+        <div className="mt-4 flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          <AlertCircle className="size-4" /> {error}
         </div>
       ) : null}
-      <Button className="mt-4 w-full" disabled={loading}>
+      <button
+        type="submit"
+        disabled={loading}
+        className="mt-5 inline-flex h-11 w-full items-center justify-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+      >
         {loading ? "Enviando..." : demo ? "Solicitar demostracion" : "Enviar mensaje"}
-      </Button>
+      </button>
     </form>
   );
 }

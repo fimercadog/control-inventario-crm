@@ -9,6 +9,7 @@ class StoreClientRequest extends ApiFormRequest
         return [
             'name' => ['required', 'string', 'max:150'],
             'company_name' => ['nullable', 'string', 'max:150'],
+            'segment_id' => ['nullable', 'integer', 'exists:segments,id'],
             'email' => ['nullable', 'email', 'max:150'],
             'phone' => ['nullable', 'string', 'max:50'],
             'address' => ['nullable', 'string', 'max:255'],

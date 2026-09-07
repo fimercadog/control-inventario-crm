@@ -5,23 +5,32 @@ namespace App\Support;
 /**
  * Modulos elegibles para operar en modo contingencia.
  *
- * La elegibilidad es una decision de arquitectura, no un toggle de settings:
- * un modulo solo entra aqui si tiene una ruta de escritura offline segura
- * (puramente aditiva: crea filas, nunca modifica ni depende del estado actual
- * de otro registro). Lo que el admin elige en tiempo de ejecucion es cuales de
- * estos habilitar para una activacion concreta.
+ * La elegibilidad es una decision de arquitectura, no un toggle de settings.
+ * Lo que el admin elige en tiempo de ejecucion es cuales habilitar para una
+ * activacion concreta. Productos y Oportunidades soportan alta idempotente
+ * (`client_uuid`) y deteccion de conflicto en la edicion (`base_snapshot`).
  */
 class ContingencyModuleRegistry
 {
     /**
-     * @return list<array{key: string, label: string, description: string}>
+     * @return list<array{key: string, label: string, description: string, resource: string}>
      */
     public static function all(): array
     {
-        // Sin modulos elegibles todavia: el pivote a CRM + Inventario no definio
-        // un flujo de escritura offline propio para esos dominios. La
-        // infraestructura de contingencia queda activa, solo vacia.
-        return [];
+        return [
+            [
+                'key' => 'products',
+                'label' => 'Productos',
+                'description' => 'Crear y editar productos sin conexion. Se sincronizan uno por uno al volver la conexion.',
+                'resource' => '/products',
+            ],
+            [
+                'key' => 'deals',
+                'label' => 'Oportunidades',
+                'description' => 'Crear y editar oportunidades sin conexion. Se sincronizan uno por uno al volver la conexion.',
+                'resource' => '/deals',
+            ],
+        ];
     }
 
     /**

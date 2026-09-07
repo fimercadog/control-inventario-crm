@@ -14,7 +14,7 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          background: "linear-gradient(160deg, #fbe9f0 0%, #f0c9da 100%)",
+          background: "linear-gradient(160deg, #ecfdf3 0%, #d7f0e0 100%)",
           fontFamily: "sans-serif",
         }}
       >
@@ -26,7 +26,7 @@ export default function OpengraphImage() {
             width: 96,
             height: 96,
             borderRadius: 24,
-            background: "#a3175a",
+            background: "#15803d",
             color: "#ffffff",
             fontSize: 52,
             fontWeight: 700,
@@ -35,11 +35,11 @@ export default function OpengraphImage() {
         >
           D
         </div>
-        <div style={{ display: "flex", fontSize: 64, fontWeight: 700, color: "#26262e" }}>
-          DFC Talento Humano
+        <div style={{ display: "flex", fontSize: 64, fontWeight: 900, color: "#0f1012" }}>
+          CRM + Inventario
         </div>
-        <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#5f4f56", maxWidth: 820 }}>
-          Software de Recursos Humanos para empresas: empleados, asistencia, vacaciones y mas.
+        <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#3f5347", maxWidth: 820 }}>
+          CRM y control de inventario para PYMES: el pedido de venta descuenta stock al confirmarse.
         </div>
       </div>
     ),

@@ -13,7 +13,8 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'company_id', 'sku', 'name', 'category', 'unit', 'unit_price', 'cost_price', 'reorder_level', 'status',
+        'company_id', 'client_uuid', 'sku', 'name', 'category_id', 'brand_id', 'unit_id',
+        'unit_price', 'cost_price', 'reorder_level', 'status',
     ];
 
     protected $casts = [
@@ -24,6 +25,21 @@ class Product extends Model
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
     }
 
     public function stockMovements(): HasMany

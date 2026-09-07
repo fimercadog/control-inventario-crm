@@ -13,6 +13,8 @@ class ClientResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'company_name' => $this->company_name,
+            'segment_id' => $this->segment_id,
+            'segment' => $this->whenLoaded('segment', fn () => $this->segment?->name),
             'email' => $this->email,
             'phone' => $this->phone,
             'address' => $this->address,

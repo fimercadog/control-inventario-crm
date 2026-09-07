@@ -62,6 +62,6 @@ class CrudValidationTest extends TestCase
     {
         $this->postJson('/api/products', ['sku' => '', 'name' => '', 'status' => 'nope'])
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['sku', 'name', 'unit', 'unit_price', 'cost_price', 'reorder_level', 'status']);
+            ->assertJsonValidationErrors(['sku', 'name', 'unit_price', 'cost_price', 'reorder_level', 'status']);
     }
 }

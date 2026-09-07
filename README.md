@@ -37,19 +37,24 @@ Ver el detalle y lo que falta por hacer en [docs/development-status.md](docs/dev
 
 ## Requisitos
 
-- PHP 8.2+ y Composer.
+- **PHP 8.4+** y Composer. Las dependencias instaladas en `backend/vendor/`
+  exigen `>= 8.4` (`vendor/composer/platform_check.php`); con un PHP menor
+  cada request de la API responde 500. En Windows, si `php` del PATH es una
+  versión vieja (p. ej. XAMPP), usa `backend/serve.ps1` o antepón el PHP 8.4 al
+  PATH.
 - Node.js 18+ y npm.
 - SQLite (por defecto) o MySQL para el backend.
 
 ## Arranque local
 
 ```bash
-# Backend (API)
+# Backend (API) — requiere PHP 8.4+
 cd backend
 cp .env.example .env      # si no existe ya
 php artisan key:generate
 php artisan migrate:fresh --seed
-php artisan serve --host=127.0.0.1 --port=8001
+pwsh ./serve.ps1          # localiza PHP 8.4 y levanta la API en :8001
+#   (equivalente manual: php artisan serve --host=127.0.0.1 --port=8001)
 
 # Frontend (panel + sitio publico), en otra terminal
 cd frontend

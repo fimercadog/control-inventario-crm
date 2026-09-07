@@ -12,7 +12,8 @@ class PurchaseOrderItemResource extends JsonResource
         return [
             'id' => $this->id,
             'product_id' => $this->product_id,
-            'product' => new ProductResource($this->whenLoaded('product')),
+            'product' => $this->product_name ?? $this->whenLoaded('product', fn () => $this->product?->name),
+            'sku' => $this->sku,
             'quantity' => $this->quantity,
             'unit_cost' => $this->unit_cost,
         ];

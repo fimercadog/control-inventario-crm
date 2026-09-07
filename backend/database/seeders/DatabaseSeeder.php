@@ -4,16 +4,25 @@ namespace Database\Seeders;
 
 use App\Models\Activity;
 use App\Models\AuditLog;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Client;
+use App\Models\ClientNote;
 use App\Models\Company;
+use App\Models\Contact;
 use App\Models\Deal;
+use App\Models\Unit;
 use App\Models\Lead;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
+use App\Models\Quote;
+use App\Models\QuoteItem;
+use App\Models\Segment;
 use App\Models\StockMovement;
+use App\Models\StockTransfer;
 use App\Models\Supplier;
 use App\Models\User;
 use App\Models\Warehouse;
@@ -81,6 +90,8 @@ class DatabaseSeeder extends Seeder
             return $user;
         });
         $admin = $seededUsers->firstWhere('email', 'admin@andescomercial.co');
+        $salesUser = $seededUsers->firstWhere('email', 'ventas@andescomercial.co');
+        $owners = [$salesUser, $admin];
 
         // Bodegas.
         $warehouses = collect([
@@ -89,19 +100,41 @@ class DatabaseSeeder extends Seeder
         ])->map(fn ($data) => Warehouse::firstOrCreate(['company_id' => $company->id, 'name' => $data['name']], $data + ['status' => 'active']));
         $mainWarehouse = $warehouses[0];
 
+        // Catalogos de inventario.
+        $categories = collect(['Oficina', 'Mobiliario', 'Electronica', 'Aseo'])
+            ->mapWithKeys(fn ($name) => [$name => Category::firstOrCreate(['company_id' => $company->id, 'name' => $name], ['status' => 'active'])]);
+        $brands = collect(['Generica', 'HP', 'Logitech', 'Ergo'])
+            ->mapWithKeys(fn ($name) => [$name => Brand::firstOrCreate(['company_id' => $company->id, 'name' => $name], ['status' => 'active'])]);
+        $units = collect([
+            ['name' => 'Unidad', 'abbreviation' => 'un'],
+            ['name' => 'Caja', 'abbreviation' => 'cja'],
+            ['name' => 'Kilogramo', 'abbreviation' => 'kg'],
+            ['name' => 'Litro', 'abbreviation' => 'lt'],
+        ])->mapWithKeys(fn ($data) => [$data['name'] => Unit::firstOrCreate(['company_id' => $company->id, 'name' => $data['name']], $data + ['status' => 'active'])]);
+        $unidadUnit = $units['Unidad'];
+
         // Productos.
         $products = collect([
-            ['sku' => 'SKU-1001', 'name' => 'Resma papel carta', 'category' => 'Oficina', 'cost' => 8500, 'price' => 12500, 'reorder' => 20],
-            ['sku' => 'SKU-1002', 'name' => 'Toner impresora HP 12A', 'category' => 'Oficina', 'cost' => 65000, 'price' => 98000, 'reorder' => 5],
-            ['sku' => 'SKU-1003', 'name' => 'Silla ergonomica', 'category' => 'Mobiliario', 'cost' => 210000, 'price' => 320000, 'reorder' => 3],
-            ['sku' => 'SKU-1004', 'name' => 'Monitor 24" LED', 'category' => 'Electronica', 'cost' => 480000, 'price' => 650000, 'reorder' => 4],
-            ['sku' => 'SKU-1005', 'name' => 'Teclado inalambrico', 'category' => 'Electronica', 'cost' => 45000, 'price' => 72000, 'reorder' => 10],
-            ['sku' => 'SKU-1006', 'name' => 'Mouse optico', 'category' => 'Electronica', 'cost' => 22000, 'price' => 38000, 'reorder' => 15],
-            ['sku' => 'SKU-1007', 'name' => 'Dispensador de gel antibacterial', 'category' => 'Aseo', 'cost' => 18000, 'price' => 29000, 'reorder' => 8],
-            ['sku' => 'SKU-1008', 'name' => 'Caja archivador oficio', 'category' => 'Oficina', 'cost' => 9000, 'price' => 15000, 'reorder' => 12],
+            ['sku' => 'SKU-1001', 'name' => 'Resma papel carta', 'category' => 'Oficina', 'brand' => 'Generica', 'cost' => 8500, 'price' => 12500, 'reorder' => 20],
+            ['sku' => 'SKU-1002', 'name' => 'Toner impresora HP 12A', 'category' => 'Oficina', 'brand' => 'HP', 'cost' => 65000, 'price' => 98000, 'reorder' => 5],
+            ['sku' => 'SKU-1003', 'name' => 'Silla ergonomica', 'category' => 'Mobiliario', 'brand' => 'Ergo', 'cost' => 210000, 'price' => 320000, 'reorder' => 3],
+            ['sku' => 'SKU-1004', 'name' => 'Monitor 24" LED', 'category' => 'Electronica', 'brand' => 'HP', 'cost' => 480000, 'price' => 650000, 'reorder' => 4],
+            ['sku' => 'SKU-1005', 'name' => 'Teclado inalambrico', 'category' => 'Electronica', 'brand' => 'Logitech', 'cost' => 45000, 'price' => 72000, 'reorder' => 10],
+            ['sku' => 'SKU-1006', 'name' => 'Mouse optico', 'category' => 'Electronica', 'brand' => 'Logitech', 'cost' => 22000, 'price' => 38000, 'reorder' => 15],
+            ['sku' => 'SKU-1007', 'name' => 'Dispensador de gel antibacterial', 'category' => 'Aseo', 'brand' => 'Generica', 'cost' => 18000, 'price' => 29000, 'reorder' => 8],
+            ['sku' => 'SKU-1008', 'name' => 'Caja archivador oficio', 'category' => 'Oficina', 'brand' => 'Generica', 'cost' => 9000, 'price' => 15000, 'reorder' => 12],
         ])->map(fn ($data) => Product::firstOrCreate(
             ['company_id' => $company->id, 'sku' => $data['sku']],
-            ['name' => $data['name'], 'category' => $data['category'], 'unit' => 'unidad', 'cost_price' => $data['cost'], 'unit_price' => $data['price'], 'reorder_level' => $data['reorder'], 'status' => 'active'],
+            [
+                'name' => $data['name'],
+                'category_id' => $categories[$data['category']]->id,
+                'brand_id' => $brands[$data['brand']]->id,
+                'unit_id' => $unidadUnit->id,
+                'cost_price' => $data['cost'],
+                'unit_price' => $data['price'],
+                'reorder_level' => $data['reorder'],
+                'status' => 'active',
+            ],
         ));
 
         // Proveedores.
@@ -111,15 +144,43 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Muebles y Espacios Ltda', 'contact_name' => 'Ricardo Pena', 'email' => 'pedidos@mueblesyespacios.co'],
         ])->map(fn ($data) => Supplier::firstOrCreate(['company_id' => $company->id, 'name' => $data['name']], $data + ['status' => 'active']));
 
+        // Segmentos de cliente.
+        $segments = collect(['Mayorista', 'Minorista', 'Institucional', 'Distribuidor'])
+            ->mapWithKeys(fn ($name) => [$name => Segment::firstOrCreate(['company_id' => $company->id, 'name' => $name], ['status' => 'active'])]);
+
         // Clientes.
         $clients = collect([
-            ['name' => 'Laura Gutierrez', 'company_name' => 'Constructora Alfa', 'email' => 'compras@constructoraalfa.co'],
-            ['name' => 'Andres Vargas', 'company_name' => 'Grupo Bienestar', 'email' => 'andres.vargas@grupobienestar.co'],
-            ['name' => 'Marcela Rios', 'company_name' => 'Colegio San Rafael', 'email' => 'administracion@sanrafael.edu.co'],
-            ['name' => 'Felipe Castano', 'company_name' => 'Clinica Vida Sana', 'email' => 'felipe.castano@vidasana.co'],
-            ['name' => 'Diana Torres', 'company_name' => 'Restaurante El Fogon', 'email' => 'diana@elfogon.co'],
-            ['name' => 'Camilo Herrera', 'company_name' => null, 'email' => 'camilo.herrera@gmail.com'],
-        ])->map(fn ($data) => Client::firstOrCreate(['company_id' => $company->id, 'email' => $data['email']], $data + ['status' => 'active']));
+            ['name' => 'Laura Gutierrez', 'company_name' => 'Constructora Alfa', 'email' => 'compras@constructoraalfa.co', 'segment' => 'Mayorista'],
+            ['name' => 'Andres Vargas', 'company_name' => 'Grupo Bienestar', 'email' => 'andres.vargas@grupobienestar.co', 'segment' => 'Institucional'],
+            ['name' => 'Marcela Rios', 'company_name' => 'Colegio San Rafael', 'email' => 'administracion@sanrafael.edu.co', 'segment' => 'Institucional'],
+            ['name' => 'Felipe Castano', 'company_name' => 'Clinica Vida Sana', 'email' => 'felipe.castano@vidasana.co', 'segment' => 'Institucional'],
+            ['name' => 'Diana Torres', 'company_name' => 'Restaurante El Fogon', 'email' => 'diana@elfogon.co', 'segment' => 'Minorista'],
+            ['name' => 'Camilo Herrera', 'company_name' => null, 'email' => 'camilo.herrera@gmail.com', 'segment' => 'Minorista'],
+        ])->map(fn ($data) => Client::firstOrCreate(
+            ['company_id' => $company->id, 'email' => $data['email']],
+            ['name' => $data['name'], 'company_name' => $data['company_name'], 'segment_id' => $segments[$data['segment']]->id, 'status' => 'active'],
+        ));
+
+        // Contactos ligados a clientes.
+        collect([
+            [0, 'Laura Gutierrez', 'Jefe de compras', 'laura.gutierrez@constructoraalfa.co', '+57 310 555 0101'],
+            [0, 'Mario Beltran', 'Asistente de compras', 'mario.beltran@constructoraalfa.co', '+57 310 555 0102'],
+            [1, 'Andres Vargas', 'Gerente administrativo', 'andres.vargas@grupobienestar.co', '+57 315 555 0110'],
+            [2, 'Marcela Rios', 'Coordinadora', 'marcela.rios@sanrafael.edu.co', '+57 320 555 0120'],
+        ])->each(fn ($data) => Contact::firstOrCreate(
+            ['company_id' => $company->id, 'name' => $data[1], 'client_id' => $clients[$data[0]]->id],
+            ['role' => $data[2], 'email' => $data[3], 'phone' => $data[4], 'status' => 'active'],
+        ));
+
+        // Notas comerciales sobre algunos clientes.
+        collect([
+            [0, 'Cliente pidio cotizacion para proyecto nuevo. Prefiere entregas los martes.'],
+            [1, 'Renovacion anual en negociacion. Sensible al precio, valora el soporte.'],
+            [3, 'Contacto inicial por el sitio web. Interesado en el modulo de inventario.'],
+        ])->each(fn ($data) => ClientNote::firstOrCreate(
+            ['company_id' => $company->id, 'client_id' => $clients[$data[0]]->id, 'body' => $data[1]],
+            ['user_id' => $admin->id],
+        ));
 
         // Deals en distintas etapas del pipeline.
         $stages = ['prospecting', 'qualification', 'proposal', 'negotiation', 'won', 'lost'];
@@ -127,7 +188,7 @@ class DatabaseSeeder extends Seeder
         foreach ($clients as $index => $client) {
             $deals->push(Deal::firstOrCreate(
                 ['company_id' => $company->id, 'client_id' => $client->id, 'title' => 'Suministro de oficina - '.$client->company_name ?? $client->name],
-                ['amount' => 800000 + $index * 350000, 'stage' => $stages[$index % count($stages)], 'expected_close_date' => Carbon::today()->addDays(10 + $index * 5)],
+                ['owner_id' => $owners[$index % count($owners)]->id, 'amount' => 800000 + $index * 350000, 'stage' => $stages[$index % count($stages)], 'expected_close_date' => Carbon::today()->addDays(10 + $index * 5)],
             ));
         }
 
@@ -145,6 +206,22 @@ class DatabaseSeeder extends Seeder
             );
         }
 
+        // Tareas pendientes y seguimientos programados.
+        collect([
+            ['task', 'Enviar cotizacion a Constructora Alfa', 0, 1, false],
+            ['task', 'Confirmar disponibilidad de sillas ergonomicas', null, 3, false],
+            ['followup', 'Volver a llamar a Grupo Bienestar', 1, 7, false],
+            ['followup', 'Retomar contacto con Colegio San Rafael', 2, -2, false],
+        ])->each(fn ($data) => Activity::firstOrCreate(
+            ['company_id' => $company->id, 'subject' => $data[1]],
+            [
+                'client_id' => $data[2] === null ? null : $clients[$data[2]]->id,
+                'type' => $data[0],
+                'due_date' => Carbon::today()->addDays($data[3]),
+                'completed' => $data[4],
+            ],
+        ));
+
         // Orden de compra recibida: genera entradas de stock reales.
         $purchaseOrder = PurchaseOrder::firstOrCreate(
             // Sin `status` en la clave: una vez recibida, un segundo reseed no
@@ -156,7 +233,7 @@ class DatabaseSeeder extends Seeder
             $poItems = [[$products[0], 200], [$products[1], 30], [$products[7], 150]];
             $total = 0;
             foreach ($poItems as [$product, $qty]) {
-                PurchaseOrderItem::create(['purchase_order_id' => $purchaseOrder->id, 'product_id' => $product->id, 'quantity' => $qty, 'unit_cost' => $product->cost_price]);
+                PurchaseOrderItem::create(['purchase_order_id' => $purchaseOrder->id, 'product_id' => $product->id, 'product_name' => $product->name, 'sku' => $product->sku, 'quantity' => $qty, 'unit_cost' => $product->cost_price]);
                 $total += $qty * $product->cost_price;
                 StockMovement::create([
                     'company_id' => $company->id, 'product_id' => $product->id, 'warehouse_id' => $mainWarehouse->id,
@@ -177,6 +254,28 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        // Transferencia demo: mueve stock de la Bodega Principal a la Norte.
+        if (StockTransfer::where('company_id', $company->id)->doesntExist()) {
+            $transferProduct = $products[0];
+            $transfer = StockTransfer::create([
+                'company_id' => $company->id,
+                'product_id' => $transferProduct->id,
+                'from_warehouse_id' => $mainWarehouse->id,
+                'to_warehouse_id' => $warehouses[1]->id,
+                'quantity' => 15,
+                'reference' => 'TR-0001',
+                'notes' => 'Reabastecimiento de la sucursal norte.',
+                'status' => 'completed',
+            ]);
+            foreach ([[$mainWarehouse->id, -15], [$warehouses[1]->id, 15]] as [$warehouseId, $qty]) {
+                StockMovement::create([
+                    'company_id' => $company->id, 'product_id' => $transferProduct->id, 'warehouse_id' => $warehouseId,
+                    'type' => 'adjustment', 'quantity' => $qty, 'reason' => 'Transferencia entre bodegas',
+                    'reference' => 'transfer:'.$transfer->id,
+                ]);
+            }
+        }
+
         // Segunda orden de compra, todavia en borrador (sin recibir).
         PurchaseOrder::firstOrCreate(
             ['company_id' => $company->id, 'supplier_id' => $suppliers[1]->id, 'warehouse_id' => $mainWarehouse->id],
@@ -189,19 +288,19 @@ class DatabaseSeeder extends Seeder
             ['client' => $clients[1], 'confirmed' => true, 'items' => [[$products[3], 2], [$products[5], 5]]],
             ['client' => $clients[2], 'confirmed' => false, 'items' => [[$products[2], 4]]],
         ];
-        foreach ($orderPlans as $plan) {
+        foreach ($orderPlans as $planIndex => $plan) {
             // Sin `status` en la clave: un pedido ya confirmado no debe generar
             // un duplicado en un segundo reseed.
             $order = Order::firstOrCreate(
                 ['company_id' => $company->id, 'client_id' => $plan['client']->id, 'warehouse_id' => $mainWarehouse->id],
-                ['status' => 'draft', 'total' => 0],
+                ['owner_id' => $owners[$planIndex % count($owners)]->id, 'status' => 'draft', 'total' => 0],
             );
             if ($order->items()->count() > 0) {
                 continue;
             }
             $total = 0;
             foreach ($plan['items'] as [$product, $qty]) {
-                OrderItem::create(['order_id' => $order->id, 'product_id' => $product->id, 'quantity' => $qty, 'unit_price' => $product->unit_price]);
+                OrderItem::create(['order_id' => $order->id, 'product_id' => $product->id, 'product_name' => $product->name, 'sku' => $product->sku, 'quantity' => $qty, 'unit_price' => $product->unit_price]);
                 $total += $qty * $product->unit_price;
             }
             $order->update(['total' => $total]);
@@ -214,6 +313,28 @@ class DatabaseSeeder extends Seeder
                 }
                 $order->update(['status' => 'confirmed']);
             }
+        }
+
+        // Cotizaciones: una en borrador, una enviada, una aceptada.
+        $quotePlans = [
+            ['client' => $clients[0], 'status' => 'draft', 'title' => 'Dotacion de oficina Q1', 'items' => [[$products[0], 40], [$products[7], 20]]],
+            ['client' => $clients[1], 'status' => 'sent', 'title' => 'Equipos de computo', 'items' => [[$products[3], 3], [$products[4], 3]]],
+            ['client' => $clients[2], 'status' => 'accepted', 'title' => 'Mobiliario aulas', 'items' => [[$products[2], 6]]],
+        ];
+        foreach ($quotePlans as $plan) {
+            $quote = Quote::firstOrCreate(
+                ['company_id' => $company->id, 'client_id' => $plan['client']->id, 'title' => $plan['title']],
+                ['status' => 'draft', 'valid_until' => Carbon::today()->addDays(15), 'total' => 0],
+            );
+            if ($quote->items()->count() > 0) {
+                continue;
+            }
+            $total = 0;
+            foreach ($plan['items'] as [$product, $qty]) {
+                QuoteItem::create(['quote_id' => $quote->id, 'product_id' => $product->id, 'product_name' => $product->name, 'sku' => $product->sku, 'quantity' => $qty, 'unit_price' => $product->unit_price]);
+                $total += $qty * $product->unit_price;
+            }
+            $quote->update(['total' => $total, 'status' => $plan['status']]);
         }
 
         // Leads del sitio publico.

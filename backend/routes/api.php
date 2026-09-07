@@ -5,7 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ActivityController;
 use App\Http\Controllers\Api\AuditLogController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ClientController;
+use App\Http\Controllers\Api\ClientNoteController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\ContingencyController;
 use App\Http\Controllers\Api\DashboardController;
@@ -15,10 +19,15 @@ use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PurchaseOrderController;
+use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\SegmentController;
+use App\Http\Controllers\Api\StockAlertController;
 use App\Http\Controllers\Api\StockMovementController;
+use App\Http\Controllers\Api\StockTransferController;
 use App\Http\Controllers\Api\SupplierController;
+use App\Http\Controllers\Api\UnitController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WarehouseController;
 
@@ -43,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     // menu del frontend). `can:` responde 403 si el usuario no lo tiene.
     Route::get('/dashboard', DashboardController::class)->middleware('can:dashboard.view');
     Route::get('/reports', ReportController::class)->middleware('can:reports.view');
+    Route::get('/reports/commercial', [ReportController::class, 'commercial'])->middleware('can:reports.view');
 
     // Modo contingencia: el estado lo lee cualquier usuario (para renderizar el
     // banner y el modo solo-lectura); activar/desactivar exige settings.manage.
@@ -59,14 +69,30 @@ Route::middleware('auth:sanctum')->group(function (): void {
 
     // CRM
     Route::apiResource('clients', ClientController::class)->middleware('can:clients.manage');
+    Route::get('/clients/{client}/history', [ClientController::class, 'history'])->middleware('can:clients.manage');
+    Route::apiResource('contacts', ContactController::class)->middleware('can:clients.manage');
+    Route::apiResource('segments', SegmentController::class)->middleware('can:clients.manage');
+    Route::apiResource('client-notes', ClientNoteController::class)->only(['index', 'store', 'destroy'])->middleware('can:clients.manage');
     Route::apiResource('deals', DealController::class)->middleware('can:deals.manage');
     Route::apiResource('activities', ActivityController::class)->middleware('can:activities.manage');
 
+    Route::apiResource('quotes', QuoteController::class)->middleware('can:deals.manage');
+    Route::post('/quotes/{quote}/items', [QuoteController::class, 'addItem'])->middleware('can:deals.manage');
+    Route::delete('/quotes/{quote}/items/{item}', [QuoteController::class, 'removeItem'])->middleware('can:deals.manage');
+    Route::post('/quotes/{quote}/send', [QuoteController::class, 'send'])->middleware('can:deals.manage');
+    Route::post('/quotes/{quote}/respond', [QuoteController::class, 'respond'])->middleware('can:deals.manage');
+    Route::post('/quotes/{quote}/convert', [QuoteController::class, 'convert'])->middleware('can:deals.manage');
+
     // Inventario
     Route::apiResource('products', ProductController::class)->middleware('can:products.manage');
+    Route::apiResource('categories', CategoryController::class)->middleware('can:products.manage');
+    Route::apiResource('brands', BrandController::class)->middleware('can:products.manage');
+    Route::apiResource('units', UnitController::class)->middleware('can:products.manage');
     Route::apiResource('warehouses', WarehouseController::class)->middleware('can:warehouses.manage');
     Route::apiResource('suppliers', SupplierController::class)->middleware('can:suppliers.manage');
     Route::apiResource('stock-movements', StockMovementController::class)->only(['index', 'store'])->middleware('can:stock.manage');
+    Route::apiResource('stock-transfers', StockTransferController::class)->only(['index', 'store'])->middleware('can:stock.manage');
+    Route::get('/stock-alerts', StockAlertController::class)->middleware('can:products.manage');
 
     Route::apiResource('purchase-orders', PurchaseOrderController::class)->middleware('can:purchase_orders.manage');
     Route::post('/purchase-orders/{purchase_order}/items', [PurchaseOrderController::class, 'addItem'])->middleware('can:purchase_orders.manage');

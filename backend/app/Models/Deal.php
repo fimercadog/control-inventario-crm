@@ -12,7 +12,7 @@ class Deal extends Model
     /** @use HasFactory<\Database\Factories\DealFactory> */
     use HasFactory;
 
-    protected $fillable = ['company_id', 'client_id', 'title', 'amount', 'stage', 'expected_close_date'];
+    protected $fillable = ['company_id', 'client_uuid', 'owner_id', 'client_id', 'title', 'amount', 'stage', 'expected_close_date'];
 
     protected $casts = [
         'amount' => 'decimal:2',
@@ -27,6 +27,11 @@ class Deal extends Model
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function activities(): HasMany

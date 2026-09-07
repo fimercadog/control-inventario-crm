@@ -1,29 +1,40 @@
-import { CTASection } from "@/components/marketing/cta-section";
+import { ArrowLeftRight, Boxes, Eye } from "lucide-react";
+import { CtaLink } from "@/components/marketing/cta-link";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
+import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
-import { SectionHeading } from "@/components/marketing/section-heading";
+import { DemoCta, FeatureCard, Section, SectionHeading } from "@/components/marketing/marketing-ui";
+
+const pillars = [
+  { icon: ArrowLeftRight, title: "Conectar ventas e inventario", text: "El pedido de venta descuenta stock y la orden de compra lo repone, sin cuadrar nada a mano." },
+  { icon: Boxes, title: "Automatizar lo repetitivo", text: "Menos planillas, menos conteos manuales, menos correos para aprobar cosas." },
+  { icon: Eye, title: "Dar visibilidad al negocio", text: "Reportes claros de ventas, pipeline y rotacion para decidir con datos, no con intuicion." },
+];
 
 export default function AboutPage() {
   return (
     <MarketingLayout>
-      <main>
-        <section className="bg-white px-4 py-20 sm:px-6 lg:px-8">
-          <Reveal><SectionHeading eyebrow="Nosotros" title="Creamos tecnologia accesible para simplificar Recursos Humanos" description="DFC Talento Humano nace para que pequenas y medianas empresas puedan digitalizar RRHH sin depender de procesos pesados, consultorias interminables o herramientas desconectadas." /></Reveal>
-        </section>
-        <section className="bg-muted px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
-            {["Simplificar RRHH", "Automatizar lo repetitivo", "Dar visibilidad a la empresa"].map((item) => (
-              <Reveal key={item}>
-                <div className="rounded-4xl bg-white p-8 shadow-sm">
-                  <h2 className="text-xl font-semibold text-navy">{item}</h2>
-                  <p className="mt-4 text-sm leading-6 text-muted-foreground">Diseñamos software claro, vendible y funcional para operar personas con menos friccion y mas trazabilidad.</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-        <CTASection />
-      </main>
+      <PageHero
+        eyebrow="Nosotros"
+        title="Tecnologia accesible para vender y controlar inventario sin caos"
+        lead="Nace para que pequenas y medianas empresas conecten ventas e inventario sin depender de un ERP pesado, consultorias interminables o herramientas desconectadas."
+        actions={<CtaLink href="/demo">Solicitar demo</CtaLink>}
+      />
+
+      <Section>
+        <Reveal>
+          <SectionHeading eyebrow="Que nos mueve" title="Software claro, vendible y funcional" />
+        </Reveal>
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
+          {pillars.map((p, i) => (
+            <Reveal key={p.title} delay={i * 0.06}>
+              <FeatureCard icon={p.icon} title={p.title} text={p.text} />
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+
+      <DemoCta />
     </MarketingLayout>
   );
 }

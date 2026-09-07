@@ -1,30 +1,50 @@
+import { Check } from "lucide-react";
 import { ContactForm } from "@/components/marketing/contact-form";
-import { DashboardPreview } from "@/components/marketing/dashboard-preview";
-import { FeatureGrid } from "@/components/marketing/feature-grid";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
+import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
+import { ContactChannels, PlataformaGrid, Section } from "@/components/marketing/marketing-ui";
+
+const included = [
+  "Recorrido por CRM, inventario, pedidos y compras",
+  "El puente CRM-inventario: confirmar un pedido descuenta stock",
+  "Reportes y exportaciones CSV / PDF",
+  "Roles, permisos y auditoria",
+  "Como se veria con tus productos y bodegas",
+];
 
 export default function DemoPage() {
   return (
     <MarketingLayout>
-      <main>
-        <section className="bg-[linear-gradient(180deg,#ffffff_0%,#fbe9f0_100%)] px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
-            <Reveal>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Demo comercial</p>
-                <h1 className="mt-4 text-5xl font-semibold tracking-tight text-navy">Mira como se veria Recursos Humanos operando desde una sola plataforma</h1>
-                <p className="mt-5 text-lg leading-8 text-muted-foreground">Resolvemos dispersion de informacion, aprobaciones manuales, documentos sin control, asistencia poco visible y reclutamiento desordenado.</p>
-              </div>
-            </Reveal>
-            <Reveal><DashboardPreview /></Reveal>
-          </div>
-        </section>
-        <FeatureGrid />
-        <section className="bg-muted px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl"><ContactForm demo /></div>
-        </section>
-      </main>
+      <PageHero
+        eyebrow="Demo comercial"
+        title="Mira tu operacion comercial y de inventario en una sola plataforma"
+        lead="Resolvemos stock que no cuadra, pedidos manuales, leads dispersos, compras sin control y reportes armados a mano."
+        actions={<ContactChannels />}
+      />
+
+      <Section>
+        <PlataformaGrid />
+      </Section>
+
+      <Section className="bg-secondary/40">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <Reveal>
+            <h2 className="text-2xl font-black tracking-tight">Que incluye la demo</h2>
+            <ul className="mt-6 space-y-3">
+              {included.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm">
+                  <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <ContactForm demo />
+          </Reveal>
+        </div>
+      </Section>
     </MarketingLayout>
   );
 }

@@ -1,35 +1,37 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto, Roboto_Mono } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
+  variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "700", "900"],
 });
 
-const geistMono = Geist_Mono({
+const robotoMono = Roboto_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dfctalentohumano.fidelmercadotech.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "DFC Talento Humano | Software de Recursos Humanos para empresas",
-    template: "%s | DFC Talento Humano",
+    default: "CRM + Inventario | CRM y control de inventario para PYMES",
+    template: "%s | CRM + Inventario",
   },
-  description: "Centraliza empleados, asistencia, vacaciones, documentos, turnos, reclutamiento, reportes e IA para Recursos Humanos.",
+  description: "CRM y control de inventario conectados: leads, clientes, deals, productos, bodegas, pedidos de venta, compras, reportes e IA.",
   openGraph: {
-    title: "DFC Talento Humano",
-    description: "Software moderno de Recursos Humanos para empresas.",
+    title: "CRM + Control de Inventario",
+    description: "El pedido de venta descuenta stock de la bodega al confirmarse. CRM e inventario en una sola plataforma.",
     type: "website",
     locale: "es_CO",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "DFC Talento Humano",
-    description: "Software moderno de Recursos Humanos para empresas.",
+    title: "CRM + Control de Inventario",
+    description: "CRM e inventario en una sola plataforma para PYMES.",
   },
 };
 
@@ -38,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${roboto.variable} ${robotoMono.variable} h-full antialiased`}
     >
       <body className="min-h-full" suppressHydrationWarning>
         {children}

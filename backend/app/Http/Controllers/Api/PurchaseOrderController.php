@@ -48,7 +48,8 @@ class PurchaseOrderController extends BaseCrudController
             'unit_cost' => ['required', 'numeric', 'min:0'],
         ]);
 
-        $purchase_order->items()->create($data);
+        $product = \App\Models\Product::find($data['product_id']);
+        $purchase_order->items()->create($data + ['product_name' => $product?->name, 'sku' => $product?->sku]);
         $this->recalculateTotal($purchase_order);
 
         return new PurchaseOrderResource($purchase_order->load($this->with));

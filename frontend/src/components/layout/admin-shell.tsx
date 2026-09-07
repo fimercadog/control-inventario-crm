@@ -4,10 +4,15 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  AlertTriangle,
   ArrowLeftRight,
   BarChart3,
   Bot,
+  CalendarClock,
+  CalendarDays,
   ClipboardList,
+  Contact2,
+  FileText,
   Handshake,
   Inbox,
   LayoutDashboard,
@@ -19,11 +24,18 @@ import {
   Moon,
   Package,
   Receipt,
+  Repeat,
+  Ruler,
   Settings,
   Shield,
   ShieldAlert,
+  ListTodo,
   ShoppingCart,
+  StickyNote,
   Sun,
+  Tag,
+  Tags,
+  TrendingUp,
   Truck,
   UserCircle,
   Users,
@@ -73,29 +85,71 @@ type NavItem = {
   alert?: boolean;
 };
 
-const mainNav: NavItem[] = [
-  { href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] },
-  { href: "/app/clientes", label: "Clientes", icon: Users, permissions: ["clients.manage"] },
-  { href: "/app/deals", label: "Deals", icon: Handshake, permissions: ["deals.manage"] },
-  { href: "/app/actividades", label: "Actividades", icon: ListChecks, permissions: ["activities.manage"] },
-  { href: "/app/pedidos", label: "Pedidos", icon: Receipt, permissions: ["orders.manage"] },
-  { href: "/app/productos", label: "Productos", icon: Package, permissions: ["products.manage"] },
-  { href: "/app/bodegas", label: "Bodegas", icon: Warehouse, permissions: ["warehouses.manage"] },
-  { href: "/app/movimientos-inventario", label: "Movimientos", icon: ArrowLeftRight, permissions: ["stock.manage"] },
-  { href: "/app/proveedores", label: "Proveedores", icon: Truck, permissions: ["suppliers.manage"] },
-  { href: "/app/ordenes-compra", label: "Ordenes de compra", icon: ShoppingCart, permissions: ["purchase_orders.manage"] },
-  { href: "/app/reportes", label: "Reportes", icon: BarChart3, permissions: ["reports.view"] },
-  { href: "/app/contingencia", label: "Modo contingencia", icon: WifiOff, alert: true },
-  { href: "/app/ia", label: "Asistente IA", icon: Bot, premium: true },
+type NavGroup = { label: string; items: NavItem[] };
+
+const navGroups: NavGroup[] = [
+  {
+    label: "",
+    items: [{ href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
+  },
+  {
+    label: "CRM",
+    items: [
+      { href: "/app/leads", label: "Leads", icon: Inbox, permissions: ["leads.view"] },
+      { href: "/app/clientes", label: "Clientes", icon: Users, permissions: ["clients.manage"] },
+      { href: "/app/contactos", label: "Contactos", icon: Contact2, permissions: ["clients.manage"] },
+      { href: "/app/segmentos", label: "Segmentos", icon: Tags, permissions: ["clients.manage"] },
+      { href: "/app/notas", label: "Notas", icon: StickyNote, permissions: ["clients.manage"] },
+      { href: "/app/deals", label: "Deals", icon: Handshake, permissions: ["deals.manage"] },
+      { href: "/app/cotizaciones", label: "Cotizaciones", icon: FileText, permissions: ["deals.manage"] },
+      { href: "/app/actividades", label: "Actividades", icon: ListChecks, permissions: ["activities.manage"] },
+      { href: "/app/tareas", label: "Tareas", icon: ListTodo, permissions: ["activities.manage"] },
+      { href: "/app/seguimientos", label: "Seguimientos", icon: CalendarClock, permissions: ["activities.manage"] },
+      { href: "/app/calendario", label: "Calendario", icon: CalendarDays, permissions: ["activities.manage"] },
+      { href: "/app/pedidos", label: "Pedidos", icon: Receipt, permissions: ["orders.manage"] },
+    ],
+  },
+  {
+    label: "Inventario",
+    items: [
+      { href: "/app/productos", label: "Productos", icon: Package, permissions: ["products.manage"] },
+      { href: "/app/categorias", label: "Categorias", icon: Tags, permissions: ["products.manage"] },
+      { href: "/app/marcas", label: "Marcas", icon: Tag, permissions: ["products.manage"] },
+      { href: "/app/unidades", label: "Unidades", icon: Ruler, permissions: ["products.manage"] },
+      { href: "/app/bodegas", label: "Bodegas", icon: Warehouse, permissions: ["warehouses.manage"] },
+      { href: "/app/movimientos-inventario", label: "Movimientos", icon: ArrowLeftRight, permissions: ["stock.manage"] },
+      { href: "/app/transferencias", label: "Transferencias", icon: Repeat, permissions: ["stock.manage"] },
+      { href: "/app/alertas-stock", label: "Alertas de stock", icon: AlertTriangle, permissions: ["products.manage"] },
+      { href: "/app/proveedores", label: "Proveedores", icon: Truck, permissions: ["suppliers.manage"] },
+      { href: "/app/ordenes-compra", label: "Ordenes de compra", icon: ShoppingCart, permissions: ["purchase_orders.manage"] },
+    ],
+  },
+  {
+    label: "Analitica",
+    items: [
+      { href: "/app/reportes", label: "Reportes", icon: BarChart3, permissions: ["reports.view"] },
+      { href: "/app/reportes-comerciales", label: "Reportes comerciales", icon: TrendingUp, permissions: ["reports.view"] },
+    ],
+  },
+  {
+    label: "Herramientas",
+    items: [
+      { href: "/app/contingencia", label: "Modo contingencia", icon: WifiOff, alert: true },
+      { href: "/app/ia", label: "Asistente IA", icon: Bot, premium: true },
+    ],
+  },
+  {
+    label: "Administracion",
+    items: [
+      { href: "/app/auditoria", label: "Auditoria", icon: ClipboardList, permissions: ["audit.view"] },
+      { href: "/app/usuarios", label: "Usuarios", icon: UserCircle, permissions: ["users.manage"] },
+      { href: "/app/roles", label: "Roles", icon: Shield, permissions: ["roles.manage"] },
+      { href: "/app/configuracion", label: "Configuracion", icon: Settings, permissions: ["settings.manage"] },
+    ],
+  },
 ];
 
-const adminNav: NavItem[] = [
-  { href: "/app/leads", label: "Leads", icon: Inbox, permissions: ["leads.view"] },
-  { href: "/app/auditoria", label: "Auditoria", icon: ClipboardList, permissions: ["audit.view"] },
-  { href: "/app/usuarios", label: "Usuarios", icon: UserCircle, permissions: ["users.manage"] },
-  { href: "/app/roles", label: "Roles", icon: Shield, permissions: ["roles.manage"] },
-  { href: "/app/configuracion", label: "Configuracion", icon: Settings, permissions: ["settings.manage"] },
-];
+const allNavItems: NavItem[] = navGroups.flatMap((g) => g.items);
 
 function PremiumBadge() {
   return (
@@ -205,9 +259,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const [checkingSession, setCheckingSession] = React.useState(true);
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
 
-  // Cierra el menu movil al navegar a otra ruta.
+  // Cierra el menu movil al navegar a otra ruta. `queueMicrotask` para no
+  // hacer setState sincrono dentro del efecto (evita renders en cascada).
   React.useEffect(() => {
-    setMobileNavOpen(false);
+    queueMicrotask(() => setMobileNavOpen(false));
   }, [pathname]);
 
   const logout = React.useCallback(async () => {
@@ -227,8 +282,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     // cache (cliente) mientras se resuelve, y redirige si /auth/me falla.
     const cached = getStoredUser();
     if (cached) {
-      setUser(cached);
-      setCheckingSession(false);
+      // Deferido: no hacer setState sincrono dentro del efecto.
+      queueMicrotask(() => {
+        setUser(cached);
+        setCheckingSession(false);
+      });
     }
 
     fetchMe()
@@ -254,13 +312,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener(AUTH_EXPIRED_EVENT, handleExpiredSession);
   }, [router]);
 
-  const visibleMainNav = mainNav.filter((item) => hasAnyPermission(user, item.permissions));
-  const visibleAdminNav = adminNav.filter((item) => hasAnyPermission(user, item.permissions));
+  const visibleGroups = navGroups
+    .map((group) => ({ ...group, items: group.items.filter((item) => hasAnyPermission(user, item.permissions)) }))
+    .filter((group) => group.items.length > 0);
 
   // Guard por ruta: si la ruta actual corresponde a un modulo del menu y el
   // usuario no tiene su permiso, se muestra una pantalla de acceso denegado.
   // El backend igual responde 403; esto es UX (evita tabla rota + 403 en rojo).
-  const activeNav = [...mainNav, ...adminNav]
+  const activeNav = allNavItems
     .filter((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))
     .sort((a, b) => b.href.length - a.href.length)[0];
   const authorized = !user || !activeNav || hasAnyPermission(user, activeNav.permissions);
@@ -280,26 +339,31 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     <div className="flex h-16 items-center gap-3 border-b border-border px-5">
       <LogoMark size="sm" />
       <div>
-        <p className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
-          DFC
+        <p className="flex items-center gap-1.5 text-sm font-black tracking-tight text-foreground">
+          CRM<span className="text-primary">+</span>Inventario
           <span className="rounded bg-warning/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning">
             Beta
           </span>
         </p>
-        <p className="text-xs text-muted-foreground">CRM + Inventario</p>
+        <p className="text-xs text-muted-foreground">Panel privado</p>
       </div>
     </div>
   );
 
   const navBody = (
-    <nav className="flex-1 space-y-6 overflow-y-auto p-4">
-      <div className="space-y-1">{visibleMainNav.map((item) => <NavLink key={item.href} item={item} />)}</div>
-      {visibleAdminNav.length ? (
-        <div>
-          <p className="mb-2 px-3 text-xs font-medium uppercase text-muted-foreground">Administracion</p>
-          <div className="space-y-1">{visibleAdminNav.map((item) => <NavLink key={item.href} item={item} />)}</div>
+    <nav className="flex-1 space-y-5 overflow-y-auto p-4">
+      {visibleGroups.map((group) => (
+        <div key={group.label || "general"} className="space-y-1">
+          {group.label ? (
+            <p className="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+              {group.label}
+            </p>
+          ) : null}
+          {group.items.map((item) => (
+            <NavLink key={item.href} item={item} />
+          ))}
         </div>
-      ) : null}
+      ))}
     </nav>
   );
 
@@ -351,7 +415,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <Menu className="h-4 w-4" />
             </Button>
             <div className="min-w-0 max-w-24 sm:max-w-none">
-              <p className="truncate text-sm font-medium">{user?.company?.name ?? "DFC"}</p>
+              <p className="truncate text-sm font-medium">{user?.company?.name ?? "CRM + Inventario"}</p>
               <p className="hidden truncate text-xs text-muted-foreground sm:block">
                 Panel privado de CRM e Inventario
               </p>

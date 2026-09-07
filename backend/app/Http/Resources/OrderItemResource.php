@@ -12,7 +12,9 @@ class OrderItemResource extends JsonResource
         return [
             'id' => $this->id,
             'product_id' => $this->product_id,
-            'product' => new ProductResource($this->whenLoaded('product')),
+            // Snapshot: lo que se vendio, aunque el producto haya cambiado despues.
+            'product' => $this->product_name ?? $this->whenLoaded('product', fn () => $this->product?->name),
+            'sku' => $this->sku,
             'quantity' => $this->quantity,
             'unit_price' => $this->unit_price,
         ];

@@ -1,58 +1,70 @@
-import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
-import { DashboardPreview } from "./dashboard-preview";
-import { MarketingLayout } from "./marketing-layout";
-import { Reveal } from "./reveal";
-import { SectionHeading } from "./section-heading";
+import { Check } from "lucide-react";
+import { CtaLink } from "@/components/marketing/cta-link";
+import { DeviceMockup } from "@/components/marketing/device-mockup";
+import { GradientBlob } from "@/components/marketing/gradient-blob";
+import { MarketingLayout } from "@/components/marketing/marketing-layout";
+import { PageHero } from "@/components/marketing/page-hero";
+import { Reveal } from "@/components/marketing/reveal";
+import { container, Section, SectionHeading } from "@/components/marketing/marketing-ui";
 
 type ProductPageProps = {
   eyebrow: string;
   title: string;
   description: string;
-  bullets: string[];
-  children?: React.ReactNode;
+  bullets: readonly string[];
+  screenshot: string;
 };
 
-export function ProductPage({ eyebrow, title, description, bullets, children }: ProductPageProps) {
+export function ProductPage({ eyebrow, title, description, bullets, screenshot }: ProductPageProps) {
   return (
     <MarketingLayout>
-      <main>
-        <section className="bg-[linear-gradient(180deg,#ffffff_0%,#fbe9f0_100%)] px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <Reveal>
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">{eyebrow}</p>
-                <h1 className="mt-4 text-5xl font-semibold tracking-tight text-navy">{title}</h1>
-                <p className="mt-5 text-lg leading-8 text-muted-foreground">{description}</p>
-                <div className="mt-8 grid gap-3">
-                  {bullets.map((bullet) => (
-                    <div key={bullet} className="flex items-center gap-3 text-sm font-medium text-navy"><CheckCircle2 className="h-5 w-5 text-success" /> {bullet}</div>
-                  ))}
-                </div>
-                <Link href="/demo" className="mt-8 inline-flex h-12 items-center gap-2 whitespace-nowrap rounded-xl bg-primary px-6 text-sm font-semibold text-white transition-transform duration-200 hover:scale-105 active:scale-95">
-                  Solicitar demo <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </Reveal>
-            <Reveal>{children ?? <DashboardPreview />}</Reveal>
-          </div>
-        </section>
-        <section className="px-4 py-20 sm:px-6 lg:px-8">
+      <PageHero
+        eyebrow={eyebrow}
+        title={title}
+        lead={description}
+        actions={
+          <>
+            <CtaLink href="/demo">Solicitar demo</CtaLink>
+            <CtaLink href="/producto" variant="outline">
+              Ver todo el producto
+            </CtaLink>
+          </>
+        }
+      />
+
+      <Section>
+        <div className="grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <SectionHeading eyebrow="Beneficios" title="Preparado para operar hoy y escalar mañana" description="La arquitectura visual y funcional se piensa para API Laravel, multiempresa, roles, reportes e integraciones futuras." />
+            <SectionHeading eyebrow="Incluye" title="Lo que resuelve este modulo" center={false} />
+            <ul className="mt-8 space-y-3">
+              {bullets.map((bullet) => (
+                <li key={bullet} className="flex items-start gap-3 text-sm leading-6">
+                  <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                  <span className="font-medium">{bullet}</span>
+                </li>
+              ))}
+            </ul>
           </Reveal>
-          <div className="mx-auto mt-12 grid max-w-7xl gap-5 md:grid-cols-3">
-            {["Reduce trabajo manual", "Mejora trazabilidad", "Da visibilidad al negocio"].map((item, index) => (
-              <Reveal key={item} delay={index * 0.1}>
-                <div className="rounded-3xl border border-border bg-white p-6 shadow-sm transition-transform duration-300 hover:-translate-y-1.5 hover:shadow-(--marketing-shadow)">
-                  <h3 className="text-lg font-semibold text-navy">{item}</h3>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">Una interfaz enfocada en decisiones concretas, estados claros y procesos que RRHH puede seguir sin perseguir informacion.</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      </main>
+          <Reveal delay={0.12} className="relative">
+            <GradientBlob className="right-[-8%] top-[-8%] size-[65%]" float />
+            <DeviceMockup src={screenshot} alt={title} tilt="right" />
+          </Reveal>
+        </div>
+      </Section>
+
+      <section className="bg-ink py-20 text-ink-foreground lg:py-24">
+        <div className={`${container} grid gap-8 md:grid-cols-3`}>
+          {["Reduce el trabajo manual", "Mejora la trazabilidad", "Da visibilidad al negocio"].map((item, i) => (
+            <Reveal key={item} delay={i * 0.08}>
+              <h3 className="text-lg font-bold">{item}</h3>
+              <p className="mt-3 text-sm leading-6 text-white/70">
+                Corre sobre una API Laravel con multiempresa, roles y permisos, auditoria de acciones y
+                exportaciones CSV / PDF por modulo.
+              </p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
     </MarketingLayout>
   );
 }

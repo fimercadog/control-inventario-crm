@@ -1,17 +1,34 @@
 import { ContactForm } from "@/components/marketing/contact-form";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
+import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
-import { SectionHeading } from "@/components/marketing/section-heading";
+import { ContactChannels, Section } from "@/components/marketing/marketing-ui";
 
 export default function ContactPage() {
   return (
     <MarketingLayout>
-      <main className="bg-muted px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-          <Reveal><SectionHeading align="left" eyebrow="Contacto" title="Hablemos de tu operacion de Recursos Humanos" description="Cuéntanos cuántas personas gestionas, qué procesos son más manuales y qué módulo quieres priorizar." /></Reveal>
-          <Reveal><ContactForm /></Reveal>
+      <PageHero
+        eyebrow="Contacto"
+        title="Hablemos de tu operacion de ventas e inventario"
+        lead="Cuentanos cuantos usuarios y bodegas manejas, que procesos son mas manuales y que modulo quieres priorizar."
+      />
+
+      <Section className="pt-0">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <Reveal>
+            <h2 className="text-2xl font-black tracking-tight">Escribenos</h2>
+            <p className="mt-3 text-sm leading-6 text-muted-foreground">
+              Respondemos en horario laboral. Si prefieres, escribenos directo por WhatsApp o entra con tu cuenta.
+            </p>
+            <div className="mt-6">
+              <ContactChannels />
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <ContactForm />
+          </Reveal>
         </div>
-      </main>
+      </Section>
     </MarketingLayout>
   );
 }

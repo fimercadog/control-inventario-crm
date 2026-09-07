@@ -1,12 +1,43 @@
+export type Segment = {
+  id: number;
+  name: string;
+  status: string;
+  clients_count?: number;
+};
+
 export type Client = {
   id: number;
   name: string;
   company_name?: string | null;
+  segment_id?: number | null;
+  segment?: string | null;
   email?: string | null;
   phone?: string | null;
   address?: string | null;
   status: string;
   notes?: string | null;
+};
+
+export type Contact = {
+  id: number;
+  name: string;
+  role?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  notes?: string | null;
+  status: string;
+  client_id?: number | null;
+  client?: string | null;
+  created_at: string;
+};
+
+export type ClientNote = {
+  id: number;
+  client_id: number;
+  client?: string | null;
+  body: string;
+  author?: string | null;
+  created_at: string;
 };
 
 export type Deal = {
@@ -38,12 +69,38 @@ export type Warehouse = {
   status: string;
 };
 
+export type Category = {
+  id: number;
+  name: string;
+  status: string;
+  products_count?: number;
+};
+
+export type Brand = {
+  id: number;
+  name: string;
+  status: string;
+  products_count?: number;
+};
+
+export type Unit = {
+  id: number;
+  name: string;
+  abbreviation?: string | null;
+  status: string;
+  products_count?: number;
+};
+
 export type Product = {
   id: number;
   sku: string;
   name: string;
   category?: string | null;
-  unit: string;
+  brand?: string | null;
+  unit?: string | null;
+  category_id?: number | null;
+  brand_id?: number | null;
+  unit_id?: number | null;
   unit_price: number;
   cost_price: number;
   reorder_level: number;
@@ -61,6 +118,21 @@ export type Supplier = {
   status: string;
 };
 
+export type StockTransfer = {
+  id: number;
+  product_id: number;
+  product?: string | null;
+  from_warehouse_id: number;
+  from_warehouse?: string | null;
+  to_warehouse_id: number;
+  to_warehouse?: string | null;
+  quantity: number;
+  reference?: string | null;
+  notes?: string | null;
+  status: string;
+  created_at: string;
+};
+
 export type StockMovement = {
   id: number;
   product_id: number;
@@ -74,10 +146,37 @@ export type StockMovement = {
   created_at: string;
 };
 
+export type QuoteLineItem = {
+  id: number;
+  product_id?: number | null;
+  product?: string | null;
+  description?: string | null;
+  quantity: number;
+  unit_price: number;
+};
+
+export type Quote = {
+  id: number;
+  title: string;
+  client_id: number;
+  client?: string | null;
+  deal_id?: number | null;
+  deal?: string | null;
+  status: "draft" | "sent" | "accepted" | "rejected";
+  valid_until?: string | null;
+  notes?: string | null;
+  total: number;
+  converted_order_id?: number | null;
+  items?: QuoteLineItem[];
+  created_at: string;
+};
+
 export type OrderLineItem = {
   id: number;
   product_id: number;
-  product?: Product;
+  /** Snapshot: el nombre del producto al momento de la venta. */
+  product?: string | null;
+  sku?: string | null;
   quantity: number;
   unit_price: number;
 };
@@ -97,7 +196,8 @@ export type Order = {
 export type PurchaseOrderLineItem = {
   id: number;
   product_id: number;
-  product?: Product;
+  product?: string | null;
+  sku?: string | null;
   quantity: number;
   unit_cost: number;
 };
