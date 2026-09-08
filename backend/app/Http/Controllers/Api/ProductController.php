@@ -56,9 +56,11 @@ class ProductController extends BaseCrudController
         $file = $request->file('image');
         $name = Str::random(40).'.'.ImageFile::extensionFor($file);
         $path = $file->storeAs('products/'.$companyId, $name, 'public');
-        // forceFill: `image_url` no es fillable (no se puede fijar por el payload
-        // de un producto); aca lo escribe el servidor con la ruta que controla.
-        $product->forceFill(['image_url' => Storage::url($path)])->save();
+        // URL del disco `public` (APP_URL + /storage/...), absoluta a proposito:
+        // el frontend vive en otro dominio que la API, un `/storage/...` relativo
+        // apuntaria al dominio del front y daria 404. forceFill: `image_url` no es
+        // fillable (no se fija por el payload); aca lo escribe el servidor.
+        $product->forceFill(['image_url' => Storage::disk('public')->url($path)])->save();
         $audit->record('updated', $product, $request, $old);
 
         if ($previous && $previous !== $path) {
