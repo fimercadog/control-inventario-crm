@@ -1,4 +1,16 @@
-import { BarChart3, ClipboardList, Contact, Package, ShoppingCart, Warehouse } from "lucide-react";
+import {
+  BarChart3,
+  ClipboardList,
+  Code,
+  Contact,
+  KeyRound,
+  Package,
+  Plug,
+  ShoppingCart,
+  Terminal,
+  Warehouse,
+  Webhook,
+} from "lucide-react";
 
 export const productPages = {
   crm: {
@@ -120,14 +132,15 @@ export const blogPosts = [
   },
 ];
 
-export const docSections = [
+// Guias para quien USA la plataforma (equipo comercial, bodega, administracion).
+export const userDocSections = [
   {
     id: "primeros-pasos",
     title: "Primeros pasos",
     icon: Package,
     items: [
       "Crear la empresa y los primeros usuarios",
-      "Roles y permisos (Spatie laravel-permission)",
+      "Roles y permisos por modulo",
       "Cargar el catalogo de productos",
       "Crear bodegas y saldos iniciales",
     ],
@@ -137,10 +150,10 @@ export const docSections = [
     title: "CRM",
     icon: Contact,
     items: [
-      "Leads desde el formulario publico",
+      "Leads desde el formulario publico y el catalogo",
       "Convertir un lead en cliente",
       "Mover deals por el pipeline",
-      "Registrar actividades de seguimiento",
+      "Registrar actividades y seguimientos",
     ],
   },
   {
@@ -149,7 +162,7 @@ export const docSections = [
     icon: Warehouse,
     items: [
       "Productos, SKU y costo",
-      "Stock por bodega",
+      "Stock por bodega y transferencias",
       "Registrar un movimiento manual",
       "Leer la bitacora de movimientos",
     ],
@@ -178,13 +191,72 @@ export const docSections = [
   },
   {
     id: "reportes",
-    title: "Reportes y API",
+    title: "Reportes",
     icon: BarChart3,
     items: [
-      "Reportes de ventas e inventario",
-      "Exportar a CSV y PDF",
-      "Autenticacion de la API (Sanctum)",
-      "Endpoints principales",
+      "Reportes de ventas por vendedor y etapa",
+      "Rotacion de inventario y stock bajo",
+      "Exportar cualquier tabla a CSV y PDF",
+      "Dashboard con los KPIs del negocio",
+    ],
+  },
+];
+
+// Documentacion para quien INTEGRA o desarrolla contra la plataforma.
+export const devDocSections = [
+  {
+    id: "api-rest",
+    title: "API REST",
+    icon: Code,
+    items: [
+      "Base URL, JSON y convenciones de la API",
+      "Paginacion, busqueda y filtros por recurso",
+      "Formato de errores y codigos de estado",
+      "Limites de tasa (throttle) por IP",
+    ],
+  },
+  {
+    id: "autenticacion",
+    title: "Autenticacion",
+    icon: KeyRound,
+    items: [
+      "Sanctum: cookie de sesion (SPA) o token Bearer",
+      "Flujo de login y cookie CSRF para el SPA",
+      "Emision y revocacion de tokens de API",
+      "Alcance de cada token segun permisos del rol",
+    ],
+  },
+  {
+    id: "endpoints",
+    title: "Endpoints",
+    icon: Plug,
+    items: [
+      "CRUD estandar por recurso (leads, clientes, productos, pedidos, compras)",
+      "Catalogo publico sin auth: /api/public/catalog/*",
+      "Solicitud de cotizacion: POST /api/public/catalog/quote-requests",
+      "Subida de imagen de producto: POST /api/products/{id}/image",
+    ],
+  },
+  {
+    id: "webhooks",
+    title: "Webhooks e integraciones",
+    icon: Webhook,
+    items: [
+      "Webhooks salientes (pedido confirmado, stock bajo) — en el roadmap",
+      "Sincronizacion con contabilidad o e-commerce",
+      "Exportaciones programadas",
+      "Integraciones a medida bajo pedido",
+    ],
+  },
+  {
+    id: "ejemplos",
+    title: "Ejemplos",
+    icon: Terminal,
+    items: [
+      "curl: autenticarse y listar productos",
+      "Crear un pedido y confirmarlo end to end",
+      "Coleccion de Postman / Insomnia",
+      "Snippets en JavaScript y PHP",
     ],
   },
 ];
