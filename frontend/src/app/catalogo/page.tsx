@@ -77,9 +77,9 @@ export default function CatalogoPage() {
         lead="Explora el catalogo, arma tu lista y solicita una cotizacion. Te respondemos con precios y disponibilidad."
       />
 
-      <Section className="pt-0">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap gap-2">
+      <Section className="pt-4 sm:pt-0">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+          <div className="flex flex-wrap gap-2.5">
             <button
               type="button"
               onClick={() => pickCategory(null)}
