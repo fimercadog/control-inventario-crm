@@ -246,6 +246,10 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  /* Red de seguridad: ningun elemento decorativo (blobs del hero, glows de
+     tarjetas) puede generar scroll horizontal en movil. `clip` no crea contexto
+     de scroll, asi que no rompe `position: sticky` del header del panel. */
+  overflow-x: clip;
 }
 
 button, input, select { font: inherit; }

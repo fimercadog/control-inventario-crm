@@ -414,7 +414,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             >
               <Menu className="h-4 w-4" />
             </Button>
-            <div className="min-w-0 max-w-24 sm:max-w-none">
+            <div className="min-w-0 max-w-32 sm:max-w-none">
               <p className="truncate text-sm font-medium">{user?.company?.name ?? "CRM + Inventario"}</p>
               <p className="hidden truncate text-xs text-muted-foreground sm:block">
                 Panel privado de CRM e Inventario
@@ -436,7 +436,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               aria-label="Enviar un comentario"
               title="Enviar un comentario"
               onClick={openFeedbackForm}
-              className="border-primary/40 bg-primary/10 text-primary hover:bg-primary/20"
+              className="hidden border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 sm:inline-flex"
             >
               <MessageSquarePlus className="h-4 w-4" />
             </Button>
