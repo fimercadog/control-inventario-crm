@@ -17,7 +17,8 @@ const columns: { title: string; links: [string, string][] }[] = [
     title: "Empresa",
     links: [
       ["Precios", "/precios"],
-      ["Documentacion", "/documentacion"],
+      ["Centro de ayuda", "/documentacion"],
+      ["Para desarrolladores", "/documentacion/desarrolladores"],
       ["Blog", "/blog"],
       ["Nosotros", "/nosotros"],
       ["Solicitar demo", "/demo"],

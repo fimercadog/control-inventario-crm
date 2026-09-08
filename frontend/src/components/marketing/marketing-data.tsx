@@ -132,17 +132,18 @@ export const blogPosts = [
   },
 ];
 
-// Guias para quien USA la plataforma (equipo comercial, bodega, administracion).
+// Guias para quien USA la plataforma. Lenguaje de "como hago esto", sin jerga.
 export const userDocSections = [
   {
     id: "primeros-pasos",
     title: "Primeros pasos",
     icon: Package,
     items: [
-      "Crear la empresa y los primeros usuarios",
-      "Roles y permisos por modulo",
-      "Cargar el catalogo de productos",
-      "Crear bodegas y saldos iniciales",
+      "Crear tu empresa",
+      "Crear usuarios",
+      "Configurar permisos",
+      "Cargar productos",
+      "Crear bodegas",
     ],
   },
   {
@@ -150,10 +151,10 @@ export const userDocSections = [
     title: "CRM",
     icon: Contact,
     items: [
-      "Leads desde el formulario publico y el catalogo",
-      "Convertir un lead en cliente",
-      "Mover deals por el pipeline",
-      "Registrar actividades y seguimientos",
+      "Registrar clientes potenciales",
+      "Convertir un contacto en cliente",
+      "Gestionar oportunidades",
+      "Registrar seguimientos",
     ],
   },
   {
@@ -161,21 +162,21 @@ export const userDocSections = [
     title: "Inventario",
     icon: Warehouse,
     items: [
-      "Productos, SKU y costo",
-      "Stock por bodega y transferencias",
-      "Registrar un movimiento manual",
-      "Leer la bitacora de movimientos",
+      "Crear productos",
+      "Consultar existencias",
+      "Mover productos entre bodegas",
+      "Registrar ajustes de inventario",
     ],
   },
   {
     id: "pedidos",
-    title: "Pedidos de venta",
+    title: "Pedidos",
     icon: ClipboardList,
     items: [
-      "Crear un pedido para un cliente",
-      "Agregar lineas de producto",
-      "Confirmar el pedido y descontar stock",
-      "Anular un pedido confirmado",
+      "Crear un pedido",
+      "Agregar productos",
+      "Confirmar una venta",
+      "Anular un pedido",
     ],
   },
   {
@@ -183,10 +184,10 @@ export const userDocSections = [
     title: "Compras",
     icon: ShoppingCart,
     items: [
-      "Registrar un proveedor",
-      "Crear una orden de compra",
-      "Recibir la orden y reponer stock",
-      "Costo por orden",
+      "Registrar proveedores",
+      "Crear ordenes de compra",
+      "Recibir mercancia",
+      "Consultar costos",
     ],
   },
   {
@@ -194,10 +195,11 @@ export const userDocSections = [
     title: "Reportes",
     icon: BarChart3,
     items: [
-      "Reportes de ventas por vendedor y etapa",
-      "Rotacion de inventario y stock bajo",
-      "Exportar cualquier tabla a CSV y PDF",
-      "Dashboard con los KPIs del negocio",
+      "Ventas",
+      "Inventario",
+      "Stock bajo",
+      "Exportar informacion",
+      "Indicadores del negocio",
     ],
   },
 ];

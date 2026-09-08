@@ -12,7 +12,7 @@ const nav = [
   ["Producto", "/producto"],
   ["Catalogo", "/catalogo"],
   ["Precios", "/precios"],
-  ["Documentacion", "/documentacion"],
+  ["Ayuda", "/documentacion"],
   ["Blog", "/blog"],
   ["Nosotros", "/nosotros"],
   ["Contacto", "/contacto"],
