@@ -7,8 +7,12 @@ import { cn } from "@/lib/utils";
 import { formatCOP, type PublicProduct } from "@/lib/catalog";
 import { useCatalogCart } from "@/lib/catalog-cart";
 
-/** Card de producto del catálogo público. Compartida por /catalogo y el preview del inicio. */
-export function ProductCard({ product }: { product: PublicProduct }) {
+/**
+ * Card de producto del catálogo público. Compartida por /catalogo y el preview
+ * del inicio. `showAdd={false}` oculta el botón "Agregar" (en el inicio la card
+ * solo enlaza a la ficha; agregar al carrito ahí era una acción sin contexto).
+ */
+export function ProductCard({ product, showAdd = true }: { product: PublicProduct; showAdd?: boolean }) {
   return (
     <div className={cn("flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card", cardHover)}>
       <Link href={`/catalogo/${product.id}`} className="block aspect-4/3 bg-muted">
@@ -33,7 +37,7 @@ export function ProductCard({ product }: { product: PublicProduct }) {
         ) : null}
         <div className="mt-4 flex items-center justify-between gap-3 pt-1">
           <span className="text-lg font-black tracking-tight">{formatCOP(product.unit_price)}</span>
-          <AddButton product={product} />
+          {showAdd ? <AddButton product={product} /> : null}
         </div>
       </div>
     </div>

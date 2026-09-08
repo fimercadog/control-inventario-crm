@@ -47,7 +47,7 @@ export function CatalogPreview() {
         {products
           ? products.map((product, i) => (
               <Reveal key={product.id} delay={i * 0.06} className="h-full">
-                <ProductCard product={product} />
+                <ProductCard product={product} showAdd={false} />
               </Reveal>
             ))
           : Array.from({ length: PREVIEW_COUNT }).map((_, i) => (
