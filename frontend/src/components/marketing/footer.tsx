@@ -59,7 +59,11 @@ export function MarketingFooter() {
             <ul className="mt-4 space-y-2.5">
               {col.links.map(([label, href]) => (
                 <li key={href}>
-                  <Link href={href} className="text-sm text-foreground/80 transition-colors hover:text-primary">
+                  <Link
+                    href={href}
+                    {...(href === "/login" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    className="text-sm text-foreground/80 transition-colors hover:text-primary"
+                  >
                     {label}
                   </Link>
                 </li>

@@ -81,6 +81,8 @@ export function MarketingHeader() {
         <div className="hidden items-center gap-3 lg:flex">
           <Link
             href="/login"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
           >
             Iniciar sesion
@@ -93,6 +95,8 @@ export function MarketingHeader() {
         <div className="flex items-center gap-2 lg:hidden">
           <Link
             href="/login"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
           >
             Iniciar sesion

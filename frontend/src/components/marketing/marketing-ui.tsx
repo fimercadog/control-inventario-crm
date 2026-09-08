@@ -252,7 +252,7 @@ export function DemoCta() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <CtaLink href="/demo">Solicitar demo</CtaLink>
-            <CtaLink href="/login" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
+            <CtaLink href="/login" newTab variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
               Ya tengo cuenta
             </CtaLink>
           </div>
@@ -273,7 +273,7 @@ export function ContactChannels() {
   return (
     <div className="flex flex-wrap gap-3">
       <CtaLink href={WHATSAPP_URL}>Escribenos por WhatsApp</CtaLink>
-      <CtaLink href="/login" variant="ghost">
+      <CtaLink href="/login" newTab variant="ghost">
         Ya tengo cuenta
       </CtaLink>
     </div>

@@ -34,12 +34,15 @@ export function CtaLink({
   size = "default",
   className,
   external,
+  newTab,
   children,
 }: {
   href: string;
   variant?: Variant;
   size?: Size;
   external?: boolean;
+  /** Abre en otra pestaña (para rutas internas; los http siempre lo hacen). */
+  newTab?: boolean;
   className?: string;
   children: React.ReactNode;
 }) {
@@ -47,15 +50,12 @@ export function CtaLink({
   const classes = cn(base, sizes[size], variants[variant], className);
   const isExternal =
     external || href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("#");
+  const blankProps =
+    newTab || href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   if (isExternal) {
     return (
-      <a
-        href={href}
-        className={classes}
-        {...rippleProps}
-        {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      >
+      <a href={href} className={classes} {...rippleProps} {...blankProps}>
         {children}
         {ripple}
       </a>
@@ -63,7 +63,7 @@ export function CtaLink({
   }
 
   return (
-    <Link href={href} className={classes} {...rippleProps}>
+    <Link href={href} className={classes} {...rippleProps} {...blankProps}>
       {children}
       {ripple}
     </Link>
