@@ -120,6 +120,7 @@ export default function QuoteDetailPage() {
             <table className="w-full text-sm">
               <thead className="text-left text-muted-foreground">
                 <tr>
+                  <th className="w-10 py-2 pr-3 text-right tabular-nums">#</th>
                   <th className="py-2">Concepto</th>
                   <th className="py-2">Cantidad</th>
                   <th className="py-2">Precio</th>
@@ -128,8 +129,9 @@ export default function QuoteDetailPage() {
                 </tr>
               </thead>
               <tbody>
-                {(quote.items ?? []).map((item) => (
+                {(quote.items ?? []).map((item, i) => (
                   <tr key={item.id} className="border-t">
+                    <td className="py-2 pr-3 text-right tabular-nums text-muted-foreground">{i + 1}</td>
                     <td className="py-2">{item.product ?? item.description ?? `#${item.product_id}`}</td>
                     <td className="py-2">{item.quantity}</td>
                     <td className="py-2">${Number(item.unit_price).toLocaleString("es-CO")}</td>
@@ -145,7 +147,7 @@ export default function QuoteDetailPage() {
                 ))}
                 {(quote.items ?? []).length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-4 text-center text-muted-foreground">
+                    <td colSpan={6} className="py-4 text-center text-muted-foreground">
                       Sin lineas todavia.
                     </td>
                   </tr>

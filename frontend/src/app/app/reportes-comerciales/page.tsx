@@ -114,6 +114,7 @@ export default function CommercialReportsPage() {
           <table className="w-full text-sm">
             <thead className="text-left text-muted-foreground">
               <tr>
+                <th className="w-10 py-2 pr-3 text-right tabular-nums">#</th>
                 <th className="py-2">Vendedor</th>
                 <th className="py-2">Deals abiertos</th>
                 <th className="py-2">Deals ganados</th>
@@ -124,11 +125,12 @@ export default function CommercialReportsPage() {
             <tbody>
               {data.by_owner.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-4 text-center text-muted-foreground">Sin datos por vendedor.</td>
+                  <td colSpan={6} className="py-4 text-center text-muted-foreground">Sin datos por vendedor.</td>
                 </tr>
               ) : (
-                data.by_owner.map((o) => (
+                data.by_owner.map((o, i) => (
                   <tr key={o.owner} className="border-t border-border">
+                    <td className="py-2 pr-3 text-right tabular-nums text-muted-foreground">{i + 1}</td>
                     <td className="py-2 font-medium">{o.owner}</td>
                     <td className="py-2">{o.open_deals}</td>
                     <td className="py-2">{o.won_deals}</td>
