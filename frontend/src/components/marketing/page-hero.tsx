@@ -34,7 +34,7 @@ export function PageHero({
 
   return (
     <section className="relative isolate overflow-hidden">
-      <HeroBackdrop centered={!hasVisual} />
+      <HeroBackdrop />
       <div
         className={`${container} grid items-center gap-10 sm:gap-12 ${
           hasVisual ? "py-12 sm:py-16 lg:py-24 lg:grid-cols-[1fr_1.1fr]" : "py-12 sm:py-14 lg:py-20"

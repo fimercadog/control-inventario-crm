@@ -58,7 +58,6 @@ export default function CotizacionPage() {
         eyebrow="Cotizacion"
         title="Solicita tu cotizacion"
         lead="Revisa tu lista, dejanos tus datos y un asesor te envia precios y disponibilidad."
-        visual="none"
       />
 
       <Section className="pt-0">
@@ -81,9 +80,10 @@ export default function CotizacionPage() {
             y agrega productos.
           </p>
         ) : (
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-            <div className="rounded-2xl border border-border bg-card">
-              <table className="w-full text-sm">
+          <div className="grid gap-10 *:min-w-0 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card">
+              <div className="overflow-x-auto">
+              <table className="w-full min-w-[22rem] text-sm">
                 <thead className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th className="px-4 py-3 font-semibold">Producto</th>
@@ -137,12 +137,13 @@ export default function CotizacionPage() {
                   </tr>
                 </tfoot>
               </table>
+              </div>
               <p className="border-t border-border px-4 py-3 text-xs text-muted-foreground">
                 El total es una referencia con precios de lista. La cotizacion final la confirma un asesor.
               </p>
             </div>
 
-            <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
+            <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-5 shadow-elevation-2 sm:p-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 <input name="name" placeholder="Nombre" aria-label="Nombre" required className={inputClass} />
                 <input name="company_name" placeholder="Empresa" aria-label="Empresa" className={inputClass} />

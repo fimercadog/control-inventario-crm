@@ -75,7 +75,6 @@ export default function CatalogoPage() {
         eyebrow="Catalogo"
         title="Productos disponibles"
         lead="Explora el catalogo, arma tu lista y solicita una cotizacion. Te respondemos con precios y disponibilidad."
-        visual="none"
       />
 
       <Section className="pt-0">

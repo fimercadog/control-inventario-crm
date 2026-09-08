@@ -8,6 +8,7 @@ import { CtaLink } from "@/components/marketing/cta-link";
 import { cn } from "@/lib/utils";
 
 const nav = [
+  ["Inicio", "/"],
   ["Producto", "/producto"],
   ["Catalogo", "/catalogo"],
   ["Precios", "/precios"],
@@ -89,15 +90,23 @@ export function MarketingHeader() {
           </CtaLink>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Cerrar menu" : "Abrir menu"}
-          aria-expanded={open}
-          className="grid size-10 place-items-center rounded-full border border-border lg:hidden"
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <Link
+            href="/login"
+            className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Iniciar sesion
+          </Link>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Cerrar menu" : "Abrir menu"}
+            aria-expanded={open}
+            className="grid size-10 place-items-center rounded-full border border-border"
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
+        </div>
       </div>
 
       {open ? (
@@ -118,14 +127,10 @@ export function MarketingHeader() {
               </Link>
             ))}
           </nav>
-          <div className="mt-3 flex flex-col gap-2">
-            <Link
-              href="/login"
-              className="inline-flex h-11 items-center justify-center rounded-full border-2 border-current text-sm font-semibold"
-            >
-              Iniciar sesion
-            </Link>
-            <CtaLink href="/demo">Solicitar demo</CtaLink>
+          <div className="mt-3">
+            <CtaLink href="/demo" className="w-full">
+              Solicitar demo
+            </CtaLink>
           </div>
         </div>
       ) : null}
