@@ -34,10 +34,10 @@ export function PageHero({
 
   return (
     <section className="relative isolate overflow-hidden">
-      <HeroBackdrop />
+      <HeroBackdrop centered={!hasVisual} />
       <div
-        className={`${container} grid items-center gap-12 py-16 lg:py-24 ${
-          hasVisual ? "lg:grid-cols-[1fr_1.1fr]" : ""
+        className={`${container} grid items-center gap-10 sm:gap-12 ${
+          hasVisual ? "py-12 sm:py-16 lg:py-24 lg:grid-cols-[1fr_1.1fr]" : "py-12 sm:py-14 lg:py-20"
         }`}
       >
         <div className={hasVisual ? undefined : "mx-auto max-w-3xl text-center"}>
@@ -52,12 +52,14 @@ export function PageHero({
             </Reveal>
           )}
           <Reveal mount delay={0.1}>
-            <h1 className="mt-3 text-5xl font-black leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
+            <h1 className="mt-3 text-[2.05rem] font-black leading-[1.08] tracking-tight sm:text-5xl sm:leading-[1.02] lg:text-6xl">
+              {title}
+            </h1>
           </Reveal>
           {lead && (
             <Reveal mount delay={0.18}>
               <p
-                className={`mt-6 text-lg leading-8 text-muted-foreground ${
+                className={`mt-5 text-base leading-7 text-foreground/72 sm:mt-6 sm:text-lg sm:leading-8 ${
                   hasVisual ? "max-w-lg" : "mx-auto max-w-2xl"
                 }`}
               >

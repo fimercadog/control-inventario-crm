@@ -1,3 +1,4 @@
+import { CatalogPreview } from "@/components/marketing/catalog-preview";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { PageHero } from "@/components/marketing/page-hero";
@@ -45,6 +46,8 @@ export default function Home() {
       <Section>
         <TourGrid />
       </Section>
+
+      <CatalogPreview />
 
       <Section dark>
         <Reveal>

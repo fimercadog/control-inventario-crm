@@ -15,7 +15,7 @@ function Card({ className, children }: { className?: string; children: React.Rea
   return (
     <div
       className={cn(
-        "rounded-[1.5rem] bg-ink p-5 text-ink-foreground shadow-[0_30px_60px_-18px_rgb(15_16_18/0.45)] ring-1 ring-white/5",
+        "rounded-[1.5rem] bg-ink p-4 text-ink-foreground shadow-[0_30px_60px_-18px_rgb(15_16_18/0.45)] ring-1 ring-white/5 sm:p-5",
         className,
       )}
     >
@@ -94,15 +94,15 @@ function Gauge({ value }: { value: number }) {
 /** Overlapping 2x2 collage of widget cards, floating over a grainy green blob. */
 export function WidgetCluster({ className }: { className?: string }) {
   return (
-    <div className={cn("relative isolate mx-auto min-h-104 w-full max-w-lg", className)}>
+    <div className={cn("relative isolate mx-auto min-h-96 w-full max-w-lg sm:min-h-104", className)}>
       <div
         aria-hidden
-        className="animate-marketing-float absolute right-[-16%] top-1/2 -z-10 h-[125%] w-[118%] -translate-y-1/2"
+        className="animate-marketing-float absolute right-[-16%] top-1/2 -z-10 h-[125%] w-[118%] -translate-y-1/2 max-sm:right-[-4%] max-sm:h-[108%] max-sm:w-[104%] max-sm:opacity-70"
         style={{ background: "var(--blob)", borderRadius: BLOB_RADIUS }}
       />
       <div
         aria-hidden
-        className="absolute right-[-16%] top-1/2 -z-10 h-[125%] w-[118%] -translate-y-1/2 mix-blend-soft-light"
+        className="absolute right-[-16%] top-1/2 -z-10 h-[125%] w-[118%] -translate-y-1/2 mix-blend-soft-light max-sm:right-[-4%] max-sm:h-[108%] max-sm:w-[104%]"
         style={{
           backgroundImage: GRAIN,
           borderRadius: BLOB_RADIUS,
@@ -110,7 +110,7 @@ export function WidgetCluster({ className }: { className?: string }) {
         }}
       />
 
-      <div className="grid grid-cols-2 gap-4 py-6">
+      <div className="grid grid-cols-2 gap-3 py-6 sm:gap-4">
         <Card className="mt-2 -rotate-2">
           <BarChart />
         </Card>
