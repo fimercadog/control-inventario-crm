@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { AlertTriangle, CheckCircle2, MessageSquarePlus } from "lucide-react";
+import { AlertTriangle, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { openFeedbackForm } from "@/lib/feedback";
 import {
   Dialog,
   DialogContent,
@@ -74,10 +73,6 @@ export function BetaNotice() {
           </ul>
 
           <DialogFooter>
-            <Button variant="outline" onClick={openFeedbackForm}>
-              <MessageSquarePlus className="h-4 w-4" />
-              Enviar un comentario
-            </Button>
             <Button onClick={() => setOpen(false)}>Entendido</Button>
           </DialogFooter>
         </DialogContent>
