@@ -1,37 +1,23 @@
-// Plan comercial de este despliegue.
+// Plan comercial de este despliegue (vertical veterinaria).
 //
-//   NEXT_PUBLIC_PLAN vacío  -> sistema completo (demo / plan full, lo que ve el dueño).
-//   NEXT_PUBLIC_PLAN=base   -> plan de entrada ($199.900): se ocultan los módulos
-//                              que "mejoran / amplían / automatizan / controlan" el
-//                              proceso, dejando el flujo base completo:
-//                              Web -> Lead -> Cliente -> Cotización -> Pedido -> Inventario.
+//   NEXT_PUBLIC_PLAN vacío  -> plataforma completa.
+//   NEXT_PUBLIC_PLAN=base   -> clínica chica de una sola sede: se ocultan los
+//                              módulos que no aplican a ese caso. El código
+//                              sigue ahí; una clínica más grande (cadena,
+//                              convenios, criaderos, cuentas corporativas) los
+//                              habilita quitando su ruta de BASE_PLAN_HIDDEN.
 //
-// Vender un add-on = sacar sus rutas de BASE_PLAN_HIDDEN y redesplegar.
-// Qué queda oculto y por qué está documentado en docs/plan-base.md.
+// Ver docs/roadmap-veterinaria.md (S1).
 
 export const isBasePlan = () => process.env.NEXT_PUBLIC_PLAN === "base";
 
 /** Rutas fuera del plan base: ausentes del menú y bloqueadas si se escribe la URL. */
 export const BASE_PLAN_HIDDEN = new Set<string>([
-  // CRM Pro
-  "/app/contactos",
-  "/app/segmentos",
-  "/app/notas",
+  // Ciclo comercial B2B: una clínica chica no lo usa; una cadena con convenios sí.
   "/app/deals",
-  "/app/actividades",
-  "/app/tareas",
-  "/app/seguimientos",
-  "/app/calendario",
-  // Inventario Pro
-  "/app/transferencias",
-  "/app/alertas-stock",
-  "/app/ordenes-compra",
-  // Analítica
-  "/app/reportes",
   "/app/reportes-comerciales",
-  // Premium / administración avanzada
-  "/app/auditoria",
-  "/app/roles",
+  // Una sola sede: no hay transferencias entre bodegas.
+  "/app/transferencias",
 ]);
 
 /** No se ocultan: se muestran como botón "Premium" bloqueado (gancho de venta). */

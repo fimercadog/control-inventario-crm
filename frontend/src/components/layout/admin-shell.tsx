@@ -166,8 +166,8 @@ const PREMIUM_INFO: Record<string, { title: string; body: React.ReactNode }> = {
       <>
         <p>
           El modo contingencia permite{" "}
-          <strong className="font-semibold text-foreground">seguir operando cuando se cae internet</strong>: las
-          ventas, pedidos y movimientos de inventario se registran localmente y quedan en una cola.
+          <strong className="font-semibold text-foreground">seguir atendiendo cuando se cae internet</strong>: las
+          consultas, ventas de mostrador y movimientos de inventario se registran localmente y quedan en una cola.
         </p>
         <p>
           Al volver la conexion, todo lo encolado se{" "}
@@ -182,25 +182,24 @@ const PREMIUM_INFO: Record<string, { title: string; body: React.ReactNode }> = {
     ),
   },
   "/app/ia": {
-    title: "Inteligencia Artificial para Ventas e Inventario",
+    title: "Inteligencia Artificial para la clínica",
     body: (
       <>
         <p>
-          Potenciá la gestión comercial y de inventario con una herramienta de inteligencia artificial diseñada
-          para{" "}
+          Potenciá la gestión clínica con una herramienta de inteligencia artificial diseñada para{" "}
           <strong className="font-semibold text-foreground">
-            apoyar tus procesos, facilitar el análisis de información y ayudarte en la toma de decisiones
+            apoyar la atención, facilitar el análisis de información y ayudarte en la toma de decisiones
           </strong>
           .
         </p>
         <p>
-          Podés utilizarla para analizar el pipeline de ventas, identificar tendencias, resumir datos
-          relevantes, generar reportes y comunicados, y obtener apoyo para interpretar indicadores como
-          rotación de inventario, productos con bajo stock y desempeño de ventas.
+          Podés utilizarla para consultar la historia de un paciente, identificar vacunas por vencer, revisar la
+          ocupación de la agenda, resumir datos relevantes y obtener apoyo para interpretar indicadores como
+          rotación de inventario de medicamentos y desempeño de la clínica.
         </p>
         <p>
           La inteligencia artificial funciona como un{" "}
-          <strong className="font-semibold text-foreground">asistente para los equipos de ventas e inventario</strong>,
+          <strong className="font-semibold text-foreground">asistente para el equipo de la clínica</strong>,
           permitiendo trabajar de forma más ágil y obtener información útil a partir de los datos disponibles
           en el sistema.
         </p>

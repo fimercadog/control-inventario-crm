@@ -54,6 +54,14 @@ class DatabaseSeeder extends Seeder
             'dashboard.view', 'leads.view', 'clients.manage', 'clients.delete', 'deals.manage', 'activities.manage',
             'products.manage', 'warehouses.manage', 'stock.manage', 'suppliers.manage', 'purchase_orders.manage',
             'orders.manage', 'reports.view', 'users.manage', 'roles.manage', 'audit.view', 'settings.manage',
+            // Vertical veterinaria
+            'services.manage', 'patients.manage', 'appointments.manage', 'medical_records.manage',
+            'vaccinations.manage', 'prescriptions.manage', 'procedures.manage', 'clinical_reports.view',
+        ];
+
+        $vetClinicalPermissions = [
+            'services.manage', 'patients.manage', 'appointments.manage', 'medical_records.manage',
+            'vaccinations.manage', 'prescriptions.manage', 'procedures.manage', 'clinical_reports.view',
         ];
 
         foreach ($permissionNames as $name) {
@@ -63,6 +71,14 @@ class DatabaseSeeder extends Seeder
         $roles = [
             'Super Admin' => $permissionNames,
             'Administrador de empresa' => $permissionNames,
+            'Veterinario/a' => array_merge(
+                ['dashboard.view', 'clients.manage', 'orders.manage', 'reports.view'],
+                $vetClinicalPermissions,
+            ),
+            'Recepción' => [
+                'dashboard.view', 'clients.manage', 'patients.manage', 'services.manage',
+                'appointments.manage', 'orders.manage', 'reports.view',
+            ],
             'Ventas' => ['dashboard.view', 'leads.view', 'clients.manage', 'deals.manage', 'activities.manage', 'orders.manage', 'reports.view'],
             'Inventario' => ['dashboard.view', 'products.manage', 'warehouses.manage', 'stock.manage', 'suppliers.manage', 'purchase_orders.manage', 'orders.manage', 'reports.view'],
             'Usuario' => ['dashboard.view'],

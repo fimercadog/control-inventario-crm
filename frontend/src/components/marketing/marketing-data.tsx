@@ -1,7 +1,6 @@
 import {
   BarChart3,
   CalendarClock,
-  ClipboardList,
   Code,
   Contact,
   KeyRound,

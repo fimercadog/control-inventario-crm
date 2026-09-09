@@ -26,6 +26,14 @@ const PERMISSION_LABEL: Record<string, string> = {
   "roles.manage": "Gestionar roles",
   "audit.view": "Ver auditoria",
   "settings.manage": "Gestionar configuracion de la empresa",
+  "services.manage": "Gestionar catálogo de servicios",
+  "patients.manage": "Gestionar propietarios y pacientes",
+  "appointments.manage": "Gestionar citas y agenda",
+  "medical_records.manage": "Gestionar historia clínica",
+  "vaccinations.manage": "Gestionar vacunas y desparasitación",
+  "prescriptions.manage": "Gestionar prescripciones",
+  "procedures.manage": "Gestionar procedimientos",
+  "clinical_reports.view": "Ver reportes clínicos",
 };
 
 export default function RoleDetailPage() {
