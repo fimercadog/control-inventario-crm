@@ -15,6 +15,7 @@ use App\Models\Deal;
 use App\Models\Lead;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Patient;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
@@ -209,6 +210,30 @@ class DatabaseSeeder extends Seeder
         ])->each(fn ($data) => Contact::firstOrCreate(
             ['company_id' => $company->id, 'name' => $data[1], 'client_id' => $clients[$data[0]]->id],
             ['role' => $data[2], 'email' => $data[3], 'phone' => $data[4], 'status' => 'active'],
+        ));
+
+        // Pacientes (mascotas) ligados a sus propietarios.
+        $breedFor = fn (string $speciesName, string $breedName) => Breed::query()
+            ->where(['company_id' => $company->id, 'species_id' => $species[$speciesName]->id, 'name' => $breedName])
+            ->value('id');
+        collect([
+            [5, 'Luna', 'Perro', 'Golden Retriever', 'female', '2021-03-14', 28.4, true],
+            [5, 'Rocky', 'Perro', 'Labrador Retriever', 'male', '2019-07-02', 32.1, false],
+            [0, 'Michi', 'Gato', 'Criollo', 'female', '2022-11-20', 4.2, true],
+            [1, 'Kiara', 'Perro', 'Criollo', 'female', '2020-01-05', 15.8, true],
+            [4, 'Pipo', 'Ave', 'Periquito', 'unknown', null, 0.05, false],
+            [2, 'Toby', 'Perro', 'Poodle', 'male', '2023-05-30', 6.7, false],
+        ])->each(fn ($data) => Patient::firstOrCreate(
+            ['company_id' => $company->id, 'client_id' => $clients[$data[0]]->id, 'name' => $data[1]],
+            [
+                'species_id' => $species[$data[2]]->id,
+                'breed_id' => $breedFor($data[2], $data[3]),
+                'sex' => $data[4],
+                'birth_date' => $data[5],
+                'weight' => $data[6],
+                'sterilized' => $data[7],
+                'status' => 'active',
+            ],
         ));
 
         // Notas comerciales sobre algunos clientes.

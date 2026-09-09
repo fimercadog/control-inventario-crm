@@ -7,6 +7,7 @@ use App\Http\Resources\ClientNoteResource;
 use App\Http\Resources\ClientResource;
 use App\Http\Resources\DealResource;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\PatientResource;
 use App\Http\Resources\QuoteResource;
 use App\Models\Client;
 use App\Models\ClientNote;
@@ -33,6 +34,9 @@ class ClientController extends BaseCrudController
 
         return response()->json([
             'client' => new ClientResource($client->load('segment')),
+            'patients' => PatientResource::collection(
+                $client->patients()->with(['species', 'breed'])->latest()->limit(50)->get()
+            ),
             'deals' => DealResource::collection($client->deals()->latest()->limit(50)->get()),
             'activities' => ActivityResource::collection(
                 $client->activities()->with('deal')->orderByRaw('COALESCE(due_date, created_at) desc')->limit(50)->get()

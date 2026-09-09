@@ -39,4 +39,9 @@ class Client extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function patients(): HasMany
+    {
+        return $this->hasMany(Patient::class);
+    }
 }

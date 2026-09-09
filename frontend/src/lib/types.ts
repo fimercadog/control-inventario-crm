@@ -253,3 +253,22 @@ export type Breed = {
   species_id: number;
   species?: string | null;
 };
+
+export type Patient = {
+  id: number;
+  name: string;
+  sex: "male" | "female" | "unknown";
+  birth_date?: string | null;
+  weight?: number | string | null;
+  microchip?: string | null;
+  sterilized: boolean;
+  photo_url?: string | null;
+  status: string;
+  client_id: number;
+  client?: string | null;
+  species_id: number;
+  species?: string | null;
+  breed_id?: number | null;
+  breed?: string | null;
+  deleted_at?: string | null;
+};

@@ -10,10 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
-import { ActivityRow, Client, Deal, ClientNote, Order, Quote } from "@/lib/types";
+import { ActivityRow, Client, Deal, ClientNote, Order, Patient, Quote } from "@/lib/types";
 
 type History = {
   client: Client;
+  patients: Patient[];
   deals: Deal[];
   activities: ActivityRow[];
   orders: Order[];
@@ -82,6 +83,20 @@ export default function ClientDetailPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
+        <Section title="Mascotas" count={data.patients.length}>
+          {data.patients.map((p) => (
+            <Row
+              key={p.id}
+              left={
+                <Link href={`/app/pacientes/${p.id}`} className="text-primary hover:underline">
+                  {p.name}
+                </Link>
+              }
+              right={[p.species, p.breed].filter(Boolean).join(" · ")}
+            />
+          ))}
+        </Section>
+
         <Section title="Deals" count={data.deals.length}>
           {data.deals.map((d) => (
             <Row key={d.id} left={d.title} right={`${d.stage} · $${Number(d.amount).toLocaleString("es-CO")}`} />

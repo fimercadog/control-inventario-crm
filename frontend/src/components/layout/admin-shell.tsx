@@ -24,6 +24,7 @@ import {
   Moon,
   Package,
   PawPrint,
+  Rabbit,
   Receipt,
   Repeat,
   Ruler,
@@ -113,7 +114,8 @@ const navGroups: NavGroup[] = [
   {
     label: "Clínica",
     items: [
-      { href: "/app/especies", label: "Especies", icon: PawPrint, permissions: ["patients.manage"] },
+      { href: "/app/pacientes", label: "Pacientes", icon: PawPrint, permissions: ["patients.manage"] },
+      { href: "/app/especies", label: "Especies", icon: Rabbit, permissions: ["patients.manage"] },
       { href: "/app/razas", label: "Razas", icon: Dna, permissions: ["patients.manage"] },
     ],
   },

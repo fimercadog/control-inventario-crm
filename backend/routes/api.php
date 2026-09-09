@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\DealController;
 use App\Http\Controllers\Api\ExportController;
 use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PublicCatalogController;
 use App\Http\Controllers\Api\PurchaseOrderController;
@@ -131,6 +132,9 @@ Route::middleware('auth:sanctum')->group(function (): void {
     // --- Clínica veterinaria ---
     Route::apiResource('species', SpeciesController::class)->middleware('can:patients.manage');
     Route::apiResource('breeds', BreedController::class)->middleware('can:patients.manage');
+    Route::apiResource('patients', PatientController::class)->middleware('can:patients.manage');
+    Route::post('/patients/{id}/photo', [PatientController::class, 'photo'])->middleware('can:patients.manage')->whereNumber('id');
+    Route::post('/patients/{id}/restore', [PatientController::class, 'restore'])->middleware('can:patients.manage')->whereNumber('id');
 
     Route::apiResource('audit-logs', AuditLogController::class)->only(['index', 'show'])->middleware('can:audit.view');
     Route::get('/permissions', [RoleController::class, 'permissions'])->middleware('can:roles.manage');
