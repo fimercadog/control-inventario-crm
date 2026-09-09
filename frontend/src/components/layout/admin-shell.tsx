@@ -47,6 +47,7 @@ import { LogoMark } from "@/components/brand/logo";
 import { BetaNotice } from "@/components/layout/beta-notice";
 import { ContingencyBanner } from "@/components/layout/contingency-banner";
 import { useContingency } from "@/lib/contingency/context";
+import { planHidesRoute, planLocksAsPremium } from "@/lib/plan";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useTheme } from "@/components/theme-provider";
@@ -157,12 +158,68 @@ function PremiumBadge() {
   );
 }
 
+// Contenido del modal "Premium" segun el modulo. Sin entrada => cae al de IA.
+const PREMIUM_INFO: Record<string, { title: string; body: React.ReactNode }> = {
+  "/app/contingencia": {
+    title: "Modo contingencia (continuidad sin conexion)",
+    body: (
+      <>
+        <p>
+          El modo contingencia permite{" "}
+          <strong className="font-semibold text-foreground">seguir operando cuando se cae internet</strong>: las
+          ventas, pedidos y movimientos de inventario se registran localmente y quedan en una cola.
+        </p>
+        <p>
+          Al volver la conexion, todo lo encolado se{" "}
+          <strong className="font-semibold text-foreground">sincroniza con el sistema</strong> y se resuelven los
+          conflictos (por ejemplo, stock que cambio mientras estabas sin senal).
+        </p>
+        <p className="font-medium text-foreground">
+          Esta funcionalidad esta disponible en el plan Premium. Para activarla o conocer las opciones, comunicate
+          con el administrador de tu sistema.
+        </p>
+      </>
+    ),
+  },
+  "/app/ia": {
+    title: "Inteligencia Artificial para Ventas e Inventario",
+    body: (
+      <>
+        <p>
+          Potenciá la gestión comercial y de inventario con una herramienta de inteligencia artificial diseñada
+          para{" "}
+          <strong className="font-semibold text-foreground">
+            apoyar tus procesos, facilitar el análisis de información y ayudarte en la toma de decisiones
+          </strong>
+          .
+        </p>
+        <p>
+          Podés utilizarla para analizar el pipeline de ventas, identificar tendencias, resumir datos
+          relevantes, generar reportes y comunicados, y obtener apoyo para interpretar indicadores como
+          rotación de inventario, productos con bajo stock y desempeño de ventas.
+        </p>
+        <p>
+          La inteligencia artificial funciona como un{" "}
+          <strong className="font-semibold text-foreground">asistente para los equipos de ventas e inventario</strong>,
+          permitiendo trabajar de forma más ágil y obtener información útil a partir de los datos disponibles
+          en el sistema.
+        </p>
+        <p className="font-medium text-foreground">
+          Esta funcionalidad está disponible en el plan Premium. Para activarla o conocer las opciones
+          disponibles, comunicate con el administrador de tu sistema.
+        </p>
+      </>
+    ),
+  },
+};
+
 function NavLink({ item }: { item: NavItem }) {
   const pathname = usePathname();
   const Icon = item.icon;
   const { isActive: contingencyActive, pendingCount } = useContingency();
+  const premiumLocked = item.premium || planLocksAsPremium(item.href);
 
-  if (item.alert) {
+  if (item.alert && !premiumLocked) {
     const active = pathname === item.href;
     return (
       <Link
@@ -183,7 +240,8 @@ function NavLink({ item }: { item: NavItem }) {
     );
   }
 
-  if (item.premium) {
+  if (premiumLocked) {
+    const info = PREMIUM_INFO[item.href] ?? PREMIUM_INFO["/app/ia"];
     return (
       <Dialog>
         <DialogTrigger asChild>
@@ -198,33 +256,9 @@ function NavLink({ item }: { item: NavItem }) {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Inteligencia Artificial para Ventas e Inventario</DialogTitle>
+            <DialogTitle>{info.title}</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 text-sm text-muted-foreground">
-            <p>
-              Potenciá la gestión comercial y de inventario con una herramienta de inteligencia artificial diseñada
-              para{" "}
-              <strong className="font-semibold text-foreground">
-                apoyar tus procesos, facilitar el análisis de información y ayudarte en la toma de decisiones
-              </strong>
-              .
-            </p>
-            <p>
-              Podés utilizarla para analizar el pipeline de ventas, identificar tendencias, resumir datos
-              relevantes, generar reportes y comunicados, y obtener apoyo para interpretar indicadores como
-              rotación de inventario, productos con bajo stock y desempeño de ventas.
-            </p>
-            <p>
-              La inteligencia artificial funciona como un{" "}
-              <strong className="font-semibold text-foreground">asistente para los equipos de ventas e inventario</strong>,
-              permitiendo trabajar de forma más ágil y obtener información útil a partir de los datos disponibles
-              en el sistema.
-            </p>
-            <p className="font-medium text-foreground">
-              Esta funcionalidad está disponible en el plan Premium. Para activarla o conocer las opciones
-              disponibles, comunicate con el administrador de tu sistema.
-            </p>
-          </div>
+          <div className="space-y-4 text-sm text-muted-foreground">{info.body}</div>
         </DialogContent>
       </Dialog>
     );
@@ -311,7 +345,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }, [router]);
 
   const visibleGroups = navGroups
-    .map((group) => ({ ...group, items: group.items.filter((item) => hasAnyPermission(user, item.permissions)) }))
+    .map((group) => ({
+      ...group,
+      items: group.items.filter(
+        (item) => !planHidesRoute(item.href) && hasAnyPermission(user, item.permissions),
+      ),
+    }))
     .filter((group) => group.items.length > 0);
 
   // Guard por ruta: si la ruta actual corresponde a un modulo del menu y el
@@ -320,7 +359,10 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const activeNav = allNavItems
     .filter((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))
     .sort((a, b) => b.href.length - a.href.length)[0];
-  const authorized = !user || !activeNav || hasAnyPermission(user, activeNav.permissions);
+  const authorized =
+    !planHidesRoute(activeNav?.href) &&
+    !planLocksAsPremium(activeNav?.href) &&
+    (!user || !activeNav || hasAnyPermission(user, activeNav.permissions));
 
   if (checkingSession && !user) {
     return (

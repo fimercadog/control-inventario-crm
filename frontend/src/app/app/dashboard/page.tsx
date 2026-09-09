@@ -40,6 +40,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useDashboard, type DashboardData, type Delta } from "@/lib/use-dashboard";
 import { useCountUp } from "@/lib/use-count-up";
+import { isBasePlan } from "@/lib/plan";
 
 const TONE = {
   green: "#0e8f5c",
@@ -593,6 +594,10 @@ export default function DashboardPage() {
   const m = data.metrics;
   const stageCount = (stage: string) => data.deals_by_stage.find((s) => s.stage === stage)?.total ?? 0;
 
+  // Plan base: se ocultan las tarjetas y gráficos de los módulos que no incluye
+  // (deals, órdenes de compra, alertas de stock, actividad/auditoría). Ver docs/plan-base.md.
+  const base = isBasePlan();
+
   return (
     <motion.div
       variants={reduce ? undefined : container}
@@ -619,7 +624,7 @@ export default function DashboardPage() {
 
       {/* KPI hero */}
       <motion.div variants={item}>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div className={`grid gap-3 sm:grid-cols-2 ${base ? "lg:grid-cols-2" : "lg:grid-cols-5"}`}>
           <KpiCard
             label="Ingresos del mes"
             value={m.revenue_month ?? 0}
@@ -629,34 +634,40 @@ export default function DashboardPage() {
             emphasis
           />
           <KpiCard label="Clientes" value={m.total_clients ?? 0} icon={Users} tone={TONE.green} />
-          <KpiCard
-            label="Deals abiertos"
-            value={m.open_deals ?? 0}
-            icon={Handshake}
-            tone={TONE.sky}
-            hint={money(m.open_deals_value ?? 0)}
-          />
-          <KpiCard label="Deals ganados (mes)" value={m.deals_won_month ?? 0} icon={Trophy} tone={TONE.wine} delta={data.deltas.deals_won} />
-          <KpiCard label="Ordenes de compra pendientes" value={m.pending_purchase_orders ?? 0} icon={ShoppingCart} tone={TONE.amber} />
+          {!base && (
+            <>
+              <KpiCard
+                label="Deals abiertos"
+                value={m.open_deals ?? 0}
+                icon={Handshake}
+                tone={TONE.sky}
+                hint={money(m.open_deals_value ?? 0)}
+              />
+              <KpiCard label="Deals ganados (mes)" value={m.deals_won_month ?? 0} icon={Trophy} tone={TONE.wine} delta={data.deltas.deals_won} />
+              <KpiCard label="Ordenes de compra pendientes" value={m.pending_purchase_orders ?? 0} icon={ShoppingCart} tone={TONE.amber} />
+            </>
+          )}
         </div>
       </motion.div>
 
-      {/* Second metrics: pipeline por etapa */}
-      <motion.div variants={item}>
-        <SectionLabel>Pipeline por etapa</SectionLabel>
-        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
-          {Object.entries(STAGE_META).map(([stage, meta]) => (
-            <MiniStat key={stage} label={meta.label} value={stageCount(stage)} icon={Handshake} tone={meta.color} />
-          ))}
-        </div>
-      </motion.div>
+      {/* Second metrics: pipeline por etapa (deals) */}
+      {!base && (
+        <motion.div variants={item}>
+          <SectionLabel>Pipeline por etapa</SectionLabel>
+          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
+            {Object.entries(STAGE_META).map(([stage, meta]) => (
+              <MiniStat key={stage} label={meta.label} value={stageCount(stage)} icon={Handshake} tone={meta.color} />
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* Analytics */}
       <motion.div variants={item}>
         <SectionLabel>Analitica</SectionLabel>
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className={`grid gap-4 ${base ? "" : "lg:grid-cols-3"}`}>
           <ChartFrame
-            className="lg:col-span-2"
+            className={base ? "" : "lg:col-span-2"}
             title="Ingresos"
             description="Ingresos mensuales por pedidos confirmados — ultimos 12 meses."
             icon={TrendingUp}
@@ -665,20 +676,24 @@ export default function DashboardPage() {
             <RevenueTrend data={data.trends.revenue_monthly} />
           </ChartFrame>
 
-          <ChartFrame title="Deals por etapa" description="Distribucion actual del pipeline." icon={ChartPie} tone={TONE.violet}>
-            <DonutStages rows={data.deals_by_stage} />
-          </ChartFrame>
+          {!base && (
+            <ChartFrame title="Deals por etapa" description="Distribucion actual del pipeline." icon={ChartPie} tone={TONE.violet}>
+              <DonutStages rows={data.deals_by_stage} />
+            </ChartFrame>
+          )}
         </div>
 
-        <div className="mt-4 grid gap-4 lg:grid-cols-2">
-          <ChartFrame title="Embudo de ventas" description="Oportunidades activas por etapa del pipeline." icon={Filter} tone={TONE.wine}>
-            <PipelineFunnel rows={data.deals_by_stage} />
-          </ChartFrame>
+        {!base && (
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <ChartFrame title="Embudo de ventas" description="Oportunidades activas por etapa del pipeline." icon={Filter} tone={TONE.wine}>
+              <PipelineFunnel rows={data.deals_by_stage} />
+            </ChartFrame>
 
-          <ChartFrame title="Deals ganados vs perdidos" description="Cierre de oportunidades — ultimos 12 meses." icon={Handshake} tone={TONE.green}>
-            <DealsWonLost data={data.trends.deals_monthly} />
-          </ChartFrame>
-        </div>
+            <ChartFrame title="Deals ganados vs perdidos" description="Cierre de oportunidades — ultimos 12 meses." icon={Handshake} tone={TONE.green}>
+              <DealsWonLost data={data.trends.deals_monthly} />
+            </ChartFrame>
+          </div>
+        )}
 
         <div className="mt-4">
           <ChartFrame title="Top productos por existencia" description="Productos con mayor stock disponible." icon={Package} tone={TONE.indigo}>
@@ -687,31 +702,35 @@ export default function DashboardPage() {
         </div>
       </motion.div>
 
-      {/* Activity */}
-      <motion.div variants={item}>
-        <SectionLabel>Actividad</SectionLabel>
-        <Card className="border-border/70">
-          <CardContent className="p-5">
-            <h3 className="mb-4 text-sm font-semibold">Actividad reciente</h3>
-            <ActivityTimeline items={data.recent_activity} />
-          </CardContent>
-        </Card>
-      </motion.div>
+      {/* Activity (auditoría) */}
+      {!base && (
+        <motion.div variants={item}>
+          <SectionLabel>Actividad</SectionLabel>
+          <Card className="border-border/70">
+            <CardContent className="p-5">
+              <h3 className="mb-4 text-sm font-semibold">Actividad reciente</h3>
+              <ActivityTimeline items={data.recent_activity} />
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
 
-      {/* Secondary */}
-      <motion.div variants={item}>
-        <Card className="border-border/70">
-          <CardContent className="p-5">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-sm font-semibold">Productos con stock bajo</h3>
-              <IconBadge tone={TONE.red} size={9}>
-                <Boxes className="size-4" />
-              </IconBadge>
-            </div>
-            <LowStockList products={data.low_stock_alerts} />
-          </CardContent>
-        </Card>
-      </motion.div>
+      {/* Secondary: productos con stock bajo (alertas de stock) */}
+      {!base && (
+        <motion.div variants={item}>
+          <Card className="border-border/70">
+            <CardContent className="p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-sm font-semibold">Productos con stock bajo</h3>
+                <IconBadge tone={TONE.red} size={9}>
+                  <Boxes className="size-4" />
+                </IconBadge>
+              </div>
+              <LowStockList products={data.low_stock_alerts} />
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
     </motion.div>
   );
 }
