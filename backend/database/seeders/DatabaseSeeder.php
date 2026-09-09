@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Activity;
 use App\Models\AuditLog;
 use App\Models\Brand;
+use App\Models\Breed;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\ClientNote;
@@ -20,6 +21,7 @@ use App\Models\PurchaseOrderItem;
 use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\Segment;
+use App\Models\Species;
 use App\Models\StockMovement;
 use App\Models\StockTransfer;
 use App\Models\Supplier;
@@ -165,6 +167,25 @@ class DatabaseSeeder extends Seeder
         // Segmentos de cliente.
         $segments = collect(['Mayorista', 'Minorista', 'Institucional', 'Distribuidor'])
             ->mapWithKeys(fn ($name) => [$name => Segment::firstOrCreate(['company_id' => $company->id, 'name' => $name], ['status' => 'active'])]);
+
+        // Especies y razas (vertical veterinaria).
+        $speciesBreeds = [
+            'Perro' => ['Labrador Retriever', 'Golden Retriever', 'Criollo', 'Poodle', 'Bulldog Francés'],
+            'Gato' => ['Siamés', 'Persa', 'Criollo', 'Angora'],
+            'Ave' => ['Periquito', 'Canario', 'Agapornis'],
+            'Conejo' => ['Mini Lop', 'Cabeza de León'],
+        ];
+        $species = collect($speciesBreeds)->mapWithKeys(function (array $breedNames, string $speciesName) use ($company) {
+            $species = Species::firstOrCreate(['company_id' => $company->id, 'name' => $speciesName], ['status' => 'active']);
+            foreach ($breedNames as $breedName) {
+                Breed::firstOrCreate(
+                    ['company_id' => $company->id, 'species_id' => $species->id, 'name' => $breedName],
+                    ['status' => 'active'],
+                );
+            }
+
+            return [$speciesName => $species];
+        });
 
         // Clientes.
         $clients = collect([

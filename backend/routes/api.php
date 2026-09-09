@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ActivityController;
 use App\Http\Controllers\Api\AuditLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\BreedController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ClientNoteController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SegmentController;
+use App\Http\Controllers\Api\SpeciesController;
 use App\Http\Controllers\Api\StockAlertController;
 use App\Http\Controllers\Api\StockMovementController;
 use App\Http\Controllers\Api\StockTransferController;
@@ -125,6 +127,10 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/orders/{order}/items', [OrderController::class, 'addItem'])->middleware('can:orders.manage');
     Route::delete('/orders/{order}/items/{item}', [OrderController::class, 'removeItem'])->middleware('can:orders.manage');
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm'])->middleware('can:orders.manage');
+
+    // --- Clínica veterinaria ---
+    Route::apiResource('species', SpeciesController::class)->middleware('can:patients.manage');
+    Route::apiResource('breeds', BreedController::class)->middleware('can:patients.manage');
 
     Route::apiResource('audit-logs', AuditLogController::class)->only(['index', 'show'])->middleware('can:audit.view');
     Route::get('/permissions', [RoleController::class, 'permissions'])->middleware('can:roles.manage');

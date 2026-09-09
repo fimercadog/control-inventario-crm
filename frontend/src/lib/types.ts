@@ -236,3 +236,20 @@ export type AppUser = {
   role?: string;
   roles: string[];
 };
+
+/* ---- Vertical veterinaria ---- */
+
+export type Species = {
+  id: number;
+  name: string;
+  status: string;
+  breeds_count?: number;
+};
+
+export type Breed = {
+  id: number;
+  name: string;
+  status: string;
+  species_id: number;
+  species?: string | null;
+};

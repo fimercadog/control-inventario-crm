@@ -12,6 +12,7 @@ import {
   CalendarDays,
   ClipboardList,
   Contact2,
+  Dna,
   FileText,
   Handshake,
   Inbox,
@@ -22,6 +23,7 @@ import {
   Menu,
   Moon,
   Package,
+  PawPrint,
   Receipt,
   Repeat,
   Ruler,
@@ -106,6 +108,13 @@ const navGroups: NavGroup[] = [
       { href: "/app/seguimientos", label: "Seguimientos", icon: CalendarClock, permissions: ["activities.manage"] },
       { href: "/app/calendario", label: "Calendario", icon: CalendarDays, permissions: ["activities.manage"] },
       { href: "/app/pedidos", label: "Pedidos", icon: Receipt, permissions: ["orders.manage"] },
+    ],
+  },
+  {
+    label: "Clínica",
+    items: [
+      { href: "/app/especies", label: "Especies", icon: PawPrint, permissions: ["patients.manage"] },
+      { href: "/app/razas", label: "Razas", icon: Dna, permissions: ["patients.manage"] },
     ],
   },
   {
