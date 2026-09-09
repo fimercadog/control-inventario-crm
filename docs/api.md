@@ -30,6 +30,11 @@ Endpoints:
   - `POST /orders/{id}/items`, `DELETE /orders/{id}/items/{item}`
   - `POST /orders/{id}/confirm` (valida existencias y genera `stock_movements` tipo `out`)
 - `GET /audit-logs`
+- `GET|POST /users`, `PUT /users/{id}` (`can:users.manage`)
+  - `company_id` **nunca** se toma del payload: en alta lo fija el servidor desde la empresa del usuario autenticado; en edición no se toca. `status` (`active|inactive`) y `role` (nombre de rol existente) sí se aceptan, validados.
+  - Sin `password` en el alta -> el servidor genera uno temporal y lo devuelve en `temporary_password`.
+- `GET|POST /roles`, `GET|PUT /roles/{id}`, `GET /permissions` (`can:roles.manage`)
+- La empresa (tenant) del request se resuelve del usuario autenticado; para requests publicos o usuarios sin empresa se usa la unica empresa de la instalacion. Si no hay ninguna empresa configurada (falta el seeder) -> `500`.
 - `GET /exports/{resource}.csv`, `GET /exports/{resource}.pdf` (`clients`, `deals`, `products`, `suppliers`, `stock-movements`, `purchase-orders`, `orders`, `audit-logs`)
 
 Parametros tabulares soportados:
