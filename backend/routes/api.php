@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SegmentController;
+use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\SpeciesController;
 use App\Http\Controllers\Api\StockAlertController;
 use App\Http\Controllers\Api\StockMovementController;
@@ -130,6 +131,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm'])->middleware('can:orders.manage');
 
     // --- Clínica veterinaria ---
+    Route::apiResource('services', ServiceController::class)->middleware('can:services.manage');
     Route::apiResource('species', SpeciesController::class)->middleware('can:patients.manage');
     Route::apiResource('breeds', BreedController::class)->middleware('can:patients.manage');
     Route::apiResource('patients', PatientController::class)->middleware('can:patients.manage');

@@ -33,6 +33,7 @@ import {
   ShieldAlert,
   ListTodo,
   ShoppingCart,
+  Stethoscope,
   StickyNote,
   Sun,
   Tag,
@@ -115,6 +116,7 @@ const navGroups: NavGroup[] = [
     label: "Clínica",
     items: [
       { href: "/app/pacientes", label: "Pacientes", icon: PawPrint, permissions: ["patients.manage"] },
+      { href: "/app/servicios", label: "Servicios", icon: Stethoscope, permissions: ["services.manage"] },
       { href: "/app/especies", label: "Especies", icon: Rabbit, permissions: ["patients.manage"] },
       { href: "/app/razas", label: "Razas", icon: Dna, permissions: ["patients.manage"] },
     ],

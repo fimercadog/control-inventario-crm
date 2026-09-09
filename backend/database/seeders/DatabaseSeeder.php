@@ -22,6 +22,7 @@ use App\Models\PurchaseOrderItem;
 use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\Segment;
+use App\Models\Service;
 use App\Models\Species;
 use App\Models\StockMovement;
 use App\Models\StockTransfer;
@@ -187,6 +188,21 @@ class DatabaseSeeder extends Seeder
 
             return [$speciesName => $species];
         });
+
+        // Catálogo de servicios de la clínica.
+        collect([
+            ['Consulta general', 'consulta', 30, 45000],
+            ['Consulta especializada', 'consulta', 45, 80000],
+            ['Vacunación', 'vacunacion', 15, 35000],
+            ['Desparasitación', 'vacunacion', 15, 25000],
+            ['Cirugía', 'cirugia', 120, 350000],
+            ['Curación', 'curacion', 20, 30000],
+            ['Hospitalización (día)', 'hospitalizacion', null, 120000],
+            ['Peluquería / Baño', 'peluqueria', 60, 40000],
+        ])->each(fn ($data) => Service::firstOrCreate(
+            ['company_id' => $company->id, 'name' => $data[0]],
+            ['type' => $data[1], 'estimated_duration_minutes' => $data[2], 'price' => $data[3], 'status' => 'active'],
+        ));
 
         // Clientes.
         $clients = collect([

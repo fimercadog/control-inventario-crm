@@ -254,6 +254,16 @@ export type Breed = {
   species?: string | null;
 };
 
+export type Service = {
+  id: number;
+  name: string;
+  description?: string | null;
+  type?: string | null;
+  estimated_duration_minutes?: number | null;
+  price: number | string;
+  status: string;
+};
+
 export type Patient = {
   id: number;
   name: string;
