@@ -8,7 +8,10 @@ use App\Models\Supplier;
 class SupplierController extends BaseCrudController
 {
     protected string $model = Supplier::class;
+
     protected string $resource = SupplierResource::class;
+
     protected array $searchable = ['name', 'contact_name', 'email'];
+
     protected array $filterable = ['status' => 'status'];
 }

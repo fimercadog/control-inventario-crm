@@ -8,8 +8,12 @@ use App\Models\Brand;
 class BrandController extends BaseCrudController
 {
     protected string $model = Brand::class;
+
     protected string $resource = BrandResource::class;
+
     protected array $withCount = ['products'];
+
     protected array $searchable = ['name'];
+
     protected array $filterable = ['status' => 'status'];
 }

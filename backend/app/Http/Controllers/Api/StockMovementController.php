@@ -13,8 +13,12 @@ use App\Models\StockMovement;
 class StockMovementController extends BaseCrudController
 {
     protected string $model = StockMovement::class;
+
     protected string $resource = StockMovementResource::class;
+
     protected array $with = ['product', 'warehouse'];
+
     protected array $searchable = ['reason', 'reference'];
+
     protected array $filterable = ['type' => 'type', 'product_id' => 'product_id', 'warehouse_id' => 'warehouse_id'];
 }

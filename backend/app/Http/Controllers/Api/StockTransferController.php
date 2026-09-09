@@ -20,9 +20,13 @@ use Illuminate\Validation\ValidationException;
 class StockTransferController extends BaseCrudController
 {
     protected string $model = StockTransfer::class;
+
     protected string $resource = StockTransferResource::class;
+
     protected array $with = ['product', 'fromWarehouse', 'toWarehouse'];
+
     protected array $searchable = ['reference', 'notes'];
+
     protected array $filterable = ['product_id' => 'product_id', 'from_warehouse_id' => 'from_warehouse_id', 'to_warehouse_id' => 'to_warehouse_id'];
 
     public function store(Request $request, AuditService $audit)

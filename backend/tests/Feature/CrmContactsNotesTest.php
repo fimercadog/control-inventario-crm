@@ -15,7 +15,9 @@ class CrmContactsNotesTest extends TestCase
     use RefreshDatabase;
 
     private Company $company;
+
     private User $user;
+
     private Client $client;
 
     protected function setUp(): void

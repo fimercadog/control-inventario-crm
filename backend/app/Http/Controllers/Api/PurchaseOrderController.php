@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\PurchaseOrderResource;
+use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\StockMovement;
 use App\Services\AuditService;
@@ -17,9 +18,13 @@ use Illuminate\Validation\Rule;
 class PurchaseOrderController extends BaseCrudController
 {
     protected string $model = PurchaseOrder::class;
+
     protected string $resource = PurchaseOrderResource::class;
+
     protected array $with = ['supplier', 'warehouse', 'items.product'];
+
     protected array $searchable = [];
+
     protected array $filterable = ['status' => 'status', 'supplier_id' => 'supplier_id'];
 
     public function update(Request $request, string $id, AuditService $audit)
@@ -48,7 +53,7 @@ class PurchaseOrderController extends BaseCrudController
             'unit_cost' => ['required', 'numeric', 'min:0'],
         ]);
 
-        $product = \App\Models\Product::find($data['product_id']);
+        $product = Product::find($data['product_id']);
         $purchase_order->items()->create($data + ['product_name' => $product?->name, 'sku' => $product?->sku]);
         $this->recalculateTotal($purchase_order);
 

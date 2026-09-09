@@ -17,9 +17,13 @@ use Illuminate\Http\Request;
 class ClientController extends BaseCrudController
 {
     protected string $model = Client::class;
+
     protected string $resource = ClientResource::class;
+
     protected array $with = ['segment'];
+
     protected array $searchable = ['name', 'company_name', 'email'];
+
     protected array $filterable = ['status' => 'status', 'segment_id' => 'segment_id'];
 
     /** Vista agregada: todo lo que ha pasado con un cliente. */

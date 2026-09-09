@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\StockMovement;
 use App\Services\AuditService;
 use Illuminate\Http\Request;
@@ -18,9 +19,13 @@ use Illuminate\Validation\ValidationException;
 class OrderController extends BaseCrudController
 {
     protected string $model = Order::class;
+
     protected string $resource = OrderResource::class;
+
     protected array $with = ['client', 'owner', 'warehouse', 'items.product'];
+
     protected array $searchable = [];
+
     protected array $filterable = ['status' => 'status', 'client_id' => 'client_id'];
 
     public function update(Request $request, string $id, AuditService $audit)
@@ -48,7 +53,7 @@ class OrderController extends BaseCrudController
             'unit_price' => ['required', 'numeric', 'min:0'],
         ]);
 
-        $product = \App\Models\Product::find($data['product_id']);
+        $product = Product::find($data['product_id']);
         $order->items()->create($data + ['product_name' => $product?->name, 'sku' => $product?->sku]);
         $this->recalculateTotal($order);
 

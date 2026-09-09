@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\Concerns\ResolvesCompany;
+use App\Http\Controllers\Controller;
 use App\Models\AuditLog;
 use App\Models\Client;
 use App\Models\Deal;
@@ -12,8 +12,8 @@ use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use App\Services\TableQueryService;
-use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class ExportController extends Controller
 {
@@ -50,6 +50,7 @@ class ExportController extends Controller
 
         if ($format === 'pdf') {
             $pdf = Pdf::loadView('exports.table', compact('resource', 'columns', 'rows'));
+
             return $pdf->download($resource.'.pdf');
         }
 

@@ -11,9 +11,13 @@ use Illuminate\Http\Request;
 class ClientNoteController extends BaseCrudController
 {
     protected string $model = ClientNote::class;
+
     protected string $resource = ClientNoteResource::class;
+
     protected array $with = ['client', 'author'];
+
     protected array $searchable = ['body'];
+
     protected array $filterable = ['client_id' => 'client_id'];
 
     /** Nota de solo alta (bitacora comercial): el autor es el usuario actual. */

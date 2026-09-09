@@ -106,7 +106,7 @@ return new class extends Migration
         foreach ($pairs as [$table, $column]) {
             try {
                 Schema::table($table, fn (Blueprint $t) => $t->index($column, "{$table}_{$column}_index"));
-            } catch (\Throwable) {
+            } catch (Throwable) {
                 // El indice ya existe (p. ej. lo creo un composite previo).
             }
         }

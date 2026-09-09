@@ -10,7 +10,6 @@ use App\Models\Deal;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
-use App\Models\StockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -140,7 +139,7 @@ class DashboardController extends Controller
     {
         $rows = Order::where('company_id', $companyId)->where('status', 'confirmed')
             ->where('updated_at', '>=', $from)
-            ->selectRaw($this->monthExpr('updated_at')." as month, coalesce(sum(total), 0) as total")
+            ->selectRaw($this->monthExpr('updated_at').' as month, coalesce(sum(total), 0) as total')
             ->groupBy('month')->pluck('total', 'month');
 
         return collect($this->monthKeys())->map(fn (string $month) => ['month' => $month, 'revenue' => (float) ($rows[$month] ?? 0)]);
@@ -149,9 +148,9 @@ class DashboardController extends Controller
     private function dealsMonthly(int $companyId, Carbon $from): Collection
     {
         $won = Deal::where('company_id', $companyId)->where('stage', 'won')->where('updated_at', '>=', $from)
-            ->selectRaw($this->monthExpr('updated_at')." as month, count(*) as total")->groupBy('month')->pluck('total', 'month');
+            ->selectRaw($this->monthExpr('updated_at').' as month, count(*) as total')->groupBy('month')->pluck('total', 'month');
         $lost = Deal::where('company_id', $companyId)->where('stage', 'lost')->where('updated_at', '>=', $from)
-            ->selectRaw($this->monthExpr('updated_at')." as month, count(*) as total")->groupBy('month')->pluck('total', 'month');
+            ->selectRaw($this->monthExpr('updated_at').' as month, count(*) as total')->groupBy('month')->pluck('total', 'month');
 
         return collect($this->monthKeys())->map(fn (string $month) => [
             'month' => $month,
