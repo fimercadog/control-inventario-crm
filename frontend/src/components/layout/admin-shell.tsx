@@ -125,6 +125,7 @@ const navGroups: NavGroup[] = [
       { href: "/app/recetas", label: "Recetas", icon: FileText, permissions: ["prescriptions.manage"] },
       { href: "/app/procedimientos", label: "Procedimientos", icon: ClipboardList, permissions: ["procedures.manage"] },
       { href: "/app/diagnosticos", label: "Diagnósticos", icon: ListChecks, permissions: ["medical_records.manage"] },
+      { href: "/app/reportes-clinicos", label: "Reportes clínicos", icon: BarChart3, permissions: ["clinical_reports.view"] },
       { href: "/app/servicios", label: "Servicios", icon: Tag, permissions: ["services.manage"] },
       { href: "/app/especies", label: "Especies", icon: Rabbit, permissions: ["patients.manage"] },
       { href: "/app/razas", label: "Razas", icon: Dna, permissions: ["patients.manage"] },

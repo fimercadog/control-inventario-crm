@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ClientNoteController;
 use App\Http\Controllers\Api\ClinicalApplicationController;
+use App\Http\Controllers\Api\ClinicalReportController;
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\ConsultationController;
 use App\Http\Controllers\Api\ContactController;
@@ -81,6 +82,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('/dashboard', DashboardController::class)->middleware('can:dashboard.view');
     Route::get('/reports', ReportController::class)->middleware('can:reports.view');
     Route::get('/reports/commercial', [ReportController::class, 'commercial'])->middleware('can:reports.view');
+    Route::get('/reports/clinical', ClinicalReportController::class)->middleware('can:clinical_reports.view');
 
     // Modo contingencia: el estado lo lee cualquier usuario (para renderizar el
     // banner y el modo solo-lectura); activar/desactivar exige settings.manage.

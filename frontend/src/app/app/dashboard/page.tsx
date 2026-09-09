@@ -6,15 +6,19 @@ import {
   ArrowDownRight,
   ArrowUpRight,
   Boxes,
+  CalendarClock,
   ChartPie,
   Filter,
   Handshake,
   Minus,
   Package,
+  PawPrint,
   Receipt,
   RefreshCw,
   ShieldCheck,
   ShoppingCart,
+  Stethoscope,
+  Syringe,
   Trophy,
   TrendingUp,
   UserPlus,
@@ -621,6 +625,19 @@ export default function DashboardPage() {
           <span className="hidden text-xs text-muted-foreground sm:inline">Actualizado {timeAgo(fetchedAt, nowMs)}</span>
         </div>
       </motion.div>
+
+      {/* Clínica */}
+      {data.clinical ? (
+        <motion.div variants={item}>
+          <SectionLabel>Clínica</SectionLabel>
+          <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
+            <MiniStat label="Citas hoy" value={data.clinical.appointments_today} icon={CalendarClock} tone={TONE.indigo} />
+            <MiniStat label="Pacientes activos" value={data.clinical.active_patients} icon={PawPrint} tone={TONE.green} />
+            <MiniStat label="Vacunas por vencer" value={data.clinical.vaccinations_due} icon={Syringe} tone={TONE.amber} />
+            <MiniStat label="Consultas del mes" value={data.clinical.consultations_month} icon={Stethoscope} tone={TONE.violet} />
+          </div>
+        </motion.div>
+      ) : null}
 
       {/* KPI hero */}
       <motion.div variants={item}>

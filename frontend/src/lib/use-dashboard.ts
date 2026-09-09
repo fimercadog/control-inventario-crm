@@ -7,6 +7,12 @@ export type Delta = { current: number; previous: number; pct: number | null };
 
 export type DashboardData = {
   generated_at: string;
+  clinical?: {
+    appointments_today: number;
+    active_patients: number;
+    vaccinations_due: number;
+    consultations_month: number;
+  };
   metrics: Record<string, number>;
   deltas: Record<"revenue" | "deals_won", Delta>;
   deals_by_stage: { stage: string; total: number; amount: number }[];

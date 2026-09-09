@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Concerns\ResolvesCompany;
 use App\Http\Controllers\Controller;
+use App\Models\Appointment;
 use App\Models\AuditLog;
 use App\Models\Client;
+use App\Models\ClinicalApplication;
+use App\Models\Consultation;
 use App\Models\Deal;
 use App\Models\Order;
+use App\Models\Patient;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
@@ -35,6 +39,19 @@ class DashboardController extends Controller
 
         return response()->json([
             'generated_at' => now()->toIso8601String(),
+            // Métricas de la clínica veterinaria (vertical). El resto del payload
+            // es el core y sigue igual.
+            'clinical' => [
+                'appointments_today' => Appointment::where('company_id', $companyId)
+                    ->whereDate('starts_at', $today)
+                    ->whereNotIn('status', ['cancelled'])->count(),
+                'active_patients' => Patient::where('company_id', $companyId)->where('status', 'active')->count(),
+                'vaccinations_due' => ClinicalApplication::where('company_id', $companyId)
+                    ->whereNotNull('next_due_at')
+                    ->whereDate('next_due_at', '<=', $today->copy()->addDays(30))->count(),
+                'consultations_month' => Consultation::where('company_id', $companyId)
+                    ->whereDate('date', '>=', $monthStart)->whereDate('date', '<=', $today)->count(),
+            ],
             'metrics' => [
                 'total_clients' => Client::where('company_id', $companyId)->count(),
                 'open_deals' => (clone $openDeals)->count(),
