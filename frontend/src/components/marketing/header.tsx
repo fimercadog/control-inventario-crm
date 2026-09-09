@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 const nav = [
   ["Inicio", "/"],
   ["Producto", "/producto"],
-  ["Catalogo", "/catalogo"],
+  ["Solicitar cita", "/solicitar-cita"],
   ["Precios", "/precios"],
   ["Ayuda", "/documentacion"],
   ["Blog", "/blog"],

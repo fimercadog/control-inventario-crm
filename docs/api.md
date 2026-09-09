@@ -8,6 +8,7 @@ Endpoints:
 - `GET /reports`
 - `GET|POST /leads`, `GET|PUT|DELETE /leads/{id}` — `POST /leads` es alta manual desde el panel (`can:leads.view`, `source=manual`); `PUT` acepta datos de contacto + `status`
 - `POST /public/leads` — alta publica sin auth (formularios demo / contacto del sitio), throttle 5/min, exige `consent`
+- `POST /public/appointments` — solicitud de cita del sitio (`name`, `email`, `phone?`, `pet_name?`, `reason?`, `preferred_date?`, `message?`, `consent`, honeypot `company_website`), limiter `appointment-request` 5/min. **No crea una cita**: genera un `Lead` con `source=appointment` para que recepción agende. Honeypot relleno -> descarte silencioso (200 sin guardar).
 - Catalogo publico (sin auth, throttle):
   - `GET /public/catalog/products` (params `category_id`, `q`, `page`; solo productos `is_public` + `active`, sin costo ni existencia)
   - `GET /public/catalog/products/{id}`

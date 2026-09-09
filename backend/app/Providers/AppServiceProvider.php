@@ -34,5 +34,6 @@ class AppServiceProvider extends ServiceProvider
         // catalogo (muchos GET) agota la cuota antes de poder cotizar.
         RateLimiter::for('catalog-read', fn (Request $request) => Limit::perMinute(120)->by('catalog-read:'.$request->ip()));
         RateLimiter::for('catalog-quote', fn (Request $request) => Limit::perMinute(5)->by('catalog-quote:'.$request->ip()));
+        RateLimiter::for('appointment-request', fn (Request $request) => Limit::perMinute(5)->by('appointment-request:'.$request->ip()));
     }
 }

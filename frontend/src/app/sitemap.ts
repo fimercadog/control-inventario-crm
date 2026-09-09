@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/producto/vacunas",
     "/producto/inventario",
     "/producto/reportes",
-    "/catalogo",
+    "/solicitar-cita",
     "/precios",
     "/documentacion",
     "/documentacion/desarrolladores",

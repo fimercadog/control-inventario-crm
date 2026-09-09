@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\PrescriptionController;
 use App\Http\Controllers\Api\ProcedureController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\PublicAppointmentController;
 use App\Http\Controllers\Api\PublicCatalogController;
 use App\Http\Controllers\Api\PurchaseOrderController;
 use App\Http\Controllers\Api\QuoteController;
@@ -53,6 +54,9 @@ Route::post('/auth/reset-password', [AuthController::class, 'resetPassword'])->m
 
 // Formularios publicos del sitio de marketing (demo / contacto).
 Route::post('/public/leads', [LeadController::class, 'store'])->middleware('throttle:5,1');
+
+// Portal publico "Solicita tu cita": genera un Lead (source=appointment).
+Route::post('/public/appointments', [PublicAppointmentController::class, 'store'])->middleware('throttle:appointment-request');
 
 // Catalogo publico: navegable por visitantes anonimos. La solicitud de
 // cotizacion entra al CRM como Cliente + Quote en borrador.
