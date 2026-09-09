@@ -1,4 +1,4 @@
-import { Boxes } from "lucide-react";
+import { PawPrint } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const sizes = {
@@ -8,11 +8,11 @@ const sizes = {
   xl: "size-14 [&>svg]:size-7",
 };
 
-/** Marca: cubo verde sobre cuadrado oscuro. Coincide con el favicon y el header. */
+/** Marca: huella verde sobre cuadrado oscuro. Coincide con el favicon y el header. */
 export function LogoMark({ size = "md", className }: { size?: keyof typeof sizes; className?: string }) {
   return (
     <span className={cn("inline-flex shrink-0 items-center justify-center rounded-xl bg-ink text-primary", sizes[size], className)}>
-      <Boxes />
+      <PawPrint />
     </span>
   );
 }
@@ -22,7 +22,7 @@ export function Logo({ size = "md", className }: { size?: keyof typeof sizes; cl
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <LogoMark size={size} />
       <span className="text-base font-black tracking-tight text-foreground">
-        CRM<span className="text-primary">+</span>Inventario
+        Vet<span className="text-primary">·</span>Panel
       </span>
     </span>
   );

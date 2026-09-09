@@ -31,6 +31,6 @@ El script:
 | Flujo | Pasos |
 | --- | --- |
 | **Visitante anónimo** | `/catalogo` → filtro por categoría → abrir ficha → cantidad 3 → "Agregar a cotización" → FAB → `/catalogo/cotizacion` → datos + consentimiento → "Enviar solicitud" → mensaje de éxito |
-| **Vendedor en el CRM** | login `admin@andescomercial.co` → `/app/cotizaciones` → fila "Solicitud web —…" con badge **"Sitio web"** + estado **"Borrador"** → detalle con el producto y la cantidad → el cliente existe en `/app/clientes` por su email |
+| **Vendedor en el CRM** | login `admin@vetlosandes.co` → `/app/cotizaciones` → fila "Solicitud web —…" con badge **"Sitio web"** + estado **"Borrador"** → detalle con el producto y la cantidad → el cliente existe en `/app/clientes` por su email |
 
 Salida esperada: `E2E OK — capturas en e2e/artifacts/` y código 0.

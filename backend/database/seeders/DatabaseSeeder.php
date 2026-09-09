@@ -40,10 +40,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $company = Company::firstOrCreate([
-            'name' => 'Andes Distribuciones S.A.S.',
+            'name' => 'Clínica Veterinaria Los Andes',
         ], [
             'nit' => '901.245.880-3',
-            'email' => 'ventas@andescomercial.co',
+            'email' => 'recepcion@vetlosandes.co',
             'phone' => '+57 601 555 0188',
             'address' => 'Calle 93 #14-20, Bogota',
             'timezone' => 'America/Bogota',
@@ -73,11 +73,11 @@ class DatabaseSeeder extends Seeder
         }
 
         $demoUsers = [
-            ['name' => 'Sofia Mercado', 'email' => 'superadmin@andescomercial.co', 'role' => 'Super Admin'],
-            ['name' => 'Camila Rojas', 'email' => 'admin@andescomercial.co', 'role' => 'Administrador de empresa'],
-            ['name' => 'Sebastian Moreno', 'email' => 'ventas@andescomercial.co', 'role' => 'Ventas'],
-            ['name' => 'Valentina Castro', 'email' => 'inventario@andescomercial.co', 'role' => 'Inventario'],
-            ['name' => 'Laura Medina', 'email' => 'usuario@andescomercial.co', 'role' => 'Usuario'],
+            ['name' => 'Sofia Mercado', 'email' => 'superadmin@vetlosandes.co', 'role' => 'Super Admin'],
+            ['name' => 'Camila Rojas', 'email' => 'admin@vetlosandes.co', 'role' => 'Administrador de empresa'],
+            ['name' => 'Sebastian Moreno', 'email' => 'ventas@vetlosandes.co', 'role' => 'Ventas'],
+            ['name' => 'Valentina Castro', 'email' => 'inventario@vetlosandes.co', 'role' => 'Inventario'],
+            ['name' => 'Laura Medina', 'email' => 'usuario@vetlosandes.co', 'role' => 'Usuario'],
         ];
 
         $seededUsers = collect($demoUsers)->map(function (array $demoUser) use ($company) {
@@ -89,8 +89,8 @@ class DatabaseSeeder extends Seeder
 
             return $user;
         });
-        $admin = $seededUsers->firstWhere('email', 'admin@andescomercial.co');
-        $salesUser = $seededUsers->firstWhere('email', 'ventas@andescomercial.co');
+        $admin = $seededUsers->firstWhere('email', 'admin@vetlosandes.co');
+        $salesUser = $seededUsers->firstWhere('email', 'ventas@vetlosandes.co');
         $owners = [$salesUser, $admin];
 
         // Bodegas.

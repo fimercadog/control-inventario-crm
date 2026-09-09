@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Boxes, Menu, X } from "lucide-react";
+import { Menu, PawPrint, X } from "lucide-react";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { cn } from "@/lib/utils";
 
@@ -20,12 +20,12 @@ const nav = [
 
 function Wordmark() {
   return (
-    <Link href="/" className="flex items-center gap-2.5" aria-label="CRM + Inventario — inicio">
+    <Link href="/" className="flex items-center gap-2.5" aria-label="VetPanel — inicio">
       <span className="flex size-9 items-center justify-center rounded-xl bg-ink text-primary">
-        <Boxes className="size-5" />
+        <PawPrint className="size-5" />
       </span>
       <span className="text-base font-black leading-none tracking-tight">
-        CRM<span className="text-primary">+</span>Inventario
+        Vet<span className="text-primary">·</span>Panel
       </span>
     </Link>
   );

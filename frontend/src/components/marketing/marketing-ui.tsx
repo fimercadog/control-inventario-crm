@@ -1,13 +1,13 @@
 import {
-  ArrowLeftRight,
   BarChart3,
   Bot,
-  Boxes,
-  ClipboardList,
-  Handshake,
+  CalendarClock,
+  Contact,
   History,
   ShieldCheck,
-  Truck,
+  Stethoscope,
+  Syringe,
+  Warehouse,
 } from "lucide-react";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { DeviceMockup } from "@/components/marketing/device-mockup";
@@ -142,11 +142,11 @@ export function FeatureRow({
 }
 
 const platformItems = [
-  { icon: Handshake, title: "CRM", text: "Leads, clientes, deals y actividades con responsable claro." },
-  { icon: Boxes, title: "Inventario", text: "Productos, bodegas y movimientos que mueven el stock en el momento." },
-  { icon: ClipboardList, title: "Pedidos de venta", text: "Al confirmarse descuentan stock de la bodega elegida." },
-  { icon: Truck, title: "Compras", text: "Proveedores y ordenes de compra que reponen inventario al recibirse." },
-  { icon: BarChart3, title: "Reportes", text: "Metricas de CRM e inventario, exportables a CSV o PDF." },
+  { icon: Contact, title: "Propietarios y pacientes", text: "Cada mascota con su ficha, ligada a su propietario." },
+  { icon: Stethoscope, title: "Historia clínica", text: "Consultas SOAP, diagnósticos, tratamientos y recetas." },
+  { icon: CalendarClock, title: "Citas y agenda", text: "Agenda por profesional y consultorio, con estados de cita." },
+  { icon: Syringe, title: "Vacunas", text: "Aplicaciones con lote y vencimiento, y alertas de próximas dosis." },
+  { icon: Warehouse, title: "Inventario", text: "Medicamentos, vacunas e insumos con stock por bodega." },
   { icon: ShieldCheck, title: "Control de acceso", text: "Roles y permisos por modulo, con roles a medida y auditoria." },
 ];
 
@@ -156,8 +156,8 @@ export function PlataformaGrid() {
       <Reveal>
         <SectionHeading
           eyebrow="La solucion"
-          title="Una sola plataforma"
-          lead="Todo sobre la misma base de datos — con un asistente de IA opcional."
+          title="Una sola plataforma para la clínica"
+          lead="Lo clínico y el inventario sobre la misma base de datos — con un asistente de IA opcional."
         />
       </Reveal>
       <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -172,8 +172,8 @@ export function PlataformaGrid() {
 }
 
 const tourShots = [
-  { src: "/product/clientes.png", alt: "Listado de clientes con filtros y exportacion", tilt: "right" as const },
-  { src: "/product/stock.png", alt: "Vista de stock por bodega con valorizacion", tilt: "left" as const },
+  { src: "/product/clientes.png", alt: "Listado de propietarios con filtros y exportacion", tilt: "right" as const },
+  { src: "/product/stock.png", alt: "Vista de stock de medicamentos por bodega", tilt: "left" as const },
 ];
 
 export function TourGrid() {
@@ -199,11 +199,11 @@ export function TourGrid() {
 }
 
 const beforeAfter: { icon: React.ElementType; before: string; after: string }[] = [
-  { icon: Boxes, before: "Stock en una hoja de calculo que nunca cuadra", after: "Inventario por bodega con bitacora de cada movimiento" },
-  { icon: Handshake, before: "Leads en libretas y chats sueltos", after: "Clientes y deals en un pipeline con seguimiento" },
-  { icon: ClipboardList, before: "Pedidos por WhatsApp sin descontar stock", after: "El pedido confirmado descuenta stock de la bodega" },
-  { icon: Truck, before: "Compras sin control de lo que entra", after: "Ordenes de compra que reponen stock al recibirse" },
-  { icon: ArrowLeftRight, before: "Nadie sabe por que cambio una cantidad", after: "Cada entrada, salida y ajuste queda registrado" },
+  { icon: Stethoscope, before: "Historias clínicas en carpetas de papel", after: "Historia clínica digital, ligada a cada paciente" },
+  { icon: CalendarClock, before: "Agenda en un cuaderno que solo entiende recepción", after: "Agenda por profesional con estados de cita" },
+  { icon: Syringe, before: "Nadie recuerda cuándo toca la próxima vacuna", after: "Alertas de próximas dosis por vencer" },
+  { icon: Warehouse, before: "Stock de medicamentos en una hoja que nunca cuadra", after: "Inventario por bodega con bitácora de cada movimiento" },
+  { icon: Contact, before: "Los datos del dueño y de la mascota, separados", after: "Cada mascota colgada de su propietario" },
   { icon: History, before: "Reportes armados a mano cada fin de mes", after: "Reportes al instante, exportables a CSV o PDF" },
 ];
 
@@ -213,8 +213,8 @@ export function ProblemGrid() {
       <Reveal>
         <SectionHeading
           eyebrow="Antes vs ahora"
-          title="Menos Excel. Mas control."
-          lead="La plataforma convierte planillas sueltas y pedidos por chat en un flujo unico donde vender mueve el inventario y comprar lo repone."
+          title="Menos papel. Mas control."
+          lead="La plataforma convierte carpetas de historias y una agenda en cuaderno en un flujo único donde atender a un paciente mueve el inventario y agenda el seguimiento."
         />
       </Reveal>
       <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -245,10 +245,10 @@ export function DemoCta() {
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Empieza</p>
           <h2 className="mt-3 text-4xl font-black leading-tight tracking-tight sm:text-5xl">
-            Pon tu operacion sobre rieles
+            Pon tu clínica sobre rieles
           </h2>
           <p className="mt-4 max-w-md text-lg leading-8 text-white/70">
-            Te mostramos el sistema con tus casos de uso y resolvemos tus dudas.
+            Te mostramos el sistema con los casos de tu clínica y resolvemos tus dudas.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <CtaLink href="/demo">Solicitar demo</CtaLink>
@@ -259,7 +259,7 @@ export function DemoCta() {
         </Reveal>
         <Reveal delay={0.12} className="relative">
           <GradientBlob className="left-[-6%] top-[-10%] size-[70%]" float />
-          <DeviceMockup src="/product/dashboard.png" alt="Panel de CRM + Inventario" tilt="left" />
+          <DeviceMockup src="/product/dashboard.png" alt="Panel de gestión veterinaria" tilt="left" />
         </Reveal>
       </div>
     </section>
@@ -281,10 +281,10 @@ export function ContactChannels() {
 }
 
 const aiUses: { icon: React.ElementType; title: string; text: string }[] = [
-  { icon: Boxes, title: "Consultar stock", text: "\"¿Cuantas unidades del Teclado K120 quedan en Bodega Central?\"" },
-  { icon: Handshake, title: "Ficha de cliente", text: "\"Muestrame el ultimo contacto y los deals abiertos de Distribuidora Sur.\"" },
-  { icon: ClipboardList, title: "Estado de pedidos", text: "\"¿Que pedidos estan pendientes de confirmar esta semana?\"" },
-  { icon: Bot, title: "Crear registros", text: "\"Crea un pedido de 10 teclados para Distribuidora Sur.\"" },
+  { icon: Warehouse, title: "Consultar stock", text: "\"¿Cuántas dosis de vacuna antirrábica quedan en Bodega Central?\"" },
+  { icon: Stethoscope, title: "Historia de un paciente", text: "\"Muéstrame la última consulta y los tratamientos de Luna, la golden de la familia Pérez.\"" },
+  { icon: Syringe, title: "Vacunas por vencer", text: "\"¿Qué pacientes tienen vacunas por vencer esta semana?\"" },
+  { icon: Bot, title: "Consultar la agenda", text: "\"¿Qué citas tiene la Dra. Rojas mañana por la tarde?\"" },
 ];
 
 export function AiUsesGrid() {

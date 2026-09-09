@@ -33,13 +33,13 @@ export default function OpengraphImage() {
             marginBottom: 40,
           }}
         >
-          D
+          V
         </div>
         <div style={{ display: "flex", fontSize: 64, fontWeight: 900, color: "#0f1012" }}>
-          CRM + Inventario
+          VetPanel
         </div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#3f5347", maxWidth: 820 }}>
-          CRM y control de inventario para PYMES: el pedido de venta descuenta stock al confirmarse.
+          Software de gestión para clínicas veterinarias: pacientes, historia clínica, agenda, vacunas e inventario.
         </div>
       </div>
     ),

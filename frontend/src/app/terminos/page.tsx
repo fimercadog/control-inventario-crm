@@ -17,7 +17,7 @@ export default function TermsPage() {
         {
           heading: "1. Objeto del sitio",
           body: [
-            "Este sitio tiene una finalidad informativa y comercial: presentar la plataforma de CRM y control de inventario, sus modulos y sus condiciones, y permitir solicitar informacion o una demostracion.",
+            "Este sitio tiene una finalidad informativa y comercial: presentar la plataforma de gestión veterinaria, sus modulos y sus condiciones, y permitir solicitar informacion o una demostracion.",
             "El acceso a la plataforma privada requiere un contrato de servicio independiente y credenciales asignadas; su uso se rige por las condiciones pactadas en dicho contrato.",
           ],
         },

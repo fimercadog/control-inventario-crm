@@ -25,7 +25,7 @@ class AuthSecurityTest extends TestCase
         Company::factory()->create(['name' => 'Test SA']);
 
         return User::factory()->create([
-            'email' => 'user@andescomercial.co',
+            'email' => 'user@example.co',
             'password' => Hash::make('secret-pass-123'),
             'status' => 'active',
         ]);
@@ -34,16 +34,16 @@ class AuthSecurityTest extends TestCase
     private function login(): void
     {
         $this->withHeaders($this->frontendHeaders)
-            ->postJson('/api/auth/login', ['email' => 'user@andescomercial.co', 'password' => 'secret-pass-123'])
+            ->postJson('/api/auth/login', ['email' => 'user@example.co', 'password' => 'secret-pass-123'])
             ->assertOk();
     }
 
     public function test_forgot_password_response_does_not_reveal_whether_email_exists(): void
     {
         Notification::fake();
-        User::factory()->create(['email' => 'real@andespeople.co', 'status' => 'active']);
+        User::factory()->create(['email' => 'real@example.co', 'status' => 'active']);
 
-        $known = $this->postJson('/api/auth/forgot-password', ['email' => 'real@andespeople.co']);
+        $known = $this->postJson('/api/auth/forgot-password', ['email' => 'real@example.co']);
         $unknown = $this->postJson('/api/auth/forgot-password', ['email' => 'nope@nowhere.co']);
 
         $known->assertOk();
@@ -53,7 +53,7 @@ class AuthSecurityTest extends TestCase
 
     public function test_login_is_rate_limited_after_repeated_failures(): void
     {
-        $payload = ['email' => 'real@andespeople.co', 'password' => 'wrong'];
+        $payload = ['email' => 'real@example.co', 'password' => 'wrong'];
 
         for ($i = 0; $i < 6; $i++) {
             $this->postJson('/api/auth/login', $payload);

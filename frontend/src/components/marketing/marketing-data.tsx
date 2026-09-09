@@ -1,134 +1,140 @@
 import {
   BarChart3,
+  CalendarClock,
   ClipboardList,
   Code,
   Contact,
   KeyRound,
-  Package,
   Plug,
-  ShoppingCart,
+  Stethoscope,
+  Syringe,
   Terminal,
   Warehouse,
   Webhook,
 } from "lucide-react";
 
+// NOTA: copy provisional de marketing para la vertical veterinaria. El texto
+// definitivo (features reales, precios, casos) se reescribe en la pasada de
+// contenido de marketing, cerca de la venta, cuando los módulos clínicos estén
+// terminados. Ver docs/roadmap-veterinaria.md.
+
 export const productPages = {
-  crm: {
-    eyebrow: "CRM de ventas",
-    title: "Leads y clientes en un pipeline que se sigue solo",
+  pacientes: {
+    eyebrow: "Propietarios y pacientes",
+    title: "Cada mascota con su ficha y su propietario",
     description:
-      "Captura leads desde el formulario publico, conviertelos en clientes y mueve cada deal por etapas con actividades de seguimiento visibles para todo el equipo.",
+      "El propietario es un cliente de la clínica; cada mascota cuelga de él con especie, raza, edad, peso y microchip. Desde la ficha del propietario ves todas sus mascotas y su historial.",
     bullets: [
-      "Formulario publico de leads",
-      "Clientes con historial de contacto",
-      "Pipeline de deals por etapa",
-      "Actividades y recordatorios de seguimiento",
+      "Propietarios con sus datos de contacto",
+      "Pacientes con especie, raza, sexo y microchip",
+      "Una mascota puede tener varios propietarios",
+      "Ficha con historia clínica, vacunas y citas",
     ],
     screenshot: "/product/pipeline.png",
   },
-  inventario: {
-    eyebrow: "Control de inventario",
-    title: "Sabes cuanto stock tienes y donde esta",
+  historiaClinica: {
+    eyebrow: "Historia clínica",
+    title: "Consultas SOAP que quedan en la historia del paciente",
     description:
-      "Un catalogo de productos, varias bodegas y una bitacora que registra cada entrada, salida y ajuste para que el inventario del sistema coincida con el fisico.",
+      "Registra cada consulta con el esquema Subjetivo / Objetivo / Análisis / Plan, ligada al paciente y al veterinario. La historia clínica es dato sensible: se archiva, no se borra.",
     bullets: [
-      "Catalogo de productos con SKU y costo",
+      "Consultas con esquema SOAP",
+      "Peso y temperatura por visita",
+      "Diagnósticos y tratamientos asociados",
+      "Recetas imprimibles en PDF",
+    ],
+    screenshot: "/product/movimientos.png",
+  },
+  agenda: {
+    eyebrow: "Citas y agenda",
+    title: "La agenda del día por profesional y consultorio",
+    description:
+      "Agenda citas con paciente, propietario, servicio, profesional y box. Estados claros: programada, confirmada, atendida, no asistió, cancelada. El sitio público capta solicitudes que recepción confirma.",
+    bullets: [
+      "Vista de agenda por día y por profesional",
+      "Cita ligada a un servicio del catálogo",
+      "Estados de la cita trazables",
+      "Solicitud de cita desde el sitio web",
+    ],
+    screenshot: "/product/dashboard.png",
+  },
+  vacunas: {
+    eyebrow: "Vacunas y desparasitación",
+    title: "Qué se aplicó, con qué lote y cuándo toca la próxima",
+    description:
+      "Cada aplicación queda en la historia del paciente con lote y vencimiento. Si la vacuna es un producto del inventario, descuenta stock. La lista de próximas dosis por vencer te avisa a tiempo.",
+    bullets: [
+      "Vacunas y desparasitaciones aplicadas",
+      "Lote y vencimiento por aplicación",
+      "Descuenta stock si es producto del inventario",
+      "Alertas de próximas dosis por vencer",
+    ],
+    screenshot: "/product/reportes.png",
+  },
+  inventario: {
+    eyebrow: "Inventario",
+    title: "Medicamentos, vacunas e insumos con stock por bodega",
+    description:
+      "Un catálogo de productos, una o varias bodegas y una bitácora que registra cada entrada, salida y ajuste para que el inventario del sistema coincida con el físico.",
+    bullets: [
+      "Catálogo de productos con SKU y costo",
       "Stock por bodega",
-      "Bitacora de movimientos",
+      "Bitácora de movimientos",
       "Alertas de stock bajo",
     ],
     screenshot: "/product/stock.png",
   },
-  pedidos: {
-    eyebrow: "Pedidos de venta",
-    title: "El pedido de venta que descuenta stock al confirmarse",
-    description:
-      "El puente entre CRM e inventario: eliges cliente, agregas lineas de producto y al confirmar el pedido el sistema descuenta el stock de la bodega elegida.",
-    bullets: [
-      "Cliente tomado del CRM",
-      "Lineas de producto con precio",
-      "Confirmar genera salida de stock",
-      "Detalle del pedido siempre trazable",
-    ],
-    screenshot: "/product/movimientos.png",
-  },
-  compras: {
-    eyebrow: "Compras y proveedores",
-    title: "Compras que reponen el inventario sin cuadrar a mano",
-    description:
-      "Registra proveedores, crea ordenes de compra y al marcarlas como recibidas el stock de la bodega entra automaticamente con su movimiento asociado.",
-    bullets: [
-      "Directorio de proveedores",
-      "Ordenes de compra con lineas",
-      "Recibir genera entrada de stock",
-      "Costo y trazabilidad por orden",
-    ],
-    screenshot: "/product/productos.png",
-  },
   reportes: {
-    eyebrow: "Analitica de operacion",
+    eyebrow: "Reportes clínicos",
     title: "Reportes para decidir, no solo para archivar",
     description:
-      "Indicadores de ventas, pipeline, rotacion de inventario, stock bajo, compras y movimientos, con exportaciones CSV y PDF por modulo.",
+      "Pacientes atendidos por período, vacunas aplicadas, ocupación de la agenda e ingresos por servicio, con exportaciones CSV y PDF por módulo.",
     bullets: [
-      "Ventas y pipeline de deals",
-      "Rotacion y stock bajo",
-      "Compras por proveedor",
+      "Pacientes atendidos y vacunas aplicadas",
+      "Ocupación de agenda por profesional",
+      "Ingresos por servicio",
       "Exportaciones CSV / PDF",
     ],
     screenshot: "/product/reportes.png",
-  },
-  ia: {
-    eyebrow: "Asistente de IA",
-    title: "Tu asistente de operacion comercial y de inventario",
-    description:
-      "Prepara una capa conversacional para consultar stock disponible, datos de clientes, estado de pedidos y ordenes de compra sin entrar a cada modulo.",
-    bullets: [
-      "Consultas de stock por bodega",
-      "Ficha rapida de cliente",
-      "Estado de pedidos y compras",
-      "Interfaz lista, sin proveedor conectado todavia",
-    ],
-    screenshot: "/product/ia.png",
   },
 } as const;
 
 export const blogPosts = [
   {
-    slug: "conectar-crm-e-inventario",
-    title: "Por que el CRM y el inventario deben hablar entre si",
-    category: "Operacion",
-    excerpt: "Contenido inicial ficticio sobre como el pedido de venta une ventas y bodega en un solo flujo.",
+    slug: "historia-clinica-digital",
+    title: "Por qué la historia clínica de tus pacientes no puede vivir en papel",
+    category: "Clínica",
+    excerpt: "Contenido inicial ficticio sobre trazabilidad, continuidad de atención y respaldo de la historia clínica.",
   },
   {
-    slug: "stock-que-no-cuadra",
-    title: "Stock que no cuadra: como cerrar la brecha entre el sistema y la bodega",
+    slug: "agenda-que-no-se-cae",
+    title: "Una agenda veterinaria que recepción realmente puede sostener",
+    category: "Agenda",
+    excerpt: "Contenido inicial ficticio sobre estados de cita, no-shows y recordatorios.",
+  },
+  {
+    slug: "vacunas-y-recordatorios",
+    title: "Recordatorios de vacunas: retener clientes cuidando a sus mascotas",
+    category: "Vacunas",
+    excerpt: "Contenido inicial ficticio sobre calendario de vacunación y próximas dosis.",
+  },
+  {
+    slug: "stock-de-medicamentos",
+    title: "Stock de medicamentos que cuadra con lo que hay en la vitrina",
     category: "Inventario",
-    excerpt: "Contenido inicial ficticio sobre bitacora de movimientos, ajustes y conteos ciclicos.",
+    excerpt: "Contenido inicial ficticio sobre bitácora de movimientos, lotes y vencimientos.",
   },
   {
-    slug: "pipeline-de-ventas-para-pymes",
-    title: "Un pipeline de ventas simple para PYMES",
-    category: "CRM",
-    excerpt: "Contenido inicial ficticio para convertir leads dispersos en deals con etapas y seguimiento.",
+    slug: "solicitud-de-cita-web",
+    title: "Del formulario web a la cita agendada, sin dobles llamadas",
+    category: "Portal",
+    excerpt: "Contenido inicial ficticio sobre captación de solicitudes y confirmación por recepción.",
   },
   {
-    slug: "ordenes-de-compra-sin-excel",
-    title: "Ordenes de compra sin Excel: reponer stock con trazabilidad",
-    category: "Compras",
-    excerpt: "Contenido inicial ficticio sobre proveedores, ordenes y entradas automaticas de inventario.",
-  },
-  {
-    slug: "reportes-de-rotacion",
-    title: "Rotacion de inventario: las metricas que si sirven",
+    slug: "reportes-de-la-clinica",
+    title: "Las métricas de una clínica veterinaria que sí sirven",
     category: "Reportes",
-    excerpt: "Contenido inicial ficticio sobre indicadores accionables de stock y ventas.",
-  },
-  {
-    slug: "ia-en-la-operacion-diaria",
-    title: "IA en la operacion diaria: casos utiles antes del hype",
-    category: "IA",
-    excerpt: "Contenido inicial ficticio sobre asistentes internos para consultar stock, clientes y pedidos.",
+    excerpt: "Contenido inicial ficticio sobre pacientes atendidos, ocupación de agenda e ingresos por servicio.",
   },
 ];
 
@@ -137,24 +143,56 @@ export const userDocSections = [
   {
     id: "primeros-pasos",
     title: "Primeros pasos",
-    icon: Package,
+    icon: Contact,
     items: [
-      "Crear tu empresa",
-      "Crear usuarios",
+      "Crear tu clínica",
+      "Crear usuarios (veterinarios, recepción)",
       "Configurar permisos",
-      "Cargar productos",
-      "Crear bodegas",
+      "Cargar el catálogo de servicios",
+      "Cargar productos y bodegas",
     ],
   },
   {
-    id: "crm",
-    title: "CRM",
+    id: "propietarios-pacientes",
+    title: "Propietarios y pacientes",
     icon: Contact,
     items: [
-      "Registrar clientes potenciales",
-      "Convertir un contacto en cliente",
-      "Gestionar oportunidades",
-      "Registrar seguimientos",
+      "Registrar un propietario",
+      "Dar de alta una mascota",
+      "Consultar la ficha de un paciente",
+      "Ver todas las mascotas de un propietario",
+    ],
+  },
+  {
+    id: "historia-clinica",
+    title: "Historia clínica",
+    icon: Stethoscope,
+    items: [
+      "Registrar una consulta SOAP",
+      "Agregar diagnósticos y tratamientos",
+      "Emitir e imprimir una receta",
+      "Consultar la historia de un paciente",
+    ],
+  },
+  {
+    id: "agenda",
+    title: "Citas y agenda",
+    icon: CalendarClock,
+    items: [
+      "Agendar una cita",
+      "Confirmar o cancelar una cita",
+      "Marcar una cita como atendida o no asistió",
+      "Revisar solicitudes de cita del sitio web",
+    ],
+  },
+  {
+    id: "vacunas",
+    title: "Vacunas",
+    icon: Syringe,
+    items: [
+      "Registrar una vacuna aplicada",
+      "Anotar lote y vencimiento",
+      "Consultar próximas dosis por vencer",
     ],
   },
   {
@@ -164,30 +202,8 @@ export const userDocSections = [
     items: [
       "Crear productos",
       "Consultar existencias",
-      "Mover productos entre bodegas",
       "Registrar ajustes de inventario",
-    ],
-  },
-  {
-    id: "pedidos",
-    title: "Pedidos",
-    icon: ClipboardList,
-    items: [
-      "Crear un pedido",
-      "Agregar productos",
-      "Confirmar una venta",
-      "Anular un pedido",
-    ],
-  },
-  {
-    id: "compras",
-    title: "Compras",
-    icon: ShoppingCart,
-    items: [
-      "Registrar proveedores",
-      "Crear ordenes de compra",
-      "Recibir mercancia",
-      "Consultar costos",
+      "Recibir una orden de compra",
     ],
   },
   {
@@ -195,11 +211,11 @@ export const userDocSections = [
     title: "Reportes",
     icon: BarChart3,
     items: [
-      "Ventas",
-      "Inventario",
-      "Stock bajo",
-      "Exportar informacion",
-      "Indicadores del negocio",
+      "Pacientes atendidos",
+      "Vacunas aplicadas",
+      "Ocupación de agenda",
+      "Ingresos por servicio",
+      "Exportar información",
     ],
   },
 ];
@@ -233,10 +249,10 @@ export const devDocSections = [
     title: "Endpoints",
     icon: Plug,
     items: [
-      "CRUD estandar por recurso (leads, clientes, productos, pedidos, compras)",
-      "Catalogo publico sin auth: /api/public/catalog/*",
-      "Solicitud de cotizacion: POST /api/public/catalog/quote-requests",
-      "Subida de imagen de producto: POST /api/products/{id}/image",
+      "CRUD estandar por recurso (propietarios, pacientes, citas, consultas, productos)",
+      "Solicitud de cita sin auth: POST /api/public/appointments",
+      "Subida de imagen de paciente: POST /api/patients/{id}/photo",
+      "Vista de próximas vacunas por vencer",
     ],
   },
   {
@@ -244,9 +260,9 @@ export const devDocSections = [
     title: "Webhooks e integraciones",
     icon: Webhook,
     items: [
-      "Webhooks salientes (pedido confirmado, stock bajo) — en el roadmap",
-      "Sincronizacion con contabilidad o e-commerce",
-      "Exportaciones programadas",
+      "Webhooks salientes (cita confirmada, vacuna por vencer) — en el roadmap",
+      "Sincronizacion con contabilidad o facturación electrónica",
+      "Recordatorios por WhatsApp / email",
       "Integraciones a medida bajo pedido",
     ],
   },
@@ -255,8 +271,8 @@ export const devDocSections = [
     title: "Ejemplos",
     icon: Terminal,
     items: [
-      "curl: autenticarse y listar productos",
-      "Crear un pedido y confirmarlo end to end",
+      "curl: autenticarse y listar pacientes",
+      "Crear una cita y registrar la consulta end to end",
       "Coleccion de Postman / Insomnia",
       "Snippets en JavaScript y PHP",
     ],

@@ -12,7 +12,7 @@ import { devDocSections } from "@/components/marketing/marketing-data";
 export const metadata: Metadata = {
   title: "Para desarrolladores",
   description:
-    "Documentacion de la API REST de CRM + Inventario para conectar tiendas online, sistemas contables y otras aplicaciones.",
+    "Documentacion de la API REST de VetPanel para conectar facturación electrónica, recordatorios y otras aplicaciones.",
 };
 
 export default function DesarrolladoresPage() {
@@ -20,7 +20,7 @@ export default function DesarrolladoresPage() {
     <MarketingLayout>
       <PageHero
         eyebrow="Para desarrolladores"
-        title="Integra CRM + Inventario con otros sistemas mediante nuestra API"
+        title="Integra VetPanel con otros sistemas mediante nuestra API"
         lead="Documentacion tecnica de la API REST: autenticacion, endpoints, webhooks y ejemplos para conectar tiendas online, sistemas contables y otras aplicaciones."
       />
 

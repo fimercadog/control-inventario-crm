@@ -8,7 +8,7 @@ import { userDocSections } from "@/components/marketing/marketing-data";
 export const metadata: Metadata = {
   title: "Centro de ayuda",
   description:
-    "Guias cortas para usar CRM + Inventario: primeros pasos, CRM, inventario, pedidos, compras y reportes.",
+    "Guias cortas para usar VetPanel: primeros pasos, propietarios y pacientes, historia clínica, agenda, vacunas, inventario y reportes.",
 };
 
 export default function CentroDeAyudaPage() {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AuthSplitLayout } from "@/components/auth/auth-split-layout";
 import { LoginForm } from "./login-form";
 
-export const metadata: Metadata = { title: { absolute: "Iniciar sesion | CRM + Inventario" } };
+export const metadata: Metadata = { title: { absolute: "Iniciar sesion | VetPanel" } };
 
 // Este dominio es un showcase: los atajos de usuarios demo se muestran por
 // defecto para que cualquiera entre y pruebe roles. Para un despliegue con
@@ -10,11 +10,11 @@ export const metadata: Metadata = { title: { absolute: "Iniciar sesion | CRM + I
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
 
 const demoEmails: Record<string, string> = {
-  superadmin: "superadmin@andescomercial.co",
-  admin: "admin@andescomercial.co",
-  ventas: "ventas@andescomercial.co",
-  inventario: "inventario@andescomercial.co",
-  usuario: "usuario@andescomercial.co",
+  superadmin: "superadmin@vetlosandes.co",
+  admin: "admin@vetlosandes.co",
+  ventas: "ventas@vetlosandes.co",
+  inventario: "inventario@vetlosandes.co",
+  usuario: "usuario@vetlosandes.co",
 };
 
 export default async function LoginPage({

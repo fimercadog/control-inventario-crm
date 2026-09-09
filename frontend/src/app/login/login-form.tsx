@@ -9,11 +9,11 @@ import { api, primeCsrfCookie } from "@/lib/api";
 import { AuthUser, storeAuthSession } from "@/lib/auth";
 
 const demoUsers = [
-  ["Super Admin", "superadmin@andescomercial.co"],
-  ["Admin empresa", "admin@andescomercial.co"],
-  ["Ventas", "ventas@andescomercial.co"],
-  ["Inventario", "inventario@andescomercial.co"],
-  ["Usuario", "usuario@andescomercial.co"],
+  ["Super Admin", "superadmin@vetlosandes.co"],
+  ["Admin empresa", "admin@vetlosandes.co"],
+  ["Ventas", "ventas@vetlosandes.co"],
+  ["Inventario", "inventario@vetlosandes.co"],
+  ["Usuario", "usuario@vetlosandes.co"],
 ];
 
 const inputClass =

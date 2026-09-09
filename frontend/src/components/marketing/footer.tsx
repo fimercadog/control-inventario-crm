@@ -1,16 +1,16 @@
 import Link from "next/link";
-import { Boxes } from "lucide-react";
+import { PawPrint } from "lucide-react";
 
 const columns: { title: string; links: [string, string][] }[] = [
   {
     title: "Producto",
     links: [
-      ["CRM", "/producto/crm"],
+      ["Propietarios y pacientes", "/producto/pacientes"],
+      ["Historia clínica", "/producto/historia-clinica"],
+      ["Citas y agenda", "/producto/agenda"],
+      ["Vacunas y recordatorios", "/producto/vacunas"],
       ["Inventario", "/producto/inventario"],
-      ["Pedidos de venta", "/producto/pedidos"],
-      ["Compras", "/producto/compras"],
-      ["Reportes", "/producto/reportes"],
-      ["Asistente de IA", "/producto/ia"],
+      ["Reportes clínicos", "/producto/reportes"],
     ],
   },
   {
@@ -42,15 +42,15 @@ export function MarketingFooter() {
         <div className="max-w-xs">
           <div className="flex items-center gap-2.5">
             <span className="flex size-9 items-center justify-center rounded-xl bg-ink text-primary">
-              <Boxes className="size-5" />
+              <PawPrint className="size-5" />
             </span>
             <span className="text-base font-black tracking-tight">
-              CRM<span className="text-primary">+</span>Inventario
+              Vet<span className="text-primary">·</span>Panel
             </span>
           </div>
           <p className="mt-4 text-sm leading-6 text-muted-foreground">
-            CRM y control de inventario conectados por el pedido de venta, para PYMES que quieren ordenar su
-            operacion sin hacerla pesada.
+            Software de gestión para clínicas veterinarias: propietarios, pacientes, historia clínica, agenda,
+            vacunas e inventario en una sola plataforma.
           </p>
         </div>
 
@@ -76,7 +76,7 @@ export function MarketingFooter() {
 
       <div className="bg-ink text-ink-foreground">
         <div className="mx-auto max-w-7xl px-4 py-5 text-xs text-white/60 sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} CRM + Inventario. Sitio publico y plataforma privada separados.
+          © {new Date().getFullYear()} VetPanel. Sitio publico y plataforma privada separados.
         </div>
       </div>
     </footer>

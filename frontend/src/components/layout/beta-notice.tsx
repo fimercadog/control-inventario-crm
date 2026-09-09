@@ -48,7 +48,7 @@ export function BetaNotice() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-warning" />
-              CRM + Inventario — Beta
+              VetPanel — Beta
             </DialogTitle>
             <DialogDescription>Estado del panel y que esperar.</DialogDescription>
           </DialogHeader>

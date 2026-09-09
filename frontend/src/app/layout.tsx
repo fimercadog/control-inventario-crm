@@ -17,21 +17,21 @@ const robotoMono = Roboto_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "CRM + Inventario | CRM y control de inventario para PYMES",
-    template: "%s | CRM + Inventario",
+    default: "VetPanel | Software de gestión para clínicas veterinarias",
+    template: "%s | VetPanel",
   },
-  description: "CRM y control de inventario conectados: leads, clientes, deals, productos, bodegas, pedidos de venta, compras, reportes e IA.",
+  description: "Software de gestión para veterinarias: propietarios, pacientes, historia clínica, citas, vacunas, inventario y reportes en una sola plataforma.",
   openGraph: {
-    title: "CRM + Control de Inventario",
-    description: "El pedido de venta descuenta stock de la bodega al confirmarse. CRM e inventario en una sola plataforma.",
+    title: "VetPanel — Software para clínicas veterinarias",
+    description: "Propietarios, pacientes, historia clínica, agenda, vacunas e inventario en una sola plataforma.",
     type: "website",
     locale: "es_CO",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "CRM + Control de Inventario",
-    description: "CRM e inventario en una sola plataforma para PYMES.",
+    title: "VetPanel — Software para clínicas veterinarias",
+    description: "Gestión clínica e inventario en una sola plataforma para veterinarias.",
   },
 };
 

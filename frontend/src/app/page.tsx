@@ -15,14 +15,14 @@ export default function Home() {
   return (
     <MarketingLayout>
       <PageHero
-        eyebrow="CRM + Control de inventario"
+        eyebrow="Software para clínicas veterinarias"
         title={
           <>
-            Vende y controla tu inventario desde{" "}
+            Atiende, agenda y controla tu clínica desde{" "}
             <span className="animate-marketing-gradient-text">un solo lugar</span>
           </>
         }
-        lead="CRM y control de inventario conectados: leads, clientes, deals, productos, bodegas y compras. El pedido de venta descuenta stock de la bodega al confirmarse."
+        lead="Propietarios, pacientes, historia clínica, agenda, vacunas e inventario conectados. La aplicación de una vacuna descuenta el producto del stock; la solicitud de cita del sitio llega lista para agendar."
         visual="cluster"
         actions={
           <>
@@ -32,7 +32,7 @@ export default function Home() {
             </CtaLink>
           </>
         }
-        note="Multiempresa · roles y permisos · exportaciones CSV y PDF"
+        note="Roles y permisos · historia clínica con respaldo · exportaciones CSV y PDF"
       />
 
       <Section>
@@ -54,20 +54,20 @@ export default function Home() {
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Asistente de IA</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-              Consulta tu operacion sin entrar a cada modulo
+              Consulta la clínica sin entrar a cada modulo
             </h2>
             <p className="mt-4 text-lg leading-8 text-white/70">
-              Una capa conversacional para preguntar por stock disponible, datos de un cliente o el estado de un
-              pedido. Interfaz lista; falta conectar el proveedor.
+              Una capa conversacional para preguntar por la historia de un paciente, las vacunas por vencer o la
+              agenda del día. Interfaz lista; falta conectar el proveedor.
             </p>
           </div>
         </Reveal>
         <div className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2">
           {[
-            "consultar stock por bodega",
-            "ficha rapida de cliente",
-            "estado de un pedido",
-            "crear un pedido de venta",
+            "vacunas por vencer esta semana",
+            "historia rápida de un paciente",
+            "agenda del día por profesional",
+            "stock de un medicamento",
           ].map((item, i) => (
             <Reveal key={item} delay={i * 0.05}>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm font-medium">{item}</div>
