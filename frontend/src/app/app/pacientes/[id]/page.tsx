@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
-import { Consultation, Patient } from "@/lib/types";
+import { ClinicalApplication, Consultation, Patient } from "@/lib/types";
 
 const SEX_LABEL: Record<string, string> = { male: "Macho", female: "Hembra", unknown: "Sin dato" };
 
@@ -46,6 +46,7 @@ export default function PatientDetailPage() {
   const router = useRouter();
   const [patient, setPatient] = React.useState<Patient | null>(null);
   const [consultations, setConsultations] = React.useState<Consultation[]>([]);
+  const [applications, setApplications] = React.useState<ClinicalApplication[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [uploading, setUploading] = React.useState(false);
 
@@ -58,6 +59,10 @@ export default function PatientDetailPage() {
     api
       .get<{ data: Consultation[] }>("/consultations", { params: { patient_id: id, per_page: 50 } })
       .then((r) => setConsultations(r.data.data))
+      .catch(() => undefined);
+    api
+      .get<{ data: ClinicalApplication[] }>("/clinical-applications", { params: { patient_id: id, per_page: 50 } })
+      .then((r) => setApplications(r.data.data))
       .catch(() => undefined);
   }, [id]);
 
@@ -178,7 +183,35 @@ export default function PatientDetailPage() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <PlaceholderCard title="Vacunas" hint="Las vacunas y desparasitaciones aplicadas aparecerán acá." />
+        <Card>
+          <CardContent className="p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-base font-medium">Vacunas y desparasitación</h3>
+              <Link href="/app/vacunas" className="text-xs text-primary hover:underline">
+                Registrar
+              </Link>
+            </div>
+            {applications.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Sin aplicaciones registradas.</p>
+            ) : (
+              <ul className="space-y-2">
+                {applications.map((a) => (
+                  <li key={a.id} className="flex items-center justify-between gap-3 border-b border-border pb-2 text-sm last:border-0 last:pb-0">
+                    <span className="min-w-0 truncate">
+                      {a.name}
+                      <span className="text-muted-foreground"> · {a.type === "vaccine" ? "vacuna" : "desparasitación"}</span>
+                    </span>
+                    <span className="shrink-0 text-xs text-muted-foreground">
+                      {formatDate(a.applied_at)}
+                      {a.next_due_at ? ` → ${formatDate(a.next_due_at)}` : ""}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
+
         <PlaceholderCard title="Citas" hint="Las citas del paciente aparecerán acá." />
       </div>
     </div>

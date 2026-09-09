@@ -10,6 +10,7 @@ use App\Models\Breed;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\ClientNote;
+use App\Models\ClinicalApplication;
 use App\Models\Company;
 use App\Models\Consultation;
 use App\Models\Contact;
@@ -312,6 +313,30 @@ class DatabaseSeeder extends Seeder
                     'objective' => $d[6],
                     'assessment' => $d[7],
                     'plan' => $d[8],
+                ],
+            ));
+        }
+
+        // Vacunas y desparasitaciones aplicadas (con próxima dosis).
+        if ($vetPatients->isNotEmpty()) {
+            collect([
+                [0, 'vaccine', 'Antirrábica', now()->subMonths(11), now()->addMonth()],
+                [0, 'vaccine', 'Polivalente (DHPPi)', now()->subMonths(11), now()->addMonth()],
+                [1, 'deworming', 'Desparasitación interna', now()->subMonths(4), now()->addDays(20)],
+                [2, 'vaccine', 'Antirrábica', now()->subDays(15), now()->addMonths(11)],
+                [3, 'deworming', 'Desparasitación externa', now()->subMonths(2), now()->subDays(5)],
+            ])->each(fn ($d) => ClinicalApplication::firstOrCreate(
+                [
+                    'company_id' => $company->id,
+                    'patient_id' => $vetPatients->get($d[0] % $vetPatients->count())->id,
+                    'name' => $d[2],
+                    'applied_at' => $d[3]->toDateString(),
+                ],
+                [
+                    'type' => $d[1],
+                    'vet_id' => $admin?->id,
+                    'lot' => 'L'.random_int(1000, 9999),
+                    'next_due_at' => $d[4]->toDateString(),
                 ],
             ));
         }

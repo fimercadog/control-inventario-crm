@@ -286,6 +286,24 @@ export type Appointment = {
   notes?: string | null;
 };
 
+export type ClinicalApplication = {
+  id: number;
+  type: "vaccine" | "deworming";
+  patient_id: number;
+  patient?: string | null;
+  product_id?: number | null;
+  product?: string | null;
+  consultation_id?: number | null;
+  vet_id?: number | null;
+  vet?: string | null;
+  stock_movement_id?: number | null;
+  name: string;
+  applied_at: string;
+  lot?: string | null;
+  expires_at?: string | null;
+  next_due_at?: string | null;
+};
+
 export type Consultation = {
   id: number;
   patient_id: number;
