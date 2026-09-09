@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Activity;
+use App\Models\Appointment;
 use App\Models\AuditLog;
 use App\Models\Brand;
 use App\Models\Breed;
@@ -251,6 +252,36 @@ class DatabaseSeeder extends Seeder
                 'status' => 'active',
             ],
         ));
+
+        // Citas de la agenda (algunas hoy, otras esta semana).
+        $vetPatients = Patient::where('company_id', $company->id)->get();
+        $consultaService = Service::where(['company_id' => $company->id, 'name' => 'Consulta general'])->first();
+        $vacunaService = Service::where(['company_id' => $company->id, 'name' => 'Vacunación'])->first();
+        if ($vetPatients->isNotEmpty() && $consultaService) {
+            $appointmentPlan = [
+                [0, $consultaService, now()->setTime(9, 0), 'confirmed', 'Control anual', 'Consultorio 1'],
+                [1, $vacunaService, now()->setTime(10, 30), 'scheduled', 'Refuerzo antirrábica', 'Consultorio 1'],
+                [2, $consultaService, now()->setTime(11, 0), 'attended', 'Chequeo por vómitos', 'Consultorio 2'],
+                [3, $consultaService, now()->addDay()->setTime(15, 0), 'scheduled', 'Primera consulta', 'Consultorio 1'],
+                [4, $consultaService, now()->addDays(2)->setTime(16, 30), 'scheduled', 'Revisión ala', 'Consultorio 2'],
+            ];
+            foreach ($appointmentPlan as [$idx, $service, $start, $status, $reason, $room]) {
+                $patient = $vetPatients->get($idx % $vetPatients->count());
+                $minutes = $service?->estimated_duration_minutes ?: 30;
+                Appointment::firstOrCreate(
+                    ['company_id' => $company->id, 'patient_id' => $patient->id, 'starts_at' => $start],
+                    [
+                        'service_id' => $service?->id,
+                        'practitioner_id' => $admin?->id,
+                        'ends_at' => $start->copy()->addMinutes($minutes),
+                        'duration_minutes' => $minutes,
+                        'resource' => $room,
+                        'reason' => $reason,
+                        'status' => $status,
+                    ],
+                );
+            }
+        }
 
         // Notas comerciales sobre algunos clientes.
         collect([

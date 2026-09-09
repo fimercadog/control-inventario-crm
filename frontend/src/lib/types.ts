@@ -264,6 +264,28 @@ export type Service = {
   status: string;
 };
 
+export type AppointmentStatus = "scheduled" | "confirmed" | "attended" | "no_show" | "cancelled";
+
+export type Appointment = {
+  id: number;
+  patient_id: number;
+  patient?: string | null;
+  species?: string | null;
+  client_id?: number | null;
+  client?: string | null;
+  service_id?: number | null;
+  service?: string | null;
+  practitioner_id?: number | null;
+  practitioner?: string | null;
+  starts_at: string;
+  ends_at: string;
+  duration_minutes: number;
+  resource?: string | null;
+  reason?: string | null;
+  status: AppointmentStatus;
+  notes?: string | null;
+};
+
 export type Patient = {
   id: number;
   name: string;

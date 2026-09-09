@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ActivityController;
+use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuditLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BrandController;
@@ -137,6 +138,12 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('patients', PatientController::class)->middleware('can:patients.manage');
     Route::post('/patients/{id}/photo', [PatientController::class, 'photo'])->middleware('can:patients.manage')->whereNumber('id');
     Route::post('/patients/{id}/restore', [PatientController::class, 'restore'])->middleware('can:patients.manage')->whereNumber('id');
+
+    Route::apiResource('appointments', AppointmentController::class)->middleware('can:appointments.manage');
+    Route::post('/appointments/{id}/confirm', [AppointmentController::class, 'confirm'])->middleware('can:appointments.manage')->whereNumber('id');
+    Route::post('/appointments/{id}/cancel', [AppointmentController::class, 'cancel'])->middleware('can:appointments.manage')->whereNumber('id');
+    Route::post('/appointments/{id}/attended', [AppointmentController::class, 'markAttended'])->middleware('can:appointments.manage')->whereNumber('id');
+    Route::post('/appointments/{id}/no-show', [AppointmentController::class, 'markNoShow'])->middleware('can:appointments.manage')->whereNumber('id');
 
     Route::apiResource('audit-logs', AuditLogController::class)->only(['index', 'show'])->middleware('can:audit.view');
     Route::get('/permissions', [RoleController::class, 'permissions'])->middleware('can:roles.manage');

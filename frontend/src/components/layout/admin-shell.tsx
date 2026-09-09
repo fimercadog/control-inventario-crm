@@ -115,6 +115,8 @@ const navGroups: NavGroup[] = [
   {
     label: "Clínica",
     items: [
+      { href: "/app/agenda", label: "Agenda", icon: CalendarDays, permissions: ["appointments.manage"] },
+      { href: "/app/citas", label: "Citas", icon: CalendarClock, permissions: ["appointments.manage"] },
       { href: "/app/pacientes", label: "Pacientes", icon: PawPrint, permissions: ["patients.manage"] },
       { href: "/app/servicios", label: "Servicios", icon: Stethoscope, permissions: ["services.manage"] },
       { href: "/app/especies", label: "Especies", icon: Rabbit, permissions: ["patients.manage"] },
