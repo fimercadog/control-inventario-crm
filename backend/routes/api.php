@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ClientNoteController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\ConsultationController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContingencyController;
 use App\Http\Controllers\Api\DashboardController;
@@ -138,6 +139,9 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('patients', PatientController::class)->middleware('can:patients.manage');
     Route::post('/patients/{id}/photo', [PatientController::class, 'photo'])->middleware('can:patients.manage')->whereNumber('id');
     Route::post('/patients/{id}/restore', [PatientController::class, 'restore'])->middleware('can:patients.manage')->whereNumber('id');
+
+    Route::apiResource('consultations', ConsultationController::class)->middleware('can:medical_records.manage');
+    Route::post('/consultations/{id}/restore', [ConsultationController::class, 'restore'])->middleware('can:medical_records.manage')->whereNumber('id');
 
     Route::apiResource('appointments', AppointmentController::class)->middleware('can:appointments.manage');
     Route::post('/appointments/{id}/confirm', [AppointmentController::class, 'confirm'])->middleware('can:appointments.manage')->whereNumber('id');

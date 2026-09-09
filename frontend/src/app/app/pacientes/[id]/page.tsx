@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
-import { Patient } from "@/lib/types";
+import { Consultation, Patient } from "@/lib/types";
 
 const SEX_LABEL: Record<string, string> = { male: "Macho", female: "Hembra", unknown: "Sin dato" };
 
@@ -45,6 +45,7 @@ export default function PatientDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [patient, setPatient] = React.useState<Patient | null>(null);
+  const [consultations, setConsultations] = React.useState<Consultation[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [uploading, setUploading] = React.useState(false);
 
@@ -54,6 +55,10 @@ export default function PatientDetailPage() {
       .then((r) => setPatient(r.data.data))
       .catch(() => toast.error("No se pudo cargar el paciente."))
       .finally(() => setLoading(false));
+    api
+      .get<{ data: Consultation[] }>("/consultations", { params: { patient_id: id, per_page: 50 } })
+      .then((r) => setConsultations(r.data.data))
+      .catch(() => undefined);
   }, [id]);
 
   React.useEffect(() => load(), [load]);
@@ -139,8 +144,40 @@ export default function PatientDetailPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <PlaceholderCard title="Historia clínica" hint="Las consultas del paciente aparecerán acá." />
+      <Card>
+        <CardContent className="p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-base font-medium">Historia clínica</h3>
+            <Link href="/app/consultas" className="text-xs text-primary hover:underline">
+              Nueva consulta
+            </Link>
+          </div>
+          {consultations.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Sin consultas registradas.</p>
+          ) : (
+            <ol className="space-y-3">
+              {consultations.map((c) => (
+                <li key={c.id} className="border-b border-border pb-3 last:border-0 last:pb-0">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-sm font-medium">
+                      <Link href={`/app/consultas/${c.id}`} className="text-primary hover:underline">
+                        {c.reason}
+                      </Link>
+                    </p>
+                    <span className="shrink-0 text-xs text-muted-foreground">
+                      {formatDate(c.date)}
+                      {c.vet ? ` · ${c.vet}` : ""}
+                    </span>
+                  </div>
+                  {c.assessment ? <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{c.assessment}</p> : null}
+                </li>
+              ))}
+            </ol>
+          )}
+        </CardContent>
+      </Card>
+
+      <div className="grid gap-4 md:grid-cols-2">
         <PlaceholderCard title="Vacunas" hint="Las vacunas y desparasitaciones aplicadas aparecerán acá." />
         <PlaceholderCard title="Citas" hint="Las citas del paciente aparecerán acá." />
       </div>

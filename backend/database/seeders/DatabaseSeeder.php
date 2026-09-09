@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Client;
 use App\Models\ClientNote;
 use App\Models\Company;
+use App\Models\Consultation;
 use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\Lead;
@@ -281,6 +282,38 @@ class DatabaseSeeder extends Seeder
                     ],
                 );
             }
+        }
+
+        // Historia clínica: un par de consultas SOAP.
+        if ($vetPatients->isNotEmpty()) {
+            collect([
+                [0, now()->subDays(20), 'Control anual', 28.4, 38.6,
+                    'Propietario refiere apetito normal y actividad habitual.',
+                    'Mucosas rosadas, TLLC < 2s. Auscultación cardiopulmonar sin hallazgos.',
+                    'Paciente sano. Peso adecuado.',
+                    'Continuar plan de alimentación. Próximo control en 12 meses. Refuerzo de vacunas al día.'],
+                [2, now()->subDays(3), 'Vómitos de 24h', 15.6, 39.1,
+                    'Vómito x3 en las últimas 24h, última comida no retenida. Bebe agua.',
+                    'Abdomen doloroso a la palpación craneal. Deshidratación 5%.',
+                    'Gastroenteritis aguda, probable indiscreción alimentaria.',
+                    'Fluidoterapia SC. Dieta blanda 48h. Antiemético. Control en 48h si no mejora.'],
+            ])->each(fn ($d) => Consultation::firstOrCreate(
+                [
+                    'company_id' => $company->id,
+                    'patient_id' => $vetPatients->get($d[0] % $vetPatients->count())->id,
+                    'date' => $d[1]->toDateString(),
+                ],
+                [
+                    'vet_id' => $admin?->id,
+                    'reason' => $d[2],
+                    'weight' => $d[3],
+                    'temperature' => $d[4],
+                    'subjective' => $d[5],
+                    'objective' => $d[6],
+                    'assessment' => $d[7],
+                    'plan' => $d[8],
+                ],
+            ));
         }
 
         // Notas comerciales sobre algunos clientes.

@@ -286,6 +286,24 @@ export type Appointment = {
   notes?: string | null;
 };
 
+export type Consultation = {
+  id: number;
+  patient_id: number;
+  patient?: string | null;
+  appointment_id?: number | null;
+  vet_id?: number | null;
+  vet?: string | null;
+  date: string;
+  reason: string;
+  weight?: number | string | null;
+  temperature?: number | string | null;
+  subjective?: string | null;
+  objective?: string | null;
+  assessment?: string | null;
+  plan?: string | null;
+  created_at?: string;
+};
+
 export type Patient = {
   id: number;
   name: string;
