@@ -42,7 +42,7 @@ Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword'])-
 Route::post('/auth/reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:6,1');
 
 // Formularios publicos del sitio de marketing (demo / contacto).
-Route::post('/leads', [LeadController::class, 'store'])->middleware('throttle:5,1');
+Route::post('/public/leads', [LeadController::class, 'store'])->middleware('throttle:5,1');
 
 // Catalogo publico: navegable por visitantes anonimos. La solicitud de
 // cotizacion entra al CRM como Cliente + Quote en borrador.
@@ -75,6 +75,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/contingency/deactivate', [ContingencyController::class, 'deactivate'])->middleware('can:settings.manage');
 
     Route::get('/leads', [LeadController::class, 'index'])->middleware('can:leads.view');
+    Route::post('/leads', [LeadController::class, 'storeManual'])->middleware('can:leads.view');
     Route::match(['put', 'patch'], '/leads/{lead}', [LeadController::class, 'update'])->middleware('can:leads.view');
     Route::delete('/leads/{lead}', [LeadController::class, 'destroy'])->middleware('can:leads.view');
 

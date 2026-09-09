@@ -8,6 +8,7 @@ use App\Http\Requests\StorePublicQuoteRequest;
 use App\Http\Resources\PublicProductResource;
 use App\Models\Category;
 use App\Models\Client;
+use App\Models\Lead;
 use App\Models\Product;
 use App\Models\Quote;
 use App\Services\AuditService;
@@ -132,6 +133,22 @@ class PublicCatalogController extends Controller
         });
 
         $audit->record('created', $quote, $request);
+
+        // El equipo comercial revisa todo desde "Leads": la solicitud del
+        // catalogo tambien entra ahi (ademas de Cliente + Quote). Dedupe por
+        // correo+origen para no acumular un lead por cada carrito del mismo
+        // prospecto; cada carrito si queda como Quote aparte.
+        Lead::firstOrCreate(
+            ['company_id' => $companyId, 'email' => $data['email'], 'source' => 'catalog'],
+            [
+                'name' => $data['name'],
+                'company_name' => $data['company_name'] ?? null,
+                'phone' => $data['phone'] ?? null,
+                'message' => $data['message'] ?? null,
+                'status' => 'new',
+                'ip_address' => $request->ip(),
+            ],
+        );
 
         return response()->json([
             'message' => 'Recibimos tu solicitud de cotizacion. Te contactaremos pronto.',

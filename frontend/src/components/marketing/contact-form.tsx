@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { api } from "@/lib/api";
-
-const inputClass =
-  "h-11 w-full rounded-lg border border-input bg-card px-3.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary";
+import { LeadFields } from "@/components/marketing/lead-fields";
 
 export function ContactForm({ demo = false }: { demo?: boolean }) {
   const [loading, setLoading] = useState(false);
@@ -32,7 +29,7 @@ export function ContactForm({ demo = false }: { demo?: boolean }) {
     };
 
     try {
-      await api.post("/leads", payload);
+      await api.post("/public/leads", payload);
       setDone(true);
     } catch (err: unknown) {
       const status = (err as { response?: { status?: number } }).response?.status;
@@ -61,41 +58,7 @@ export function ContactForm({ demo = false }: { demo?: boolean }) {
 
   return (
     <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <input name="name" placeholder="Nombre" aria-label="Nombre" required className={inputClass} />
-        <input name="company_name" placeholder="Empresa" aria-label="Empresa" className={inputClass} />
-        <input name="email" type="email" placeholder="Email" aria-label="Email" required className={inputClass} />
-        <input name="phone" placeholder="WhatsApp" aria-label="WhatsApp" className={inputClass} />
-        <input
-          name="employee_count"
-          placeholder="Numero de usuarios / bodegas"
-          aria-label="Numero de usuarios o bodegas"
-          className={inputClass}
-        />
-        <input
-          name="priority_module"
-          placeholder="Modulo prioritario (CRM, inventario...)"
-          aria-label="Modulo prioritario"
-          className={inputClass}
-        />
-      </div>
-      <textarea
-        name="message"
-        className="mt-4 min-h-32 w-full rounded-lg border border-input bg-card px-3.5 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
-        placeholder="Cuentanos que procesos son mas manuales hoy"
-        aria-label="Mensaje"
-      />
-      <label className="mt-4 flex items-start gap-2 text-xs leading-5 text-muted-foreground">
-        <input type="checkbox" name="consent" required className="mt-0.5 size-4 shrink-0 accent-primary" />
-        <span>
-          Autorizo el tratamiento de mis datos personales para ser contactado con fines comerciales, conforme a la
-          Ley 1581 de 2012 y a la{" "}
-          <Link href="/privacidad" className="font-medium text-primary underline">
-            Politica de Tratamiento de Datos
-          </Link>
-          .
-        </span>
-      </label>
+      <LeadFields extended messagePlaceholder="Cuentanos que procesos son mas manuales hoy" />
       {error ? (
         <div className="mt-4 flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
           <AlertCircle className="size-4" /> {error}

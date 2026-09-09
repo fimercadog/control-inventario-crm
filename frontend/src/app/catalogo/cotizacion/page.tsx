@@ -6,11 +6,9 @@ import { AlertCircle, CheckCircle2, Trash2 } from "lucide-react";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Section } from "@/components/marketing/marketing-ui";
+import { LeadFields } from "@/components/marketing/lead-fields";
 import { formatCOP, submitQuoteRequest } from "@/lib/catalog";
 import { useCatalogCart } from "@/lib/catalog-cart";
-
-const inputClass =
-  "h-11 w-full rounded-lg border border-input bg-card px-3.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary";
 
 export default function CotizacionPage() {
   const { items, total, setQty, remove, clear } = useCatalogCart();
@@ -143,30 +141,8 @@ export default function CotizacionPage() {
               </p>
             </div>
 
-            <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-5 shadow-elevation-2 sm:p-6">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <input name="name" placeholder="Nombre" aria-label="Nombre" required className={inputClass} />
-                <input name="company_name" placeholder="Empresa" aria-label="Empresa" className={inputClass} />
-                <input name="email" type="email" placeholder="Email" aria-label="Email" required className={inputClass} />
-                <input name="phone" placeholder="WhatsApp / telefono" aria-label="WhatsApp o telefono" className={inputClass} />
-              </div>
-              <textarea
-                name="message"
-                className="mt-4 min-h-28 w-full rounded-lg border border-input bg-card px-3.5 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
-                placeholder="Detalles: plazo de entrega, ciudad, condiciones..."
-                aria-label="Mensaje"
-              />
-              <label className="mt-4 flex items-start gap-2 text-xs leading-5 text-muted-foreground">
-                <input type="checkbox" name="consent" required className="mt-0.5 size-4 shrink-0 accent-primary" />
-                <span>
-                  Autorizo el tratamiento de mis datos personales para ser contactado con fines comerciales,
-                  conforme a la Ley 1581 de 2012 y a la{" "}
-                  <Link href="/privacidad" className="font-medium text-primary underline">
-                    Politica de Tratamiento de Datos
-                  </Link>
-                  .
-                </span>
-              </label>
+            <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
+              <LeadFields messagePlaceholder="Detalles: plazo de entrega, ciudad, condiciones..." />
               {error ? (
                 <div className="mt-4 flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
                   <AlertCircle className="size-4" /> {error}

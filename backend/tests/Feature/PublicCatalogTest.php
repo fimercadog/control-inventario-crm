@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\Client;
 use App\Models\Company;
+use App\Models\Lead;
 use App\Models\Product;
 use App\Models\Quote;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -53,10 +55,10 @@ class PublicCatalogTest extends TestCase
      */
     public function test_categories_are_served_dynamically_from_the_database(): void
     {
-        $conProducto = \App\Models\Category::create([
+        $conProducto = Category::create([
             'company_id' => $this->company->id, 'name' => 'Con producto', 'status' => 'active',
         ]);
-        $sinProducto = \App\Models\Category::create([
+        $sinProducto = Category::create([
             'company_id' => $this->company->id, 'name' => 'Sin producto', 'status' => 'active',
         ]);
         $this->publicProduct(['category_id' => $conProducto->id]);
@@ -69,7 +71,7 @@ class PublicCatalogTest extends TestCase
             ->assertJsonMissing(['id' => $sinProducto->id]);
 
         // Nace una categoria nueva con un producto publico -> el filtro la refleja.
-        $nueva = \App\Models\Category::create([
+        $nueva = Category::create([
             'company_id' => $this->company->id, 'name' => 'Recien creada', 'status' => 'active',
         ]);
         $this->publicProduct(['category_id' => $nueva->id]);
@@ -123,6 +125,16 @@ class PublicCatalogTest extends TestCase
         $this->assertDatabaseHas('quote_items', [
             'quote_id' => $quote->id, 'product_name' => 'Teclado', 'sku' => 'K-1',
             'quantity' => 3, 'unit_price' => 200,
+        ]);
+
+        // La solicitud tambien entra a "Leads" para el equipo comercial.
+        $this->assertDatabaseHas('leads', [
+            'company_id' => $this->company->id,
+            'email' => 'ana@empresa.co',
+            'company_name' => 'Empresa Ana',
+            'phone' => '3000000000',
+            'source' => 'catalog',
+            'status' => 'new',
         ]);
     }
 
@@ -223,6 +235,8 @@ class PublicCatalogTest extends TestCase
 
         $this->assertSame(1, Client::where('email', 'ana@empresa.co')->count());
         $this->assertSame(2, Quote::count());
+        // Un solo lead aunque el prospecto pida varias cotizaciones.
+        $this->assertSame(1, Lead::where('email', 'ana@empresa.co')->count());
     }
 
     /**

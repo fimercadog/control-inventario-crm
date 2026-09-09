@@ -14,12 +14,17 @@ type Lead = {
   employee_count: string | null;
   priority_module: string | null;
   message: string | null;
-  source: "contact" | "demo";
+  source: "contact" | "demo" | "catalog" | "manual";
   status: "new" | "contacted" | "discarded";
   created_at: string;
 };
 
-const SOURCE_LABEL: Record<Lead["source"], string> = { contact: "Contacto", demo: "Demo" };
+const SOURCE_LABEL: Record<Lead["source"], string> = {
+  contact: "Contacto",
+  demo: "Demo",
+  catalog: "Cotizacion",
+  manual: "Manual",
+};
 const STATUS_LABEL: Record<Lead["status"], string> = { new: "Nuevo", contacted: "Contactado", discarded: "Descartado" };
 
 const columns: AppColumnDef<Lead>[] = [
@@ -36,6 +41,11 @@ const columns: AppColumnDef<Lead>[] = [
 ];
 
 const fields: CrudField[] = [
+  { name: "name", label: "Nombre", required: true },
+  { name: "company_name", label: "Empresa" },
+  { name: "email", label: "Correo", type: "email", required: true },
+  { name: "phone", label: "Telefono" },
+  { name: "message", label: "Mensaje", type: "textarea", colSpan: "full" },
   {
     name: "status",
     label: "Estado",
@@ -55,9 +65,10 @@ export default function LeadsPage() {
       title="Leads"
       description="Solicitudes de demo y mensajes de contacto del sitio publico."
       resource="/leads"
+      actionLabel="Crear lead"
       columns={columns}
       fields={fields}
-      modalDescription="Actualiza el estado del seguimiento comercial."
+      modalDescription="Datos de contacto y estado del seguimiento comercial."
     />
   );
 }

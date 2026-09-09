@@ -6,13 +6,14 @@ Endpoints:
 
 - `GET /dashboard`
 - `GET /reports`
-- `GET|POST /leads`, `GET|PUT|DELETE /leads/{id}` (alta publica sin auth en `POST /leads`)
+- `GET|POST /leads`, `GET|PUT|DELETE /leads/{id}` — `POST /leads` es alta manual desde el panel (`can:leads.view`, `source=manual`); `PUT` acepta datos de contacto + `status`
+- `POST /public/leads` — alta publica sin auth (formularios demo / contacto del sitio), throttle 5/min, exige `consent`
 - Catalogo publico (sin auth, throttle):
   - `GET /public/catalog/products` (params `category_id`, `q`, `page`; solo productos `is_public` + `active`, sin costo ni existencia)
   - `GET /public/catalog/products/{id}`
   - `GET /public/catalog/categories` (categorias con al menos un producto publico)
   - Limiters con nombre: `catalog-read` (120/min) para lectura, `catalog-quote` (5/min) para el envio; exentos de CSRF
-  - `POST /public/catalog/quote-requests` (`name`, `email`, `phone?`, `company_name?`, `message?`, `consent`, `items[] {product_id, quantity}`) -> crea Cliente (`firstOrCreate` por email) + `Quote` `draft` con `source=catalog`
+  - `POST /public/catalog/quote-requests` (`name`, `email`, `phone?`, `company_name?`, `message?`, `consent`, `items[] {product_id, quantity}`) -> crea Cliente (`firstOrCreate` por email) + `Quote` `draft` con `source=catalog` + Lead (`firstOrCreate` por email+`source=catalog`)
 - `GET|POST /clients`, `GET|PUT|DELETE /clients/{id}`
 - `GET|POST /deals`, `GET|PUT|DELETE /deals/{id}`
 - `GET|POST /activities`, `GET|PUT|DELETE /activities/{id}`

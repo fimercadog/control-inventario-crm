@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('employee_count')->nullable();
             $table->string('priority_module')->nullable();
             $table->text('message')->nullable();
-            $table->string('source')->default('contact'); // contact | demo
+            $table->string('source')->default('contact'); // contact | demo | catalog | manual
             $table->string('status')->default('new');      // new | contacted | discarded
             $table->string('ip_address', 45)->nullable();
             $table->timestamps();
