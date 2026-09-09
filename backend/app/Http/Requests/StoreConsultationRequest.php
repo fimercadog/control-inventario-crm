@@ -23,6 +23,8 @@ class StoreConsultationRequest extends ApiFormRequest
             'objective' => ['nullable', 'string', 'max:5000'],
             'assessment' => ['nullable', 'string', 'max:5000'],
             'plan' => ['nullable', 'string', 'max:5000'],
+            'diagnosis_ids' => ['nullable', 'array'],
+            'diagnosis_ids.*' => ['integer', Rule::exists('diagnoses', 'id')->where('company_id', $companyId)],
         ];
     }
 

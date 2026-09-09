@@ -24,6 +24,9 @@ class ConsultationResource extends JsonResource
             'objective' => $this->objective,
             'assessment' => $this->assessment,
             'plan' => $this->plan,
+            'diagnoses' => $this->whenLoaded('diagnoses', fn () => $this->diagnoses->map(fn ($d) => [
+                'id' => $d->id, 'name' => $d->name, 'code' => $d->code,
+            ])),
             'created_at' => $this->created_at,
         ];
     }

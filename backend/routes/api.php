@@ -16,10 +16,13 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContingencyController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DealController;
+use App\Http\Controllers\Api\DiagnosisController;
 use App\Http\Controllers\Api\ExportController;
 use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\PrescriptionController;
+use App\Http\Controllers\Api\ProcedureController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PublicCatalogController;
 use App\Http\Controllers\Api\PurchaseOrderController;
@@ -147,6 +150,15 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('/clinical-applications/due', [ClinicalApplicationController::class, 'due'])->middleware('can:vaccinations.manage');
     Route::apiResource('clinical-applications', ClinicalApplicationController::class)->middleware('can:vaccinations.manage');
     Route::post('/clinical-applications/{id}/restore', [ClinicalApplicationController::class, 'restore'])->middleware('can:vaccinations.manage')->whereNumber('id');
+
+    Route::apiResource('diagnoses', DiagnosisController::class)->middleware('can:medical_records.manage');
+
+    Route::get('/prescriptions/{id}/pdf', [PrescriptionController::class, 'pdf'])->middleware('can:prescriptions.manage')->whereNumber('id');
+    Route::apiResource('prescriptions', PrescriptionController::class)->only(['index', 'show', 'store', 'destroy'])->middleware('can:prescriptions.manage');
+
+    Route::apiResource('procedures', ProcedureController::class)->middleware('can:procedures.manage');
+    Route::post('/procedures/{id}/consent', [ProcedureController::class, 'consent'])->middleware('can:procedures.manage')->whereNumber('id');
+    Route::post('/procedures/{id}/restore', [ProcedureController::class, 'restore'])->middleware('can:procedures.manage')->whereNumber('id');
 
     Route::apiResource('appointments', AppointmentController::class)->middleware('can:appointments.manage');
     Route::post('/appointments/{id}/confirm', [AppointmentController::class, 'confirm'])->middleware('can:appointments.manage')->whereNumber('id');

@@ -286,6 +286,49 @@ export type Appointment = {
   notes?: string | null;
 };
 
+export type Diagnosis = {
+  id: number;
+  code?: string | null;
+  name: string;
+  status: string;
+};
+
+export type PrescriptionItem = {
+  id?: number;
+  product_id?: number | null;
+  medication_name: string;
+  sku?: string | null;
+  dosage?: string | null;
+  frequency?: string | null;
+  duration?: string | null;
+};
+
+export type Prescription = {
+  id: number;
+  consultation_id: number;
+  patient_id: number;
+  patient?: string | null;
+  vet_id?: number | null;
+  vet?: string | null;
+  notes?: string | null;
+  created_at?: string;
+  items?: PrescriptionItem[];
+};
+
+export type Procedure = {
+  id: number;
+  patient_id: number;
+  patient?: string | null;
+  service_id?: number | null;
+  service?: string | null;
+  vet_id?: number | null;
+  vet?: string | null;
+  type: string;
+  performed_at: string;
+  notes?: string | null;
+  consent_document_url?: string | null;
+};
+
 export type ClinicalApplication = {
   id: number;
   type: "vaccine" | "deworming";

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Consultation extends Model
@@ -42,5 +43,10 @@ class Consultation extends Model
     public function vet(): BelongsTo
     {
         return $this->belongsTo(User::class, 'vet_id');
+    }
+
+    public function diagnoses(): BelongsToMany
+    {
+        return $this->belongsToMany(Diagnosis::class, 'consultation_diagnosis');
     }
 }

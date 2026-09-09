@@ -16,7 +16,7 @@ class ConsultationController extends BaseCrudController
 
     protected string $resource = ConsultationResource::class;
 
-    protected array $with = ['patient', 'vet'];
+    protected array $with = ['patient', 'vet', 'diagnoses'];
 
     protected array $searchable = ['reason'];
 
@@ -39,6 +39,9 @@ class ConsultationController extends BaseCrudController
     {
         return DB::transaction(function () use ($request, $audit) {
             $response = parent::store($request, $audit);
+            $id = (int) $response->getData(true)['data']['id'];
+
+            $this->syncDiagnoses($request, $id);
 
             $appointmentId = $request->input('appointment_id');
             if ($appointmentId) {
@@ -53,8 +56,36 @@ class ConsultationController extends BaseCrudController
                 }
             }
 
-            return $response;
+            $model = Consultation::query()
+                ->where('company_id', $this->companyId($request))
+                ->with($this->with)
+                ->findOrFail($id);
+
+            return (new ConsultationResource($model))->response()->setStatusCode(201);
         });
+    }
+
+    public function update(Request $request, string $id, AuditService $audit)
+    {
+        return DB::transaction(function () use ($request, $id, $audit) {
+            $response = parent::update($request, $id, $audit);
+            $this->syncDiagnoses($request, (int) $id);
+
+            return $request->has('diagnosis_ids') ? $this->show($request, $id) : $response;
+        });
+    }
+
+    private function syncDiagnoses(Request $request, int $consultationId): void
+    {
+        if (! $request->has('diagnosis_ids')) {
+            return;
+        }
+
+        Consultation::query()
+            ->where('company_id', $this->companyId($request))
+            ->findOrFail($consultationId)
+            ->diagnoses()
+            ->sync(array_map('intval', (array) $request->input('diagnosis_ids', [])));
     }
 
     public function restore(Request $request, string $id, AuditService $audit)
