@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\AuditService;
@@ -11,27 +13,37 @@ use Illuminate\Support\Str;
 class UserController extends BaseCrudController
 {
     protected string $model = User::class;
+
     protected string $resource = UserResource::class;
+
     protected array $searchable = ['name', 'email'];
+
     protected array $filterable = ['status' => 'status'];
 
     public function store(Request $request, AuditService $audit)
     {
-        $temporaryPassword = null;
-        $payload = $request->except(['password', 'role']);
+        // La firma la fija BaseCrudController (Request). Resolvemos el FormRequest
+        // desde el contenedor: valida al construirse y whitelistea los campos.
+        $data = app(StoreUserRequest::class)->validated();
 
-        if ($request->filled('password')) {
-            $payload['password'] = $request->input('password');
-        } else {
+        $temporaryPassword = null;
+        $password = $data['password'] ?? null;
+        if (! $password) {
             $temporaryPassword = Str::password(12);
-            $payload['password'] = $temporaryPassword;
+            $password = $temporaryPassword;
         }
 
-        $payload['company_id'] ??= $this->companyId($request);
-        $user = User::create($payload);
+        // company_id se fija en el servidor, nunca desde el payload.
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'status' => $data['status'],
+            'password' => $password,
+            'company_id' => $this->companyId($request),
+        ]);
 
-        if ($request->filled('role')) {
-            $user->syncRoles([$request->input('role')]);
+        if (! empty($data['role'])) {
+            $user->syncRoles([$data['role']]);
         }
 
         $user->load($this->with);
@@ -50,15 +62,17 @@ class UserController extends BaseCrudController
         $user = User::query()->where('company_id', $this->companyId($request))->findOrFail($id);
         $oldValues = $user->getOriginal();
 
-        $payload = $request->except(['password', 'role']);
-        if ($request->filled('password')) {
-            $payload['password'] = $request->input('password');
+        $data = app(UpdateUserRequest::class)->validated();
+        $attributes = collect($data)->only(['name', 'email', 'status'])->all();
+        if (! empty($data['password'])) {
+            $attributes['password'] = $data['password'];
         }
 
-        $user->update($payload);
+        // Nunca se toca company_id en update.
+        $user->update($attributes);
 
-        if ($request->filled('role')) {
-            $user->syncRoles([$request->input('role')]);
+        if (! empty($data['role'])) {
+            $user->syncRoles([$data['role']]);
         }
 
         $user->load($this->with);
