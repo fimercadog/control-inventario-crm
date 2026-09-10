@@ -190,7 +190,7 @@ def main() -> int:  # noqa: C901 - un flujo lineal, se lee de arriba a abajo
             # 3 -- propietario (Client, núcleo reutilizado) --------------------
             print("· 3. alta del propietario")
             crud_create(
-                page, "/app/clientes", "Nuevo cliente",
+                page, "/app/clientes", "Nuevo propietario",
                 fill={"Nombre": owner, "Correo": email, "Telefono": "3009876543"},
                 selects={"Estado": "Activo"},
             )
@@ -213,35 +213,40 @@ def main() -> int:  # noqa: C901 - un flujo lineal, se lee de arriba a abajo
 
             # 5 -- cita ------------------------------------------------------
             print("· 5. agendar la cita")
+            cita_reason = f"Vacunación anual {tag}"
             crud_create(
                 page, "/app/citas", "Nueva cita",
-                fill={"Inicio": f"{SOON} 09:00", "Fin": f"{SOON} 09:30", "Motivo": "Vacunación anual"},
+                fill={"Inicio": f"{SOON} 09:00", "Fin": f"{SOON} 09:30", "Motivo": cita_reason},
                 selects={"Paciente": pet},
             )
-            cita_row = page.get_by_role("row").filter(has_text=pet)
-            expect(cita_row).to_be_visible(timeout=15000)
-            expect(cita_row.get_by_text("Programada")).to_be_visible()
+            expect(page.get_by_text("Registro creado")).to_be_visible(timeout=10000)
+            # buscar por el motivo único aísla la cita nueva (evita paginación)
+            page.get_by_placeholder("Buscar...").fill(cita_reason)
+            row = lambda: page.get_by_role("row").filter(has_text=pet)
+            expect(row()).to_be_visible(timeout=15000)
+            expect(row().get_by_text("Programada")).to_be_visible()
             # La hora cargada (09:00) se muestra tal cual, sin corrimiento de zona.
-            expect(cita_row).to_contain_text("9:00")
+            expect(row()).to_contain_text("9:00")
             shot(page, "05-cita")
             print("  ✓ cita programada, hora 9:00 sin corrimiento")
 
-            # 6 -- confirmación + 7 atendida (acción de fila) ----------------
+            # 6 -- confirmación + 7 atendida (acción de fila) ---------------
             print("· 6/7. confirmar y marcar atendida")
-            cita_row.get_by_role("button", name="Confirmar").click()
-            expect(page.get_by_role("row").filter(has_text=pet).get_by_text("Confirmada")).to_be_visible(timeout=15000)
-            page.get_by_role("row").filter(has_text=pet).get_by_role("button", name="Atendida").click()
-            expect(page.get_by_role("row").filter(has_text=pet).get_by_text("Atendida")).to_be_visible(timeout=15000)
+            row().get_by_role("button", name="Confirmar").click()
+            expect(row().get_by_text("Confirmada")).to_be_visible(timeout=15000)
+            row().get_by_role("button", name="Atendida").click()
+            expect(row().get_by_text("Atendida")).to_be_visible(timeout=15000)
             shot(page, "07-atendida")
             print("  ✓ cita confirmada y atendida")
 
             # 8 -- consulta SOAP -------------------------------------------
             print("· 8. consulta SOAP")
+            soap_reason = f"Control y vacunación {tag}"
             crud_create(
                 page, "/app/consultas", "Nueva consulta",
                 fill={
                     "Fecha": TODAY,
-                    "Motivo de consulta": "Control y vacunación",
+                    "Motivo de consulta": soap_reason,
                     "S — Subjetivo": "Dueño reporta buen apetito.",
                     "O — Objetivo": "Mucosas rosadas, T 38.5.",
                     "A — Análisis": "Paciente sano apto para vacuna.",
@@ -249,8 +254,8 @@ def main() -> int:  # noqa: C901 - un flujo lineal, se lee de arriba a abajo
                 },
                 selects={"Paciente": pet},
             )
-            consulta_row = page.get_by_role("row").filter(has_text=pet)
-            expect(consulta_row).to_be_visible(timeout=15000)
+            page.get_by_placeholder("Buscar...").fill(soap_reason)
+            expect(page.get_by_role("row").filter(has_text=soap_reason)).to_be_visible(timeout=15000)
             shot(page, "08-consulta")
             print("  ✓ consulta SOAP registrada")
 
@@ -261,22 +266,26 @@ def main() -> int:  # noqa: C901 - un flujo lineal, se lee de arriba a abajo
             page.get_by_role("button", name="Registrar aplicación").click()
             dialog = page.get_by_role("dialog")
             expect(dialog).to_be_visible(timeout=10000)
+            vac_name = f"Vacuna polivalente {tag}"
             dialog.get_by_label("Tipo").select_option("vaccine")
             dialog.get_by_label("Paciente").select_option(label=pet)
-            dialog.get_by_label("Nombre / producto aplicado").fill("Vacuna polivalente")
+            dialog.get_by_label("Nombre / producto aplicado").fill(vac_name)
             dialog.get_by_label("Fecha de aplicación").fill(TODAY)
             dialog.get_by_label("Lote", exact=True).fill(f"LOT-{tag}")
             dialog.get_by_label("Próxima dosis", exact=True).fill(SOON)
-            # primer producto / bodega reales del inventario sembrado
-            prod_opts = dialog.get_by_label("Producto del inventario (descuenta stock)").locator("option")
-            dialog.get_by_label("Producto del inventario (descuenta stock)").select_option(
-                index=1 if prod_opts.count() > 1 else 0
-            )
-            wh_opts = dialog.get_by_label("Bodega (si aplica producto)").locator("option")
-            dialog.get_by_label("Bodega (si aplica producto)").select_option(index=1 if wh_opts.count() > 1 else 0)
+            # producto con existencias y la bodega de la farmacia (la que tiene stock)
+            prod_sel = dialog.get_by_label("Producto del inventario (descuenta stock)")
+            prod_opts = prod_sel.locator("option").all_text_contents()
+            prod_idx = next((i for i, t in enumerate(prod_opts) if "antirrábica" in t.lower()), 1)
+            prod_sel.select_option(index=prod_idx)
+            wh_sel = dialog.get_by_label("Bodega (si aplica producto)")
+            wh_opts = wh_sel.locator("option").all_text_contents()
+            wh_idx = next((i for i, t in enumerate(wh_opts) if "farmacia" in t.lower()), 1)
+            wh_sel.select_option(index=wh_idx)
             dialog.get_by_role("button", name="Crear registro").click()
             expect(dialog).to_be_hidden(timeout=15000)
-            vac_row = page.get_by_role("row").filter(has_text="Vacuna polivalente")
+            page.get_by_placeholder("Buscar...").fill(f"LOT-{tag}")
+            vac_row = page.get_by_role("row").filter(has_text=vac_name)
             expect(vac_row).to_be_visible(timeout=15000)
             expect(vac_row.get_by_text("Descontado")).to_be_visible()
             shot(page, "09-vacuna-stock")
@@ -284,25 +293,31 @@ def main() -> int:  # noqa: C901 - un flujo lineal, se lee de arriba a abajo
 
             # 10 -- receta + PDF -----------------------------------------
             print("· 10. receta y PDF")
+            med_name = f"Amoxicilina flujo {tag}"
             page.goto(f"{FRONT_URL}/app/recetas")
             dismiss_beta(page)
             page.get_by_role("button", name="Nueva receta").click()
             rx = page.get_by_role("dialog")
             expect(rx).to_be_visible(timeout=10000)
-            rx.locator("select").select_option(index=1)
-            rx.get_by_placeholder("Medicamento").fill("Amoxicilina 250mg")
+            # elegir la consulta de este flujo (por su motivo único); las opciones
+            # cargan async, esperar a que aparezca la del flujo
+            flow_opt = rx.locator("select option", has_text=soap_reason)
+            expect(flow_opt).to_have_count(1, timeout=15000)
+            rx.locator("select").select_option(value=flow_opt.get_attribute("value"))
+            rx.get_by_placeholder("Medicamento").fill(med_name)
             rx.get_by_placeholder("Dosis").fill("1 comp c/12h")
             rx.get_by_placeholder("Frecuencia").fill("cada 12 horas")
             rx.get_by_placeholder("Duración").fill("7 días")
             rx.get_by_role("button", name="Crear receta").click()
             expect(rx).to_be_hidden(timeout=15000)
-            rx_card = page.get_by_role("main").locator("text=Amoxicilina 250mg").first
+            rx_card = page.get_by_role("main").locator("div").filter(has_text=med_name).filter(
+                has=page.get_by_role("button", name="Descargar PDF")
+            ).last
             expect(rx_card).to_be_visible(timeout=15000)
             with page.expect_download(timeout=20000) as dl:
-                page.get_by_role("button", name="Descargar PDF").first.click()
-            download = dl.value
+                rx_card.get_by_role("button", name="Descargar PDF").click()
             out = ARTIFACTS / "vet-10-receta.pdf"
-            download.save_as(out)
+            dl.value.save_as(out)
             assert out.stat().st_size > 800, f"PDF sospechosamente pequeño: {out.stat().st_size} bytes"
             shot(page, "10-recetas")
             print(f"  ✓ receta creada, PDF descargado ({out.stat().st_size} bytes)")

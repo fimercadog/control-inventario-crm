@@ -118,8 +118,8 @@ def main() -> int:
             print("· flujo público")
             page.goto(f"{FRONT_URL}/catalogo")
             page.wait_for_load_state("networkidle")
-            expect(page.get_by_role("button", name="Electronica")).to_be_visible(timeout=30000)
-            page.get_by_role("button", name="Electronica").click()
+            expect(page.get_by_role("button", name="Accesorios")).to_be_visible(timeout=30000)
+            page.get_by_role("button", name="Accesorios").click()
             page.wait_for_load_state("networkidle")
             first_card = page.locator('a[href^="/catalogo/"]').first
             expect(first_card).to_be_visible(timeout=15000)
@@ -140,10 +140,10 @@ def main() -> int:
 
             page.wait_for_url("**/catalogo/cotizacion")
             page.get_by_placeholder("Nombre").fill("Cliente E2E")
-            page.get_by_placeholder("Empresa").fill("Empresa E2E")
+            page.get_by_placeholder("Clínica (opcional)").fill("Clínica E2E")
             page.get_by_placeholder("Email").fill(email)
-            page.get_by_placeholder("WhatsApp / telefono").fill("3001234567")
-            page.get_by_placeholder("Detalles: plazo de entrega, ciudad, condiciones...").fill(
+            page.get_by_placeholder("WhatsApp").fill("3001234567")
+            page.get_by_placeholder("Cuéntanos para qué mascota, marca preferida o cualquier detalle...").fill(
                 "Solicitud generada por la prueba E2E."
             )
             page.get_by_role("checkbox").check()
@@ -207,7 +207,7 @@ def main() -> int:
                 # Productos: la tabla debe renderizar y la accion "Imagen" existir.
                 page.goto(f"{FRONT_URL}/app/productos")
                 dismiss_beta()
-                expect(page.get_by_role("row").filter(has_text="Monitor")).to_be_visible(timeout=15000)
+                expect(page.get_by_role("row").filter(has_text="Vacuna antirrábica")).to_be_visible(timeout=15000)
                 expect(page.get_by_role("button", name="Imagen").first).to_be_visible()
                 page.screenshot(path=ARTIFACTS / "08-crm-productos.png", full_page=True)
                 print("  ✓ cotización + cliente + tabla de productos en el CRM")
