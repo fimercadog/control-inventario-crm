@@ -253,9 +253,9 @@ class DatabaseSeeder extends Seeder
     private function seedSuppliers(Company $company): Collection
     {
         return collect([
-            ['name' => 'Distribuciones Veterinarias del Norte', 'contact_name' => 'Jorge Niño', 'email' => 'pedidos@distrivetnorte.co'],
-            ['name' => 'Provet Colombia SAS', 'contact_name' => 'Marcela Durán', 'email' => 'ventas@provet.co'],
-            ['name' => 'Agrocampo Mayorista', 'contact_name' => 'Ricardo Peña', 'email' => 'mayoristas@agrocampo.co'],
+            ['name' => 'Distribuciones Veterinarias del Norte', 'contact_name' => 'Jorge Niño', 'email' => 'pedidos@distrivetnorte.example'],
+            ['name' => 'Provet Colombia SAS', 'contact_name' => 'Marcela Durán', 'email' => 'ventas@provet.example'],
+            ['name' => 'Insumos del Campo Mayorista', 'contact_name' => 'Ricardo Peña', 'email' => 'mayoristas@insumosdelcampo.example'],
         ])->map(fn ($d) => Supplier::firstOrCreate(['company_id' => $company->id, 'name' => $d['name']], $d + ['status' => 'active']));
     }
 
@@ -332,9 +332,9 @@ class DatabaseSeeder extends Seeder
             ['Laura Gutiérrez', null, 'laura.gutierrez@gmail.com', '+57 316 555 0107', 'Cra 19 #45-12, Bogotá', 'Particular'],
             ['Santiago Rojas', null, 'santiago.rojas@gmail.com', '+57 317 555 0108', 'Calle 140 #7-90, Bogotá', 'Particular'],
             ['Natalia Ospina', null, 'natalia.ospina@gmail.com', '+57 318 555 0109', 'Cra 24 #63-11, Bogotá', 'Particular'],
-            ['Fundación Huellitas', 'Fundación Huellitas de Amor', 'contacto@huellitas.org', '+57 601 555 0210', 'Cra 30 #12-45, Bogotá', 'Fundación / Rescate'],
-            ['Criadero Los Cerezos', 'Criadero Los Cerezos', 'info@loscerezos.co', '+57 320 555 0211', 'Vereda El Salitre, Chía', 'Criadero'],
-            ['Recursos Humanos - Contax', 'Contax BPO', 'bienestar@contax.co', '+57 601 555 0212', 'Av 68 #40-11, Bogotá', 'Convenio empresarial'],
+            ['Fundación Huellitas', 'Fundación Huellitas de Amor', 'contacto@huellitas.example', '+57 601 555 0210', 'Cra 30 #12-45, Bogotá', 'Fundación / Rescate'],
+            ['Criadero Los Cerezos', 'Criadero Los Cerezos', 'info@loscerezos.example', '+57 320 555 0211', 'Vereda El Salitre, Chía', 'Criadero'],
+            ['Bienestar - Nexa BPO', 'Nexa BPO', 'bienestar@nexabpo.example', '+57 601 555 0212', 'Av 68 #40-11, Bogotá', 'Convenio empresarial'],
         ];
 
         return collect($rows)->map(fn ($d) => Client::firstOrCreate(
@@ -349,9 +349,9 @@ class DatabaseSeeder extends Seeder
     private function seedContacts(Company $company, Collection $clients): void
     {
         collect([
-            [9, 'Paola Méndez', 'Coordinadora de adopciones', 'adopciones@huellitas.org', '+57 320 555 0310'],
-            [10, 'Hernán Cortés', 'Responsable de camada', 'camadas@loscerezos.co', '+57 321 555 0311'],
-            [11, 'Ana María Lima', 'Líder de bienestar', 'ana.lima@contax.co', '+57 322 555 0312'],
+            [9, 'Paola Méndez', 'Coordinadora de adopciones', 'adopciones@huellitas.example', '+57 320 555 0310'],
+            [10, 'Hernán Cortés', 'Responsable de camada', 'camadas@loscerezos.example', '+57 321 555 0311'],
+            [11, 'Ana María Lima', 'Líder de bienestar', 'ana.lima@nexabpo.example', '+57 322 555 0312'],
         ])->each(fn ($d) => Contact::firstOrCreate(
             ['company_id' => $company->id, 'name' => $d[1], 'client_id' => $clients[$d[0]]->id],
             ['role' => $d[2], 'email' => $d[3], 'phone' => $d[4], 'status' => 'active'],
@@ -826,7 +826,7 @@ class DatabaseSeeder extends Seeder
                 'Mascota: Thor (bulldog). Motivo: revisión de piel. Fecha preferida: lunes.'],
             ['Julián Pardo', 'julian.pardo@gmail.com', '+57 303 555 0404', 'appointment', 'new',
                 'Mascota: Nala. Motivo: primera consulta cachorro.'],
-            ['Verónica Lozano', 'veronica.lozano@empresa.co', '+57 304 555 0405', 'contact', 'new',
+            ['Verónica Lozano', 'veronica.lozano@nexabpo.example', '+57 304 555 0405', 'contact', 'new',
                 'Consulta por convenio de bienestar animal para colaboradores.'],
             ['Tomás Salazar', 'tomas.salazar@gmail.com', '+57 305 555 0406', 'contact', 'discarded',
                 'Preguntó por horarios; no volvió a responder.'],
@@ -927,7 +927,7 @@ class DatabaseSeeder extends Seeder
         $stages = ['prospecting', 'qualification', 'proposal', 'negotiation', 'won', 'lost'];
         $titles = [
             'Plan de salud anual — familia Herrera',
-            'Convenio de bienestar animal — Contax BPO',
+            'Convenio de bienestar animal — Nexa BPO',
             'Plan preventivo camada — Criadero Los Cerezos',
             'Paquete adopción responsable — Fundación Huellitas',
             'Plan sénior — Nina (Schnauzer)',
