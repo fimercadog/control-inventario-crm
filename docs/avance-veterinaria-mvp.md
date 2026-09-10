@@ -20,7 +20,7 @@ Fase 4 del `project-reuse-orchestrator`, 2026-09-09. **S11 y S12 no ejecutados.*
 | S9 portal público "solicitá tu cita" | `cdbe81c` | ✅ |
 | S10 reportes clínicos + dashboard vet | `292492e` | ✅ |
 | S11 hospitalización · lab · documentos | — | ⏭️ v1.1, no ejecutado |
-| S12 release gate | — | ⏭️ pendiente de aprobación |
+| S12 release gate | `74e4c4f` `d4517b2` | ✅ ejecutado — ver `docs/release-gate-s12.md` |
 
 ## Funcionalidades terminadas y listas para usar
 
@@ -133,6 +133,12 @@ sitio web /solicitar-cita
 Cada tramo está cubierto por tests de feature.
 
 ## Estado general
+
+**S12 EJECUTADO — `NEEDS FIXES` resuelto en el gate.** Ver `docs/release-gate-s12.md`.
+180 tests verde en SQLite y MariaDB; E2E Playwright 12/12; 16 hallazgos corregidos.
+Falta solo configuración de entorno para producción (SMTP real, `APP_TIMEZONE`).
+
+Texto histórico previo al gate:
 
 **READY FOR RELEASE GATE.**
 
