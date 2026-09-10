@@ -180,6 +180,9 @@ NEXT_PUBLIC_SITE_URL=https://demo-inventario-crm.fidelmercadotech.com
 NEXT_PUBLIC_DEMO_MODE=true
 ```
 
+- **`NEXT_PUBLIC_PLAN` NO se define.** La demo de Control de Inventario + CRM
+  corre en **producto completo** (todos los módulos y widgets). `=base` es solo
+  para vender el plan de entrada a un cliente concreto — ver `docs/plan-base.md`.
 - En *Domains*, agregar `demo-inventario-crm.fidelmercadotech.com` y repuntar ese
   hostname (DNS) a Vercel si hoy resuelve a Hostinger.
 

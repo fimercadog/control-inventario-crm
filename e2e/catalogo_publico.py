@@ -142,7 +142,7 @@ def main() -> int:
             page.get_by_placeholder("Nombre").fill("Cliente E2E")
             page.get_by_placeholder("Empresa").fill("Empresa E2E")
             page.get_by_placeholder("Email").fill(email)
-            page.get_by_placeholder("WhatsApp / telefono").fill("3001234567")
+            page.get_by_placeholder("WhatsApp").fill("3001234567")
             page.get_by_placeholder("Detalles: plazo de entrega, ciudad, condiciones...").fill(
                 "Solicitud generada por la prueba E2E."
             )

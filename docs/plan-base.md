@@ -10,6 +10,12 @@ NEXT_PUBLIC_PLAN=base
 Sin la variable, el sistema se ve **completo** (demo / plan full, lo que usa el
 dueño). Es solo build del frontend — no hay migración ni cambio de datos.
 
+> **Default del producto:** la **demo comercial** de Control de Inventario + CRM
+> y cualquier cliente que compró el sistema completo corren **sin**
+> `NEXT_PUBLIC_PLAN`. `=base` se pone únicamente en el despliegue de un cliente
+> que contrató el plan de entrada. `plan.ts` y esta infraestructura se conservan
+> para futuros planes / add-ons.
+
 ## Criterio
 
 Se deja visible todo lo que permite **hacer** el proceso comercial base:
