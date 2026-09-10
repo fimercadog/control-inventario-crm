@@ -16,3 +16,12 @@ export function formatDate(value: string | number | Date | null | undefined): st
   if (Number.isNaN(date.getTime())) return String(value);
   return date.toLocaleDateString("es-CO", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" });
 }
+
+/**
+ * `YYYY-MM-DD` de una fecha en hora LOCAL (no UTC). Para el selector de día de la
+ * agenda y los rangos de reportes: `toISOString().slice(0,10)` corre el día de
+ * noche en zonas con offset negativo. `en-CA` produce el formato ISO.
+ */
+export function isoDateLocal(d: Date = new Date()): string {
+  return d.toLocaleDateString("en-CA");
+}

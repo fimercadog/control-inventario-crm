@@ -90,6 +90,16 @@ class AppointmentTest extends TestCase
         ]))->assertStatus(422)->assertJsonValidationErrors('ends_at');
     }
 
+    public function test_rejects_a_non_date_starts_at(): void
+    {
+        // El form del panel captura la fecha como texto con patrón; el backend
+        // es la garantía de que no entren valores basura a la columna dateTime.
+        $this->postJson('/api/appointments', $this->payload([
+            'starts_at' => 'no soy una fecha',
+            'ends_at' => 'tampoco',
+        ]))->assertStatus(422)->assertJsonValidationErrors(['starts_at', 'ends_at']);
+    }
+
     public function test_patient_must_belong_to_the_company(): void
     {
         $foreignPatient = Patient::query()->create([
@@ -137,5 +147,41 @@ class AppointmentTest extends TestCase
 
         $this->deleteJson("/api/services/{$this->service->id}")->assertStatus(422);
         $this->assertDatabaseHas('services', ['id' => $this->service->id]);
+    }
+
+    public function test_status_cannot_be_forced_on_create_or_update(): void
+    {
+        // En el alta se ignora un status enviado: la cita nace 'scheduled'.
+        $id = $this->postJson('/api/appointments', $this->payload(['status' => 'attended']))
+            ->assertCreated()->assertJsonPath('data.status', 'scheduled')->json('data.id');
+
+        // Un PUT ignora `status`: solo confirm/cancel/attended/no-show lo mueven.
+        $this->putJson("/api/appointments/{$id}", ['status' => 'attended', 'reason' => 'x'])->assertOk();
+        $this->assertDatabaseHas('appointments', ['id' => $id, 'status' => 'scheduled']);
+    }
+
+    public function test_rejects_a_double_booking_for_the_same_practitioner(): void
+    {
+        $vet = User::factory()->create(['company_id' => $this->company->id]);
+
+        $this->postJson('/api/appointments', $this->payload([
+            'practitioner_id' => $vet->id,
+            'starts_at' => now()->addDay()->setTime(9, 0)->toDateTimeString(),
+            'ends_at' => now()->addDay()->setTime(9, 30)->toDateTimeString(),
+        ]))->assertCreated();
+
+        // Se solapa 15 min con la anterior.
+        $this->postJson('/api/appointments', $this->payload([
+            'practitioner_id' => $vet->id,
+            'starts_at' => now()->addDay()->setTime(9, 15)->toDateTimeString(),
+            'ends_at' => now()->addDay()->setTime(9, 45)->toDateTimeString(),
+        ]))->assertStatus(422)->assertJsonValidationErrors('practitioner_id');
+
+        // Contiguo (empieza cuando la otra termina): permitido.
+        $this->postJson('/api/appointments', $this->payload([
+            'practitioner_id' => $vet->id,
+            'starts_at' => now()->addDay()->setTime(9, 30)->toDateTimeString(),
+            'ends_at' => now()->addDay()->setTime(10, 0)->toDateTimeString(),
+        ]))->assertCreated();
     }
 }

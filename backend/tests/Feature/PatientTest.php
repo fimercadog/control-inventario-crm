@@ -146,4 +146,20 @@ class PatientTest extends TestCase
             ->assertOk()
             ->assertJsonPath('patients.0.name', 'Luna');
     }
+
+    public function test_client_history_hides_pets_from_users_without_patients_permission(): void
+    {
+        // Ventas: gestiona clientes pero NO tiene patients.manage. La historia
+        // agregada del cliente no debe filtrarle los datos clínicos de mascotas.
+        Permission::firstOrCreate(['name' => 'clients.manage', 'guard_name' => 'web']);
+        $sales = User::factory()->create(['company_id' => $this->company->id]);
+        $sales->givePermissionTo('clients.manage');
+        Sanctum::actingAs($sales, ['*']);
+
+        Patient::query()->create($this->payload(['name' => 'Luna']));
+
+        $this->getJson("/api/clients/{$this->owner->id}/history")
+            ->assertOk()
+            ->assertJsonPath('patients', []);
+    }
 }

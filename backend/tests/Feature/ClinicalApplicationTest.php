@@ -33,9 +33,10 @@ class ClinicalApplicationTest extends TestCase
         parent::setUp();
         $this->company = Company::factory()->create(['name' => fake()->company()]);
         Permission::firstOrCreate(['name' => 'vaccinations.manage', 'guard_name' => 'web']);
+        Permission::firstOrCreate(['name' => 'stock.manage', 'guard_name' => 'web']);
 
         $user = User::factory()->create(['company_id' => $this->company->id]);
-        $user->givePermissionTo('vaccinations.manage');
+        $user->givePermissionTo(['vaccinations.manage', 'stock.manage']);
         Sanctum::actingAs($user, ['*']);
 
         $client = Client::factory()->create(['company_id' => $this->company->id]);
@@ -89,6 +90,29 @@ class ClinicalApplicationTest extends TestCase
         $this->assertSame(8, (int) StockMovement::where('product_id', $product->id)->sum('quantity'));
     }
 
+    public function test_product_without_enough_stock_is_rejected_and_nothing_is_written(): void
+    {
+        $warehouse = Warehouse::create(['company_id' => $this->company->id, 'name' => 'Central', 'status' => 'active']);
+        $product = Product::create([
+            'company_id' => $this->company->id, 'sku' => 'VAC-LOW', 'name' => 'Vacuna escasa',
+            'unit_price' => 0, 'cost_price' => 0, 'reorder_level' => 0, 'status' => 'active',
+        ]);
+        StockMovement::create([
+            'company_id' => $this->company->id, 'product_id' => $product->id, 'warehouse_id' => $warehouse->id,
+            'type' => 'in', 'quantity' => 1, 'reason' => 'Compra',
+        ]);
+
+        $this->postJson('/api/clinical-applications', [
+            'type' => 'vaccine', 'patient_id' => $this->patient->id, 'product_id' => $product->id,
+            'warehouse_id' => $warehouse->id, 'quantity' => 3, 'name' => 'Antirrábica',
+            'applied_at' => now()->toDateString(),
+        ])->assertStatus(422);
+
+        // Ni la aplicación ni el movimiento de salida: la transacción revierte todo.
+        $this->assertSame(0, ClinicalApplication::count());
+        $this->assertSame(1, (int) StockMovement::where('product_id', $product->id)->sum('quantity'));
+    }
+
     public function test_product_requires_a_warehouse(): void
     {
         $product = Product::create([
@@ -139,7 +163,18 @@ class ClinicalApplicationTest extends TestCase
         $this->deleteJson("/api/clinical-applications/{$id}")->assertNoContent();
 
         $this->assertSoftDeleted('clinical_applications', ['id' => $id]);
-        // El movimiento de salida sigue ahí: 5 - 1 = 4.
+        // El movimiento de salida sigue ahí: 5 - 1 = 4. No hay reversión automática.
         $this->assertSame(4, (int) StockMovement::where('product_id', $product->id)->sum('quantity'));
+        $this->assertDatabaseHas('stock_movements', [
+            'reference' => 'clinical_application:'.$id, 'type' => 'out', 'quantity' => -1,
+        ]);
+
+        // La corrección es un movimiento de ajuste EXPLÍCITO, capturado por recepción.
+        $this->postJson('/api/stock-movements', [
+            'product_id' => $product->id, 'warehouse_id' => $warehouse->id,
+            'type' => 'adjustment', 'quantity' => 1, 'reason' => 'Reversa vacuna anulada #'.$id,
+        ])->assertCreated();
+
+        $this->assertSame(5, (int) StockMovement::where('product_id', $product->id)->sum('quantity'));
     }
 }

@@ -67,7 +67,11 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // Una clínica agenda en hora local: si el server corre en UTP y el panel
+    // formatea en la zona del navegador, las citas salen corridas. Cada deploy
+    // fija APP_TIMEZONE (ej. America/Bogota) para que agenda, `now()` y los
+    // `whereDate` clínicos trabajen todos en la misma hora de pared.
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------

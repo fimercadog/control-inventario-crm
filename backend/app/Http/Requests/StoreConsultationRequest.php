@@ -12,7 +12,7 @@ class StoreConsultationRequest extends ApiFormRequest
         $inCompany = fn (string $table) => Rule::exists($table, 'id')->where('company_id', $companyId);
 
         return [
-            'patient_id' => ['required', 'integer', $inCompany('patients')],
+            'patient_id' => ['required', 'integer', $inCompany('patients')->whereNull('deleted_at')],
             'appointment_id' => ['nullable', 'integer', $inCompany('appointments')],
             'vet_id' => ['nullable', 'integer', $inCompany('users')],
             'date' => ['required', 'date', 'before_or_equal:today'],

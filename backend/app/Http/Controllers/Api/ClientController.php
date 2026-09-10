@@ -32,11 +32,16 @@ class ClientController extends BaseCrudController
     {
         abort_unless($client->company_id === $this->companyId($request), 404);
 
+        // Las mascotas del cliente son datos clínicos: solo para quien tiene
+        // patients.manage (Recepción / Veterinario). Ventas ve el cliente pero
+        // no su historia clínica, aunque llegue por esta ruta agregada.
+        $canSeePatients = $request->user()?->can('patients.manage') ?? false;
+
         return response()->json([
             'client' => new ClientResource($client->load('segment')),
-            'patients' => PatientResource::collection(
+            'patients' => $canSeePatients ? PatientResource::collection(
                 $client->patients()->with(['species', 'breed'])->latest()->limit(50)->get()
-            ),
+            ) : [],
             'deals' => DealResource::collection($client->deals()->latest()->limit(50)->get()),
             'activities' => ActivityResource::collection(
                 $client->activities()->with('deal')->orderByRaw('COALESCE(due_date, created_at) desc')->limit(50)->get()

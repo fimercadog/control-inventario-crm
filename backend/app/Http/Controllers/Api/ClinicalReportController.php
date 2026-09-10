@@ -22,6 +22,11 @@ class ClinicalReportController extends Controller
     {
         $companyId = $this->companyId($request);
 
+        $request->validate([
+            'from' => ['nullable', 'date'],
+            'to' => ['nullable', 'date', 'after_or_equal:from'],
+        ]);
+
         $from = $request->filled('from')
             ? Carbon::parse($request->input('from'))->startOfDay()
             : Carbon::today()->startOfMonth();

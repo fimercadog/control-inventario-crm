@@ -9,6 +9,7 @@ use App\Services\AuditService;
 use App\Services\TableQueryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConsultationController extends BaseCrudController
 {
@@ -69,6 +70,14 @@ class ConsultationController extends BaseCrudController
     {
         return DB::transaction(function () use ($request, $id, $audit) {
             $response = parent::update($request, $id, $audit);
+
+            // Si el update se rechazó (p.ej. 409 por conflicto de contingencia)
+            // no se tocan los diagnósticos: el usuario ve "nada se aplicó".
+            if ($response instanceof Response
+                && $response->getStatusCode() >= 300) {
+                return $response;
+            }
+
             $this->syncDiagnoses($request, (int) $id);
 
             return $request->has('diagnosis_ids') ? $this->show($request, $id) : $response;

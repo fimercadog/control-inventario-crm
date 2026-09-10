@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\ClinicalApplicationResource;
 use App\Models\ClinicalApplication;
+use App\Models\Product;
 use App\Models\StockMovement;
 use App\Services\AuditService;
 use App\Services\TableQueryService;
@@ -54,10 +55,25 @@ class ClinicalApplicationController extends BaseCrudController
                 ->findOrFail($applicationId);
 
             $quantity = (int) ($request->input('quantity') ?: 1);
+            $warehouseId = (int) $request->input('warehouse_id');
+
+            // Mismo contrato que OrderController@confirm: no dejar el stock en
+            // negativo. La app clínica ya se creó dentro de la transacción, así
+            // que un 422 acá revierte también ese insert.
+            $product = Product::query()
+                ->where('company_id', $application->company_id)
+                ->findOrFail((int) $productId);
+
+            abort_if(
+                $product->stockOnHand($warehouseId) < $quantity,
+                422,
+                "Sin existencias suficientes de {$product->name} en esa bodega.",
+            );
+
             $movement = StockMovement::create([
                 'company_id' => $application->company_id,
                 'product_id' => (int) $productId,
-                'warehouse_id' => (int) $request->input('warehouse_id'),
+                'warehouse_id' => $warehouseId,
                 'type' => 'out',
                 'quantity' => -$quantity,
                 'reason' => 'Aplicación clínica',

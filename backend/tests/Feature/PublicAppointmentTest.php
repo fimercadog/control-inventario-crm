@@ -50,6 +50,19 @@ class PublicAppointmentTest extends TestCase
         $this->assertSame(0, Appointment::count());
     }
 
+    public function test_two_real_requests_from_one_email_create_two_leads(): void
+    {
+        $this->postJson('/api/public/appointments', $this->payload())->assertOk();
+        // Dentro de la ventana anti-doble-click: no duplica.
+        $this->postJson('/api/public/appointments', $this->payload())->assertOk();
+        $this->assertSame(1, Lead::where('email', 'ana@example.com')->count());
+
+        // Semanas después vuelve a pedir cita: es una solicitud nueva.
+        $this->travel(8)->minutes();
+        $this->postJson('/api/public/appointments', $this->payload(['pet_name' => 'Otro']))->assertOk();
+        $this->assertSame(2, Lead::where('email', 'ana@example.com')->count());
+    }
+
     public function test_honeypot_silently_discards(): void
     {
         $this->postJson('/api/public/appointments', $this->payload(['company_website' => 'http://spam.example']))

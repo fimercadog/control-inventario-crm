@@ -12,7 +12,7 @@ class StorePrescriptionRequest extends ApiFormRequest
         $inCompany = fn (string $table) => Rule::exists($table, 'id')->where('company_id', $companyId);
 
         return [
-            'consultation_id' => ['required', 'integer', $inCompany('consultations')],
+            'consultation_id' => ['required', 'integer', $inCompany('consultations')->whereNull('deleted_at')],
             'vet_id' => ['nullable', 'integer', $inCompany('users')],
             'notes' => ['nullable', 'string', 'max:3000'],
             'items' => ['required', 'array', 'min:1', 'max:50'],

@@ -4,6 +4,7 @@ import * as React from "react";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
+import { isoDateLocal } from "@/lib/utils";
 import { APPOINTMENT_STATUS_LABEL } from "@/lib/appointments";
 
 type ClinicalReport = {
@@ -53,13 +54,9 @@ function Breakdown({ title, rows, money }: { title: string; rows: Record<string,
   );
 }
 
-function isoDate(d: Date) {
-  return d.toISOString().slice(0, 10);
-}
-
 export default function ClinicalReportsPage() {
-  const monthStart = isoDate(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
-  const today = isoDate(new Date());
+  const monthStart = isoDateLocal(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
+  const today = isoDateLocal(new Date());
   const [from, setFrom] = React.useState(monthStart);
   const [to, setTo] = React.useState(today);
   const [report, setReport] = React.useState<ClinicalReport | null>(null);
@@ -108,7 +105,7 @@ export default function ClinicalReportsPage() {
               )}
             />
             <Breakdown title="Citas por profesional" rows={report.appointments_by_practitioner} />
-            <Breakdown title="Ingresos por servicio" rows={report.revenue_by_service} money />
+            <Breakdown title="Ingreso estimado por servicio" rows={report.revenue_by_service} money />
           </div>
         </>
       )}

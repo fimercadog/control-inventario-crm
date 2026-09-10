@@ -14,7 +14,7 @@ type Lead = {
   employee_count: string | null;
   priority_module: string | null;
   message: string | null;
-  source: "contact" | "demo" | "catalog" | "manual";
+  source: "contact" | "demo" | "catalog" | "manual" | "appointment";
   status: "new" | "contacted" | "discarded";
   created_at: string;
 };
@@ -24,6 +24,7 @@ const SOURCE_LABEL: Record<Lead["source"], string> = {
   demo: "Demo",
   catalog: "Cotizacion",
   manual: "Manual",
+  appointment: "Solicitud de cita",
 };
 const STATUS_LABEL: Record<Lead["status"], string> = { new: "Nuevo", contacted: "Contactado", discarded: "Descartado" };
 

@@ -12,7 +12,7 @@ class StoreProcedureRequest extends ApiFormRequest
         $inCompany = fn (string $table) => Rule::exists($table, 'id')->where('company_id', $companyId);
 
         return [
-            'patient_id' => ['required', 'integer', $inCompany('patients')],
+            'patient_id' => ['required', 'integer', $inCompany('patients')->whereNull('deleted_at')],
             'service_id' => ['nullable', 'integer', $inCompany('services')],
             'vet_id' => ['nullable', 'integer', $inCompany('users')],
             'type' => ['required', 'string', 'max:150'],

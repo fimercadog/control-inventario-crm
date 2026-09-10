@@ -7,10 +7,13 @@ use App\Models\Company;
 use App\Models\Consultation;
 use App\Models\Diagnosis;
 use App\Models\Patient;
+use App\Models\Procedure;
 use App\Models\Product;
 use App\Models\Species;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\Sanctum;
 use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
@@ -98,6 +101,32 @@ class PrescriptionProcedureDiagnosisTest extends TestCase
             'performed_at' => now()->subDay()->toDateString(),
             'notes' => 'Sin complicaciones',
         ])->assertCreated()->assertJsonPath('data.type', 'Cirugía de esterilización');
+    }
+
+    public function test_consent_document_is_private_and_served_only_authenticated(): void
+    {
+        Storage::fake('local');
+
+        $id = $this->postJson('/api/procedures', [
+            'patient_id' => $this->patient->id, 'type' => 'Cirugía', 'performed_at' => now()->toDateString(),
+        ])->json('data.id');
+
+        $upload = new UploadedFile(base_path('tests/Fixtures/pixel.jpg'), 'consent.jpg', 'image/jpeg', null, true);
+        $this->postJson("/api/procedures/{$id}/consent", ['document' => $upload])
+            ->assertOk()->assertJsonPath('data.has_consent_document', true);
+
+        // La columna guarda una ruta privada, no una URL pública /storage/.
+        $procedure = Procedure::find($id);
+        $this->assertStringStartsWith('procedures/', $procedure->consent_document_url);
+        Storage::disk('local')->assertExists($procedure->consent_document_url);
+
+        // Descarga autenticada por la ruta dedicada.
+        $this->get("/api/procedures/{$id}/consent-document")->assertOk();
+
+        // Sin sesión: 401.
+        auth()->forgetGuards();
+        $this->withHeader('Accept', 'application/json')
+            ->getJson("/api/procedures/{$id}/consent-document")->assertUnauthorized();
     }
 
     public function test_attaches_diagnoses_to_a_consultation(): void

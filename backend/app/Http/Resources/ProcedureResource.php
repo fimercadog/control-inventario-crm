@@ -20,7 +20,13 @@ class ProcedureResource extends JsonResource
             'type' => $this->type,
             'performed_at' => $this->performed_at?->toDateString(),
             'notes' => $this->notes,
-            'consent_document_url' => $this->consent_document_url,
+            // El archivo vive en disco privado; se expone solo la ruta de
+            // descarga autenticada, no un enlace directo.
+            'has_consent_document' => (bool) $this->consent_document_url,
+            'consent_document_url' => $this->when(
+                (bool) $this->consent_document_url,
+                fn () => url("/api/procedures/{$this->id}/consent-document"),
+            ),
         ];
     }
 }

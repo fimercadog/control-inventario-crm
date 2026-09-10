@@ -9,11 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
+import { isoDateLocal as isoDate } from "@/lib/utils";
 import { Appointment } from "@/lib/types";
-
-function isoDate(d: Date) {
-  return d.toISOString().slice(0, 10);
-}
 
 function timeLabel(iso: string) {
   return new Date(iso).toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });

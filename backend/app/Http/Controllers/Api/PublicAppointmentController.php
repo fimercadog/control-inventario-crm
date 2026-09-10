@@ -37,16 +37,29 @@ class PublicAppointmentController extends Controller
             ! empty($data['preferred_date']) ? 'Fecha preferida: '.$data['preferred_date'] : null,
         ])->filter()->implode(' — ');
 
-        Lead::firstOrCreate(
-            ['company_id' => $this->companyId($request), 'email' => $data['email'], 'source' => 'appointment'],
-            [
+        $companyId = $this->companyId($request);
+
+        // Una solicitud = una fila (la clínica agenda cada una). Solo se
+        // colapsa el doble-click: mismo correo y misma solicitud en 5 minutos.
+        $duplicate = Lead::query()
+            ->where('company_id', $companyId)
+            ->where('email', $data['email'])
+            ->where('source', 'appointment')
+            ->where('created_at', '>=', now()->subMinutes(5))
+            ->exists();
+
+        if (! $duplicate) {
+            Lead::create([
+                'company_id' => $companyId,
+                'email' => $data['email'],
+                'source' => 'appointment',
                 'name' => $data['name'],
                 'phone' => $data['phone'] ?? null,
                 'message' => $message ?: null,
                 'status' => 'new',
                 'ip_address' => $request->ip(),
-            ],
-        );
+            ]);
+        }
 
         return $ok;
     }

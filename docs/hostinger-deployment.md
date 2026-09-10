@@ -127,6 +127,9 @@ APP_ENV=production
 APP_KEY=                         # lo llena `php artisan key:generate --force`
 APP_DEBUG=false
 APP_URL=https://demo-inventario-crm-api.fidelmercadotech.com
+# Zona horaria de la clínica. Sin esto, la agenda muestra las citas corridas
+# según la zona del navegador (ver Release Gate S12, hallazgo C1).
+APP_TIMEZONE=America/Bogota
 
 # Frontend (Vercel, dominio personalizado). Alimenta CORS y el link de
 # "recuperar contraseña". CORS_EXTRA_ORIGINS solo si hay más de un origen.
@@ -151,8 +154,24 @@ CACHE_STORE=database
 QUEUE_CONNECTION=sync
 BROADCAST_CONNECTION=log
 FILESYSTEM_DISK=local
-MAIL_MAILER=log
 BCRYPT_ROUNDS=12
+
+# --- Correo real: OBLIGATORIO si el cliente usa "recuperar contraseña" ---
+# Con MAIL_MAILER=log el enlace de reseteo se escribe al log y NUNCA llega al
+# usuario. El flujo de reseteo (AuthController::forgotPassword/resetPassword y
+# las pantallas /forgot-password + /reset-password) está implementado y
+# testeado, pero SIN SMTP real NO es funcionalidad entregable — es un
+# requisito de deploy. Con un proveedor tipo Brevo/Mailgun/SES:
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.tu-proveedor.com
+MAIL_PORT=587
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_SCHEME=tls
+MAIL_FROM_ADDRESS="no-responder@clinica-cliente.com"
+MAIL_FROM_NAME="${APP_NAME}"
+# Si el cliente NO va a usar reseteo de contraseña (los usuarios los crea el
+# admin a mano), se puede dejar MAIL_MAILER=log y documentarlo con el cliente.
 ```
 
 Si el frontend cambia de host: actualizar `FRONTEND_URL` **y**

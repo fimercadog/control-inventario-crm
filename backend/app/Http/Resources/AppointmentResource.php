@@ -23,7 +23,9 @@ class AppointmentResource extends JsonResource
             'starts_at' => $this->starts_at,
             'ends_at' => $this->ends_at,
             'duration_minutes' => $this->duration_minutes,
-            'resource' => $this->resource,
+            // OJO: `$this->resource` es la propiedad interna de JsonResource (el
+            // modelo envuelto), no la columna. Hay que leer el atributo a mano.
+            'resource' => $this->getAttribute('resource'),
             'reason' => $this->reason,
             'status' => $this->status,
             'notes' => $this->notes,

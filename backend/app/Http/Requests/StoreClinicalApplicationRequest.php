@@ -12,13 +12,18 @@ class StoreClinicalApplicationRequest extends ApiFormRequest
         $companyId = $this->user()?->company_id;
         $inCompany = fn (string $table) => Rule::exists($table, 'id')->where('company_id', $companyId);
 
+        // El descuento de stock se hace UNA vez, al crear. En una edición no se
+        // puede cambiar el producto/bodega/cantidad: el movimiento ya existe y
+        // no se recalcula (la corrección es un ajuste manual de inventario).
+        $frozenOnUpdate = Rule::prohibitedIf(fn () => $this->route('clinical_application') !== null);
+
         return [
             'type' => ['required', Rule::in(ClinicalApplication::TYPES)],
-            'patient_id' => ['required', 'integer', $inCompany('patients')],
-            'product_id' => ['nullable', 'integer', $inCompany('products')],
-            'consultation_id' => ['nullable', 'integer', $inCompany('consultations')],
-            'warehouse_id' => ['nullable', 'integer', 'required_with:product_id', $inCompany('warehouses')],
-            'quantity' => ['nullable', 'integer', 'min:1', 'max:1000'],
+            'patient_id' => ['required', 'integer', $inCompany('patients')->whereNull('deleted_at')],
+            'product_id' => ['nullable', $frozenOnUpdate, 'integer', $inCompany('products')],
+            'consultation_id' => ['nullable', 'integer', $inCompany('consultations')->whereNull('deleted_at')],
+            'warehouse_id' => ['nullable', $frozenOnUpdate, 'integer', 'required_with:product_id', $inCompany('warehouses')],
+            'quantity' => ['nullable', $frozenOnUpdate, 'integer', 'min:1', 'max:1000'],
             'vet_id' => ['nullable', 'integer', $inCompany('users')],
             'name' => ['required', 'string', 'max:150'],
             'applied_at' => ['required', 'date', 'before_or_equal:today'],
@@ -30,6 +35,12 @@ class StoreClinicalApplicationRequest extends ApiFormRequest
 
     protected function prepareForValidation(): void
     {
+        // En update no se rellenan defaults: los campos congelados (quantity)
+        // no deben aparecer en el payload o `prohibitedIf` los rechaza.
+        if ($this->route('clinical_application') !== null) {
+            return;
+        }
+
         $merge = [];
         if (! $this->filled('applied_at')) {
             $merge['applied_at'] = now()->toDateString();

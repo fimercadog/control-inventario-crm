@@ -62,7 +62,10 @@ return new class extends Migration
 
         Schema::create('consultation_diagnosis', function (Blueprint $table) {
             $table->foreignId('consultation_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('diagnosis_id')->constrained()->cascadeOnDelete();
+            // restrict, no cascade: borrar un diagnóstico del catálogo no debe
+            // borrarlo silenciosamente de las historias donde ya se usó. El
+            // BaseCrudController convierte la violación de FK en un 422.
+            $table->foreignId('diagnosis_id')->constrained()->restrictOnDelete();
             $table->primary(['consultation_id', 'diagnosis_id']);
         });
     }

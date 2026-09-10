@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
@@ -60,6 +61,23 @@ class VetPermissionsTest extends TestCase
         $this->assertTrue($reception->hasPermissionTo('services.manage'));
         $this->assertFalse($reception->hasPermissionTo('medical_records.manage'));
         $this->assertFalse($reception->hasPermissionTo('prescriptions.manage'));
+    }
+
+    public function test_reception_is_blocked_from_clinical_routes_at_the_middleware(): void
+    {
+        $companyId = Company::query()->value('id');
+        $reception = User::factory()->create(['company_id' => $companyId]);
+        $reception->assignRole('Recepción');
+        Sanctum::actingAs($reception, ['*']);
+
+        // Front desk: sí.
+        $this->getJson('/api/appointments')->assertOk();
+        $this->getJson('/api/patients')->assertOk();
+        // Historia clínica y recetas: 403 en la ruta, no solo oculto en el menú.
+        $this->getJson('/api/consultations')->assertForbidden();
+        $this->getJson('/api/prescriptions')->assertForbidden();
+        $this->getJson('/api/procedures')->assertForbidden();
+        $this->getJson('/api/reports/clinical')->assertForbidden();
     }
 
     public function test_admin_roles_get_the_clinical_permissions_too(): void

@@ -164,6 +164,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
 
     Route::apiResource('procedures', ProcedureController::class)->middleware('can:procedures.manage');
     Route::post('/procedures/{id}/consent', [ProcedureController::class, 'consent'])->middleware('can:procedures.manage')->whereNumber('id');
+    Route::get('/procedures/{id}/consent-document', [ProcedureController::class, 'consentDocument'])->middleware('can:procedures.manage')->whereNumber('id');
     Route::post('/procedures/{id}/restore', [ProcedureController::class, 'restore'])->middleware('can:procedures.manage')->whereNumber('id');
 
     Route::apiResource('appointments', AppointmentController::class)->middleware('can:appointments.manage');
