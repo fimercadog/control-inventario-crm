@@ -2,7 +2,7 @@
 
 Versión comercial de entrada. Se activa con la variable de entorno del frontend:
 
-```
+```bash
 NEXT_PUBLIC_PLAN=base
 ```
 
@@ -33,7 +33,7 @@ chico pero completo y usable.
 
 ## Qué queda visible
 
-```
+```text
 Dashboard
 
 CRM
