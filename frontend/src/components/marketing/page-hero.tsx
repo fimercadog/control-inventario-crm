@@ -2,14 +2,25 @@ import { DeviceMockup } from "@/components/marketing/device-mockup";
 import { GradientBlob } from "@/components/marketing/gradient-blob";
 import { HeroBackdrop } from "@/components/marketing/hero-backdrop";
 import { Reveal } from "@/components/marketing/reveal";
+import { ShapeScatter } from "@/components/marketing/shape-scatter";
 import { WidgetCluster } from "@/components/marketing/widget-card";
 
 export const container = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
 
+/** Coral eyebrow with a leading dot — the Divi "App Developer" section kicker. */
+export function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-primary">
+      <span aria-hidden className="size-1.5 rounded-full bg-primary" />
+      {children}
+    </span>
+  );
+}
+
 /**
- * Divi "SaaS Product" hero: tiny eyebrow, a huge black headline, grey body,
- * small green pill actions, and — on the right — either a floating widget
- * cluster (home) or a product screenshot tilted in perspective.
+ * Divi "App Developer" hero: coral eyebrow with a dot, a big Poppins headline,
+ * grey body, coral rounded-lg actions, scattered geometric shapes, and — on the
+ * right — either a floating widget cluster (home) or a tilted product screenshot.
  */
 export function PageHero({
   eyebrow,
@@ -35,6 +46,7 @@ export function PageHero({
   return (
     <section className="relative isolate overflow-hidden">
       <HeroBackdrop />
+      <ShapeScatter />
       <div
         className={`${container} grid items-center gap-10 sm:gap-12 ${
           hasVisual ? "py-12 sm:py-16 lg:py-24 lg:grid-cols-[1fr_1.1fr]" : "py-12 sm:py-14 lg:py-20"
@@ -48,7 +60,7 @@ export function PageHero({
           )}
           {eyebrow && (
             <Reveal mount delay={0.05}>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">{eyebrow}</p>
+              <Eyebrow>{eyebrow}</Eyebrow>
             </Reveal>
           )}
           <Reveal mount delay={0.1}>

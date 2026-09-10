@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Roboto, Roboto_Mono } from "next/font/google";
+import { Poppins, Roboto, Roboto_Mono } from "next/font/google";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -12,6 +12,14 @@ const roboto = Roboto({
 const robotoMono = Roboto_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Titulares del sitio publico (rama plan/base — look "App Developer").
+// Solo lo consume `.site-theme` en globals.css; el panel sigue en Roboto.
+const poppins = Poppins({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -40,7 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${roboto.variable} ${robotoMono.variable} h-full antialiased`}
+      className={`${roboto.variable} ${robotoMono.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full" suppressHydrationWarning>
         {children}

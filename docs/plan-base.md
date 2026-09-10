@@ -94,6 +94,21 @@ Premium bloqueado con un modal explicativo, igual que Asistente IA.
   - Quedan: *Ingresos del mes*, *Clientes*, gráfico de *Ingresos* y
     *Top productos por existencia*.
 
+## Identidad visual (solo `plan/base`)
+
+El front público de esta rama usa el lenguaje Divi **"App Developer"** — tinta
+indigo, acento coral `#d92d43`, superficies lila, bandas/tarjetas indigo,
+titulares en Poppins, formas geométricas dispersas — para que la versión Base se
+vea claramente distinta del Full (que sigue en el look "SaaS Product" verde).
+
+- Scopeado a `.site-theme` en `globals.css` + los componentes de
+  `frontend/src/components/marketing/`. El panel privado (`:root` / `.dark`) no
+  cambia.
+- Contenido, textos, rutas y formularios son idénticos al Full: es solo capa
+  visual.
+- **No mergear a `master`.** Al rebasar `plan/base`, conservar los cambios de
+  `globals.css` (`.site-theme`), `layout.tsx` (Poppins) y `components/marketing/`.
+
 ## Límite conocido
 
 El gate es **solo frontend**. Los endpoints de la API siguen respondiendo: un

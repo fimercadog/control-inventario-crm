@@ -14,7 +14,7 @@ import { DeviceMockup } from "@/components/marketing/device-mockup";
 import { GradientBlob } from "@/components/marketing/gradient-blob";
 import { Reveal } from "@/components/marketing/reveal";
 import { WidgetCluster } from "@/components/marketing/widget-card";
-import { container } from "@/components/marketing/page-hero";
+import { Eyebrow, container } from "@/components/marketing/page-hero";
 import { cn } from "@/lib/utils";
 
 export { container };
@@ -52,7 +52,7 @@ export function SectionHeading({
 }) {
   return (
     <div className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
-      {eyebrow && <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">{eyebrow}</p>}
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">{title}</h2>
       {lead && (
         <p className={cn("mt-4 text-lg leading-8", dark ? "text-white/70" : "text-muted-foreground")}>{lead}</p>
@@ -72,7 +72,7 @@ export function FeatureCard({
 }) {
   return (
     <div className={cn("group flex h-full flex-col rounded-2xl border border-border bg-card p-6", cardHover)}>
-      <span className="grid size-11 place-items-center rounded-xl border border-border text-primary transition-colors group-hover:border-primary/50">
+      <span className="grid size-12 place-items-center rounded-xl bg-accent text-primary transition-transform duration-200 group-hover:-rotate-6 motion-reduce:group-hover:rotate-0">
         <Icon className="size-5" />
       </span>
       <h3 className="mt-5 text-base font-bold">{title}</h3>
@@ -106,7 +106,7 @@ export function FeatureRow({
   return (
     <div className={`${container} grid items-center gap-12 py-16 lg:grid-cols-2`}>
       <Reveal className={reverse ? "lg:order-2" : undefined}>
-        <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">{eyebrow}</p>
+        <Eyebrow>{eyebrow}</Eyebrow>
         <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">{title}</h2>
         <p className="mt-4 text-lg leading-8 text-muted-foreground">{lead}</p>
         <ul className="mt-7 space-y-3">
@@ -223,7 +223,7 @@ export function ProblemGrid() {
           return (
             <Reveal key={row.after} delay={i * 0.05}>
               <div className={cn("flex h-full flex-col rounded-2xl border border-border bg-card p-6", cardHover)}>
-                <span className="grid size-11 place-items-center rounded-xl border border-border text-primary">
+                <span className="grid size-12 place-items-center rounded-xl bg-accent text-primary">
                   <Icon className="size-5" />
                 </span>
                 <p className="mt-5 text-sm text-muted-foreground line-through decoration-destructive/50">{row.before}</p>
@@ -243,7 +243,7 @@ export function DemoCta() {
     <section className="relative isolate overflow-hidden bg-ink py-20 text-ink-foreground lg:py-28">
       <div className={`${container} grid items-center gap-12 lg:grid-cols-2`}>
         <Reveal>
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Empieza</p>
+          <Eyebrow>Empieza</Eyebrow>
           <h2 className="mt-3 text-4xl font-black leading-tight tracking-tight sm:text-5xl">
             Pon tu operacion sobre rieles
           </h2>

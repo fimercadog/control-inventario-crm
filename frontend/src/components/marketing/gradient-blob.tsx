@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Organic green->lime (or warm) gradient shape — the Divi "SaaS Product"
- * signature. Sits behind widget clusters and device mockups.
+ * Organic coral->pink->violet (or warm) gradient shape — the Divi "App
+ * Developer" signature. Sits behind widget clusters and device mockups.
  */
 export function GradientBlob({
   className,
