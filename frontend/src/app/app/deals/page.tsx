@@ -40,8 +40,8 @@ const fields: CrudField[] = [
 export default function DealsPage() {
   return (
     <ModuleTablePage<Deal>
-      title="Deals"
-      description="Pipeline de oportunidades de venta."
+      title="Planes y oportunidades"
+      description="Planes de salud, convenios y oportunidades comerciales de la clínica."
       resource="/deals"
       exportResource="deals"
       columns={columns}

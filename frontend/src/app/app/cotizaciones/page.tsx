@@ -43,8 +43,8 @@ const fields: CrudField[] = [
 export default function QuotesPage() {
   return (
     <ModuleTablePage<Quote>
-      title="Cotizaciones"
-      description="Propuestas comerciales. Al aceptarse se pueden convertir en pedido."
+      title="Presupuestos"
+      description="Presupuestos de cirugía, tratamientos y planes. Al aceptarse se pueden convertir en pedido."
       resource="/quotes"
       columns={columns}
       fields={fields}

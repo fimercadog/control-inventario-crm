@@ -6,20 +6,20 @@ import { Reveal } from "@/components/marketing/reveal";
 import { ContactChannels, PlataformaGrid, Section } from "@/components/marketing/marketing-ui";
 
 const included = [
-  "Recorrido por CRM, inventario, pedidos y compras",
-  "El puente CRM-inventario: confirmar un pedido descuenta stock",
-  "Reportes y exportaciones CSV / PDF",
-  "Roles, permisos y auditoria",
-  "Como se veria con tus productos y bodegas",
+  "Recorrido por propietarios, pacientes, agenda e historia clínica",
+  "Vacunas y desparasitación: aplicar un producto descuenta stock de farmacia",
+  "Receta imprimible en PDF y reportes clínicos del período",
+  "Roles de veterinario y recepción, permisos y auditoría",
+  "Cómo se vería con tus servicios, profesionales y consultorios",
 ];
 
 export default function DemoPage() {
   return (
     <MarketingLayout>
       <PageHero
-        eyebrow="Demo comercial"
-        title="Mira tu operacion comercial y de inventario en una sola plataforma"
-        lead="Resolvemos stock que no cuadra, pedidos manuales, leads dispersos, compras sin control y reportes armados a mano."
+        eyebrow="Demo guiada"
+        title="Mira toda la operación de tu clínica en una sola plataforma"
+        lead="Resolvemos la agenda en papel, historias clínicas dispersas, vacunas sin recordatorio, stock de farmacia que no cuadra y reportes armados a mano."
         actions={<ContactChannels />}
       />
 

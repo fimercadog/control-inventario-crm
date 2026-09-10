@@ -9,8 +9,8 @@ export default function ContactPage() {
     <MarketingLayout>
       <PageHero
         eyebrow="Contacto"
-        title="Hablemos de tu operacion de ventas e inventario"
-        lead="Cuentanos cuantos usuarios y bodegas manejas, que procesos son mas manuales y que modulo quieres priorizar."
+        title="Hablemos de la gestión de tu clínica"
+        lead="Cuéntanos cuántos profesionales atienden, qué procesos llevas hoy en papel o en Excel y qué te gustaría priorizar."
       />
 
       <Section className="pt-0">

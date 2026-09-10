@@ -142,7 +142,7 @@ export default function CotizacionPage() {
             </div>
 
             <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
-              <LeadFields messagePlaceholder="Detalles: plazo de entrega, ciudad, condiciones..." />
+              <LeadFields messagePlaceholder="Cuéntanos para qué mascota, marca preferida o cualquier detalle..." />
               {error ? (
                 <div className="mt-4 flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
                   <AlertCircle className="size-4" /> {error}

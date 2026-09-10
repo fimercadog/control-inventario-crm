@@ -17,7 +17,7 @@ type ReportData = {
 };
 
 const labels: Record<string, string> = {
-  total_deals: "Deals totales",
+  total_deals: "Planes y oportunidades",
   open_value: "Valor abierto del pipeline",
   won_month: "Ganados este mes",
   lost_month: "Perdidos este mes",
@@ -137,7 +137,7 @@ export default function ReportsPage() {
 
       <section className="grid gap-4 lg:grid-cols-2">
         <DistributionTable
-          title="Deals por etapa"
+          title="Planes y oportunidades por etapa"
           rows={report.pipeline.by_stage.map((s) => ({ name: STAGE_LABEL[s.stage] ?? s.stage, value: s.total }))}
         />
         <DistributionTable

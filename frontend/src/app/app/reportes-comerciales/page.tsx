@@ -61,7 +61,7 @@ export default function CommercialReportsPage() {
       <div>
         <h1 className="text-2xl font-semibold">Reportes comerciales</h1>
         <p className="text-sm text-muted-foreground">
-          Conversion, vendedores y ventas por producto. Generado {new Date(data.generated_at).toLocaleString("es-CO")}.
+          Conversión de presupuestos, equipo y ventas por producto. Generado {new Date(data.generated_at).toLocaleString("es-CO")}.
         </p>
       </div>
 
@@ -87,7 +87,7 @@ export default function CommercialReportsPage() {
           </div>
         </Panel>
 
-        <Panel title="Cotizaciones">
+        <Panel title="Presupuestos">
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="rounded-lg border border-border p-3">
               <p className="text-xs text-muted-foreground">Enviadas</p>
@@ -116,8 +116,8 @@ export default function CommercialReportsPage() {
               <tr>
                 <th className="w-10 py-2 pr-3 text-right tabular-nums">#</th>
                 <th className="py-2">Vendedor</th>
-                <th className="py-2">Deals abiertos</th>
-                <th className="py-2">Deals ganados</th>
+                <th className="py-2">Abiertos</th>
+                <th className="py-2">Ganados</th>
                 <th className="py-2">Valor ganado</th>
                 <th className="py-2">Ingresos (mes)</th>
               </tr>

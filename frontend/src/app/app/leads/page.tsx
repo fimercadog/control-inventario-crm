@@ -63,8 +63,8 @@ const fields: CrudField[] = [
 export default function LeadsPage() {
   return (
     <ModuleTablePage<Lead>
-      title="Leads"
-      description="Solicitudes de demo y mensajes de contacto del sitio publico."
+      title="Solicitudes"
+      description="Solicitudes de cita y mensajes de contacto del sitio público. Recepción las revisa y agenda."
       resource="/leads"
       actionLabel="Crear lead"
       columns={columns}

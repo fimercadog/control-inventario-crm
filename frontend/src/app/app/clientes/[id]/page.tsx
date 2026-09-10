@@ -97,13 +97,13 @@ export default function ClientDetailPage() {
           ))}
         </Section>
 
-        <Section title="Deals" count={data.deals.length}>
+        <Section title="Planes y oportunidades" count={data.deals.length}>
           {data.deals.map((d) => (
             <Row key={d.id} left={d.title} right={`${d.stage} · $${Number(d.amount).toLocaleString("es-CO")}`} />
           ))}
         </Section>
 
-        <Section title="Cotizaciones" count={data.quotes.length}>
+        <Section title="Presupuestos" count={data.quotes.length}>
           {data.quotes.map((q) => (
             <Row
               key={q.id}

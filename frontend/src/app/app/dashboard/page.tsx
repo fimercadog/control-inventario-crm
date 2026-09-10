@@ -613,7 +613,7 @@ export default function DashboardPage() {
       <motion.div variants={item} className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">Vista general de CRM e inventario.</p>
+          <p className="text-sm text-muted-foreground">Vista general de la clínica: agenda, pacientes e inventario.</p>
         </div>
         <div className="flex items-center gap-2">
           <button

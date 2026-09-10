@@ -12,9 +12,11 @@ const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
 const demoEmails: Record<string, string> = {
   superadmin: "superadmin@vetlosandes.co",
   admin: "admin@vetlosandes.co",
-  ventas: "ventas@vetlosandes.co",
+  veterinario: "veterinario@vetlosandes.co",
+  veterinaria: "veterinaria@vetlosandes.co",
+  recepcion: "recepcion@vetlosandes.co",
   inventario: "inventario@vetlosandes.co",
-  usuario: "usuario@vetlosandes.co",
+  ventas: "ventas@vetlosandes.co",
 };
 
 export default async function LoginPage({

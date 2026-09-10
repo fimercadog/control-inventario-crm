@@ -7,8 +7,8 @@ const inputClass =
  * Campos compartidos por los formularios de captura del sitio publico
  * (contacto / demo y solicitud de cotizacion), para que se vean y validen
  * igual. Se renderiza dentro del <form> de cada pagina; el <form> aporta el
- * estado, el submit y el boton. `extended` agrega las preguntas de evaluacion
- * del SaaS (contacto / demo); la cotizacion no las usa.
+ * estado, el submit y el boton. `extended` agrega las preguntas de contexto
+ * de la clínica (contacto / demo); la cotizacion no las usa.
  */
 export function LeadFields({
   messagePlaceholder,
@@ -21,21 +21,21 @@ export function LeadFields({
     <>
       <div className="grid gap-4 sm:grid-cols-2">
         <input name="name" placeholder="Nombre" aria-label="Nombre" required className={inputClass} />
-        <input name="company_name" placeholder="Empresa" aria-label="Empresa" className={inputClass} />
+        <input name="company_name" placeholder="Clínica (opcional)" aria-label="Clínica" className={inputClass} />
         <input name="email" type="email" placeholder="Email" aria-label="Email" required className={inputClass} />
         <input name="phone" placeholder="WhatsApp" aria-label="WhatsApp" className={inputClass} />
         {extended ? (
           <>
             <input
               name="employee_count"
-              placeholder="Numero de usuarios / bodegas"
-              aria-label="Numero de usuarios o bodegas"
+              placeholder="Nº de profesionales que atienden"
+              aria-label="Número de profesionales"
               className={inputClass}
             />
             <input
               name="priority_module"
-              placeholder="Modulo prioritario (CRM, inventario...)"
-              aria-label="Modulo prioritario"
+              placeholder="Qué te gustaría resolver primero"
+              aria-label="Prioridad"
               className={inputClass}
             />
           </>

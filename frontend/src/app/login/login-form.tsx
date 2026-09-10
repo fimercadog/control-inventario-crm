@@ -10,10 +10,11 @@ import { AuthUser, storeAuthSession } from "@/lib/auth";
 
 const demoUsers = [
   ["Super Admin", "superadmin@vetlosandes.co"],
-  ["Admin empresa", "admin@vetlosandes.co"],
+  ["Admin de la clínica", "admin@vetlosandes.co"],
+  ["Veterinario/a", "veterinario@vetlosandes.co"],
+  ["Recepción", "recepcion@vetlosandes.co"],
+  ["Inventario / farmacia", "inventario@vetlosandes.co"],
   ["Ventas", "ventas@vetlosandes.co"],
-  ["Inventario", "inventario@vetlosandes.co"],
-  ["Usuario", "usuario@vetlosandes.co"],
 ];
 
 const inputClass =

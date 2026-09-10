@@ -1,9 +1,14 @@
 import Link from "next/link";
-import { Boxes, Check } from "lucide-react";
+import { Check, PawPrint } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { HeroBackdrop } from "@/components/marketing/hero-backdrop";
 
-const points = ["CRM y ventas", "Control de inventario por bodega", "Pedidos que descuentan stock", "Reportes CSV y PDF"];
+const points = [
+  "Propietarios, pacientes e historia clínica",
+  "Agenda por profesional y consultorio",
+  "Vacunas y desparasitación con recordatorios",
+  "Inventario de farmacia y reportes clínicos",
+];
 
 export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,13 +18,13 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
           <HeroBackdrop variant="navy" />
           <div className="relative max-w-lg">
             <span className="flex size-11 items-center justify-center rounded-xl bg-white/10 text-primary">
-              <Boxes className="size-6" />
+              <PawPrint className="size-6" />
             </span>
             <h2 className="mt-6 text-4xl font-black leading-tight tracking-tight">
-              Vende y controla tu inventario desde un solo lugar
+              Toda la clínica en una sola plataforma
             </h2>
             <p className="mt-4 text-lg leading-8 text-white/70">
-              Clientes, deals, pedidos, productos, bodegas y ordenes de compra en una sola plataforma.
+              Propietarios, pacientes, agenda, historia clínica, vacunas, inventario de farmacia y reportes en un solo lugar.
             </p>
             <ul className="mt-10 space-y-3">
               {points.map((p) => (
@@ -34,10 +39,10 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
           <div className="w-full max-w-md">
             <Link href="/" className="mb-8 flex items-center justify-center gap-2.5">
               <span className="flex size-9 items-center justify-center rounded-xl bg-ink text-primary">
-                <Boxes className="size-5" />
+                <PawPrint className="size-5" />
               </span>
               <span className="text-base font-black tracking-tight">
-                CRM<span className="text-primary">+</span>Inventario
+                Vet<span className="text-primary">Panel</span>
               </span>
             </Link>
             {children}
