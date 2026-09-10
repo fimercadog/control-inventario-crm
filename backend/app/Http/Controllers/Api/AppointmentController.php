@@ -16,6 +16,8 @@ class AppointmentController extends BaseCrudController
 
     protected array $with = ['patient.client', 'patient.species', 'service', 'practitioner'];
 
+    protected array $searchable = ['reason', 'resource'];
+
     protected array $filterable = [
         'status' => 'status',
         'practitioner_id' => 'practitioner_id',
