@@ -81,7 +81,7 @@ export default function CotizacionPage() {
           <div className="grid gap-10 *:min-w-0 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div className="overflow-hidden rounded-2xl border border-border bg-card">
               <div className="overflow-x-auto">
-              <table className="w-full min-w-[22rem] text-sm">
+              <table className="w-full min-w-88 text-sm">
                 <thead className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th className="px-4 py-3 font-semibold">Producto</th>
