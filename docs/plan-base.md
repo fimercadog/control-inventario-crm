@@ -17,6 +17,23 @@ patrón que `vertical/veterinaria`); funciona en dev y en prod sin tocar env.
 Al rebasar `plan/base` sobre `master`, la única línea a conservar es la de
 `isBasePlan()`. Es solo frontend — no hay migración ni cambio de datos.
 
+## Despliegue en un subdominio nuevo
+
+El front es solo frontend, así que un despliegue de `plan/base` en un subdominio
+(ej. la demo `demo-inventario-crm-base.fidelmercadotech.com`) le pega al **mismo
+backend** que la master. Ese backend solo autoriza los orígenes que tenga en el
+`.env`, así que hay que **agregar el origen nuevo** en el `.env` del server:
+
+```env
+CORS_EXTRA_ORIGINS=https://demo-inventario-crm-base.fidelmercadotech.com
+SANCTUM_STATEFUL_DOMAINS=demo-inventario-crm.fidelmercadotech.com,demo-inventario-crm-base.fidelmercadotech.com
+```
+
+y `php artisan config:cache` (PHP 8.4). Sin esto: `blocked by CORS policy` en la
+consola y el login no conecta. `SESSION_DOMAIN=.fidelmercadotech.com` ya cubre
+ambos subdominios. **Comparten backend y base SQLite** — mismos datos en las dos
+demos; para datos propios hay que montar un segundo backend.
+
 ## Criterio
 
 Se deja visible todo lo que permite **hacer** el proceso comercial base:

@@ -14,7 +14,7 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          background: "linear-gradient(160deg, #ecfdf3 0%, #d7f0e0 100%)",
+          background: "linear-gradient(160deg, #f4f2ff 0%, #e7deff 100%)",
           fontFamily: "sans-serif",
         }}
       >
@@ -26,7 +26,7 @@ export default function OpengraphImage() {
             width: 96,
             height: 96,
             borderRadius: 24,
-            background: "#15803d",
+            background: "#d92d43",
             color: "#ffffff",
             fontSize: 52,
             fontWeight: 700,
@@ -35,10 +35,10 @@ export default function OpengraphImage() {
         >
           D
         </div>
-        <div style={{ display: "flex", fontSize: 64, fontWeight: 900, color: "#0f1012" }}>
+        <div style={{ display: "flex", fontSize: 64, fontWeight: 900, color: "#221d4a" }}>
           CRM + Inventario
         </div>
-        <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#3f5347", maxWidth: 820 }}>
+        <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#5a5580", maxWidth: 820 }}>
           CRM y control de inventario para PYMES: el pedido de venta descuenta stock al confirmarse.
         </div>
       </div>
