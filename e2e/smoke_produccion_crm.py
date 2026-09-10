@@ -46,11 +46,16 @@ def shot(page: Page, name: str) -> None:
     page.screenshot(path=ARTIFACTS / f"prodcrm-{name}.png", full_page=True)
 
 
-def dismiss_beta(page: Page) -> None:
-    page.wait_for_load_state("networkidle")
+def dismiss_beta(page: Page, idle: bool = False) -> None:
+    # `networkidle` cuelga en las páginas del panel (timer "Actualizado hace Xs");
+    # solo se usa donde de verdad hace falta (login).
+    try:
+        page.wait_for_load_state("networkidle" if idle else "domcontentloaded", timeout=8000)
+    except Exception:
+        pass
     try:
         b = page.get_by_role("button", name="Entendido")
-        b.wait_for(state="visible", timeout=4000)
+        b.wait_for(state="visible", timeout=3000)
         b.click()
         b.wait_for(state="hidden", timeout=5000)
     except Exception:
