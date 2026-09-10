@@ -1,7 +1,6 @@
 # Plan base ($199.900/mes) — qué se oculta y por qué
 
-Versión comercial de entrada. Se activa **por despliegue** con la variable de
-entorno del frontend:
+Versión comercial de entrada. Se activa con la variable de entorno del frontend:
 
 ```
 NEXT_PUBLIC_PLAN=base
@@ -9,6 +8,12 @@ NEXT_PUBLIC_PLAN=base
 
 Sin la variable, el sistema se ve **completo** (demo / plan full, lo que usa el
 dueño). Es solo build del frontend — no hay migración ni cambio de datos.
+
+**En el repo:** vive en la rama `plan/base`, que trae
+`frontend/.env.production` (forzado al índice, `git add -f`) con
+`NEXT_PUBLIC_PLAN=base`. `master` es la demo y **no** tiene ese archivo. Para un
+cliente del plan de entrada se despliega la rama `plan/base` (mismo patrón que
+`vertical/veterinaria`). Rebasar `plan/base` sobre `master` cuando master avance.
 
 > **Default del producto:** la **demo comercial** de Control de Inventario + CRM
 > y cualquier cliente que compró el sistema completo corren **sin**
