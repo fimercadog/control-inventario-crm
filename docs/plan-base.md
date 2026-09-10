@@ -1,25 +1,21 @@
 # Plan base ($199.900/mes) — qué se oculta y por qué
 
-Versión comercial de entrada. Se activa con la variable de entorno del frontend:
+Versión comercial de entrada.
 
-```bash
-NEXT_PUBLIC_PLAN=base
-```
+**En el repo:** vive en la rama `plan/base`. En esa rama, `isBasePlan()` en
+`frontend/src/lib/plan.ts` devuelve `true` por **default** (base salvo que se
+ponga `NEXT_PUBLIC_PLAN=full`). En `master` es al revés: default = sistema
+completo, base solo con `NEXT_PUBLIC_PLAN=base`.
 
-Sin la variable, el sistema se ve **completo** (demo / plan full, lo que usa el
-dueño). Es solo build del frontend — no hay migración ni cambio de datos.
+| Rama | Default | Para previsualizar el otro modo |
+| --- | --- | --- |
+| `master` (demo / sistema completo) | completo | `NEXT_PUBLIC_PLAN=base` |
+| `plan/base` (cliente plan de entrada) | base | `NEXT_PUBLIC_PLAN=full` |
 
-**En el repo:** vive en la rama `plan/base`, que trae
-`frontend/.env.production` (forzado al índice, `git add -f`) con
-`NEXT_PUBLIC_PLAN=base`. `master` es la demo y **no** tiene ese archivo. Para un
-cliente del plan de entrada se despliega la rama `plan/base` (mismo patrón que
-`vertical/veterinaria`). Rebasar `plan/base` sobre `master` cuando master avance.
-
-> **Default del producto:** la **demo comercial** de Control de Inventario + CRM
-> y cualquier cliente que compró el sistema completo corren **sin**
-> `NEXT_PUBLIC_PLAN`. `=base` se pone únicamente en el despliegue de un cliente
-> que contrató el plan de entrada. `plan.ts` y esta infraestructura se conservan
-> para futuros planes / add-ons.
+Para un cliente del plan de entrada se despliega la rama `plan/base` (mismo
+patrón que `vertical/veterinaria`); funciona en dev y en prod sin tocar env.
+Al rebasar `plan/base` sobre `master`, la única línea a conservar es la de
+`isBasePlan()`. Es solo frontend — no hay migración ni cambio de datos.
 
 ## Criterio
 
@@ -108,13 +104,13 @@ el modelo de venta (¿plan por despliegue o por empresa en BD?).
 
 ## Dónde está en el código
 
-- `frontend/src/lib/plan.ts` — `isBasePlan()`, `BASE_PLAN_HIDDEN`,
+- `frontend/src/lib/plan.ts` — `isBasePlan()` (default por rama), `BASE_PLAN_HIDDEN`,
   `BASE_PLAN_PREMIUM` y los helpers `planHidesRoute` / `planLocksAsPremium`.
 - `frontend/src/components/layout/admin-shell.tsx` — filtra el menú, guard por
   ruta, y renderiza contingencia como botón Premium (`PREMIUM_INFO`).
 - `frontend/src/app/app/dashboard/page.tsx` — oculta tarjetas y gráficos
   (`const base = isBasePlan()`).
-- `frontend/.env.example` — documentación de la variable.
+- `frontend/.env.example` — documentación de la variable `NEXT_PUBLIC_PLAN`.
 
 **Vender un add-on** a un cliente: sacar sus rutas de `BASE_PLAN_HIDDEN` en
 `plan.ts` y redesplegar su frontend.

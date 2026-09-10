@@ -1,15 +1,17 @@
 // Plan comercial de este despliegue.
 //
-//   NEXT_PUBLIC_PLAN vacío  -> sistema completo (demo / plan full, lo que ve el dueño).
-//   NEXT_PUBLIC_PLAN=base   -> plan de entrada ($199.900): se ocultan los módulos
-//                              que "mejoran / amplían / automatizan / controlan" el
-//                              proceso, dejando el flujo base completo:
-//                              Web -> Lead -> Cliente -> Cotización -> Pedido -> Inventario.
+// Esta es la rama `plan/base`: el plan de entrada ($199.900) es el DEFAULT.
+// Se ocultan los módulos que "mejoran / amplían / automatizan / controlan" el
+// proceso, dejando el flujo base completo:
+//   Web -> Lead -> Cliente -> Cotización -> Pedido -> Inventario.
 //
-// Vender un add-on = sacar sus rutas de BASE_PLAN_HIDDEN y redesplegar.
-// Qué queda oculto y por qué está documentado en docs/plan-base.md.
+//   NEXT_PUBLIC_PLAN sin definir / "base"  -> plan base (default de esta rama).
+//   NEXT_PUBLIC_PLAN=full                   -> sistema completo (para previsualizar).
+//
+// En `master` esto se invierte (default = completo). Vender un add-on = sacar
+// sus rutas de BASE_PLAN_HIDDEN y redesplegar. Ver docs/plan-base.md.
 
-export const isBasePlan = () => process.env.NEXT_PUBLIC_PLAN === "base";
+export const isBasePlan = () => process.env.NEXT_PUBLIC_PLAN !== "full";
 
 /** Rutas fuera del plan base: ausentes del menú y bloqueadas si se escribe la URL. */
 export const BASE_PLAN_HIDDEN = new Set<string>([
