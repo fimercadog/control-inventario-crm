@@ -14,8 +14,10 @@ return new class extends Migration
             $table->foreignId('patient_id')->constrained()->restrictOnDelete();
             $table->foreignId('service_id')->nullable()->constrained('services')->restrictOnDelete();
             $table->foreignId('practitioner_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->timestamp('starts_at');
-            $table->timestamp('ends_at');
+            // dateTime (no timestamp): MariaDB solo admite un timestamp con
+            // default implícito por tabla; dos rompen con "Invalid default value".
+            $table->dateTime('starts_at');
+            $table->dateTime('ends_at');
             $table->unsignedInteger('duration_minutes');
             $table->string('resource')->nullable(); // box / consultorio
             $table->string('reason')->nullable();
