@@ -138,16 +138,19 @@ LOG_LEVEL=error
 
 DB_CONNECTION=sqlite
 
-# Auth Sanctum SPA (cookies). Frontend y API son subdominios de
-# fidelmercadotech.com -> cookie compartida en el dominio raíz, same-site lax.
-SESSION_DRIVER=database
+# Con SQLite, sesiones y caché van a FICHERO, no a la BD: SQLite bloquea toda
+# la base en cada escritura y bajo tráfico concurrente (varias pestañas, el
+# rate limiter, un smoke) tira "SQLSTATE[HY000]: database is locked" -> 500.
+# `file` saca esas escrituras calientes del SQLite. Los datos siguen en SQLite.
+# (Con MySQL/MariaDB sí se puede usar `database` en ambos.)
+SESSION_DRIVER=file
 SESSION_LIFETIME=120
 SESSION_DOMAIN=.fidelmercadotech.com
 SESSION_SECURE_COOKIE=true
 SESSION_SAME_SITE=lax
 SANCTUM_STATEFUL_DOMAINS=demo-inventario-crm.fidelmercadotech.com
 
-CACHE_STORE=database
+CACHE_STORE=file
 QUEUE_CONNECTION=sync
 BROADCAST_CONNECTION=log
 FILESYSTEM_DISK=local
