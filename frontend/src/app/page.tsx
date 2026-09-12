@@ -3,7 +3,6 @@ import { CtaLink } from "@/components/marketing/cta-link";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
-import { Eyebrow } from "@/components/marketing/page-hero";
 import {
   DemoCta,
   PlataformaGrid,
@@ -53,7 +52,7 @@ export default function Home() {
       <Section dark>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <Eyebrow>Asistente de IA</Eyebrow>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Asistente de IA</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
               Consulta tu operacion sin entrar a cada modulo
             </h2>

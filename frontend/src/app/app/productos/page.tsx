@@ -5,6 +5,7 @@ import { CrudField } from "@/components/crud/crud-modal";
 import { ProductImageAction } from "@/components/crud/product-image-action";
 import { ModuleTablePage } from "@/components/module-table-page";
 import { Badge } from "@/components/ui/badge";
+import { isLowTicket } from "@/lib/plan";
 import { AppColumnDef } from "@/lib/table-types";
 import { Product } from "@/lib/types";
 
@@ -25,7 +26,8 @@ const columns: AppColumnDef<Product>[] = [
   { accessorKey: "sku", header: "SKU" },
   { accessorKey: "name", header: "Nombre" },
   { header: "Categoria", cell: ({ row }) => row.original.category ?? "—" },
-  { header: "Marca", cell: ({ row }) => row.original.brand ?? "—" },
+  // Marca depende del catalogo de Marcas, oculto en plan low ticket (FASE 4).
+  ...(isLowTicket() ? [] : [{ header: "Marca", cell: ({ row }: { row: { original: Product } }) => row.original.brand ?? "—" } as AppColumnDef<Product>]),
   { header: "Precio", cell: ({ row }) => `$${Number(row.original.unit_price).toLocaleString("es-CO")}` },
   {
     header: "Existencia",
@@ -61,8 +63,15 @@ const fields: CrudField[] = [
     ],
   },
   { name: "category_id", label: "Categoria", type: "select", optionsResource: "/categories", omitWhenEmpty: true },
-  { name: "brand_id", label: "Marca", type: "select", optionsResource: "/brands", omitWhenEmpty: true },
-  { name: "unit_id", label: "Unidad", type: "select", optionsResource: "/units", omitWhenEmpty: true },
+  // Marca y Unidad dependen de sus catalogos, ocultos en plan low ticket
+  // (FASE 4): son opcionales en el backend, se puede omitir el campo sin
+  // romper nada.
+  ...(isLowTicket()
+    ? []
+    : ([
+        { name: "brand_id", label: "Marca", type: "select", optionsResource: "/brands", omitWhenEmpty: true },
+        { name: "unit_id", label: "Unidad", type: "select", optionsResource: "/units", omitWhenEmpty: true },
+      ] as CrudField[])),
   { name: "unit_price", label: "Precio de venta", type: "number", required: true, min: 0, step: 100 },
   { name: "cost_price", label: "Precio de costo", type: "number", required: true, min: 0, step: 100 },
   { name: "reorder_level", label: "Punto de reorden", type: "number", required: true, min: 0 },

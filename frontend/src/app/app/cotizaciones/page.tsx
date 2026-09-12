@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
 import { Badge } from "@/components/ui/badge";
+import { isLowTicket } from "@/lib/plan";
 import { AppColumnDef, dateColumn } from "@/lib/table-types";
 import { Quote } from "@/lib/types";
 
@@ -35,7 +36,8 @@ const columns: AppColumnDef<Quote>[] = [
 const fields: CrudField[] = [
   { name: "title", label: "Titulo", required: true, colSpan: "full" },
   { name: "client_id", label: "Cliente", type: "select", optionsResource: "/clients", required: true },
-  { name: "deal_id", label: "Deal", type: "select", optionsResource: "/deals", omitWhenEmpty: true },
+  // Deal depende del pipeline (Deals), oculto en plan low ticket (FASE 4).
+  ...(isLowTicket() ? [] : ([{ name: "deal_id", label: "Deal", type: "select", optionsResource: "/deals", omitWhenEmpty: true }] as CrudField[])),
   { name: "valid_until", label: "Valida hasta", type: "date", omitWhenEmpty: true },
   { name: "notes", label: "Notas", type: "textarea", colSpan: "full", omitWhenEmpty: true },
 ];

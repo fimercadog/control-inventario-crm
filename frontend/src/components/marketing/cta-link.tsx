@@ -8,7 +8,7 @@ type Variant = "default" | "outline" | "ghost" | "secondary";
 type Size = "sm" | "default";
 
 const base =
-  "relative max-w-full overflow-hidden inline-flex items-center justify-center text-center rounded-lg font-semibold transition-colors duration-150 active:scale-[0.98] motion-reduce:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+  "relative max-w-full overflow-hidden inline-flex items-center justify-center text-center rounded-full font-semibold transition-colors duration-150 active:scale-[0.98] motion-reduce:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
 // min-h en vez de h fija: una etiqueta larga en una pantalla angosta envuelve a
 // dos lineas dentro de la pastilla en vez de desbordar y quedar cortada.
@@ -25,9 +25,8 @@ const variants: Record<Variant, string> = {
 };
 
 /**
- * Divi "App Developer" CTA: coral fill by default, rounded-lg (no pill);
- * outline is a 2px ring in the current text colour. Touch ripple, ~44px
- * tall. External href -> plain <a>.
+ * Divi-style pill CTA. Filled green by default; outline is a 2px ring in the
+ * current text colour. Touch ripple, ~44px tall. External href -> plain <a>.
  */
 export function CtaLink({
   href,

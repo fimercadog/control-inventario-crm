@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   Boxes,
   ChartPie,
+  FileText,
   Filter,
   Handshake,
   Minus,
@@ -40,7 +41,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useDashboard, type DashboardData, type Delta } from "@/lib/use-dashboard";
 import { useCountUp } from "@/lib/use-count-up";
-import { isBasePlan } from "@/lib/plan";
+import { isLowTicket } from "@/lib/plan";
 
 const TONE = {
   green: "#0e8f5c",
@@ -594,9 +595,10 @@ export default function DashboardPage() {
   const m = data.metrics;
   const stageCount = (stage: string) => data.deals_by_stage.find((s) => s.stage === stage)?.total ?? 0;
 
-  // Plan base: se ocultan las tarjetas y gráficos de los módulos que no incluye
-  // (deals, órdenes de compra, alertas de stock, actividad/auditoría). Ver docs/plan-base.md.
-  const base = isBasePlan();
+  // Plan low ticket: se ocultan las tarjetas y gráficos de los módulos que no
+  // incluye (deals, pipeline, órdenes de compra, actividad/auditoría) y se
+  // muestran en su lugar los 6 indicadores del flujo básico. Ver docs/low-ticket.md.
+  const base = isLowTicket();
 
   return (
     <motion.div
@@ -624,7 +626,7 @@ export default function DashboardPage() {
 
       {/* KPI hero */}
       <motion.div variants={item}>
-        <div className={`grid gap-3 sm:grid-cols-2 ${base ? "lg:grid-cols-2" : "lg:grid-cols-5"}`}>
+        <div className={`grid gap-3 sm:grid-cols-2 ${base ? "lg:grid-cols-3" : "lg:grid-cols-5"}`}>
           <KpiCard
             label="Ingresos del mes"
             value={m.revenue_month ?? 0}
@@ -634,7 +636,14 @@ export default function DashboardPage() {
             emphasis
           />
           <KpiCard label="Clientes" value={m.total_clients ?? 0} icon={Users} tone={TONE.green} />
-          {!base && (
+          {base ? (
+            <>
+              <KpiCard label="Pedidos del mes" value={m.orders_confirmed_month ?? 0} icon={Receipt} tone={TONE.sky} />
+              <KpiCard label="Productos" value={m.total_products ?? 0} icon={Package} tone={TONE.slate} />
+              <KpiCard label="Stock bajo" value={m.low_stock_products ?? 0} icon={Boxes} tone={TONE.red} />
+              <KpiCard label="Cotizaciones pendientes" value={m.pending_quotes ?? 0} icon={FileText} tone={TONE.amber} />
+            </>
+          ) : (
             <>
               <KpiCard
                 label="Deals abiertos"
@@ -715,22 +724,21 @@ export default function DashboardPage() {
         </motion.div>
       )}
 
-      {/* Secondary: productos con stock bajo (alertas de stock) */}
-      {!base && (
-        <motion.div variants={item}>
-          <Card className="border-border/70">
-            <CardContent className="p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-sm font-semibold">Productos con stock bajo</h3>
-                <IconBadge tone={TONE.red} size={9}>
-                  <Boxes className="size-4" />
-                </IconBadge>
-              </div>
-              <LowStockList products={data.low_stock_alerts} />
-            </CardContent>
-          </Card>
-        </motion.div>
-      )}
+      {/* Secondary: productos con stock bajo (alertas de stock) — visible en low
+          ticket tambien: es uno de los indicadores del flujo basico (FASE 5). */}
+      <motion.div variants={item}>
+        <Card className="border-border/70">
+          <CardContent className="p-5">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-sm font-semibold">Productos con stock bajo</h3>
+              <IconBadge tone={TONE.red} size={9}>
+                <Boxes className="size-4" />
+              </IconBadge>
+            </div>
+            <LowStockList products={data.low_stock_alerts} />
+          </CardContent>
+        </Card>
+      </motion.div>
     </motion.div>
   );
 }

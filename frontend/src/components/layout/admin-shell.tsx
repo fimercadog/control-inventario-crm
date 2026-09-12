@@ -88,11 +88,11 @@ type NavGroup = { label: string; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
   {
-    label: "",
+    label: "Inicio",
     items: [{ href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
   },
   {
-    label: "CRM",
+    label: "Ventas",
     items: [
       { href: "/app/leads", label: "Leads", icon: Inbox, permissions: ["leads.view"] },
       { href: "/app/clientes", label: "Clientes", icon: Users, permissions: ["clients.manage"] },
@@ -138,7 +138,7 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    label: "Administracion",
+    label: "Mi negocio",
     items: [
       { href: "/app/auditoria", label: "Auditoria", icon: ClipboardList, permissions: ["audit.view"] },
       { href: "/app/usuarios", label: "Usuarios", icon: UserCircle, permissions: ["users.manage"] },

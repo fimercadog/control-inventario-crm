@@ -36,7 +36,7 @@ class DashboardTest extends TestCase
             ->assertOk()
             ->assertJsonStructure([
                 'generated_at',
-                'metrics' => ['total_clients', 'open_deals', 'open_deals_value', 'deals_won_month', 'low_stock_products', 'pending_purchase_orders', 'orders_confirmed_month', 'revenue_month'],
+                'metrics' => ['total_clients', 'total_products', 'pending_quotes', 'open_deals', 'open_deals_value', 'deals_won_month', 'low_stock_products', 'pending_purchase_orders', 'orders_confirmed_month', 'revenue_month'],
                 'deltas' => ['revenue' => ['current', 'previous', 'pct'], 'deals_won'],
                 'deals_by_stage',
                 'top_products',

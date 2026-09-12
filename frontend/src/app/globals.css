@@ -90,12 +90,13 @@
 }
 
 /* ------------------------------------------------------------------ *
- * SITIO PUBLICO — rama plan/base. Look Divi "App Developer": tinta
- * indigo profunda, acento coral, superficies lila, bandas/tarjetas en
- * indigo (no negro). Titulares en Poppins. El panel privado NO usa
- * `.site-theme`, asi que conserva la paleta "SaaS Product" de :root.
- * Re-declara todo para que `.dark` en <html> (toggle del panel) no
- * llegue hasta aca.
+ * SITIO PUBLICO — rama low-ticket. Mismo sitio/contenido que master
+ * (el look Divi "SaaS Product"), pero re-teñido en azul para que la
+ * tonalidad "LOW TICKET" se distinga a simple vista de master (verde) y
+ * de plan/base (indigo/coral "App Developer"). Sin cambio tipografico:
+ * mismo Roboto que master. El panel privado NO usa `.site-theme`, asi
+ * que conserva la paleta "SaaS Product" de :root. Re-declara todo para
+ * que `.dark` en <html> (toggle del panel) no llegue hasta aca.
  * ------------------------------------------------------------------ */
 .site-theme {
   color-scheme: light;
@@ -104,43 +105,37 @@
   background-color: var(--background);
   color: var(--foreground);
   --background: #ffffff;
-  --foreground: #221d4a;
+  --foreground: #0b1a33;
   --card: #ffffff;
-  --card-foreground: #221d4a;
+  --card-foreground: #0b1a33;
   --popover: #ffffff;
-  --popover-foreground: #221d4a;
-  --primary: #d92d43;
-  --primary-hover: #bf2038;
+  --popover-foreground: #0b1a33;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
   --primary-foreground: #ffffff;
-  --secondary: #f4f2ff;
-  --secondary-foreground: #372f6b;
-  --muted: #f5f4fb;
-  --muted-foreground: #6c6a8a;
-  --accent: #fdecef;
-  --accent-foreground: #d92d43;
+  --secondary: #eef4ff;
+  --secondary-foreground: #1e3a8a;
+  --muted: #f1f5fb;
+  --muted-foreground: #5b6b85;
+  --accent: #dbeafe;
+  --accent-foreground: #2563eb;
   --destructive: #dc2626;
   --success: #15803d;
   --warning: #b45309;
-  --border: #e9e7f4;
-  --input: #d9d6ec;
-  --ring: #d92d43;
-  --navy: #211d47;
-  --navy-foreground: #ece9ff;
-  --ink: #211d47;
-  --ink-foreground: #ece9ff;
-  --chart-1: #d92d43;
-  --chart-2: #221d4a;
-  --chart-3: #7b5cff;
-  --chart-4: #ffb020;
-  --chart-5: #17b5b0;
-  --blob: linear-gradient(140deg, #ff9d5c 0%, #ff5f8f 45%, #7b5cff 100%);
-  --blob-warm: linear-gradient(140deg, #ffd166 0%, #ff9d5c 50%, #ff5f8f 100%);
-}
-
-/* Titulares del sitio publico en Poppins (mas suave que el black de Roboto). */
-.site-theme :is(h1, h2, h3, h4) {
-  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
-  letter-spacing: -0.02em;
+  --border: #dbe3f5;
+  --input: #c7d3ea;
+  --ring: #2563eb;
+  --navy: #0b1a33;
+  --navy-foreground: #e8f0ff;
+  --ink: #0b1a33;
+  --ink-foreground: #e8f0ff;
+  --chart-1: #2563eb;
+  --chart-2: #0b1a33;
+  --chart-3: #38bdf8;
+  --chart-4: #f59e0b;
+  --chart-5: #a855f7;
+  --blob: linear-gradient(140deg, #60a5fa 0%, #3b82f6 45%, #1d4ed8 100%);
+  --blob-warm: linear-gradient(140deg, #38bdf8 0%, #0ea5e9 50%, #2563eb 100%);
 }
 
 @theme inline {
@@ -244,7 +239,7 @@
 }
 
 .animate-marketing-gradient-text {
-  background-image: linear-gradient(90deg, var(--primary), #ff9d5c, #7b5cff, var(--primary));
+  background-image: linear-gradient(90deg, var(--primary), #38bdf8, #60a5fa, var(--primary));
   background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;

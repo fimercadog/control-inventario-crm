@@ -1,10 +1,9 @@
 import { cn } from "@/lib/utils";
 
 /**
- * The dark rounded "UI widget" cards from the Divi "App Developer" hero —
+ * The dark rounded "UI widget" cards from the Divi "SaaS Product" hero —
  * a bar chart, a contact chip, a headline stat with a sparkline, and a gauge.
- * Rendered as an overlapping 2x2 collage floating over a grainy coral->violet
- * blob (indigo cards).
+ * Rendered as an overlapping 2x2 collage floating over a grainy green blob.
  */
 
 const GRAIN =
@@ -42,7 +41,7 @@ function BarChart() {
             className="w-2 rounded-full"
             style={{
               height: `${h}%`,
-              background: hot ? "linear-gradient(180deg,#ff5f8f,#ff9d5c)" : "linear-gradient(180deg,#7b5cff,#a78bfa)",
+              background: hot ? "linear-gradient(180deg,#4ade80,#a3e635)" : "linear-gradient(180deg,#fb923c,#f59e0b)",
             }}
           />
           <span className={cn("text-[9px]", hot ? "font-bold text-white" : "text-white/40")}>{m}</span>
@@ -64,8 +63,8 @@ function Sparkline() {
       />
       <defs>
         <linearGradient id="spark" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stopColor="#7b5cff" />
-          <stop offset="1" stopColor="#ff5f8f" />
+          <stop offset="0" stopColor="#fb923c" />
+          <stop offset="1" stopColor="#4ade80" />
         </linearGradient>
       </defs>
     </svg>
@@ -76,11 +75,11 @@ function Gauge({ value }: { value: number }) {
   const arc = Math.PI * 44;
   return (
     <svg viewBox="0 0 100 58" className="w-28" aria-hidden>
-      <path d="M6 52 A44 44 0 0 1 94 52" fill="none" stroke="#3a3568" strokeWidth="9" strokeLinecap="round" />
+      <path d="M6 52 A44 44 0 0 1 94 52" fill="none" stroke="#2b2b2e" strokeWidth="9" strokeLinecap="round" />
       <path
         d="M6 52 A44 44 0 0 1 94 52"
         fill="none"
-        stroke="#ff5f8f"
+        stroke="#4ade80"
         strokeWidth="9"
         strokeLinecap="round"
         strokeDasharray={`${(value / 100) * arc} ${arc}`}
@@ -119,7 +118,7 @@ export function WidgetCluster({ className }: { className?: string }) {
           <div className="flex flex-col items-center gap-1.5 text-center">
             <span className="relative grid size-14 place-items-center rounded-full bg-primary text-lg font-black text-primary-foreground ring-2 ring-white/20">
               LG
-              <span className="absolute -right-0.5 -top-0.5 size-3.5 rounded-full bg-[#ff5f8f] ring-2 ring-ink" />
+              <span className="absolute -right-0.5 -top-0.5 size-3.5 rounded-full bg-[#4ade80] ring-2 ring-ink" />
             </span>
             <span className="mt-1 text-sm font-bold text-white">Laura Gomez</span>
             <span className="text-[11px] text-white/45">Responsable comercial</span>

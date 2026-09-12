@@ -10,6 +10,7 @@ use App\Models\Deal;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
+use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -37,6 +38,8 @@ class DashboardController extends Controller
             'generated_at' => now()->toIso8601String(),
             'metrics' => [
                 'total_clients' => Client::where('company_id', $companyId)->count(),
+                'total_products' => Product::where('company_id', $companyId)->count(),
+                'pending_quotes' => Quote::where('company_id', $companyId)->whereIn('status', ['draft', 'sent'])->count(),
                 'open_deals' => (clone $openDeals)->count(),
                 'open_deals_value' => (float) (clone $openDeals)->sum('amount'),
                 'deals_won_month' => Deal::where('company_id', $companyId)->where('stage', 'won')->whereBetween('updated_at', [$monthStart, $today->copy()->endOfDay()])->count(),

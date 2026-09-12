@@ -6,13 +6,15 @@ import { CrudField } from "@/components/crud/crud-modal";
 import { WhatsAppAction } from "@/components/crud/whatsapp-action";
 import { ModuleTablePage } from "@/components/module-table-page";
 import { Badge } from "@/components/ui/badge";
+import { isLowTicket } from "@/lib/plan";
 import { AppColumnDef } from "@/lib/table-types";
 import { Client } from "@/lib/types";
 
 const columns: AppColumnDef<Client>[] = [
   { accessorKey: "name", header: "Nombre" },
   { header: "Empresa", cell: ({ row }) => row.original.company_name ?? "—" },
-  { header: "Segmento", cell: ({ row }) => row.original.segment ?? "—" },
+  // Segmento depende de Segmentos, oculto en plan low ticket (FASE 4).
+  ...(isLowTicket() ? [] : [{ header: "Segmento", cell: ({ row }: { row: { original: Client } }) => row.original.segment ?? "—" } as AppColumnDef<Client>]),
   { header: "Correo", cell: ({ row }) => row.original.email ?? "—" },
   { header: "Telefono", cell: ({ row }) => row.original.phone ?? "—" },
   { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
@@ -21,7 +23,7 @@ const columns: AppColumnDef<Client>[] = [
 const fields: CrudField[] = [
   { name: "name", label: "Nombre", required: true },
   { name: "company_name", label: "Empresa", omitWhenEmpty: true },
-  { name: "segment_id", label: "Segmento", type: "select", optionsResource: "/segments", omitWhenEmpty: true },
+  ...(isLowTicket() ? [] : ([{ name: "segment_id", label: "Segmento", type: "select", optionsResource: "/segments", omitWhenEmpty: true }] as CrudField[])),
   { name: "email", label: "Correo", type: "email", omitWhenEmpty: true },
   { name: "phone", label: "Telefono", omitWhenEmpty: true },
   { name: "address", label: "Direccion", omitWhenEmpty: true, colSpan: "full" },

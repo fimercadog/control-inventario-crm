@@ -26,6 +26,10 @@
         <env name="DB_CONNECTION" value="sqlite"/>
         <env name="DB_DATABASE" value=":memory:"/>
         <env name="DB_URL" value=""/>
+        <!-- El entorno de test corre en plan completo (mismo criterio que
+             plan/base y master): valida el sistema entero. El gate low
+             ticket se prueba explicitamente en PlanGateTest via config(). -->
+        <env name="PLAN_TIER" value="premium"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>

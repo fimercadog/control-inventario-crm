@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
 import { Badge } from "@/components/ui/badge";
+import { isLowTicket } from "@/lib/plan";
 import { AppColumnDef } from "@/lib/table-types";
 import { Order } from "@/lib/types";
 
@@ -19,7 +20,8 @@ const columns: AppColumnDef<Order>[] = [
 
 const fields: CrudField[] = [
   { name: "client_id", label: "ID cliente", type: "number", required: true, min: 1, hint: "ID de un cliente existente" },
-  { name: "deal_id", label: "ID deal", type: "number", min: 1, omitWhenEmpty: true, hint: "Opcional, si nace de un deal ganado" },
+  // Deal depende del pipeline (Deals), oculto en plan low ticket (FASE 4).
+  ...(isLowTicket() ? [] : ([{ name: "deal_id", label: "ID deal", type: "number", min: 1, omitWhenEmpty: true, hint: "Opcional, si nace de un deal ganado" }] as CrudField[])),
   { name: "warehouse_id", label: "ID bodega", type: "number", required: true, min: 1, hint: "Bodega desde la que se despacha" },
 ];
 

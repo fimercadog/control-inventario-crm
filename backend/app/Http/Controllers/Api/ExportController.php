@@ -12,6 +12,8 @@ use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\Supplier;
 use App\Services\TableQueryService;
+use App\Support\Plan\Feature;
+use App\Support\Plan\PlanService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -39,9 +41,23 @@ class ExportController extends Controller
         'audit-logs' => 'audit.view',
     ];
 
-    public function __invoke(Request $request, string $resource, string $format, TableQueryService $tables)
+    // Mismo mapa que routes/api.php para estos recursos: si el modulo esta
+    // fuera del plan, exportarlo por esta ruta generica tiene que bloquearse
+    // igual que su CRUD (FASE 8 del brief low-ticket).
+    private array $featureByResource = [
+        'deals' => Feature::CrmPro,
+        'suppliers' => Feature::InventoryPro,
+        'purchase-orders' => Feature::InventoryPro,
+        'audit-logs' => Feature::Premium,
+    ];
+
+    public function __invoke(Request $request, string $resource, string $format, TableQueryService $tables, PlanService $plan)
     {
         abort_unless($request->user()->can($this->permissionByResource[$resource]), 403);
+
+        if (isset($this->featureByResource[$resource]) && ! $plan->has($this->featureByResource[$resource])) {
+            abort(403, 'Este modulo no esta incluido en tu plan.');
+        }
 
         [$model, $columns] = $this->map[$resource];
         $query = $model::query()->where('company_id', $this->companyId($request));
