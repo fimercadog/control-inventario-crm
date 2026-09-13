@@ -14,6 +14,7 @@ return [
 
     'allowed_origins_patterns' => [
         '#^https://.*\.ngrok-free\.(dev|app)$#',
+        '#^https://.*\.fidelmercadotech\.com$#',
     ],
 
     'allowed_headers' => ['*'],
