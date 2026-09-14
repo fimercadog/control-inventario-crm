@@ -3,33 +3,20 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, PawPrint, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { ClinicWordmark } from "@/components/marketing/clinic-brand";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { cn } from "@/lib/utils";
 
 const nav = [
   ["Inicio", "/"],
-  ["Producto", "/producto"],
-  ["Solicitar cita", "/solicitar-cita"],
-  ["Precios", "/precios"],
-  ["Ayuda", "/documentacion"],
-  ["Blog", "/blog"],
+  ["Servicios", "/servicios"],
+  ["Equipo", "/equipo"],
+  ["Urgencias", "/urgencias"],
   ["Nosotros", "/nosotros"],
+  ["Blog", "/blog"],
   ["Contacto", "/contacto"],
 ];
-
-function Wordmark() {
-  return (
-    <Link href="/" className="flex items-center gap-2.5" aria-label="VetPanel — inicio">
-      <span className="flex size-9 items-center justify-center rounded-xl bg-ink text-primary">
-        <PawPrint className="size-5" />
-      </span>
-      <span className="text-base font-black leading-none tracking-tight">
-        Vet<span className="text-primary">·</span>Panel
-      </span>
-    </Link>
-  );
-}
 
 export function MarketingHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -51,7 +38,7 @@ export function MarketingHeader() {
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Wordmark />
+        <ClinicWordmark />
 
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Principal">
           {nav.map(([label, href]) => {
@@ -83,24 +70,16 @@ export function MarketingHeader() {
             href="/login"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
-            Iniciar sesion
+            Iniciar sesión
           </Link>
-          <CtaLink href="/demo" size="sm">
-            Solicitar demo
+          <CtaLink href="/solicitar-cita" size="sm" variant="cta">
+            Agendar cita
           </CtaLink>
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <Link
-            href="/login"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Iniciar sesion
-          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -130,10 +109,19 @@ export function MarketingHeader() {
                 {label}
               </Link>
             ))}
+            <Link
+              href="/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent"
+            >
+              Iniciar sesión
+            </Link>
           </nav>
           <div className="mt-3">
-            <CtaLink href="/demo" className="w-full">
-              Solicitar demo
+            <CtaLink href="/solicitar-cita" className="w-full" variant="cta">
+              Agendar cita
             </CtaLink>
           </div>
         </div>

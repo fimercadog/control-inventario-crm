@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRipple } from "@/components/marketing/ripple";
 import { cn } from "@/lib/utils";
 
-type Variant = "default" | "outline" | "ghost" | "secondary";
+type Variant = "default" | "outline" | "ghost" | "secondary" | "cta";
 type Size = "sm" | "default";
 
 const base =
@@ -22,11 +22,15 @@ const variants: Record<Variant, string> = {
   outline: "border-2 border-current hover:bg-primary hover:border-primary hover:text-primary-foreground",
   ghost: "hover:bg-muted",
   secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+  // Ambar calido: reservado para las dos acciones de maxima prioridad del
+  // sitio (Agendar cita / WhatsApp), para que destaquen por encima del teal.
+  cta: "bg-cta text-cta-foreground hover:bg-cta-hover",
 };
 
 /**
- * Divi-style pill CTA. Filled green by default; outline is a 2px ring in the
- * current text colour. Touch ripple, ~44px tall. External href -> plain <a>.
+ * Divi-style pill CTA. Filled teal by default; `cta` es el ambar de maxima
+ * prioridad. Outline es un anillo de 2px en el color de texto actual. Touch
+ * ripple, ~44px tall. External href -> plain <a>.
  */
 export function CtaLink({
   href,

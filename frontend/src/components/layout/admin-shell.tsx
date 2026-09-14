@@ -97,23 +97,6 @@ const navGroups: NavGroup[] = [
     items: [{ href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
   },
   {
-    label: "Propietarios y comercial",
-    items: [
-      { href: "/app/leads", label: "Solicitudes", icon: Inbox, permissions: ["leads.view"] },
-      { href: "/app/clientes", label: "Propietarios", icon: Users, permissions: ["clients.manage"] },
-      { href: "/app/contactos", label: "Contactos", icon: Contact2, permissions: ["clients.manage"] },
-      { href: "/app/segmentos", label: "Segmentos", icon: Tags, permissions: ["clients.manage"] },
-      { href: "/app/notas", label: "Notas", icon: StickyNote, permissions: ["clients.manage"] },
-      { href: "/app/deals", label: "Planes y oportunidades", icon: Handshake, permissions: ["deals.manage"] },
-      { href: "/app/cotizaciones", label: "Presupuestos", icon: FileText, permissions: ["deals.manage"] },
-      { href: "/app/actividades", label: "Actividades", icon: ListChecks, permissions: ["activities.manage"] },
-      { href: "/app/tareas", label: "Tareas", icon: ListTodo, permissions: ["activities.manage"] },
-      { href: "/app/seguimientos", label: "Seguimientos", icon: CalendarClock, permissions: ["activities.manage"] },
-      { href: "/app/calendario", label: "Calendario", icon: CalendarDays, permissions: ["activities.manage"] },
-      { href: "/app/pedidos", label: "Pedidos", icon: Receipt, permissions: ["orders.manage"] },
-    ],
-  },
-  {
     label: "Clínica",
     items: [
       { href: "/app/agenda", label: "Agenda", icon: CalendarDays, permissions: ["appointments.manage"] },
@@ -129,6 +112,23 @@ const navGroups: NavGroup[] = [
       { href: "/app/servicios", label: "Servicios", icon: Tag, permissions: ["services.manage"] },
       { href: "/app/especies", label: "Especies", icon: Rabbit, permissions: ["patients.manage"] },
       { href: "/app/razas", label: "Razas", icon: Dna, permissions: ["patients.manage"] },
+    ],
+  },
+  {
+    label: "Propietarios y comercial",
+    items: [
+      { href: "/app/leads", label: "Solicitudes", icon: Inbox, permissions: ["leads.view"] },
+      { href: "/app/clientes", label: "Propietarios", icon: Users, permissions: ["clients.manage"] },
+      { href: "/app/contactos", label: "Contactos", icon: Contact2, permissions: ["clients.manage"] },
+      { href: "/app/segmentos", label: "Segmentos", icon: Tags, permissions: ["clients.manage"] },
+      { href: "/app/notas", label: "Notas", icon: StickyNote, permissions: ["clients.manage"] },
+      { href: "/app/deals", label: "Planes y oportunidades", icon: Handshake, permissions: ["deals.manage"] },
+      { href: "/app/cotizaciones", label: "Presupuestos", icon: FileText, permissions: ["deals.manage"] },
+      { href: "/app/actividades", label: "Actividades", icon: ListChecks, permissions: ["activities.manage"] },
+      { href: "/app/tareas", label: "Tareas", icon: ListTodo, permissions: ["activities.manage"] },
+      { href: "/app/seguimientos", label: "Seguimientos", icon: CalendarClock, permissions: ["activities.manage"] },
+      { href: "/app/calendario", label: "Calendario", icon: CalendarDays, permissions: ["activities.manage"] },
+      { href: "/app/pedidos", label: "Pedidos", icon: Receipt, permissions: ["orders.manage"] },
     ],
   },
   {

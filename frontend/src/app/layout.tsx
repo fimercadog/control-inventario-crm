@@ -17,21 +17,22 @@ const robotoMono = Roboto_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "VetPanel | Software de gestión para clínicas veterinarias",
-    template: "%s | VetPanel",
+    default: "Clínica Veterinaria Los Andes | Veterinaria en Bogotá",
+    template: "%s | Clínica Veterinaria Los Andes",
   },
-  description: "Software de gestión para veterinarias: propietarios, pacientes, historia clínica, citas, vacunas, inventario y reportes en una sola plataforma.",
+  description:
+    "Clínica veterinaria en Bogotá: consulta general, vacunación, cirugía, laboratorio clínico y urgencias para perros, gatos y otras mascotas. Agendá tu cita online o por WhatsApp.",
   openGraph: {
-    title: "VetPanel — Software para clínicas veterinarias",
-    description: "Propietarios, pacientes, historia clínica, agenda, vacunas e inventario en una sola plataforma.",
+    title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",
+    description: "Consulta, vacunación, cirugía y urgencias para tu mascota, con historia clínica digital por paciente.",
     type: "website",
     locale: "es_CO",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "VetPanel — Software para clínicas veterinarias",
-    description: "Gestión clínica e inventario en una sola plataforma para veterinarias.",
+    title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",
+    description: "Consulta, vacunación, cirugía y urgencias para tu mascota.",
   },
 };
 

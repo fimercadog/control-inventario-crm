@@ -5,7 +5,7 @@ import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { api } from "@/lib/api";
 import { LeadFields } from "@/components/marketing/lead-fields";
 
-export function ContactForm({ demo = false }: { demo?: boolean }) {
+export function ContactForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
@@ -21,10 +21,8 @@ export function ContactForm({ demo = false }: { demo?: boolean }) {
       company_name: String(fd.get("company_name") ?? "").trim() || null,
       email: String(fd.get("email") ?? "").trim(),
       phone: String(fd.get("phone") ?? "").trim() || null,
-      employee_count: String(fd.get("employee_count") ?? "").trim() || null,
-      priority_module: String(fd.get("priority_module") ?? "").trim() || null,
       message: String(fd.get("message") ?? "").trim() || null,
-      source: demo ? "demo" : "contact",
+      source: "contact",
       consent: fd.get("consent") === "on",
     };
 
@@ -50,7 +48,7 @@ export function ContactForm({ demo = false }: { demo?: boolean }) {
       <div className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
         <div className="flex items-center gap-2 rounded-lg bg-success/10 px-3 py-2 text-sm text-success">
           <CheckCircle2 className="size-4" />
-          Recibimos tu solicitud. Te contactaremos pronto.
+          Recibimos tu mensaje. Te contactaremos pronto.
         </div>
       </div>
     );
@@ -58,7 +56,10 @@ export function ContactForm({ demo = false }: { demo?: boolean }) {
 
   return (
     <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
-      <LeadFields extended messagePlaceholder="Cuentanos que procesos son mas manuales hoy" />
+      <LeadFields
+        messagePlaceholder="Contanos en que podemos ayudarte a vos y a tu mascota"
+        secondaryField={{ placeholder: "Mascota (opcional)", label: "Mascota" }}
+      />
       {error ? (
         <div className="mt-4 flex items-center gap-2 rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive">
           <AlertCircle className="size-4" /> {error}
@@ -69,7 +70,7 @@ export function ContactForm({ demo = false }: { demo?: boolean }) {
         disabled={loading}
         className="mt-5 inline-flex h-11 w-full items-center justify-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
       >
-        {loading ? "Enviando..." : demo ? "Solicitar demostracion" : "Enviar mensaje"}
+        {loading ? "Enviando..." : "Enviar mensaje"}
       </button>
     </form>
   );

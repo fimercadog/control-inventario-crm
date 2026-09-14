@@ -14,7 +14,7 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          background: "linear-gradient(160deg, #ecfdf3 0%, #d7f0e0 100%)",
+          background: "linear-gradient(160deg, #fbf8f3 0%, #ecf7f6 100%)",
           fontFamily: "sans-serif",
         }}
       >
@@ -25,21 +25,21 @@ export default function OpengraphImage() {
             justifyContent: "center",
             width: 96,
             height: 96,
-            borderRadius: 24,
-            background: "#15803d",
+            borderRadius: 48,
+            background: "#0e7490",
             color: "#ffffff",
-            fontSize: 52,
+            fontSize: 44,
             fontWeight: 700,
             marginBottom: 40,
           }}
         >
-          V
+          LA
         </div>
-        <div style={{ display: "flex", fontSize: 64, fontWeight: 900, color: "#0f1012" }}>
-          VetPanel
+        <div style={{ display: "flex", fontSize: 60, fontWeight: 900, color: "#241f19" }}>
+          Clínica Veterinaria Los Andes
         </div>
-        <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#3f5347", maxWidth: 820 }}>
-          Software de gestión para clínicas veterinarias: pacientes, historia clínica, agenda, vacunas e inventario.
+        <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#6b6355", maxWidth: 860 }}>
+          Consulta, vacunación, cirugía y urgencias para tu mascota, con un equipo que la conoce desde la primera visita.
         </div>
       </div>
     ),

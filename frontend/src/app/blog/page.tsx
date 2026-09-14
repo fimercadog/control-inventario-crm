@@ -4,23 +4,21 @@ import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
 import { Section, cardHover } from "@/components/marketing/marketing-ui";
-import { blogPosts } from "@/components/marketing/marketing-data";
+import { blogCategories, blogPosts } from "@/components/marketing/marketing-data";
 import { cn } from "@/lib/utils";
-
-const categories = ["Operacion", "CRM", "Inventario", "Compras", "Reportes", "IA"];
 
 export default function BlogPage() {
   return (
     <MarketingLayout>
       <PageHero
         eyebrow="Blog"
-        title="Ideas practicas para vender y controlar inventario mejor"
-        lead="Articulos demo iniciales, listos para reemplazar por contenido editorial real."
+        title="Cuidado animal, explicado por el equipo que te atiende"
+        lead="Prevención, vacunas, nutrición y qué hacer ante una urgencia — notas prácticas para dueños de mascota."
       />
 
       <Section className="pt-0">
         <div className="flex flex-wrap justify-center gap-2">
-          {categories.map((c) => (
+          {blogCategories.map((c) => (
             <span key={c} className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
               {c}
             </span>

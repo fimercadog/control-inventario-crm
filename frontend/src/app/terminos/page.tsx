@@ -3,8 +3,7 @@ import { LegalPage } from "@/components/marketing/legal-page";
 
 export const metadata: Metadata = {
   title: "Terminos y Condiciones",
-  description:
-    "Condiciones de uso del sitio web y de las solicitudes de informacion y demostracion.",
+  description: "Condiciones de uso del sitio web y de las solicitudes de cita y contacto.",
 };
 
 export default function TermsPage() {
@@ -12,13 +11,13 @@ export default function TermsPage() {
     <LegalPage
       title="Terminos y Condiciones"
       updated="30 de agosto de 2026"
-      intro="Estos terminos regulan el acceso y uso de este sitio web, operado por [Razon social], NIT [NIT]. Al navegar el sitio o enviar un formulario aceptas estos terminos."
+      intro="Estos terminos regulan el acceso y uso de este sitio web, operado por [Razon social] (Clínica Veterinaria Los Andes), NIT [NIT]. Al navegar el sitio o enviar un formulario aceptas estos terminos."
       sections={[
         {
           heading: "1. Objeto del sitio",
           body: [
-            "Este sitio tiene una finalidad informativa y comercial: presentar la plataforma de gestión veterinaria, sus modulos y sus condiciones, y permitir solicitar informacion o una demostracion.",
-            "El acceso a la plataforma privada requiere un contrato de servicio independiente y credenciales asignadas; su uso se rige por las condiciones pactadas en dicho contrato.",
+            "Este sitio tiene una finalidad informativa: presentar los servicios de la clínica y su equipo, y permitir solicitar una cita o enviar una consulta.",
+            "El acceso al panel privado de gestión de la clínica requiere credenciales asignadas al personal y se rige por su propia política interna; no está dirigido al público general.",
           ],
         },
         {
@@ -34,9 +33,9 @@ export default function TermsPage() {
           ],
         },
         {
-          heading: "4. Solicitudes de contacto y demostracion",
+          heading: "4. Solicitudes de cita y contacto",
           body: [
-            "El envio de un formulario no genera obligacion contractual alguna. Cualquier propuesta comercial, precio o alcance del servicio se formaliza por escrito de manera separada.",
+            "El envio de un formulario no confirma automaticamente una cita: la clínica confirma disponibilidad y se pone en contacto para agendarla. Cualquier presupuesto de procedimiento se entrega por escrito antes de proceder.",
             "El tratamiento de los datos enviados a traves de los formularios se rige por la Politica de Tratamiento de Datos Personales.",
           ],
         },

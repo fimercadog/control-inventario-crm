@@ -24,14 +24,14 @@ export default function PrivacyPage() {
         {
           heading: "2. Datos que recolectamos",
           body: [
-            "A traves de los formularios de contacto y de solicitud de demostracion recolectamos: nombre, empresa, correo electronico, numero de telefono o WhatsApp, numero aproximado de usuarios o bodegas, modulo de interes y el contenido del mensaje que nos envies.",
+            "A traves de los formularios de contacto y de solicitud de cita recolectamos: nombre, nombre de tu mascota, correo electronico, numero de telefono o WhatsApp, motivo de la consulta y el contenido del mensaje que nos envies.",
             "No solicitamos datos sensibles a traves de este sitio. Si decides incluirlos en un campo de texto libre, se entendera que autorizas su tratamiento para los fines aqui descritos.",
           ],
         },
         {
           heading: "3. Finalidades del tratamiento",
           body: [
-            "Los datos se tratan para: (i) responder tus solicitudes de informacion; (ii) contactarte con fines comerciales sobre la plataforma y sus modulos; (iii) agendar y realizar demostraciones del producto; (iv) enviarte informacion sobre novedades, precios y condiciones del servicio; y (v) atender obligaciones legales y requerimientos de autoridades competentes.",
+            "Los datos se tratan para: (i) responder tus solicitudes de informacion; (ii) confirmar disponibilidad y agendar la cita de tu mascota; (iii) contactarte sobre el seguimiento de una consulta o tratamiento en curso; (iv) enviarte recordatorios de vacunacion u otros avisos relacionados con la atencion de tu mascota; y (v) atender obligaciones legales y requerimientos de autoridades competentes.",
           ],
         },
         {

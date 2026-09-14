@@ -2,11 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
-import { blogPosts } from "@/components/marketing/marketing-data";
+import { blogPostBySlug } from "@/components/marketing/marketing-data";
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = blogPosts.find((item) => item.slug === slug);
+  const post = blogPostBySlug(slug);
   if (!post) notFound();
 
   return (
@@ -20,14 +20,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         <p className="mt-5 text-lg leading-8 text-muted-foreground">{post.excerpt}</p>
         <div className="mt-10 space-y-6 text-base leading-8 text-muted-foreground">
           <p>
-            Este es contenido inicial ficticio creado para validar la estructura editorial del sitio. Debe
-            reemplazarse por contenido final antes de una publicacion comercial.
+            Este es contenido inicial de demostración para validar la estructura editorial del blog. Debe
+            reemplazarse por un artículo real, escrito o revisado por el equipo veterinario, antes de publicarlo.
           </p>
           <p>
-            El enfoque del articulo es practico: explicar problemas reales de ventas e inventario, proponer pasos
-            accionables y conectar cada tema con modulos concretos del producto.
+            El enfoque de cada artículo es práctico: orientar al propietario sobre una situación real de cuidado
+            animal, con recomendaciones claras y, cuando aplica, la invitación a agendar una consulta.
           </p>
-          <p>La version final podra incluir imagenes, autores, fechas, relacionados, newsletter y datos estructurados SEO.</p>
+          <p>La versión final podrá incluir imágenes propias, autoría del veterinario, fecha, artículos relacionados y datos estructurados SEO.</p>
         </div>
       </article>
     </MarketingLayout>

@@ -89,45 +89,53 @@
   --marketing-shadow: 0 24px 70px rgb(0 0 0 / 0.45);
 }
 
-/* El sitio publico + login se comprometen con el look claro de Divi:
-   re-declaran la paleta clara para que `.dark` en <html> (toggle del panel)
-   no llegue hasta aca. */
+/* El sitio publico + login viven en su propia identidad de "clinica
+   veterinaria" (teal calido + ambar), aislada del verde SaaS del panel: esta
+   clase re-declara la paleta completa para que ni el toggle oscuro del panel
+   ni el `:root` de arriba lleguen hasta aca. */
 .site-theme {
   color-scheme: light;
   /* Re-aplica color/fondo con las variables ya sobrescritas: sin esto, si el
      SO/panel esta en oscuro, el subarbol hereda el `color` claro del body. */
   background-color: var(--background);
   color: var(--foreground);
-  --background: #ffffff;
-  --foreground: #0f1012;
+  --background: #fbf8f3;
+  --foreground: #241f19;
   --card: #ffffff;
-  --card-foreground: #0f1012;
+  --card-foreground: #241f19;
   --popover: #ffffff;
-  --popover-foreground: #0f1012;
-  --primary: #15803d;
-  --primary-hover: #166534;
+  --popover-foreground: #241f19;
+  --primary: #0e7490;
+  --primary-hover: #0c5f77;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f0;
-  --secondary-foreground: #14532d;
-  --muted: #f4f4f5;
-  --muted-foreground: #6b7280;
-  --accent: #ecfdf3;
-  --accent-foreground: #15803d;
+  --secondary: #ecf7f6;
+  --secondary-foreground: #0e4f52;
+  --muted: #f4f1ea;
+  --muted-foreground: #6b6355;
+  --accent: #fdeee1;
+  --accent-foreground: #c2410c;
   --destructive: #dc2626;
   --success: #15803d;
   --warning: #b45309;
-  --border: #e6e7ea;
-  --input: #d9dade;
-  --ring: #15803d;
-  --navy: #0f1012;
-  --navy-foreground: #f4f4f5;
-  --ink: #0f1012;
-  --ink-foreground: #f4f4f5;
-  --chart-1: #15803d;
-  --chart-2: #0f1012;
-  --chart-3: #f59e0b;
-  --chart-4: #3b82f6;
-  --chart-5: #ec4899;
+  --border: #e8e2d6;
+  --input: #dcd4c4;
+  --ring: #0e7490;
+  --navy: #0f2027;
+  --navy-foreground: #f2efe8;
+  --ink: #14232a;
+  --ink-foreground: #f2efe8;
+  --chart-1: #0e7490;
+  --chart-2: #241f19;
+  --chart-3: #ea580c;
+  --chart-4: #64748b;
+  --chart-5: #db2777;
+  --blob: linear-gradient(140deg, #0e7490 0%, #14b8a6 45%, #5eead4 100%);
+  --blob-warm: linear-gradient(140deg, #ea580c 0%, #fb923c 45%, #fde68a 100%);
+  /* Acento calido secundario para CTAs (Agendar cita / WhatsApp) que necesitan
+     destacar por encima del teal primario. */
+  --cta: #ea580c;
+  --cta-hover: #c2410c;
+  --cta-foreground: #ffffff;
 }
 
 @theme inline {
@@ -156,6 +164,9 @@
   --color-ink-foreground: var(--ink-foreground);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-cta: var(--cta, var(--primary));
+  --color-cta-hover: var(--cta-hover, var(--primary-hover));
+  --color-cta-foreground: var(--cta-foreground, var(--primary-foreground));
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);

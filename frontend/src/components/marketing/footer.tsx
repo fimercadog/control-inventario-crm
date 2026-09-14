@@ -1,36 +1,33 @@
 import Link from "next/link";
-import { PawPrint } from "lucide-react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { ClinicWordmark } from "@/components/marketing/clinic-brand";
 
 const columns: { title: string; links: [string, string][] }[] = [
   {
-    title: "Producto",
+    title: "Clínica",
     links: [
-      ["Propietarios y pacientes", "/producto/pacientes"],
-      ["Historia clínica", "/producto/historia-clinica"],
-      ["Citas y agenda", "/producto/agenda"],
-      ["Vacunas y recordatorios", "/producto/vacunas"],
-      ["Inventario", "/producto/inventario"],
-      ["Reportes clínicos", "/producto/reportes"],
+      ["Servicios", "/servicios"],
+      ["Equipo veterinario", "/equipo"],
+      ["Urgencias", "/urgencias"],
+      ["Nosotros", "/nosotros"],
+      ["Preguntas frecuentes", "/preguntas-frecuentes"],
+      ["Testimonios", "/testimonios"],
     ],
   },
   {
-    title: "Empresa",
+    title: "Recursos",
     links: [
-      ["Precios", "/precios"],
-      ["Centro de ayuda", "/documentacion"],
-      ["Para desarrolladores", "/documentacion/desarrolladores"],
       ["Blog", "/blog"],
-      ["Nosotros", "/nosotros"],
-      ["Solicitar demo", "/demo"],
-      ["Iniciar sesion", "/login"],
+      ["Agendar cita", "/solicitar-cita"],
+      ["Contacto", "/contacto"],
+      ["Acceso al panel", "/login"],
     ],
   },
   {
     title: "Legal",
     links: [
-      ["Politica de datos", "/privacidad"],
-      ["Terminos y condiciones", "/terminos"],
-      ["Contacto", "/contacto"],
+      ["Política de datos", "/privacidad"],
+      ["Términos y condiciones", "/terminos"],
     ],
   },
 ];
@@ -38,20 +35,31 @@ const columns: { title: string; links: [string, string][] }[] = [
 export function MarketingFooter() {
   return (
     <footer className="border-t border-border bg-background">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr] lg:px-8">
         <div className="max-w-xs">
-          <div className="flex items-center gap-2.5">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-ink text-primary">
-              <PawPrint className="size-5" />
-            </span>
-            <span className="text-base font-black tracking-tight">
-              Vet<span className="text-primary">·</span>Panel
-            </span>
-          </div>
+          <ClinicWordmark />
           <p className="mt-4 text-sm leading-6 text-muted-foreground">
-            Software de gestión para clínicas veterinarias: propietarios, pacientes, historia clínica, agenda,
-            vacunas e inventario en una sola plataforma.
+            Atención veterinaria integral para tu mascota: consulta, vacunación, cirugía y urgencias, con un equipo
+            que la conoce desde la primera visita.
           </p>
+          <ul className="mt-5 space-y-2.5 text-sm text-foreground/80">
+            <li className="flex items-start gap-2.5">
+              <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
+              Calle 93 #14-20, Bogotá
+            </li>
+            <li className="flex items-center gap-2.5">
+              <Phone className="size-4 shrink-0 text-primary" />
+              +57 601 555 0188
+            </li>
+            <li className="flex items-center gap-2.5">
+              <Mail className="size-4 shrink-0 text-primary" />
+              recepcion@vetlosandes.co
+            </li>
+            <li className="flex items-start gap-2.5">
+              <Clock className="mt-0.5 size-4 shrink-0 text-primary" />
+              Lun a sáb, 8:00 a 19:00 · Urgencias 24/7
+            </li>
+          </ul>
         </div>
 
         {columns.map((col) => (
@@ -76,7 +84,7 @@ export function MarketingFooter() {
 
       <div className="bg-ink text-ink-foreground">
         <div className="mx-auto max-w-7xl px-4 py-5 text-xs text-white/60 sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} VetPanel. Sitio publico y plataforma privada separados.
+          © {new Date().getFullYear()} Clínica Veterinaria Los Andes.
         </div>
       </div>
     </footer>

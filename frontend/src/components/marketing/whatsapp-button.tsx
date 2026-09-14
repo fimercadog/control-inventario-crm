@@ -1,9 +1,9 @@
-const WHATSAPP_NUMBER = "573058148918";
+import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 export function WhatsAppButton() {
   return (
     <a
-      href={`https://wa.me/${WHATSAPP_NUMBER}`}
+      href={WHATSAPP_URL}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Escribir por WhatsApp"

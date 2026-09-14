@@ -1,15 +1,51 @@
-import { DeviceMockup } from "@/components/marketing/device-mockup";
+import { HeartPulse, PawPrint, ShieldCheck } from "lucide-react";
 import { GradientBlob } from "@/components/marketing/gradient-blob";
 import { HeroBackdrop } from "@/components/marketing/hero-backdrop";
 import { Reveal } from "@/components/marketing/reveal";
-import { WidgetCluster } from "@/components/marketing/widget-card";
 
 export const container = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
 
 /**
- * Divi "SaaS Product" hero: tiny eyebrow, a huge black headline, grey body,
- * small green pill actions, and — on the right — either a floating widget
- * cluster (home) or a product screenshot tilted in perspective.
+ * Visual del hero de home: composicion propia del sistema de diseño (blobs +
+ * icono + chips flotantes de confianza), no una fotografia — no hay
+ * capacidad de generacion/descarga de imagenes en este entorno. Reemplazar
+ * por una fotografia real de la clinica cuando este disponible: swap este
+ * bloque por un <Image> apuntando a /gallery/hero.jpg dentro del mismo
+ * contenedor `aspect-4/5`.
+ */
+function HeroArt() {
+  return (
+    <div className="relative flex aspect-4/5 w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-secondary shadow-elevation-4 sm:aspect-5/4.6 lg:aspect-4/4.6">
+      <GradientBlob className="left-[-20%] top-[-22%] size-[75%] opacity-60" float />
+      <GradientBlob className="right-[-22%] bottom-[-20%] size-[65%] opacity-45" warm float />
+      <span className="relative grid size-28 place-items-center rounded-full bg-card text-primary shadow-elevation-3 sm:size-32">
+        <PawPrint className="size-13 sm:size-14" />
+      </span>
+
+      <div className="absolute left-6 top-8 flex items-center gap-2 rounded-2xl bg-card/90 px-4 py-3 shadow-elevation-2 backdrop-blur sm:left-10 sm:top-12">
+        <ShieldCheck className="size-4.5 shrink-0 text-primary" />
+        <div className="leading-tight">
+          <p className="text-sm font-black">12+ años</p>
+          <p className="text-[11px] text-muted-foreground">de trayectoria</p>
+        </div>
+      </div>
+
+      <div className="absolute bottom-8 right-6 flex items-center gap-2 rounded-2xl bg-card/90 px-4 py-3 shadow-elevation-2 backdrop-blur sm:bottom-12 sm:right-10">
+        <HeartPulse className="size-4.5 shrink-0 text-chart-3" />
+        <div className="leading-tight">
+          <p className="text-sm font-black">3.500+</p>
+          <p className="text-[11px] text-muted-foreground">mascotas atendidas</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Hero de pagina: eyebrow chico, titulo grande, texto y acciones en pastilla.
+ * `visual="art"` agrega la composicion de arriba a la derecha (home); `"none"`
+ * centra el texto sin visual lateral (paginas internas). Fondo ambient
+ * compartido via `HeroBackdrop`.
  */
 export function PageHero({
   eyebrow,
@@ -18,8 +54,7 @@ export function PageHero({
   badge,
   actions,
   note,
-  visual = "cluster",
-  screenshot,
+  visual = "none",
 }: {
   eyebrow?: string;
   title: React.ReactNode;
@@ -27,17 +62,16 @@ export function PageHero({
   badge?: React.ReactNode;
   actions?: React.ReactNode;
   note?: string;
-  visual?: "cluster" | "screenshot" | "none";
-  screenshot?: { src: string; alt: string };
+  visual?: "art" | "none";
 }) {
-  const hasVisual = visual !== "none";
+  const hasVisual = visual === "art";
 
   return (
     <section className="relative isolate overflow-hidden">
       <HeroBackdrop />
       <div
         className={`${container} grid items-center gap-10 sm:gap-12 ${
-          hasVisual ? "py-12 sm:py-16 lg:py-24 lg:grid-cols-[1fr_1.1fr]" : "py-12 sm:py-14 lg:py-20"
+          hasVisual ? "py-12 sm:py-16 lg:py-24 lg:grid-cols-[1fr_1.05fr]" : "py-12 sm:py-14 lg:py-20"
         }`}
       >
         <div className={hasVisual ? undefined : "mx-auto max-w-3xl text-center"}>
@@ -79,17 +113,9 @@ export function PageHero({
           )}
         </div>
 
-        {visual === "cluster" && (
-          <Reveal mount delay={0.2}>
-            <WidgetCluster />
-          </Reveal>
-        )}
-        {visual === "screenshot" && screenshot && (
+        {hasVisual && (
           <Reveal mount zoom delay={0.2}>
-            <div className="relative">
-              <GradientBlob className="right-[-8%] top-[-10%] size-[70%]" float />
-              <DeviceMockup src={screenshot.src} alt={screenshot.alt} tilt="right" />
-            </div>
+            <HeroArt />
           </Reveal>
         )}
       </div>
