@@ -11,6 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { openFeedbackForm } from "@/lib/feedback";
 
 // Se muestra una sola vez por sesion (al iniciar). El boton del header lo
 // reabre cuando se quiera, sin depender de recargar sesion.
@@ -73,6 +74,9 @@ export function BetaNotice() {
           </ul>
 
           <DialogFooter>
+            <Button variant="outline" onClick={openFeedbackForm}>
+              Enviar comentario
+            </Button>
             <Button onClick={() => setOpen(false)}>Entendido</Button>
           </DialogFooter>
         </DialogContent>
