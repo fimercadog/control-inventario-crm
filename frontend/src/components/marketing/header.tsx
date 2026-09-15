@@ -11,10 +11,12 @@ import { cn } from "@/lib/utils";
 const nav = [
   ["Inicio", "/"],
   ["Servicios", "/servicios"],
+  ["Productos", "/catalogo"],
   ["Equipo", "/equipo"],
   ["Urgencias", "/urgencias"],
   ["Nosotros", "/nosotros"],
   ["Blog", "/blog"],
+  ["Agendar cita", "/agendar-cita"],
   ["Contacto", "/contacto"],
 ];
 

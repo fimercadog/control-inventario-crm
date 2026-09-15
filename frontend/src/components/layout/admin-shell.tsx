@@ -99,7 +99,7 @@ const navGroups: NavGroup[] = [
   {
     label: "Clínica",
     items: [
-      { href: "/app/agenda", label: "Agenda", icon: CalendarDays, permissions: ["appointments.manage"] },
+      { href: "/app/agenda", label: "Citas del día", icon: CalendarDays, permissions: ["appointments.manage"] },
       { href: "/app/citas", label: "Citas", icon: CalendarClock, permissions: ["appointments.manage"] },
       { href: "/app/pacientes", label: "Pacientes", icon: PawPrint, permissions: ["patients.manage"] },
       { href: "/app/consultas", label: "Historia clínica", icon: Stethoscope, permissions: ["medical_records.manage"] },

@@ -43,7 +43,7 @@ export default function AgendaPage() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Agenda</h1>
+          <h1 className="text-2xl font-semibold">Citas del día</h1>
           <p className="text-sm text-muted-foreground">Citas del día. Para el listado completo, usá Citas.</p>
         </div>
         <div className="flex items-center gap-2">

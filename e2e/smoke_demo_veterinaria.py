@@ -236,7 +236,7 @@ def main() -> int:  # noqa: C901
             print("· 3. Recepción — agenda y pacientes sí; historia clínica / recetas bloqueadas")
             login(page, "recepcion@vetlosandes.co")
             nav = page.get_by_role("navigation")
-            expect(nav.get_by_text("Agenda")).to_be_visible(timeout=15000)
+            expect(nav.get_by_text("Citas del día")).to_be_visible(timeout=15000)
             expect(nav.get_by_text("Pacientes")).to_be_visible()
             # el menú NO muestra historia clínica ni recetas para recepción
             expect(nav.get_by_text("Historia clínica")).to_have_count(0)
