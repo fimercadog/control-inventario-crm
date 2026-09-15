@@ -36,5 +36,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('catalog-quote', fn (Request $request) => Limit::perMinute(5)->by('catalog-quote:'.$request->ip()));
         RateLimiter::for('appointment-request', fn (Request $request) => Limit::perMinute(5)->by('appointment-request:'.$request->ip()));
         RateLimiter::for('appointment-booking', fn (Request $request) => Limit::perMinute(5)->by('appointment-booking:'.$request->ip()));
+        RateLimiter::for('portal-login', fn (Request $request) => Limit::perMinute(5)->by('portal-login:'.$request->ip()));
+        RateLimiter::for('portal-consume', fn (Request $request) => Limit::perMinute(10)->by('portal-consume:'.$request->ip()));
     }
 }

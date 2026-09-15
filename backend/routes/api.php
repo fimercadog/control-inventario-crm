@@ -22,6 +22,8 @@ use App\Http\Controllers\Api\ExportController;
 use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\PortalAppointmentController;
+use App\Http\Controllers\Api\PortalAuthController;
 use App\Http\Controllers\Api\PrescriptionController;
 use App\Http\Controllers\Api\ProcedureController;
 use App\Http\Controllers\Api\ProductController;
@@ -83,6 +85,22 @@ Route::prefix('public/appointments')->group(function (): void {
         Route::get('/availability', [PublicSchedulingController::class, 'availability']);
     });
     Route::post('/book', [PublicSchedulingController::class, 'book'])->middleware('throttle:appointment-booking');
+});
+
+// Portal del dueño (S14): login sin password por enlace mágico + CRUD de sus
+// propias citas. Guard `client`, separado del panel de staff.
+Route::post('/portal/login', [PortalAuthController::class, 'requestLink'])->middleware('throttle:portal-login');
+Route::get('/portal/consume/{client}', [PortalAuthController::class, 'consume'])
+    ->name('portal.consume')
+    ->whereNumber('client')
+    ->middleware(['signed', 'throttle:portal-consume']);
+
+Route::middleware('auth:client')->prefix('portal')->group(function (): void {
+    Route::get('/me', [PortalAuthController::class, 'me']);
+    Route::post('/logout', [PortalAuthController::class, 'logout']);
+    Route::get('/appointments', [PortalAppointmentController::class, 'index']);
+    Route::patch('/appointments/{id}/reschedule', [PortalAppointmentController::class, 'reschedule'])->whereNumber('id');
+    Route::post('/appointments/{id}/cancel', [PortalAppointmentController::class, 'cancel'])->whereNumber('id');
 });
 
 Route::middleware('auth:sanctum')->group(function (): void {

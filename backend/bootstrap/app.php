@@ -25,7 +25,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi();
         // Formularios publicos del sitio (sin sesion): la proteccion es el
         // throttle por IP, no el token CSRF de una sesion que no existe.
-        $middleware->validateCsrfTokens(except: ['api/public/*']);
+        // /api/portal/login: mismo motivo que api/public/* -- la sesion (y su
+        // token CSRF) todavia no existe para quien recien pide el enlace magico.
+        $middleware->validateCsrfTokens(except: ['api/public/*', 'api/portal/login']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (AuthenticationException $exception, Request $request) {

@@ -4,14 +4,21 @@ namespace App\Models;
 
 use Database\Factories\ClientFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Client extends Model
+/**
+ * El dueño (Client) es también el usuario del portal público (S14): sin
+ * password, entra por enlace mágico (PortalAuthController) sobre el guard
+ * `client` (config/auth.php). Authenticatable ya extiende Model, así que
+ * todo lo que ya asumía "Client is a Model" sigue funcionando igual.
+ */
+class Client extends Authenticatable
 {
     /** @use HasFactory<ClientFactory> */
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $fillable = ['company_id', 'segment_id', 'name', 'company_name', 'email', 'phone', 'address', 'status', 'notes'];
 

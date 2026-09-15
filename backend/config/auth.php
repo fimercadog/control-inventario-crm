@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Client;
 use App\Models\User;
 
 return [
@@ -42,6 +43,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // Portal del dueño (S14): sesion separada del panel de staff. Sin
+        // password -- se entra por enlace magico (ver PortalAuthController).
+        'client' => [
+            'driver' => 'session',
+            'provider' => 'clients',
+        ],
     ],
 
     /*
@@ -71,6 +79,11 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => Client::class,
+        ],
     ],
 
     /*

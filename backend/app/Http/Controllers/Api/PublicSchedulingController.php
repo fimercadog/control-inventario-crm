@@ -12,10 +12,9 @@ use App\Models\Client;
 use App\Models\Patient;
 use App\Models\Service;
 use App\Models\Species;
-use App\Models\User;
 use App\Services\AuditService;
+use App\Services\SchedulingService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,11 +22,14 @@ use Illuminate\Support\Facades\DB;
  * Portal publico "Agendar cita" (S13): disponibilidad real + cita
  * auto-confirmada. Complementa (no reemplaza) `PublicAppointmentController`,
  * que sigue generando un Lead para quien prefiere "solicitá y te llamamos".
- * Sin auth (throttle en las rutas).
+ * Sin auth (throttle en las rutas). Cálculo de huecos y anti-doble-booking en
+ * `SchedulingService` (compartido con el reagendado del portal del dueño, S14).
  */
 class PublicSchedulingController extends Controller
 {
     use ResolvesCompany;
+
+    public function __construct(private readonly SchedulingService $scheduling) {}
 
     public function services(Request $request)
     {
@@ -78,7 +80,7 @@ class PublicSchedulingController extends Controller
 
         return response()->json([
             'date' => $date->toDateString(),
-            'slots' => $this->freeSlots($companyId, $service, $date),
+            'slots' => $this->scheduling->freeSlots($companyId, $service, $date),
         ]);
     }
 
@@ -109,15 +111,7 @@ class PublicSchedulingController extends Controller
         $startsAt = Carbon::createFromFormat('Y-m-d H:i', $data['date'].' '.$data['start_time']);
         $endsAt = $startsAt->copy()->addMinutes($duration);
 
-        abort_if(
-            $startsAt->lt(Carbon::now()->addMinutes($config['min_notice_minutes'])),
-            422,
-            'Ese horario ya no tiene la anticipación mínima requerida. Elegí otro.',
-        );
-        abort_unless(in_array($startsAt->isoWeekday(), $config['business_days'], true), 422, 'La clínica no atiende ese día.');
-        $dayStart = $startsAt->copy()->setTimeFromTimeString($config['business_hours']['start']);
-        $dayEnd = $startsAt->copy()->setTimeFromTimeString($config['business_hours']['end']);
-        abort_unless($startsAt->gte($dayStart) && $endsAt->lte($dayEnd), 422, 'Ese horario está fuera del horario de atención.');
+        $this->scheduling->assertWithinBusinessWindow($startsAt, $endsAt);
 
         // Cliente: get-or-create FUERA de la transacción de la cita (mismo
         // motivo que PublicCatalogController::storeQuoteRequest: la relectura
@@ -134,14 +128,14 @@ class PublicSchedulingController extends Controller
                 ['species_id' => $species->id, 'breed_id' => $breed?->id, 'status' => 'active'],
             );
 
-            $practitioner = $this->firstFreePractitioner($companyId, $startsAt, $endsAt);
+            $practitioner = $this->scheduling->firstFreePractitioner($companyId, $startsAt, $endsAt);
             // 409, no 500: dos visitantes pudieron elegir el mismo horario a
             // la vez: el `lockForUpdate` de firstFreePractitioner evita que
             // ambos reserven el mismo veterinario, pero el segundo en llegar
             // tiene que reintentar con otro horario, no romper.
             abort_if($practitioner === null, 409, 'Ese horario ya no está disponible. Elegí otro.');
 
-            $appointment = Appointment::create([
+            return Appointment::create([
                 'company_id' => $companyId,
                 'patient_id' => $patient->id,
                 'service_id' => $service->id,
@@ -154,8 +148,6 @@ class PublicSchedulingController extends Controller
                 'notes' => 'Agendada desde el portal público. Contacto: '.$data['name'].
                     (! empty($data['phone']) ? ' · Tel: '.$data['phone'] : ''),
             ]);
-
-            return $appointment;
         });
 
         $audit->record('created', $appointment, $request);
@@ -169,91 +161,5 @@ class PublicSchedulingController extends Controller
                 'practitioner' => $appointment->practitioner?->name,
             ],
         ], 201);
-    }
-
-    /** @return list<string> horarios "H:i" con al menos un veterinario libre */
-    private function freeSlots(int $companyId, Service $service, Carbon $date): array
-    {
-        $config = config('scheduling');
-        $today = Carbon::today();
-
-        if ($date->lt($today) || $date->gt($today->copy()->addDays($config['max_days_ahead']))) {
-            return [];
-        }
-        if (! in_array($date->isoWeekday(), $config['business_days'], true)) {
-            return [];
-        }
-
-        $practitioners = $this->practitioners($companyId);
-        if ($practitioners->isEmpty()) {
-            return [];
-        }
-
-        $duration = $service->estimated_duration_minutes ?: $config['default_duration_minutes'];
-        $dayStart = $date->copy()->setTimeFromTimeString($config['business_hours']['start']);
-        $dayEnd = $date->copy()->setTimeFromTimeString($config['business_hours']['end']);
-        $earliestAllowed = Carbon::now()->addMinutes($config['min_notice_minutes']);
-
-        $busy = Appointment::query()
-            ->where('company_id', $companyId)
-            ->whereIn('practitioner_id', $practitioners->pluck('id'))
-            ->whereIn('status', ['scheduled', 'confirmed'])
-            ->whereDate('starts_at', $date->toDateString())
-            ->get(['practitioner_id', 'starts_at', 'ends_at']);
-
-        $slots = [];
-        for ($slotStart = $dayStart->copy(); $slotStart->copy()->addMinutes($duration)->lte($dayEnd); $slotStart->addMinutes($config['slot_step_minutes'])) {
-            if ($slotStart->lt($earliestAllowed)) {
-                continue;
-            }
-            $slotEnd = $slotStart->copy()->addMinutes($duration);
-
-            $hasFreePractitioner = $practitioners->contains(fn ($practitioner) => ! $busy->contains(
-                fn ($appt) => $appt->practitioner_id === $practitioner->id
-                    && $appt->starts_at->lt($slotEnd) && $appt->ends_at->gt($slotStart)
-            ));
-
-            if ($hasFreePractitioner) {
-                $slots[] = $slotStart->format('H:i');
-            }
-        }
-
-        return $slots;
-    }
-
-    /** @return Collection<int, User> veterinarios activos de la empresa */
-    private function practitioners(int $companyId): Collection
-    {
-        return User::query()
-            ->where('company_id', $companyId)
-            ->role('Veterinario/a')
-            ->get(['id', 'name']);
-    }
-
-    /**
-     * Bajo lock, primer veterinario sin choque de horario. Usado solo dentro
-     * de la transacción de `book()`: el `lockForUpdate` sobre el índice
-     * (company_id, practitioner_id, starts_at) hace que una segunda reserva
-     * concurrente del mismo veterinario/horario espere hasta que la primera
-     * confirme (o libere el hueco al fallar).
-     */
-    private function firstFreePractitioner(int $companyId, Carbon $startsAt, Carbon $endsAt): ?User
-    {
-        foreach ($this->practitioners($companyId) as $practitioner) {
-            $busy = Appointment::query()
-                ->where('company_id', $companyId)
-                ->where('practitioner_id', $practitioner->id)
-                ->whereIn('status', ['scheduled', 'confirmed'])
-                ->where('starts_at', '<', $endsAt)
-                ->where('ends_at', '>', $startsAt)
-                ->lockForUpdate()
-                ->exists();
-
-            if (! $busy) {
-                return $practitioner;
-            }
-        }
-
-        return null;
     }
 }
