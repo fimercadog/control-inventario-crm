@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ArrowRight, Bird, Cat, Dog, HeartHandshake, MapPin, Rabbit, ShieldCheck, Sparkles, Stethoscope, Syringe } from "lucide-react";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
 import { CtaLink } from "@/components/marketing/cta-link";
@@ -7,7 +8,6 @@ import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { faqs, featuredServices, stats, team, testimonials } from "@/components/marketing/marketing-data";
 import { FeatureCard, Section, SectionHeading } from "@/components/marketing/marketing-ui";
 import { PageHero } from "@/components/marketing/page-hero";
-import { PhotoPlaceholder } from "@/components/marketing/photo-placeholder";
 import { Reveal } from "@/components/marketing/reveal";
 import { ServiceGrid } from "@/components/marketing/service-card";
 import { StatsSection } from "@/components/marketing/stats-section";
@@ -78,11 +78,15 @@ export default function Home() {
       <Section className="bg-secondary/40">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
-            <PhotoPlaceholder
-              icon={Stethoscope}
-              label="Foto de la clínica — próximamente"
-              className="aspect-4/3 w-full rounded-4xl shadow-elevation-3"
-            />
+            <div className="relative aspect-4/3 w-full overflow-hidden rounded-4xl shadow-elevation-3">
+              <Image
+                src="/gallery/vet-clipboard.jpg"
+                alt="Veterinario con bata blanca revisando la historia clínica de un paciente"
+                fill
+                sizes="(min-width: 1024px) 45vw, 90vw"
+                className="object-cover"
+              />
+            </div>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">La clínica</p>
@@ -174,12 +178,15 @@ export default function Home() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <PhotoPlaceholder
-              icon={Syringe}
-              warm
-              label="Foto de una aplicación — próximamente"
-              className="aspect-4/3 w-full rounded-4xl shadow-elevation-3"
-            />
+            <div className="relative aspect-4/3 w-full overflow-hidden rounded-4xl shadow-elevation-3">
+              <Image
+                src="/gallery/paw-procedure.jpg"
+                alt="Veterinario con guantes revisando la pata de un paciente"
+                fill
+                sizes="(min-width: 1024px) 45vw, 90vw"
+                className="object-cover"
+              />
+            </div>
           </Reveal>
         </div>
       </Section>

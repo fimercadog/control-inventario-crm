@@ -1,26 +1,27 @@
-import { HeartPulse, PawPrint, ShieldCheck } from "lucide-react";
-import { GradientBlob } from "@/components/marketing/gradient-blob";
+import Image from "next/image";
+import { HeartPulse, ShieldCheck } from "lucide-react";
 import { HeroBackdrop } from "@/components/marketing/hero-backdrop";
 import { Reveal } from "@/components/marketing/reveal";
 
 export const container = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
 
 /**
- * Visual del hero de home: composicion propia del sistema de diseño (blobs +
- * icono + chips flotantes de confianza), no una fotografia — no hay
- * capacidad de generacion/descarga de imagenes en este entorno. Reemplazar
- * por una fotografia real de la clinica cuando este disponible: swap este
- * bloque por un <Image> apuntando a /gallery/hero.jpg dentro del mismo
- * contenedor `aspect-4/5`.
+ * Visual del hero de home: fotografía real (pack Divi "Veterinarian",
+ * licenciado — ver docs/referencia-visual.md) con las mismas tarjetas
+ * flotantes de confianza que antes, ahora sobre la foto en vez de la
+ * ilustración de blobs.
  */
 function HeroArt() {
   return (
     <div className="relative flex aspect-4/5 w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-secondary shadow-elevation-4 sm:aspect-5/4.6 lg:aspect-4/4.6">
-      <GradientBlob className="left-[-20%] top-[-22%] size-[75%] opacity-60" float />
-      <GradientBlob className="right-[-22%] bottom-[-20%] size-[65%] opacity-45" warm float />
-      <span className="relative grid size-28 place-items-center rounded-full bg-card text-primary shadow-elevation-3 sm:size-32">
-        <PawPrint className="size-13 sm:size-14" />
-      </span>
+      <Image
+        src="/gallery/hero-bulldog-exam.jpg"
+        alt="Veterinario revisando a un bulldog en la camilla de consulta"
+        fill
+        priority
+        sizes="(min-width: 1024px) 40vw, 90vw"
+        className="object-cover"
+      />
 
       <div className="absolute left-6 top-8 flex items-center gap-2 rounded-2xl bg-card/90 px-4 py-3 shadow-elevation-2 backdrop-blur sm:left-10 sm:top-12">
         <ShieldCheck className="size-4.5 shrink-0 text-primary" />
