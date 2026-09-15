@@ -28,7 +28,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         title={service.title}
         lead={service.description}
         actions={
-          <CtaLink href="/solicitar-cita" variant="cta">
+          <CtaLink href="/agendar-cita" variant="cta">
             Agendar este servicio
           </CtaLink>
         }

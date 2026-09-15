@@ -39,7 +39,7 @@ export default function ContactPage() {
               <CtaLink href={WHATSAPP_URL} variant="cta">
                 Escribinos por WhatsApp
               </CtaLink>
-              <CtaLink href="/solicitar-cita" variant="outline">
+              <CtaLink href="/agendar-cita" variant="outline">
                 Agendar cita
               </CtaLink>
             </div>

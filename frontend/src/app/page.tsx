@@ -44,7 +44,7 @@ export default function Home() {
         visual="art"
         actions={
           <>
-            <CtaLink href="/solicitar-cita" variant="cta">
+            <CtaLink href="/agendar-cita" variant="cta">
               Agendar cita
             </CtaLink>
             <CtaLink href={WHATSAPP_URL} variant="outline">

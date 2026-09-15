@@ -74,7 +74,7 @@ export function MarketingHeader() {
           >
             Iniciar sesión
           </Link>
-          <CtaLink href="/solicitar-cita" size="sm" variant="cta">
+          <CtaLink href="/agendar-cita" size="sm" variant="cta">
             Agendar cita
           </CtaLink>
         </div>
@@ -120,7 +120,7 @@ export function MarketingHeader() {
             </Link>
           </nav>
           <div className="mt-3">
-            <CtaLink href="/solicitar-cita" className="w-full" variant="cta">
+            <CtaLink href="/agendar-cita" className="w-full" variant="cta">
               Agendar cita
             </CtaLink>
           </div>

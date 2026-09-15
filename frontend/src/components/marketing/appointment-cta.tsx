@@ -29,7 +29,7 @@ export function AppointmentCta({
             <h2 className="mt-5 text-3xl font-black leading-tight tracking-tight sm:text-4xl">{title}</h2>
             <p className="mt-4 text-lg leading-8 text-white/70">{lead}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <CtaLink href="/solicitar-cita" variant="cta">
+              <CtaLink href="/agendar-cita" variant="cta">
                 Agendar cita
               </CtaLink>
               <CtaLink

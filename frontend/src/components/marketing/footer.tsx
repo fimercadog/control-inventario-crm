@@ -18,7 +18,7 @@ const columns: { title: string; links: [string, string][] }[] = [
     title: "Recursos",
     links: [
       ["Blog", "/blog"],
-      ["Agendar cita", "/solicitar-cita"],
+      ["Agendar cita", "/agendar-cita"],
       ["Contacto", "/contacto"],
       ["Acceso al panel", "/login"],
     ],

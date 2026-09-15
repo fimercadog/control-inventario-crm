@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/urgencias",
     "/preguntas-frecuentes",
     "/testimonios",
+    "/agendar-cita",
     "/solicitar-cita",
     "/nosotros",
     "/blog",
