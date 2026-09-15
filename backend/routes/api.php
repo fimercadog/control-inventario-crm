@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\ProcedureController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PublicAppointmentController;
 use App\Http\Controllers\Api\PublicCatalogController;
+use App\Http\Controllers\Api\PublicSchedulingController;
 use App\Http\Controllers\Api\PurchaseOrderController;
 use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\ReportController;
@@ -70,6 +71,18 @@ Route::prefix('public/catalog')->group(function (): void {
         Route::get('/categories', [PublicCatalogController::class, 'categories']);
     });
     Route::post('/quote-requests', [PublicCatalogController::class, 'storeQuoteRequest'])->middleware('throttle:catalog-quote');
+});
+
+// Portal publico "Agendar cita" (S13): disponibilidad real + cita
+// auto-confirmada. Complementa /public/appointments (solo Lead) de arriba.
+Route::prefix('public/appointments')->group(function (): void {
+    Route::middleware('throttle:catalog-read')->group(function (): void {
+        Route::get('/services', [PublicSchedulingController::class, 'services']);
+        Route::get('/species', [PublicSchedulingController::class, 'species']);
+        Route::get('/species/{id}/breeds', [PublicSchedulingController::class, 'breeds'])->whereNumber('id');
+        Route::get('/availability', [PublicSchedulingController::class, 'availability']);
+    });
+    Route::post('/book', [PublicSchedulingController::class, 'book'])->middleware('throttle:appointment-booking');
 });
 
 Route::middleware('auth:sanctum')->group(function (): void {
