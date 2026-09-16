@@ -13,11 +13,17 @@ class PurchaseOrder extends Model
     /** @use HasFactory<PurchaseOrderFactory> */
     use HasFactory;
 
-    protected $fillable = ['company_id', 'supplier_id', 'warehouse_id', 'status', 'order_date', 'expected_date', 'total'];
+    protected $fillable = [
+        'company_id', 'supplier_id', 'warehouse_id', 'status', 'order_date', 'expected_date',
+        'discount', 'tax', 'subtotal', 'total', 'notes', 'idempotency_key',
+    ];
 
     protected $casts = [
         'order_date' => 'date',
         'expected_date' => 'date',
+        'discount' => 'decimal:2',
+        'tax' => 'decimal:2',
+        'subtotal' => 'decimal:2',
         'total' => 'decimal:2',
     ];
 
@@ -39,5 +45,10 @@ class PurchaseOrder extends Model
     public function items(): HasMany
     {
         return $this->hasMany(PurchaseOrderItem::class);
+    }
+
+    public function receipts(): HasMany
+    {
+        return $this->hasMany(PurchaseReceipt::class);
     }
 }

@@ -12,6 +12,8 @@ type ReportData = {
   pipeline: { total_deals: number; open_value: number; won_month: number; lost_month: number; by_stage: StageRow[] };
   clients: Record<string, number>;
   sales: Record<string, number>;
+  purchases?: Record<string, number>;
+  finance?: Record<string, number>;
   inventory: Record<string, number>;
   top_products_by_stock: { name: string; sku: string; stock_on_hand: number }[];
 };
@@ -24,11 +26,19 @@ const labels: Record<string, string> = {
   total: "Clientes totales",
   active: "Clientes activos",
   orders_month: "Pedidos confirmados (mes)",
-  revenue_month: "Ingresos (mes)",
+  revenue_month: "Ingresos pedidos (mes)",
+  invoices_month: "Facturas emitidas (mes)",
+  invoiced_month: "Monto facturado (mes)",
   draft_orders: "Pedidos en borrador",
+  receipts_month: "Recepciones de compra (mes)",
+  purchase_orders_pending: "Órdenes de compra pendientes",
+  accounts_receivable: "Cuentas por cobrar (cartera)",
+  overdue_receivables: "Cartera vencida",
+  accounts_payable: "Cuentas por pagar",
+  cash_balance: "Saldo en caja",
   total_products: "Productos totales",
   low_stock: "Con stock bajo",
-  pending_purchase_orders: "Ordenes de compra pendientes",
+  pending_purchase_orders: "Órdenes de compra pendientes",
 };
 
 const STAGE_LABEL: Record<string, string> = {
@@ -43,16 +53,21 @@ const STAGE_LABEL: Record<string, string> = {
 function StatGrid({ data }: { data: Record<string, number> }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {Object.entries(data).map(([key, value]) => (
-        <Card key={key}>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{labels[key] ?? key}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-semibold">{value.toLocaleString("es-CO")}</p>
-          </CardContent>
-        </Card>
-      ))}
+      {Object.entries(data).map(([key, value]) => {
+        const isMoney = ["open_value", "revenue_month", "invoiced_month", "accounts_receivable", "overdue_receivables", "accounts_payable", "cash_balance"].includes(key);
+        return (
+          <Card key={key}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">{labels[key] ?? key}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-semibold">
+                {isMoney ? `$${value.toLocaleString("es-CO")}` : value.toLocaleString("es-CO")}
+              </p>
+            </CardContent>
+          </Card>
+        );
+      })}
     </div>
   );
 }
@@ -102,22 +117,34 @@ export default function ReportsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold">Reportes</h1>
+        <h1 className="text-2xl font-semibold">Reportes ERP</h1>
         <p className="text-sm text-muted-foreground">
-          Indicadores de la operacion. Generado {new Date(report.generated_at).toLocaleString("es-CO")}.
+          Indicadores integrales de la operación: Ventas, Compras, Cartera, CxP, Inventario y Caja. Generado {new Date(report.generated_at).toLocaleString("es-CO")}.
         </p>
       </div>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Pipeline de ventas</h2>
-        <StatGrid
-          data={{
-            total_deals: report.pipeline.total_deals,
-            open_value: report.pipeline.open_value,
-            won_month: report.pipeline.won_month,
-            lost_month: report.pipeline.lost_month,
-          }}
-        />
+        <h2 className="text-lg font-semibold">Ventas</h2>
+        <StatGrid data={report.sales} />
+      </section>
+
+      {report.purchases ? (
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold">Compras</h2>
+          <StatGrid data={report.purchases} />
+        </section>
+      ) : null}
+
+      {report.finance ? (
+        <section className="space-y-3">
+          <h2 className="text-lg font-semibold">Finanzas: Cuentas por cobrar, Cuentas por pagar y Caja</h2>
+          <StatGrid data={report.finance} />
+        </section>
+      ) : null}
+
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold">Inventario</h2>
+        <StatGrid data={report.inventory} />
       </section>
 
       <section className="space-y-3">
@@ -126,13 +153,15 @@ export default function ReportsPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Ventas</h2>
-        <StatGrid data={report.sales} />
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Inventario</h2>
-        <StatGrid data={report.inventory} />
+        <h2 className="text-lg font-semibold">Pipeline comercial</h2>
+        <StatGrid
+          data={{
+            total_deals: report.pipeline.total_deals,
+            open_value: report.pipeline.open_value,
+            won_month: report.pipeline.won_month,
+            lost_month: report.pipeline.lost_month,
+          }}
+        />
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">

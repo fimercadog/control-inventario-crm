@@ -14,6 +14,7 @@ import { PurchaseOrder } from "@/lib/types";
 const STATUS_LABEL: Record<PurchaseOrder["status"], string> = {
   draft: "Borrador",
   ordered: "Ordenada",
+  partial: "Parcial",
   received: "Recibida",
   cancelled: "Cancelada",
 };
@@ -89,7 +90,7 @@ export default function PurchaseOrderDetailPage() {
     return <p className="text-sm text-muted-foreground">Cargando orden...</p>;
   }
 
-  const isDraft = order.status === "draft";
+  const canReceive = order.status === "draft" || order.status === "ordered" || order.status === "partial";
 
   return (
     <div className="space-y-6">
@@ -114,9 +115,11 @@ export default function PurchaseOrderDetailPage() {
                   <th className="w-10 py-2 pr-3 text-right tabular-nums">#</th>
                   <th className="py-2">Producto</th>
                   <th className="py-2">Cantidad</th>
+                  <th className="py-2">Recibido</th>
+                  <th className="py-2">Pendiente</th>
                   <th className="py-2">Costo unitario</th>
                   <th className="py-2">Subtotal</th>
-                  {isDraft ? <th className="py-2" /> : null}
+                  {order.status === "draft" ? <th className="py-2" /> : null}
                 </tr>
               </thead>
               <tbody>
@@ -125,9 +128,11 @@ export default function PurchaseOrderDetailPage() {
                     <td className="py-2 pr-3 text-right tabular-nums text-muted-foreground">{i + 1}</td>
                     <td className="py-2">{item.product ?? `#${item.product_id}`}</td>
                     <td className="py-2">{item.quantity}</td>
+                    <td className="py-2">{item.received_quantity ?? 0}</td>
+                    <td className="py-2">{item.pending_quantity ?? item.quantity}</td>
                     <td className="py-2">${Number(item.unit_cost).toLocaleString("es-CO")}</td>
-                    <td className="py-2">${(item.quantity * Number(item.unit_cost)).toLocaleString("es-CO")}</td>
-                    {isDraft ? (
+                    <td className="py-2">${Number(item.line_total ?? item.quantity * Number(item.unit_cost)).toLocaleString("es-CO")}</td>
+                    {order.status === "draft" ? (
                       <td className="py-2 text-right">
                         <Button variant="ghost" size="sm" onClick={() => removeItem(item.id)}>
                           <Trash2 className="h-4 w-4" />
@@ -148,7 +153,7 @@ export default function PurchaseOrderDetailPage() {
             <span className="text-lg font-semibold">${Number(order.total).toLocaleString("es-CO")}</span>
           </div>
 
-          {isDraft ? (
+          {order.status === "draft" ? (
             <form onSubmit={addItem} className="grid gap-3 border-t pt-4 sm:grid-cols-4">
               <Input placeholder="ID producto" type="number" min={1} required value={form.product_id} onChange={(e) => setForm((f) => ({ ...f, product_id: e.target.value }))} />
               <Input placeholder="Cantidad" type="number" min={1} required value={form.quantity} onChange={(e) => setForm((f) => ({ ...f, quantity: e.target.value }))} />
@@ -159,9 +164,9 @@ export default function PurchaseOrderDetailPage() {
         </CardContent>
       </Card>
 
-      {isDraft ? (
+      {canReceive ? (
         <Button onClick={receiveOrder} disabled={saving || (order.items ?? []).length === 0}>
-          Recibir orden
+          Recibir pendiente
         </Button>
       ) : null}
     </div>

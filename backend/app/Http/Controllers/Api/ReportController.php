@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\Concerns\ResolvesCompany;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
+use App\Models\AccountPayable;
+use App\Models\AccountReceivable;
+use App\Models\CashMovement;
 use App\Models\Deal;
+use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseReceipt;
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -45,7 +50,19 @@ class ReportController extends Controller
             'sales' => [
                 'orders_month' => Order::where('company_id', $companyId)->where('status', 'confirmed')->whereBetween('updated_at', [$monthStart, $monthEnd])->count(),
                 'revenue_month' => (float) Order::where('company_id', $companyId)->where('status', 'confirmed')->whereBetween('updated_at', [$monthStart, $monthEnd])->sum('total'),
+                'invoices_month' => Invoice::where('company_id', $companyId)->whereBetween('created_at', [$monthStart, $monthEnd])->count(),
+                'invoiced_month' => (float) Invoice::where('company_id', $companyId)->whereIn('status', ['issued', 'partially_paid', 'paid'])->whereBetween('created_at', [$monthStart, $monthEnd])->sum('total'),
                 'draft_orders' => Order::where('company_id', $companyId)->where('status', 'draft')->count(),
+            ],
+            'purchases' => [
+                'receipts_month' => PurchaseReceipt::where('company_id', $companyId)->whereBetween('created_at', [$monthStart, $monthEnd])->count(),
+                'purchase_orders_pending' => PurchaseOrder::where('company_id', $companyId)->whereIn('status', ['draft', 'ordered', 'partial'])->count(),
+            ],
+            'finance' => [
+                'accounts_receivable' => (float) AccountReceivable::where('company_id', $companyId)->sum('balance'),
+                'overdue_receivables' => (float) AccountReceivable::where('company_id', $companyId)->where('status', '!=', 'paid')->whereDate('due_date', '<', $today)->sum('balance'),
+                'accounts_payable' => (float) AccountPayable::where('company_id', $companyId)->sum('balance'),
+                'cash_balance' => (float) CashMovement::where('company_id', $companyId)->sum('amount'),
             ],
             'inventory' => [
                 'total_products' => $products()->count(),

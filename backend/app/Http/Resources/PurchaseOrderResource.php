@@ -18,8 +18,13 @@ class PurchaseOrderResource extends JsonResource
             'status' => $this->status,
             'order_date' => $this->order_date?->toDateString(),
             'expected_date' => $this->expected_date?->toDateString(),
+            'subtotal' => $this->subtotal,
+            'discount' => $this->discount,
+            'tax' => $this->tax,
             'total' => $this->total,
+            'notes' => $this->notes,
             'items' => PurchaseOrderItemResource::collection($this->whenLoaded('items')),
+            'receipts' => PurchaseReceiptResource::collection($this->whenLoaded('receipts')),
             'created_at' => $this->created_at,
         ];
     }

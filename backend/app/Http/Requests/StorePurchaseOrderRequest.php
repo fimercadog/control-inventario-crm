@@ -15,6 +15,8 @@ class StorePurchaseOrderRequest extends ApiFormRequest
             'warehouse_id' => ['required', Rule::exists('warehouses', 'id')->where('company_id', $companyId)],
             'order_date' => ['nullable', 'date'],
             'expected_date' => ['nullable', 'date'],
+            'notes' => ['nullable', 'string'],
+            'idempotency_key' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

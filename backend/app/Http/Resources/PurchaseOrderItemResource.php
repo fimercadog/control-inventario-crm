@@ -15,7 +15,12 @@ class PurchaseOrderItemResource extends JsonResource
             'product' => $this->product_name ?? $this->whenLoaded('product', fn () => $this->product?->name),
             'sku' => $this->sku,
             'quantity' => $this->quantity,
+            'received_quantity' => $this->received_quantity,
+            'pending_quantity' => method_exists($this->resource, 'pendingQuantity') ? $this->pendingQuantity() : null,
             'unit_cost' => $this->unit_cost,
+            'discount' => $this->discount,
+            'tax' => $this->tax,
+            'line_total' => $this->line_total,
         ];
     }
 }

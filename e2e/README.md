@@ -18,6 +18,7 @@ PHP ≥ 8.4 en el PATH o instalado por winget (`PHP.PHP.*`) — el script lo loc
 | `python e2e/smoke_demo_veterinaria.py` | **Smoke de la demo.** Login Super Admin / Veterinario/a / Recepción · separación de permisos (Recepción no llega a historia clínica ni recetas) · Pacientes · Agenda · Historia clínica · registrar una cita · abrir una receta en PDF · Dashboard (fila Clínica) · Reportes clínicos · portal público "Solicita tu cita". |
 | `python e2e/veterinaria_flujo_clinico.py` | **Flujo clínico completo (12 pasos).** `/solicitar-cita` → Lead(source=appointment) → recepción → propietario → paciente → cita (verifica hora sin corrimiento de zona) → confirmar → atendida → consulta SOAP → vacuna con producto (descuenta stock) → receta + PDF real → dashboard → reportes clínicos. Navegador en zona `America/Bogota`. |
 | `python e2e/catalogo_publico.py` | **Catálogo público.** `/catalogo` → filtro por categoría → ficha → "Agregar a cotización" → `/catalogo/cotizacion` → enviar → aparece en `/app/cotizaciones` como borrador con badge "Sitio web"; el propietario queda creado. |
+| `python e2e/erp_pyme_v1.py` | **ERP Pyme V1.** Login → pantallas ERP → compra parcial → inventario → CxP → pago → caja → factura interna → CxC → pagos parciales → idempotencia → cierre de caja → permisos. |
 
 ## Cómo corren
 

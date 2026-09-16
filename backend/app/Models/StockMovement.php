@@ -12,7 +12,10 @@ class StockMovement extends Model
     /** @use HasFactory<StockMovementFactory> */
     use HasFactory;
 
-    protected $fillable = ['company_id', 'product_id', 'warehouse_id', 'type', 'quantity', 'reason', 'reference'];
+    protected $fillable = [
+        'company_id', 'user_id', 'product_id', 'warehouse_id', 'type', 'quantity',
+        'reason', 'reference', 'idempotency_key',
+    ];
 
     public function company(): BelongsTo
     {

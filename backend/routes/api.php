@@ -1,11 +1,16 @@
 <?php
 
 use App\Http\Controllers\Api\ActivityController;
+use App\Http\Controllers\Api\AccountPayableController;
+use App\Http\Controllers\Api\AccountReceivableController;
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuditLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\BreedController;
+use App\Http\Controllers\Api\CashMovementController;
+use App\Http\Controllers\Api\CashRegisterController;
+use App\Http\Controllers\Api\CashSessionController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\ClientNoteController;
@@ -19,9 +24,11 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DealController;
 use App\Http\Controllers\Api\DiagnosisController;
 use App\Http\Controllers\Api\ExportController;
+use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\LeadController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PortalAppointmentController;
 use App\Http\Controllers\Api\PortalAuthController;
 use App\Http\Controllers\Api\PrescriptionController;
@@ -31,6 +38,7 @@ use App\Http\Controllers\Api\PublicAppointmentController;
 use App\Http\Controllers\Api\PublicCatalogController;
 use App\Http\Controllers\Api\PublicSchedulingController;
 use App\Http\Controllers\Api\PurchaseOrderController;
+use App\Http\Controllers\Api\PurchaseReceiptController;
 use App\Http\Controllers\Api\QuoteController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RoleController;
@@ -166,12 +174,26 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/purchase-orders/{purchase_order}/items', [PurchaseOrderController::class, 'addItem'])->middleware('can:purchase_orders.manage');
     Route::delete('/purchase-orders/{purchase_order}/items/{item}', [PurchaseOrderController::class, 'removeItem'])->middleware('can:purchase_orders.manage');
     Route::post('/purchase-orders/{purchase_order}/receive', [PurchaseOrderController::class, 'receive'])->middleware('can:purchase_orders.manage');
+    Route::apiResource('purchase-receipts', PurchaseReceiptController::class)->only(['index', 'show', 'store'])->middleware('can:purchase_receipts.manage');
 
     // Puente CRM <-> Inventario: un pedido consume stock al confirmarse.
     Route::apiResource('orders', OrderController::class)->middleware('can:orders.manage');
     Route::post('/orders/{order}/items', [OrderController::class, 'addItem'])->middleware('can:orders.manage');
     Route::delete('/orders/{order}/items/{item}', [OrderController::class, 'removeItem'])->middleware('can:orders.manage');
     Route::post('/orders/{order}/confirm', [OrderController::class, 'confirm'])->middleware('can:orders.manage');
+
+    // ERP Pyme V1: facturacion interna, cartera, pagos y caja.
+    Route::apiResource('invoices', InvoiceController::class)->middleware('can:invoices.manage');
+    Route::post('/invoices/{invoice}/issue', [InvoiceController::class, 'issue'])->middleware('can:invoices.manage');
+    Route::post('/invoices/{invoice}/void', [InvoiceController::class, 'void'])->middleware('can:invoices.manage');
+    Route::get('/invoices/{invoice}/print', [InvoiceController::class, 'print'])->middleware('can:invoices.manage');
+    Route::apiResource('accounts-receivable', AccountReceivableController::class)->only(['index', 'show'])->middleware('can:accounts_receivable.view');
+    Route::apiResource('accounts-payable', AccountPayableController::class)->only(['index', 'show'])->middleware('can:accounts_payable.view');
+    Route::apiResource('payments', PaymentController::class)->only(['index', 'show', 'store'])->middleware('can:payments.manage');
+    Route::apiResource('cash-registers', CashRegisterController::class)->middleware('can:cash.manage');
+    Route::apiResource('cash-sessions', CashSessionController::class)->only(['index', 'show', 'store'])->middleware('can:cash.manage');
+    Route::post('/cash-sessions/{cash_session}/close', [CashSessionController::class, 'close'])->middleware('can:cash.manage');
+    Route::apiResource('cash-movements', CashMovementController::class)->only(['index', 'show'])->middleware('can:cash.manage');
 
     // --- Clínica veterinaria ---
     Route::apiResource('services', ServiceController::class)->middleware('can:services.manage');
@@ -211,6 +233,6 @@ Route::middleware('auth:sanctum')->group(function (): void {
 
     // El permiso por recurso se valida dentro del controlador.
     Route::get('/exports/{resource}.{format}', ExportController::class)
-        ->whereIn('resource', ['clients', 'deals', 'products', 'suppliers', 'stock-movements', 'purchase-orders', 'orders', 'audit-logs'])
+        ->whereIn('resource', ['clients', 'deals', 'products', 'suppliers', 'stock-movements', 'purchase-orders', 'orders', 'invoices', 'accounts-receivable', 'accounts-payable', 'payments', 'cash-movements', 'audit-logs'])
         ->whereIn('format', ['csv', 'pdf']);
 });

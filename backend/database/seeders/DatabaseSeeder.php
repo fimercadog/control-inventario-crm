@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Appointment;
 use App\Models\AuditLog;
 use App\Models\Brand;
+use App\Models\CashRegister;
 use App\Models\Breed;
 use App\Models\Category;
 use App\Models\Client;
@@ -81,6 +82,7 @@ class DatabaseSeeder extends Seeder
 
         [$products, $publicProducts] = $this->seedInventoryCatalog($company);
         $suppliers = $this->seedSuppliers($company);
+        $this->seedCashRegisters($company);
         $segments = $this->seedSegments($company);
         $species = $this->seedSpeciesAndBreeds($company);
         $services = $this->seedServices($company);
@@ -115,7 +117,9 @@ class DatabaseSeeder extends Seeder
         $permissionNames = [
             'dashboard.view', 'leads.view', 'clients.manage', 'clients.delete', 'deals.manage', 'activities.manage',
             'products.manage', 'warehouses.manage', 'stock.manage', 'suppliers.manage', 'purchase_orders.manage',
-            'orders.manage', 'reports.view', 'users.manage', 'roles.manage', 'audit.view', 'settings.manage',
+            'purchase_receipts.manage', 'orders.manage', 'invoices.manage', 'accounts_receivable.view',
+            'accounts_payable.view', 'payments.manage', 'cash.manage', 'reports.view',
+            'users.manage', 'roles.manage', 'audit.view', 'settings.manage',
             'services.manage', 'patients.manage', 'appointments.manage', 'medical_records.manage',
             'vaccinations.manage', 'prescriptions.manage', 'procedures.manage', 'clinical_reports.view',
         ];
@@ -135,10 +139,18 @@ class DatabaseSeeder extends Seeder
             'Veterinario/a' => array_merge(['dashboard.view', 'clients.manage', 'orders.manage', 'reports.view'], $clinical),
             'Recepción' => [
                 'dashboard.view', 'leads.view', 'clients.manage', 'patients.manage', 'services.manage',
-                'appointments.manage', 'orders.manage', 'reports.view',
+                'appointments.manage', 'orders.manage', 'invoices.manage', 'accounts_receivable.view',
+                'payments.manage', 'cash.manage', 'reports.view',
             ],
-            'Ventas' => ['dashboard.view', 'leads.view', 'clients.manage', 'deals.manage', 'activities.manage', 'orders.manage', 'reports.view'],
-            'Inventario' => ['dashboard.view', 'products.manage', 'warehouses.manage', 'stock.manage', 'suppliers.manage', 'purchase_orders.manage', 'orders.manage', 'reports.view'],
+            'Ventas' => [
+                'dashboard.view', 'leads.view', 'clients.manage', 'deals.manage', 'activities.manage',
+                'orders.manage', 'invoices.manage', 'accounts_receivable.view', 'payments.manage', 'cash.manage', 'reports.view',
+            ],
+            'Inventario' => [
+                'dashboard.view', 'products.manage', 'warehouses.manage', 'stock.manage', 'suppliers.manage',
+                'purchase_orders.manage', 'purchase_receipts.manage', 'accounts_payable.view', 'payments.manage',
+                'cash.manage', 'orders.manage', 'reports.view',
+            ],
             'Usuario' => ['dashboard.view'],
         ];
         foreach ($roles as $roleName => $rolePermissions) {
@@ -257,6 +269,14 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Provet Colombia SAS', 'contact_name' => 'Marcela Durán', 'email' => 'ventas@provet.example'],
             ['name' => 'Insumos del Campo Mayorista', 'contact_name' => 'Ricardo Peña', 'email' => 'mayoristas@insumosdelcampo.example'],
         ])->map(fn ($d) => Supplier::firstOrCreate(['company_id' => $company->id, 'name' => $d['name']], $d + ['status' => 'active']));
+    }
+
+    private function seedCashRegisters(Company $company): void
+    {
+        CashRegister::firstOrCreate(
+            ['company_id' => $company->id, 'name' => 'Caja principal'],
+            ['status' => 'active'],
+        );
     }
 
     /** @return array<string,Segment> */

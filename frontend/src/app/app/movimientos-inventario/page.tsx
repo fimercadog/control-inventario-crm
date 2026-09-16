@@ -6,7 +6,18 @@ import { Badge } from "@/components/ui/badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { StockMovement } from "@/lib/types";
 
-const TYPE_LABEL: Record<string, string> = { in: "Entrada", out: "Salida", adjustment: "Ajuste" };
+const TYPE_LABEL: Record<string, string> = {
+  in: "Entrada",
+  out: "Salida",
+  adjustment: "Ajuste",
+  COMPRA: "Compra",
+  VENTA: "Venta",
+  DEVOLUCION_COMPRA: "Devolución compra",
+  DEVOLUCION_VENTA: "Devolución venta",
+  AJUSTE_ENTRADA: "Ajuste entrada",
+  AJUSTE_SALIDA: "Ajuste salida",
+  TRASLADO: "Traslado",
+};
 
 const columns: AppColumnDef<StockMovement>[] = [
   { header: "Producto", cell: ({ row }) => row.original.product?.name ?? `#${row.original.product_id}` },
@@ -29,6 +40,8 @@ const fields: CrudField[] = [
       { label: "Entrada", value: "in" },
       { label: "Salida", value: "out" },
       { label: "Ajuste", value: "adjustment" },
+      { label: "Ajuste entrada", value: "AJUSTE_ENTRADA" },
+      { label: "Ajuste salida", value: "AJUSTE_SALIDA" },
     ],
   },
   { name: "quantity", label: "Cantidad", type: "number", required: true, min: 1, hint: "Siempre positiva; el tipo define si suma o resta" },

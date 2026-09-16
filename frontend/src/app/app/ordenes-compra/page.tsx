@@ -11,6 +11,7 @@ import { PurchaseOrder } from "@/lib/types";
 const STATUS_LABEL: Record<PurchaseOrder["status"], string> = {
   draft: "Borrador",
   ordered: "Ordenada",
+  partial: "Parcial",
   received: "Recibida",
   cancelled: "Cancelada",
 };
@@ -28,6 +29,7 @@ const fields: CrudField[] = [
   { name: "warehouse_id", label: "ID bodega", type: "number", required: true, min: 1, hint: "Bodega que recibira la mercancia" },
   { name: "order_date", label: "Fecha de orden", type: "date", omitWhenEmpty: true },
   { name: "expected_date", label: "Fecha esperada", type: "date", omitWhenEmpty: true },
+  { name: "notes", label: "Observaciones", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
 ];
 
 export default function PurchaseOrdersPage() {

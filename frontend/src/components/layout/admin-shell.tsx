@@ -115,20 +115,27 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    label: "Propietarios y comercial",
+    label: "CRM",
     items: [
-      { href: "/app/leads", label: "Solicitudes", icon: Inbox, permissions: ["leads.view"] },
-      { href: "/app/clientes", label: "Propietarios", icon: Users, permissions: ["clients.manage"] },
+      { href: "/app/leads", label: "Solicitudes (Leads)", icon: Inbox, permissions: ["leads.view"] },
+      { href: "/app/clientes", label: "Clientes / Propietarios", icon: Users, permissions: ["clients.manage"] },
       { href: "/app/contactos", label: "Contactos", icon: Contact2, permissions: ["clients.manage"] },
       { href: "/app/segmentos", label: "Segmentos", icon: Tags, permissions: ["clients.manage"] },
       { href: "/app/notas", label: "Notas", icon: StickyNote, permissions: ["clients.manage"] },
       { href: "/app/deals", label: "Planes y oportunidades", icon: Handshake, permissions: ["deals.manage"] },
-      { href: "/app/cotizaciones", label: "Presupuestos", icon: FileText, permissions: ["deals.manage"] },
+      { href: "/app/cotizaciones", label: "Cotizaciones / Presupuestos", icon: FileText, permissions: ["deals.manage"] },
       { href: "/app/actividades", label: "Actividades", icon: ListChecks, permissions: ["activities.manage"] },
       { href: "/app/tareas", label: "Tareas", icon: ListTodo, permissions: ["activities.manage"] },
       { href: "/app/seguimientos", label: "Seguimientos", icon: CalendarClock, permissions: ["activities.manage"] },
       { href: "/app/calendario", label: "Calendario", icon: CalendarDays, permissions: ["activities.manage"] },
       { href: "/app/pedidos", label: "Pedidos", icon: Receipt, permissions: ["orders.manage"] },
+    ],
+  },
+  {
+    label: "Ventas",
+    items: [
+      { href: "/app/facturas", label: "Facturas", icon: FileText, permissions: ["invoices.manage"] },
+      { href: "/app/pagos", label: "Pagos y abonos", icon: Receipt, permissions: ["payments.manage"] },
     ],
   },
   {
@@ -142,8 +149,24 @@ const navGroups: NavGroup[] = [
       { href: "/app/movimientos-inventario", label: "Movimientos", icon: ArrowLeftRight, permissions: ["stock.manage"] },
       { href: "/app/transferencias", label: "Transferencias", icon: Repeat, permissions: ["stock.manage"] },
       { href: "/app/alertas-stock", label: "Alertas de stock", icon: AlertTriangle, permissions: ["products.manage"] },
+    ],
+  },
+  {
+    label: "Compras",
+    items: [
       { href: "/app/proveedores", label: "Proveedores", icon: Truck, permissions: ["suppliers.manage"] },
       { href: "/app/ordenes-compra", label: "Ordenes de compra", icon: ShoppingCart, permissions: ["purchase_orders.manage"] },
+      { href: "/app/recepciones-compra", label: "Recepciones", icon: ClipboardList, permissions: ["purchase_receipts.manage"] },
+    ],
+  },
+  {
+    label: "Finanzas",
+    items: [
+      { href: "/app/cuentas-por-cobrar", label: "Cuentas por cobrar", icon: Receipt, permissions: ["accounts_receivable.view"] },
+      { href: "/app/cuentas-por-pagar", label: "Cuentas por pagar", icon: FileText, permissions: ["accounts_payable.view"] },
+      { href: "/app/cajas", label: "Cajas", icon: Warehouse, permissions: ["cash.manage"] },
+      { href: "/app/sesiones-caja", label: "Sesiones de caja", icon: ClipboardList, permissions: ["cash.manage"] },
+      { href: "/app/movimientos-caja", label: "Movimientos de caja", icon: ArrowLeftRight, permissions: ["cash.manage"] },
     ],
   },
   {

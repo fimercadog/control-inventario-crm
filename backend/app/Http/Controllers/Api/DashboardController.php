@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\Concerns\ResolvesCompany;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\AuditLog;
+use App\Models\AccountPayable;
+use App\Models\AccountReceivable;
+use App\Models\CashSession;
 use App\Models\Client;
 use App\Models\ClinicalApplication;
 use App\Models\Consultation;
@@ -14,6 +17,7 @@ use App\Models\Order;
 use App\Models\Patient;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseReceipt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -61,6 +65,12 @@ class DashboardController extends Controller
                 'pending_purchase_orders' => PurchaseOrder::where('company_id', $companyId)->whereIn('status', ['draft', 'ordered'])->count(),
                 'orders_confirmed_month' => Order::where('company_id', $companyId)->where('status', 'confirmed')->whereBetween('updated_at', [$monthStart, $today->copy()->endOfDay()])->count(),
                 'revenue_month' => (float) Order::where('company_id', $companyId)->where('status', 'confirmed')->whereBetween('updated_at', [$monthStart, $today->copy()->endOfDay()])->sum('total'),
+                'sales_month' => (float) AccountReceivable::where('company_id', $companyId)->whereBetween('created_at', [$monthStart, $today->copy()->endOfDay()])->sum('original_amount'),
+                'purchases_month' => (float) PurchaseReceipt::where('company_id', $companyId)->whereBetween('created_at', [$monthStart, $today->copy()->endOfDay()])->with('items')->get()->sum(fn ($receipt) => $receipt->items->sum('line_total')),
+                'accounts_receivable' => (float) AccountReceivable::where('company_id', $companyId)->sum('balance'),
+                'overdue_receivables' => (float) AccountReceivable::where('company_id', $companyId)->where('status', '!=', 'paid')->whereDate('due_date', '<', $today)->sum('balance'),
+                'accounts_payable' => (float) AccountPayable::where('company_id', $companyId)->sum('balance'),
+                'cash_open_expected' => (float) CashSession::where('company_id', $companyId)->where('status', 'open')->sum('expected_amount'),
             ],
             'deltas' => [
                 'revenue' => $this->delta(
@@ -83,6 +93,15 @@ class DashboardController extends Controller
                 ->orderByDesc('stock_on_hand')
                 ->limit(6)
                 ->get(['id', 'name', 'sku']),
+            'top_sold_products' => DB::table('invoice_items')
+                ->join('invoices', 'invoices.id', '=', 'invoice_items.invoice_id')
+                ->where('invoices.company_id', $companyId)
+                ->whereIn('invoices.status', ['issued', 'partially_paid', 'paid'])
+                ->selectRaw('invoice_items.product_name as name, sum(invoice_items.quantity) as units, sum(invoice_items.line_total) as revenue')
+                ->groupBy('invoice_items.product_name')
+                ->orderByDesc('units')
+                ->limit(6)
+                ->get(),
             'trends' => [
                 'revenue_monthly' => $this->revenueMonthly($companyId, $rangeStart),
                 'deals_monthly' => $this->dealsMonthly($companyId, $rangeStart),

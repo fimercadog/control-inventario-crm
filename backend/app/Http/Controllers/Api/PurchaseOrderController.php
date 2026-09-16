@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\PurchaseOrderResource;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
-use App\Models\StockMovement;
 use App\Services\AuditService;
+use App\Services\PurchaseReceiptService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -21,7 +21,7 @@ class PurchaseOrderController extends BaseCrudController
 
     protected string $resource = PurchaseOrderResource::class;
 
-    protected array $with = ['supplier', 'warehouse', 'items.product'];
+    protected array $with = ['supplier', 'warehouse', 'items.product', 'receipts'];
 
     protected array $searchable = [];
 
@@ -51,10 +51,17 @@ class PurchaseOrderController extends BaseCrudController
             'product_id' => ['required', Rule::exists('products', 'id')->where('company_id', $purchase_order->company_id)],
             'quantity' => ['required', 'integer', 'min:1'],
             'unit_cost' => ['required', 'numeric', 'min:0'],
+            'discount' => ['nullable', 'numeric', 'min:0'],
+            'tax' => ['nullable', 'numeric', 'min:0'],
         ]);
 
         $product = Product::find($data['product_id']);
-        $purchase_order->items()->create($data + ['product_name' => $product?->name, 'sku' => $product?->sku]);
+        $lineTotal = round(((int) $data['quantity'] * (float) $data['unit_cost']) - (float) ($data['discount'] ?? 0) + (float) ($data['tax'] ?? 0), 2);
+        $purchase_order->items()->create($data + [
+            'product_name' => $product?->name,
+            'sku' => $product?->sku,
+            'line_total' => $lineTotal,
+        ]);
         $this->recalculateTotal($purchase_order);
 
         return new PurchaseOrderResource($purchase_order->load($this->with));
@@ -71,26 +78,28 @@ class PurchaseOrderController extends BaseCrudController
         return new PurchaseOrderResource($purchase_order->load($this->with));
     }
 
-    /** Marca la orden como recibida y genera las entradas de stock, una vez. */
-    public function receive(Request $request, PurchaseOrder $purchase_order, AuditService $audit)
+    /** Compatibilidad: si no mandan items, recibe todo lo pendiente usando el flujo ERP parcial. */
+    public function receive(Request $request, PurchaseOrder $purchase_order, AuditService $audit, PurchaseReceiptService $service)
     {
         abort_unless($purchase_order->company_id === $this->companyId($request), 404);
         abort_unless($purchase_order->status !== 'received', 422, 'Esta orden ya fue recibida.');
         abort_if($purchase_order->items()->count() === 0, 422, 'La orden no tiene lineas.');
 
-        foreach ($purchase_order->items()->with('product')->get() as $item) {
-            StockMovement::create([
-                'company_id' => $purchase_order->company_id,
-                'product_id' => $item->product_id,
-                'warehouse_id' => $purchase_order->warehouse_id,
-                'type' => 'in',
-                'quantity' => $item->quantity,
-                'reason' => 'Recepcion de orden de compra',
-                'reference' => 'purchase_order:'.$purchase_order->id,
-            ]);
-        }
+        $data = $request->validate([
+            'received_at' => ['nullable', 'date'],
+            'notes' => ['nullable', 'string'],
+            'idempotency_key' => ['nullable', 'string', 'max:255'],
+            'items' => ['nullable', 'array'],
+            'items.*.purchase_order_item_id' => ['required_with:items', 'integer'],
+            'items.*.quantity' => ['required_with:items', 'integer', 'min:1'],
+        ]);
+        $data['items'] ??= $purchase_order->items()->get()->map(fn ($item) => [
+            'purchase_order_item_id' => $item->id,
+            'quantity' => $item->pendingQuantity(),
+        ])->filter(fn ($item) => $item['quantity'] > 0)->values()->all();
 
-        $purchase_order->update(['status' => 'received']);
+        $receipt = $service->confirm($purchase_order, $data, $request->user()->id);
+        $audit->record('purchase_receipt.confirmed', $receipt, $request);
         $audit->record('received', $purchase_order, $request);
 
         return new PurchaseOrderResource($purchase_order->load($this->with));
@@ -104,7 +113,14 @@ class PurchaseOrderController extends BaseCrudController
 
     private function recalculateTotal(PurchaseOrder $purchaseOrder): void
     {
-        $total = $purchaseOrder->items()->selectRaw('COALESCE(SUM(quantity * unit_cost), 0) as total')->value('total');
-        $purchaseOrder->update(['total' => $total]);
+        $totals = $purchaseOrder->items()
+            ->selectRaw('COALESCE(SUM(quantity * unit_cost), 0) as subtotal, COALESCE(SUM(discount), 0) as discount, COALESCE(SUM(tax), 0) as tax, COALESCE(SUM(line_total), 0) as total')
+            ->first();
+        $purchaseOrder->update([
+            'subtotal' => $totals->subtotal ?? 0,
+            'discount' => $totals->discount ?? 0,
+            'tax' => $totals->tax ?? 0,
+            'total' => $totals->total ?? 0,
+        ]);
     }
 }

@@ -8,6 +8,7 @@ import {
   Boxes,
   CalendarClock,
   ChartPie,
+  FileText,
   Filter,
   Handshake,
   Minus,
@@ -23,6 +24,7 @@ import {
   TrendingUp,
   UserPlus,
   Users,
+  Warehouse,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -639,31 +641,66 @@ export default function DashboardPage() {
         </motion.div>
       ) : null}
 
+      {/* ERP Pyme V1: Finanzas, Ventas y Compras */}
+      <motion.div variants={item}>
+        <SectionLabel>Finanzas y Operación ERP</SectionLabel>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <KpiCard
+            label="Ventas del mes (Facturación)"
+            value={m.sales_month ?? m.revenue_month ?? 0}
+            icon={TrendingUp}
+            tone={TONE.indigo}
+            hint="Total emitido en facturas"
+          />
+          <KpiCard
+            label="Compras del mes"
+            value={m.purchases_month ?? 0}
+            icon={ShoppingCart}
+            tone={TONE.sky}
+            hint="Recepciones confirmadas"
+          />
+          <KpiCard
+            label="Cuentas por cobrar (Cartera)"
+            value={m.accounts_receivable ?? 0}
+            icon={Receipt}
+            tone={TONE.green}
+            hint={m.overdue_receivables ? `Vencida: $${Math.round(m.overdue_receivables).toLocaleString("es-CO")}` : "Al día"}
+          />
+          <KpiCard
+            label="Cuentas por pagar"
+            value={m.accounts_payable ?? 0}
+            icon={FileText}
+            tone={TONE.amber}
+            hint="Obligaciones con proveedores"
+          />
+        </div>
+      </motion.div>
+
       {/* KPI hero */}
       <motion.div variants={item}>
-        <div className={`grid gap-3 sm:grid-cols-2 ${base ? "lg:grid-cols-2" : "lg:grid-cols-5"}`}>
+        <div className={`grid gap-3 sm:grid-cols-2 ${base ? "lg:grid-cols-2" : "lg:grid-cols-4"}`}>
           <KpiCard
-            label="Ingresos del mes"
+            label="Ingresos pedidos mostrador"
             value={m.revenue_month ?? 0}
             icon={TrendingUp}
             tone={TONE.indigo}
             delta={data.deltas.revenue}
-            emphasis
           />
-          <KpiCard label="Clientes" value={m.total_clients ?? 0} icon={Users} tone={TONE.green} />
-          {!base && (
-            <>
-              <KpiCard
-                label="Deals abiertos"
-                value={m.open_deals ?? 0}
-                icon={Handshake}
-                tone={TONE.sky}
-                hint={money(m.open_deals_value ?? 0)}
-              />
-              <KpiCard label="Deals ganados (mes)" value={m.deals_won_month ?? 0} icon={Trophy} tone={TONE.wine} delta={data.deltas.deals_won} />
-              <KpiCard label="Ordenes de compra pendientes" value={m.pending_purchase_orders ?? 0} icon={ShoppingCart} tone={TONE.amber} />
-            </>
-          )}
+          <KpiCard label="Clientes registrados" value={m.total_clients ?? 0} icon={Users} tone={TONE.green} />
+          <KpiCard
+            label="Caja (Saldo esperado sesión)"
+            value={m.cash_open_expected ?? 0}
+            icon={Warehouse}
+            tone={TONE.violet}
+            hint="Sesiones abiertas activas"
+          />
+          <KpiCard
+            label="Alertas de stock bajo"
+            value={m.low_stock_products ?? 0}
+            icon={Boxes}
+            tone={TONE.red}
+            hint="Productos bajo punto reorden"
+          />
         </div>
       </motion.div>
 

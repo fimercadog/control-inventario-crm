@@ -142,7 +142,7 @@ export type StockMovement = {
   product?: Product;
   warehouse_id: number;
   warehouse?: Warehouse;
-  type: "in" | "out" | "adjustment";
+  type: "in" | "out" | "adjustment" | "COMPRA" | "VENTA" | "DEVOLUCION_COMPRA" | "DEVOLUCION_VENTA" | "AJUSTE_ENTRADA" | "AJUSTE_SALIDA" | "TRASLADO";
   quantity: number;
   reason?: string | null;
   reference?: string | null;
@@ -203,7 +203,12 @@ export type PurchaseOrderLineItem = {
   product?: string | null;
   sku?: string | null;
   quantity: number;
+  received_quantity?: number;
+  pending_quantity?: number;
   unit_cost: number;
+  discount?: number;
+  tax?: number;
+  line_total?: number;
 };
 
 export type PurchaseOrder = {
@@ -212,11 +217,121 @@ export type PurchaseOrder = {
   supplier?: Supplier;
   warehouse_id: number;
   warehouse?: Warehouse;
-  status: "draft" | "ordered" | "received" | "cancelled";
+  status: "draft" | "ordered" | "partial" | "received" | "cancelled";
   order_date?: string | null;
   expected_date?: string | null;
+  subtotal?: number;
+  discount?: number;
+  tax?: number;
   total: number;
+  notes?: string | null;
   items?: PurchaseOrderLineItem[];
+};
+
+export type PurchaseReceipt = {
+  id: number;
+  purchase_order_id: number;
+  warehouse_id: number;
+  warehouse?: Warehouse;
+  received_at?: string | null;
+  status: "draft" | "confirmed" | "void";
+  notes?: string | null;
+  created_at: string;
+};
+
+export type Invoice = {
+  id: number;
+  number: string;
+  client_id: number;
+  client?: Client;
+  order_id?: number | null;
+  warehouse_id?: number | null;
+  warehouse?: Warehouse;
+  issue_date?: string | null;
+  due_date?: string | null;
+  status: "draft" | "issued" | "partially_paid" | "paid" | "void";
+  subtotal: number;
+  discount: number;
+  tax: number;
+  total: number;
+  notes?: string | null;
+  receivable?: AccountReceivable;
+  created_at: string;
+};
+
+export type AccountReceivable = {
+  id: number;
+  client_id: number;
+  client?: Client;
+  invoice_id: number;
+  invoice?: string | null;
+  original_amount: number;
+  paid_amount: number;
+  balance: number;
+  due_date?: string | null;
+  status: "pending" | "partial" | "paid" | "overdue";
+  created_at: string;
+};
+
+export type AccountPayable = {
+  id: number;
+  supplier_id: number;
+  supplier?: Supplier;
+  purchase_order_id?: number | null;
+  purchase_receipt_id?: number | null;
+  original_amount: number;
+  paid_amount: number;
+  balance: number;
+  due_date?: string | null;
+  status: "pending" | "partial" | "paid" | "overdue";
+  created_at: string;
+};
+
+export type Payment = {
+  id: number;
+  direction: "in" | "out";
+  paid_at: string;
+  amount: number;
+  method: string;
+  reference?: string | null;
+  notes?: string | null;
+  target_type: "receivable" | "payable";
+  target_id: number;
+  cash_session_id?: number | null;
+  created_at: string;
+};
+
+export type CashRegister = {
+  id: number;
+  name: string;
+  status: string;
+  created_at: string;
+};
+
+export type CashSession = {
+  id: number;
+  cash_register_id: number;
+  register?: CashRegister;
+  opened_at?: string | null;
+  closed_at?: string | null;
+  opening_amount: number;
+  expected_amount: number;
+  closing_amount?: number | null;
+  difference?: number | null;
+  status: "open" | "closed";
+  notes?: string | null;
+  created_at: string;
+};
+
+export type CashMovement = {
+  id: number;
+  cash_session_id: number;
+  type: "in" | "out";
+  amount: number;
+  method: string;
+  reference?: string | null;
+  notes?: string | null;
+  created_at: string;
 };
 
 export type Role = {
