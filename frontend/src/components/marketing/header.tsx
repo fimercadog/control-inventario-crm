@@ -89,6 +89,8 @@ export function MarketingHeader() {
 
       {open ? (
         <div className="border-t border-border bg-background px-4 py-4 xl:hidden">
+          {/* Navegacion de paginas -- "Iniciar sesion" queda fuera de esta
+              lista, no es una pagina del sitio sino el acceso al panel. */}
           <nav className="flex flex-col gap-1" aria-label="Movil">
             {nav.map(([label, href]) => (
               <Link
@@ -104,17 +106,17 @@ export function MarketingHeader() {
                 {label}
               </Link>
             ))}
+          </nav>
+          <div className="mt-3 flex flex-col gap-3 border-t border-border pt-3">
             <Link
               href="/login"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="rounded-lg px-3 py-2 text-sm text-muted-foreground hover:bg-accent"
+              className="text-center text-sm font-medium text-muted-foreground hover:text-foreground"
             >
               Iniciar sesión
             </Link>
-          </nav>
-          <div className="mt-3">
             <CtaLink href="/agendar-cita" className="w-full" variant="cta">
               Agendar cita
             </CtaLink>
