@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { LogIn, Menu, X } from "lucide-react";
 import { ClinicWordmark } from "@/components/marketing/clinic-brand";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { cn } from "@/lib/utils";
@@ -74,7 +74,18 @@ export function MarketingHeader() {
           </CtaLink>
         </div>
 
+        {/* En mobile "Iniciar sesion" vive en la barra, no adentro del menu --
+            siempre visible, no depende de abrir el hamburguesa. */}
         <div className="flex items-center gap-2 xl:hidden">
+          <Link
+            href="/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Iniciar sesión"
+            className="grid size-10 place-items-center rounded-full border border-border text-[#20292f] transition-colors hover:text-primary"
+          >
+            <LogIn className="size-4.5" />
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -89,8 +100,8 @@ export function MarketingHeader() {
 
       {open ? (
         <div className="border-t border-border bg-background px-4 py-4 xl:hidden">
-          {/* Navegacion de paginas -- "Iniciar sesion" queda fuera de esta
-              lista, no es una pagina del sitio sino el acceso al panel. */}
+          {/* "Iniciar sesion" ya vive en la barra (icono junto al hamburguesa),
+              no se repite aca adentro. */}
           <nav className="flex flex-col gap-1" aria-label="Movil">
             {nav.map(([label, href]) => (
               <Link
@@ -107,16 +118,7 @@ export function MarketingHeader() {
               </Link>
             ))}
           </nav>
-          <div className="mt-3 flex flex-col gap-3 border-t border-border pt-3">
-            <Link
-              href="/login"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setOpen(false)}
-              className="text-center text-sm font-medium text-muted-foreground hover:text-foreground"
-            >
-              Iniciar sesión
-            </Link>
+          <div className="mt-3 border-t border-border pt-3">
             <CtaLink href="/agendar-cita" className="w-full" variant="cta">
               Agendar cita
             </CtaLink>
