@@ -16,7 +16,6 @@ const nav = [
   ["Urgencias", "/urgencias"],
   ["Nosotros", "/nosotros"],
   ["Blog", "/blog"],
-  ["Agendar cita", "/agendar-cita"],
   ["Contacto", "/contacto"],
 ];
 
@@ -35,14 +34,14 @@ export function MarketingHeader() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b transition-colors",
-        scrolled ? "border-border bg-background/90 backdrop-blur" : "border-transparent bg-background",
+        "sticky top-0 z-40 bg-white font-nav transition-shadow",
+        scrolled && "shadow-[0_0_30px_0_rgba(7,51,84,0.17)]",
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <ClinicWordmark />
 
-        <nav className="hidden items-center gap-6 lg:flex" aria-label="Principal">
+        <nav className="hidden items-center gap-5 xl:flex" aria-label="Principal">
           {nav.map(([label, href]) => {
             const active = pathname === href;
             return (
@@ -51,37 +50,31 @@ export function MarketingHeader() {
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "group relative text-sm transition-colors hover:text-foreground",
-                  active ? "text-foreground" : "text-muted-foreground",
+                  "whitespace-nowrap text-sm font-medium transition-colors hover:text-primary",
+                  active ? "text-primary" : "text-[#20292f]",
                 )}
               >
                 {label}
-                <span
-                  className={cn(
-                    "absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 group-hover:w-full motion-reduce:transition-none",
-                    active ? "w-full" : "w-0",
-                  )}
-                />
               </Link>
             );
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-3 xl:flex">
           <Link
             href="/login"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            className="whitespace-nowrap text-sm font-medium text-[#20292f] transition-colors hover:text-primary"
           >
             Iniciar sesión
           </Link>
-          <CtaLink href="/agendar-cita" size="sm" variant="cta">
+          <CtaLink href="/agendar-cita" size="sm" variant="cta" className="whitespace-nowrap">
             Agendar cita
           </CtaLink>
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex items-center gap-2 xl:hidden">
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -95,7 +88,7 @@ export function MarketingHeader() {
       </div>
 
       {open ? (
-        <div className="border-t border-border bg-background px-4 py-4 lg:hidden">
+        <div className="border-t border-border bg-background px-4 py-4 xl:hidden">
           <nav className="flex flex-col gap-1" aria-label="Movil">
             {nav.map(([label, href]) => (
               <Link

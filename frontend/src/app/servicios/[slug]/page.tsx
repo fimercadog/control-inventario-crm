@@ -83,7 +83,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         </CircularPhotoAbout>
       </Section>
 
-      <Section className="bg-secondary/40 pt-0">
+      <Section className="bg-section-cream pt-0">
         <Reveal>
           <SectionHeading eyebrow="También te puede interesar" title="Otros servicios de la clínica" />
         </Reveal>

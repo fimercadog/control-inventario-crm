@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Nunito, Open_Sans, Roboto, Roboto_Mono } from "next/font/google";
+import { Nunito, Open_Sans, Poppins, Roboto, Roboto_Mono } from "next/font/google";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -30,6 +30,13 @@ const openSans = Open_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+// Fuente del navbar en el live-demo (getComputedStyle exacto: "Poppins, Helvetica, Arial, Lucida, sans-serif").
+const poppins = Poppins({
+  variable: "--font-nav-marketing",
+  subsets: ["latin"],
+  weight: ["500", "600"],
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -57,7 +64,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${roboto.variable} ${robotoMono.variable} ${nunito.variable} ${openSans.variable} h-full antialiased`}
+      className={`${roboto.variable} ${robotoMono.variable} ${nunito.variable} ${openSans.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full" suppressHydrationWarning>
         {children}

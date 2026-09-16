@@ -105,34 +105,47 @@
   --card-foreground: #241f19;
   --popover: #ffffff;
   --popover-foreground: #241f19;
-  --primary: #0e7490;
-  --primary-hover: #0c5f77;
+  /* Paleta real del pack Divi "Veterinarian" (DiviVet), extraida del
+     live-demo (https://www.elegantthemes.com/layouts/business/veterinarian-home-page/live-demo)
+     via getComputedStyle + muestreo de pixel sobre captura del propio
+     live-demo. Reemplaza el teal/ambar inventado que se usaba antes -- ver
+     referencia-visual-veterinaria.md. Navy del boton "View All Services" del
+     hero ~rgb(47,92,147); azul del boton "Click Here" (.et_pb_promo_button)
+     getComputedStyle exacto rgb(43,135,218); fondo crema de seccion alterna
+     ("What We Do") getComputedStyle exacto rgb(255,246,239); texto de nav
+     getComputedStyle exacto rgb(32,41,47). */
+  --primary: #2f5c93;
+  --primary-hover: #204774;
   --primary-foreground: #ffffff;
-  --secondary: #ecf7f6;
-  --secondary-foreground: #0e4f52;
+  --secondary: #eaf1f8;
+  --secondary-foreground: #2f5c93;
   --muted: #f4f1ea;
-  --muted-foreground: #6b6355;
-  --accent: #fdeee1;
+  --muted-foreground: #666666;
+  --accent: #ffe9e4;
   --accent-foreground: #c2410c;
   --destructive: #dc2626;
   --success: #15803d;
   --warning: #b45309;
   --border: #e8e2d6;
   --input: #dcd4c4;
-  --ring: #0e7490;
-  --navy: #0f2027;
+  --ring: #2f5c93;
+  --navy: #121f60;
   --navy-foreground: #f2efe8;
   --ink: #14232a;
   --ink-foreground: #f2efe8;
-  --chart-1: #0e7490;
+  --chart-1: #2f5c93;
   --chart-2: #241f19;
   --chart-3: #ea580c;
-  --chart-4: #64748b;
-  --chart-5: #db2777;
-  --blob: linear-gradient(140deg, #0e7490 0%, #14b8a6 45%, #5eead4 100%);
-  --blob-warm: linear-gradient(140deg, #ea580c 0%, #fb923c 45%, #fde68a 100%);
+  --chart-4: #2b87da;
+  --chart-5: #fb7a68;
+  --blob: linear-gradient(140deg, #1e4d82 0%, #2b87da 55%, #bfe3fb 100%);
+  --blob-warm: linear-gradient(140deg, #fb8a68 0%, #fea79e 55%, #ffd9c9 100%);
+  /* Fondo crema de seccion alterna (getComputedStyle exacto del live-demo,
+     seccion "What We Do": rgb(255,246,239)) -- Divi alterna blanco/crema
+     entre secciones en vez de usar cards con borde para separar contenido. */
+  --section-cream: #fff6ef;
   /* Acento calido secundario para CTAs (Agendar cita / WhatsApp) que necesitan
-     destacar por encima del teal primario. Valor exacto extraido del boton
+     destacar por encima del navy primario. Valor exacto extraido del boton
      real del pack Divi via getComputedStyle (rgb(255,112,0)), no aproximado. */
   --cta: #ff7000;
   --cta-hover: #d95f00;
@@ -146,6 +159,7 @@
      `color` arriba. */
   --font-sans: var(--font-body-marketing);
   --font-heading: var(--font-heading-marketing);
+  --font-nav: var(--font-nav-marketing);
   font-family: var(--font-sans);
 }
 
@@ -185,6 +199,7 @@
   --color-cta: var(--cta, var(--primary));
   --color-cta-hover: var(--cta-hover, var(--primary-hover));
   --color-cta-foreground: var(--cta-foreground, var(--primary-foreground));
+  --color-section-cream: var(--section-cream, var(--secondary));
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -193,6 +208,7 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-heading, var(--font-sans));
+  --font-nav: var(--font-nav, var(--font-sans));
   --shadow-elevation-1: var(--elevation-1);
   --shadow-elevation-2: var(--elevation-2);
   --shadow-elevation-3: var(--elevation-3);

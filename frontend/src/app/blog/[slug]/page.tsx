@@ -89,7 +89,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       </Section>
 
-      <Section className="bg-secondary/40">
+      <Section className="bg-section-cream">
         <RelatedPosts posts={related} />
       </Section>
 

@@ -21,7 +21,10 @@ export function HomeHero() {
           sizes="100vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/92 via-ink/55 to-ink/10" />
+        {/* Overlay calido (no navy/frio): el hero real usa un duotono tostado/beige
+            sobre la foto, no un scrim oscuro -- getComputedStyle confirmo texto
+            blanco encima de ese tono calido, no de negro. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#241a13]/80 via-[#3d2f26]/40 to-[#3d2f26]/5" />
 
         <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl">
@@ -37,7 +40,13 @@ export function HomeHero() {
               <CtaLink href="/agendar-cita" variant="cta">
                 Agendar cita
               </CtaLink>
-              <CtaLink href="/servicios" variant="outline" className="border-white bg-white/95 text-ink hover:bg-white">
+              {/* Pastilla navy solida -- estilo real de "View All Services" del hero del
+                  live-demo (modulo de texto con fondo navy, no el naranja de .et_pb_button). */}
+              <CtaLink
+                href="/servicios"
+                variant="default"
+                className="shadow-[0_12px_30px_-6px_rgb(0_0_0/0.45)]"
+              >
                 Ver todos los servicios
               </CtaLink>
             </div>

@@ -1,13 +1,15 @@
-import Image from "next/image";
-import { ArrowRight, Bird, Cat, Dog, HeartHandshake, MapPin, Rabbit, ShieldCheck, Sparkles, Stethoscope, Syringe } from "lucide-react";
+import { ArrowRight, Bird, Cat, Dog, MapPin, Rabbit, Sparkles } from "lucide-react";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { EmergencyBanner } from "@/components/marketing/emergency-banner";
 import { FaqAccordion } from "@/components/marketing/faq-accordion";
 import { HomeHero } from "@/components/marketing/home-hero";
+import { GradientBlob } from "@/components/marketing/gradient-blob";
+import { IconFeatureFloatCard } from "@/components/marketing/icon-feature-float-card";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { faqs, featuredServices, stats, team, testimonials } from "@/components/marketing/marketing-data";
-import { FeatureCard, Section, SectionHeading } from "@/components/marketing/marketing-ui";
+import { Section, SectionHeading } from "@/components/marketing/marketing-ui";
+import { OffsetBlobBlock } from "@/components/marketing/offset-blob-block";
 import { PhotoFeatureStack } from "@/components/marketing/photo-feature-stack";
 import { Reveal } from "@/components/marketing/reveal";
 import { ServiceGrid } from "@/components/marketing/service-card";
@@ -16,10 +18,10 @@ import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 import { VetGrid } from "@/components/marketing/vet-card";
 
 const whyUs = [
-  { icon: Stethoscope, title: "Equipo con experiencia", text: "Veterinarios de planta, no rotativos: conocen a tu mascota visita tras visita." },
-  { icon: Syringe, title: "Historia clínica digital", text: "Vacunas, consultas y tratamientos quedan registrados y no se pierden." },
-  { icon: ShieldCheck, title: "Laboratorio propio", text: "Análisis básicos con resultados el mismo día, sin derivar a otro lado." },
-  { icon: HeartHandshake, title: "Trato cercano", text: "Te explicamos cada diagnóstico en lenguaje claro, sin apuro." },
+  { icon: "/gallery/icons/icon-16.png", title: "Equipo con experiencia", text: "Veterinarios de planta, no rotativos: conocen a tu mascota visita tras visita." },
+  { icon: "/gallery/icons/icon-15.png", title: "Historia clínica digital", text: "Vacunas, consultas y tratamientos quedan registrados y no se pierden." },
+  { icon: "/gallery/icons/icon-13.png", title: "Laboratorio propio", text: "Análisis básicos con resultados el mismo día, sin derivar a otro lado." },
+  { icon: "/gallery/icons/icon-11.png", title: "Trato cercano", text: "Te explicamos cada diagnóstico en lenguaje claro, sin apuro." },
 ];
 
 const speciesTreated = [
@@ -54,7 +56,7 @@ export default function Home() {
       </Section>
 
       {/* Presentación de la clínica */}
-      <Section className="bg-secondary/40">
+      <Section className="bg-section-cream">
         <Reveal>
           <SectionHeading eyebrow="La clínica" title="Más de una década cuidando mascotas del barrio" center={false} />
         </Reveal>
@@ -77,21 +79,15 @@ export default function Home() {
       </Section>
 
       {/* Por qué elegirnos */}
-      <Section>
+      <Section className="pb-0">
         <Reveal>
           <SectionHeading
             eyebrow="Por qué elegirnos"
             title="Cuatro razones que notan nuestros propietarios"
           />
         </Reveal>
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {whyUs.map((item, i) => (
-            <Reveal key={item.title} delay={i * 0.06}>
-              <FeatureCard icon={item.icon} title={item.title} text={item.text} />
-            </Reveal>
-          ))}
-        </div>
       </Section>
+      <IconFeatureFloatCard items={whyUs} />
 
       {/* Equipo */}
       <Section dark>
@@ -115,46 +111,32 @@ export default function Home() {
       </Section>
 
       {/* Atención preventiva */}
-      <Section className="bg-secondary/40">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <Reveal>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Atención preventiva</p>
-            <h2 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
-              Prevenir cuesta menos que curar
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              Vacunación al día, desparasitación programada y un chequeo periódico detectan a tiempo lo que todavía
-              no duele. Es la diferencia entre un control de rutina y una urgencia evitable.
-            </p>
-            <ul className="mt-6 space-y-3 text-sm leading-6">
-              {["Esquema de vacunación con recordatorio de próxima dosis", "Desparasitación interna y externa por peso y edad", "Chequeo anual (o semestral en pacientes senior)"].map(
-                (item) => (
-                  <li key={item} className="flex gap-3">
-                    <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" />
-                    <span>{item}</span>
-                  </li>
-                ),
-              )}
-            </ul>
-            <div className="mt-8">
-              <CtaLink href="/servicios/medicina-preventiva" variant="outline" size="sm">
-                Ver medicina preventiva
-              </CtaLink>
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <div className="relative aspect-4/3 w-full overflow-hidden rounded-4xl shadow-elevation-3">
-              <Image
-                src="/gallery/paw-procedure.jpg"
-                alt="Veterinario con guantes revisando la pata de un paciente"
-                fill
-                sizes="(min-width: 1024px) 45vw, 90vw"
-                className="object-cover"
-              />
-            </div>
-          </Reveal>
-        </div>
-      </Section>
+      <OffsetBlobBlock
+        eyebrow="Atención preventiva"
+        title="Prevenir cuesta menos que curar"
+        image="/gallery/paw-procedure.jpg"
+        imageAlt="Veterinario con guantes revisando la pata de un paciente"
+        actions={
+          <CtaLink href="/servicios/medicina-preventiva" variant="outline" size="sm">
+            Ver medicina preventiva
+          </CtaLink>
+        }
+      >
+        <p className="text-lg leading-8 text-muted-foreground">
+          Vacunación al día, desparasitación programada y un chequeo periódico detectan a tiempo lo que todavía no
+          duele. Es la diferencia entre un control de rutina y una urgencia evitable.
+        </p>
+        <ul className="mt-6 space-y-3 text-sm leading-6">
+          {["Esquema de vacunación con recordatorio de próxima dosis", "Desparasitación interna y externa por peso y edad", "Chequeo anual (o semestral en pacientes senior)"].map(
+            (item) => (
+              <li key={item} className="flex gap-3">
+                <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span>{item}</span>
+              </li>
+            ),
+          )}
+        </ul>
+      </OffsetBlobBlock>
 
       {/* Urgencias */}
       <Section>
@@ -182,22 +164,23 @@ export default function Home() {
       </Section>
 
       {/* Mascotas atendidas */}
-      <Section className="bg-secondary/40">
+      <Section className="relative isolate overflow-hidden">
+        <GradientBlob className="-right-24 -bottom-24 size-[110%] opacity-30" />
         <Reveal>
           <SectionHeading eyebrow="A quién atendemos" title="Mascotas de todo tipo, un mismo estándar de cuidado" />
         </Reveal>
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {speciesTreated.map((item, i) => (
-            <Reveal key={item.label} delay={i * 0.06}>
-              <div className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-card py-10 text-center">
+        <Reveal delay={0.08}>
+          <div className="relative z-10 mt-12 grid grid-cols-2 gap-x-4 gap-y-10 rounded-[2.5rem] bg-card p-8 shadow-elevation-4 sm:grid-cols-4 sm:p-12">
+            {speciesTreated.map((item) => (
+              <div key={item.label} className="flex flex-col items-center gap-3 text-center">
                 <span className="grid size-14 place-items-center rounded-full bg-secondary text-primary">
                   <item.icon className="size-7" />
                 </span>
                 <span className="text-sm font-bold">{item.label}</span>
               </div>
-            </Reveal>
-          ))}
-        </div>
+            ))}
+          </div>
+        </Reveal>
       </Section>
 
       {/* FAQ */}

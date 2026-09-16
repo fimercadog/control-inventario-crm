@@ -44,7 +44,7 @@ export default function EquipoPage() {
         />
       </Section>
 
-      <Section className="bg-secondary/40">
+      <Section className="bg-section-cream">
         <VetGrid team={team} />
       </Section>
 

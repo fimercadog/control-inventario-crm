@@ -83,7 +83,7 @@ export default function UrgenciasPage() {
         </p>
       </Section>
 
-      <Section className="bg-secondary/40">
+      <Section className="bg-section-cream">
         <PhotoFeatureStack
           image="/gallery/paw-procedure.jpg"
           imageAlt="Procedimiento veterinario de urgencia"

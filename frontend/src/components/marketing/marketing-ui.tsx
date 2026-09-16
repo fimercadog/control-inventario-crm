@@ -36,8 +36,11 @@ export function SectionHeading({
 }) {
   return (
     <div className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
+      {/* Nunito 800/14px/uppercase/tracking-2px, getComputedStyle exacto del
+          eyebrow "Services" del live-demo (color naranja en la mayoria de
+          secciones; en dark queda blanco/70 por contraste). */}
       {eyebrow && (
-        <p className={cn("text-xs font-bold uppercase tracking-[0.22em]", dark ? "text-chart-3" : "text-primary")}>
+        <p className={cn("font-heading text-sm font-extrabold uppercase tracking-[0.14em]", dark ? "text-white/70" : "text-cta")}>
           {eyebrow}
         </p>
       )}
@@ -46,26 +49,6 @@ export function SectionHeading({
       {lead && (
         <p className={cn("mt-4 text-lg leading-8", dark ? "text-white/70" : "text-muted-foreground")}>{lead}</p>
       )}
-    </div>
-  );
-}
-
-export function FeatureCard({
-  icon: Icon,
-  title,
-  text,
-}: {
-  icon: React.ElementType;
-  title: string;
-  text: string;
-}) {
-  return (
-    <div className={cn("group flex h-full flex-col rounded-2xl border border-border bg-card p-6", cardHover)}>
-      <span className="grid size-11 place-items-center rounded-xl bg-secondary text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
-        <Icon className="size-5" />
-      </span>
-      <h3 className="mt-5 text-base font-bold">{title}</h3>
-      <p className="mt-2 text-sm leading-6 text-muted-foreground">{text}</p>
     </div>
   );
 }
