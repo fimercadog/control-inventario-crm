@@ -18,8 +18,8 @@ export function HomeHero() {
             arranca primero, todo lo demas entra encima despues. */}
         <Reveal mount direction="zoom-out" duration={1.1} className="absolute inset-0">
           <Image
-            src="/gallery/paw-procedure.jpg"
-            alt="Veterinario atendiendo la pata de un paciente en consulta"
+            src="/gallery/hero-bulldog-exam.jpg"
+            alt="Veterinario examinando a un bulldog en la camilla de consulta"
             fill
             priority
             sizes="100vw"

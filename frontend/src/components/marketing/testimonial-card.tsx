@@ -21,6 +21,11 @@ export function TestimonialCard({ testimonial, delay = 0 }: { testimonial: Testi
         <figcaption className="mt-5">
           <p className="text-sm font-bold">{testimonial.name}</p>
           <p className="text-xs text-muted-foreground">{testimonial.pet}</p>
+          {/* Contenido de ejemplo (demo), no testimonios reales de clientes --
+              reemplazar por reseñas reales antes de vender/desplegar. */}
+          <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground/70">
+            Testimonio de ejemplo
+          </p>
         </figcaption>
       </figure>
     </Reveal>
