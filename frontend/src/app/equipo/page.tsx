@@ -13,7 +13,10 @@ export default function EquipoPage() {
       {/* Hero: mismo lenguaje visual de foto lavada que Nosotros. */}
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/gallery/pet-7.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+          {/* hero-bulldog-exam.jpg (landscape) en vez de pet-7.jpg (retrato) --
+              un retrato estirado a una franja panorámica dejaba casi todo el
+              contenido reconocible fuera de cuadro. */}
+          <Image src="/gallery/hero-bulldog-exam.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
           <div className="absolute inset-0 bg-background/88" />
         </div>
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">

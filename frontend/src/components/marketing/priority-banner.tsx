@@ -14,9 +14,13 @@ export function PriorityBanner({
   detail?: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-between gap-4 rounded-full bg-ink px-6 py-4 text-white shadow-elevation-3 sm:flex-row sm:px-10">
-      <p className="text-sm font-bold uppercase tracking-[0.14em] sm:text-base">
-        {label} <span className="font-extrabold text-cta">{detail}</span>
+    // rounded-3xl en mobile (no rounded-full): con el texto en columna, un
+    // pill completo se ve como una cápsula deforme cuando el contenido es
+    // alto. El telefono con whitespace-nowrap evita que corte a mitad de numero.
+    <div className="flex flex-col items-center justify-between gap-4 rounded-3xl bg-ink px-6 py-5 text-center text-white shadow-elevation-3 sm:flex-row sm:rounded-full sm:px-10 sm:py-4 sm:text-left">
+      <p className="flex flex-col items-center gap-1 text-sm font-bold uppercase tracking-[0.14em] sm:flex-row sm:gap-2 sm:text-base">
+        <span>{label}</span>
+        <span className="whitespace-nowrap font-extrabold text-cta">{detail}</span>
       </p>
       <CtaLink href={WHATSAPP_URL} variant="cta" size="sm">
         Escribir por WhatsApp
