@@ -14,7 +14,7 @@ class ConsultationItem extends Model
     ];
 
     protected $casts = [
-        'quantity' => 'decimal:2',
+        'quantity' => 'float',
         'unit_price' => 'decimal:2',
         'unit_cost' => 'decimal:2',
         'is_billable' => 'boolean',

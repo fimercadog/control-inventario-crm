@@ -32,14 +32,23 @@ class VeterinaryConsultationService
         $serviceId = ! empty($data['service_id']) ? (int) $data['service_id'] : null;
         $procedureId = ! empty($data['procedure_id']) ? (int) $data['procedure_id'] : null;
 
-        $name = $data['name'] ?? null;
+        $quantity = (float) ($data['quantity'] ?? 1);
+        abort_if($quantity <= 0, 422, 'La cantidad debe ser un valor mayor a cero.');
+
         $unitPrice = isset($data['unit_price']) ? (float) $data['unit_price'] : 0.0;
+        abort_if($unitPrice < 0, 422, 'El precio unitario no puede ser negativo.');
+
         $unitCost = isset($data['unit_cost']) ? (float) $data['unit_cost'] : 0.0;
+        abort_if($unitCost < 0, 422, 'El costo unitario no puede ser negativo.');
+
         $isBillable = isset($data['is_billable']) ? (bool) $data['is_billable'] : true;
         $isInventoriable = isset($data['is_inventoriable']) ? (bool) $data['is_inventoriable'] : false;
 
+        $name = $data['name'] ?? null;
+
         if ($productId) {
-            $product = Product::query()->where('company_id', $companyId)->findOrFail($productId);
+            $product = Product::query()->where('company_id', $companyId)->find($productId);
+            abort_if(! $product, 422, 'El producto no existe o pertenece a otra empresa.');
             $name = $name ?: $product->name;
             if (! isset($data['unit_price'])) {
                 $unitPrice = (float) $product->unit_price;
@@ -51,7 +60,8 @@ class VeterinaryConsultationService
                 $isInventoriable = true;
             }
         } elseif ($serviceId) {
-            $service = Service::query()->where('company_id', $companyId)->findOrFail($serviceId);
+            $service = Service::query()->where('company_id', $companyId)->find($serviceId);
+            abort_if(! $service, 422, 'El servicio no existe o pertenece a otra empresa.');
             $name = $name ?: $service->name;
             if (! isset($data['unit_price'])) {
                 $unitPrice = (float) $service->price;
@@ -59,6 +69,9 @@ class VeterinaryConsultationService
             if (! isset($data['is_inventoriable'])) {
                 $isInventoriable = false;
             }
+        } elseif ($procedureId) {
+            $procedure = Procedure::query()->where('company_id', $companyId)->find($procedureId);
+            abort_if(! $procedure, 422, 'El procedimiento no existe o pertenece a otra empresa.');
         }
 
         return ConsultationItem::create([
@@ -120,11 +133,19 @@ class VeterinaryConsultationService
                 ->with(['items', 'patient.client', 'service'])
                 ->firstOrFail();
 
-            abort_if($consultation->status === 'completed', 422, 'La consulta ya fue finalizada.');
+            abort_if($consultation->status !== 'open', 422, "Solo se pueden finalizar consultas en estado abierto. Estado actual: {$consultation->status}.");
 
-            $warehouseId = ! empty($data['warehouse_id'])
-                ? (int) $data['warehouse_id']
-                : ($consultation->warehouse_id ?: Warehouse::query()->where('company_id', $companyId)->value('id'));
+            $warehouseId = null;
+            if (! empty($data['warehouse_id'])) {
+                $warehouse = Warehouse::query()
+                    ->where('company_id', $companyId)
+                    ->find((int) $data['warehouse_id']);
+                abort_if(! $warehouse, 422, 'La bodega seleccionada no pertenece a esta empresa o no existe.');
+                $warehouseId = $warehouse->id;
+            } else {
+                $warehouseId = $consultation->warehouse_id
+                    ?: Warehouse::query()->where('company_id', $companyId)->where('status', 'active')->value('id');
+            }
 
             // 1. Validar existencias y procesar consumos de stock
             foreach ($consultation->items as $item) {

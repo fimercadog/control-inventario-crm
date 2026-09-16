@@ -78,7 +78,7 @@ class ConsultationController extends BaseCrudController
                 ->where('company_id', $this->companyId($request))
                 ->findOrFail($id);
 
-            abort_if($consultation->status === 'completed', 422, 'No se puede editar una consulta finalizada.');
+            abort_if(in_array($consultation->status, ['completed', 'cancelled'], true), 422, 'No se puede editar una consulta clínica finalizada o cancelada.');
 
             $response = parent::update($request, $id, $audit);
 
@@ -90,6 +90,21 @@ class ConsultationController extends BaseCrudController
 
             return $this->show($request, $id);
         });
+    }
+
+    public function destroy(Request $request, string $id, AuditService $audit)
+    {
+        $consultation = Consultation::query()
+            ->where('company_id', $this->companyId($request))
+            ->findOrFail($id);
+
+        abort_if(
+            in_array($consultation->status, ['completed', 'cancelled'], true),
+            422,
+            'No se puede eliminar una consulta clínica finalizada o cancelada. El historial clínico es inmutable.'
+        );
+
+        return parent::destroy($request, $id, $audit);
     }
 
     public function addItem(Request $request, string $id, VeterinaryConsultationService $service, AuditService $audit)
@@ -122,6 +137,14 @@ class ConsultationController extends BaseCrudController
         $consultation = Consultation::query()
             ->where('company_id', $this->companyId($request))
             ->findOrFail($id);
+
+        if (! empty($request->input('payment'))) {
+            abort_unless(
+                $request->user()->hasAnyPermission(['payments.manage', 'cash.manage']),
+                403,
+                'No tiene permisos para registrar cobros o pagos directos en caja.'
+            );
+        }
 
         $result = $service->finalize($consultation, $request->all(), $request->user()->id);
         $audit->record('updated', $result, $request);
