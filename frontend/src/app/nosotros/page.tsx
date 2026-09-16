@@ -1,76 +1,75 @@
-import { Heart, ShieldCheck, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { CtaLink } from "@/components/marketing/cta-link";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
-import { ImageTextSection } from "@/components/marketing/image-text-section";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { stats } from "@/components/marketing/marketing-data";
-import { FeatureCard, Section, SectionHeading } from "@/components/marketing/marketing-ui";
-import { PageHero } from "@/components/marketing/page-hero";
+import { Section } from "@/components/marketing/marketing-ui";
+import { OffsetBlobBlock } from "@/components/marketing/offset-blob-block";
+import { PhotoFeatureStack } from "@/components/marketing/photo-feature-stack";
 import { Reveal } from "@/components/marketing/reveal";
 import { StatsSection } from "@/components/marketing/stats-section";
-
-const values = [
-  { icon: Heart, title: "Trato cercano", text: "Explicamos cada diagnóstico en lenguaje claro y con tiempo, no de pasada." },
-  { icon: ShieldCheck, title: "Medicina responsable", text: "Ningún procedimiento sin explicarte el porqué y, si aplica, sin presupuesto previo." },
-  { icon: Sparkles, title: "Mejora continua", text: "Historia clínica digital, laboratorio propio y seguimiento de cada tratamiento." },
-];
 
 export default function AboutPage() {
   return (
     <MarketingLayout>
-      <PageHero
-        eyebrow="Nosotros"
-        title="Una clínica de barrio, con el equipamiento de una grande"
-        lead="Clínica Veterinaria Los Andes nació para que cada mascota tenga un equipo veterinario que la conozca de verdad, visita tras visita — no una cara distinta cada vez."
-      />
+      {/* Hero: foto full-bleed lavada (blanco) + texto encima -- patrón "About DiviVet" del pack. */}
+      <section className="relative isolate overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src="/gallery/vet-clipboard.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+          <div className="absolute inset-0 bg-background/88" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+          <Reveal mount>
+            <div className="max-w-xl">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Nosotros</p>
+              <h1 className="mt-3 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+                Una clínica de barrio, con el equipamiento de una grande
+              </h1>
+              <p className="mt-5 text-lg leading-8 text-muted-foreground">
+                Clínica Veterinaria Los Andes nació para que cada mascota tenga un equipo veterinario que la
+                conozca de verdad, visita tras visita — no una cara distinta cada vez.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       <Section>
-        <ImageTextSection
+        <PhotoFeatureStack
           image="/gallery/pet-7.jpg"
           imageAlt="Veterinario del equipo revisando a un bulldog en consulta"
-          eyebrow="Nuestra historia"
-          title="Más de una década cuidando mascotas"
-        >
-          <p>
-            Empezamos como una consulta pequeña de barrio y hoy somos una clínica con consultorios equipados,
-            laboratorio propio y quirófano — sin perder lo que nos trajo hasta acá: conocer a cada paciente por su
-            nombre y a cada propietario por el suyo.
-          </p>
-          <p className="mt-4">
-            Preferimos atender pocas mascotas bien que muchas apurados. Cada consulta tiene el tiempo que necesita,
-            y cada historia clínica queda registrada para que el próximo veterinario que la vea sepa exactamente de
-            dónde viene el caso.
-          </p>
-        </ImageTextSection>
+          features={[
+            { title: "Más de una década", text: "Empezamos como una consulta pequeña de barrio; hoy tenemos consultorios equipados, laboratorio propio y quirófano." },
+            { title: "Pocas mascotas, no muchas apuradas", text: "Cada consulta tiene el tiempo que necesita, y cada historia clínica queda registrada." },
+            { title: "El mismo equipo siempre", text: "Conocemos a cada paciente por su nombre y a cada propietario por el suyo." },
+          ]}
+        />
       </Section>
 
-      <Section className="bg-secondary/40">
-        <ImageTextSection
-          image="/gallery/pet-8.jpg"
-          imageAlt="Procedimiento veterinario con instrumental de precisión"
-          eyebrow="Nuestras instalaciones"
-          title="Equipamiento propio, sin derivar a otro lado"
-          reverse
-        >
-          <p>
-            Consultorios equipados, quirófano con monitoreo anestésico y laboratorio propio para los análisis más
-            frecuentes. Cuando tu mascota necesita algo más que una consulta, seguimos siendo el mismo equipo el que
-            la atiende.
-          </p>
-        </ImageTextSection>
-      </Section>
-
-      <Section>
-        <Reveal>
-          <SectionHeading eyebrow="Lo que nos mueve" title="Misión y valores" lead="Tres cosas que no negociamos, sin importar cuánto crezca la clínica." />
-        </Reveal>
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
-          {values.map((v, i) => (
-            <Reveal key={v.title} delay={i * 0.06}>
-              <FeatureCard icon={v.icon} title={v.title} text={v.text} />
-            </Reveal>
-          ))}
-        </div>
-      </Section>
+      <OffsetBlobBlock
+        title="Nuestra misión y valores"
+        image="/gallery/pet-8.jpg"
+        imageAlt="Procedimiento veterinario con instrumental de precisión"
+        actions={
+          <CtaLink href="/servicios" variant="cta">
+            Ver servicios
+          </CtaLink>
+        }
+      >
+        <ul className="mt-2 space-y-3 text-sm leading-6">
+          <li>
+            <strong className="font-bold">Trato cercano.</strong> Explicamos cada diagnóstico con tiempo, no de
+            pasada.
+          </li>
+          <li>
+            <strong className="font-bold">Medicina responsable.</strong> Ningún procedimiento sin explicar el
+            porqué ni presupuesto previo.
+          </li>
+          <li>
+            <strong className="font-bold">Mejora continua.</strong> Historia clínica digital y laboratorio propio.
+          </li>
+        </ul>
+      </OffsetBlobBlock>
 
       <Section dark>
         <StatsSection stats={stats} dark />

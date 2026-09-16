@@ -1,52 +1,62 @@
-import { CheckCircle2 } from "lucide-react";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
-import { ImageTextSection } from "@/components/marketing/image-text-section";
+import { CircularPhotoAbout } from "@/components/marketing/circular-photo-about";
+import { CtaLink } from "@/components/marketing/cta-link";
+import { IconFeatureFloatCard } from "@/components/marketing/icon-feature-float-card";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { services } from "@/components/marketing/marketing-data";
 import { Section } from "@/components/marketing/marketing-ui";
-import { PageHero } from "@/components/marketing/page-hero";
-import { ServiceGrid } from "@/components/marketing/service-card";
-
-const highlights = [
-  "Veterinarios de planta, no rotativos",
-  "Historia clínica digital por paciente",
-  "Laboratorio propio con resultados el mismo día",
-];
+import { PriorityBanner } from "@/components/marketing/priority-banner";
+import { SERVICE_ICON } from "@/components/marketing/service-card";
+import { SplitHero } from "@/components/marketing/split-hero";
 
 export default function ServiciosPage() {
   return (
     <MarketingLayout>
-      <PageHero
+      <SplitHero
         eyebrow="Servicios"
         title="Atención veterinaria completa, de la consulta a la cirugía"
         lead="Consulta general, medicina preventiva, laboratorio, cirugía, odontología y más — todo con historia clínica digital por paciente."
+        image="/gallery/illustrations/illustration-7.png"
+        imageAlt="Veterinario revisando la boca de un gato en consulta"
+        actions={
+          <>
+            <CtaLink href="/agendar-cita" variant="cta">
+              Agendar cita
+            </CtaLink>
+            <CtaLink href="#todos-los-servicios" variant="outline">
+              Ver todos los servicios
+            </CtaLink>
+          </>
+        }
       />
 
       <Section className="pt-0">
-        <ImageTextSection
-          image="/gallery/hero-bulldog-exam.jpg"
-          imageAlt="Veterinario revisando a un paciente en la camilla de consulta"
-          eyebrow="Cómo trabajamos"
-          title="Un mismo equipo, del control de rutina a la cirugía"
+        <CircularPhotoAbout
+          image="/gallery/pet-10.jpg"
+          imageAlt="Atención veterinaria de urgencia"
+          eyebrow="Urgencias"
+          title="Prioridad inmediata cuando no puede esperar"
         >
           <p>
-            No derivamos cada caso a otro lado: consulta, laboratorio, cirugía e internación quedan bajo el mismo
-            techo y el mismo equipo que ya conoce a tu mascota.
+            Ante un accidente, una intoxicación o un cuadro que empeora rápido, la prioridad es estabilizar.
+            Escribinos antes de venir para que el equipo esté listo cuando llegues.
           </p>
-          <ul className="mt-6 space-y-3 text-sm leading-6">
-            {highlights.map((item) => (
-              <li key={item} className="flex gap-3">
-                <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </ImageTextSection>
+        </CircularPhotoAbout>
+        <div className="mt-10">
+          <PriorityBanner label="Urgencias, escribinos ya" detail="+57 601 555 0188" />
+        </div>
       </Section>
 
-      <Section className="bg-secondary/40 pt-0">
-        <ServiceGrid services={services} />
-      </Section>
+      <div id="todos-los-servicios">
+        <IconFeatureFloatCard
+          items={services.map((s) => ({
+            icon: SERVICE_ICON[s.slug],
+            title: s.title,
+            text: s.short,
+            href: `/servicios/${s.slug}`,
+          }))}
+        />
+      </div>
 
       <AppointmentCta />
     </MarketingLayout>

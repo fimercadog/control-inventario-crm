@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { AlertTriangle, Clock, PhoneCall, Stethoscope } from "lucide-react";
 import { CtaLink } from "@/components/marketing/cta-link";
-import { ImageTextSection } from "@/components/marketing/image-text-section";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
+import { PhotoFeatureStack } from "@/components/marketing/photo-feature-stack";
+import { PriorityBanner } from "@/components/marketing/priority-banner";
 import { Section, SectionHeading } from "@/components/marketing/marketing-ui";
-import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
@@ -28,20 +28,43 @@ const steps = [
 export default function UrgenciasPage() {
   return (
     <MarketingLayout>
-      <PageHero
-        eyebrow="Urgencias"
-        title="Cuando no puede esperar, actuamos rápido"
-        lead="Ante un accidente, una intoxicación o un cuadro que empeora rápido, escribinos o llamá antes de venir para que el equipo esté listo."
-        actions={
-          <CtaLink href={WHATSAPP_URL} variant="cta">
-            <PhoneCall className="size-4" />
-            Urgencias por WhatsApp
-          </CtaLink>
-        }
-        note="Atención de urgencias todos los días — línea directa disponible 24/7"
-      />
+      {/* Hero de foto full-bleed, igual tratamiento que Home pero con acento de urgencia. */}
+      <section className="relative isolate">
+        <div className="relative h-[520px] w-full overflow-hidden sm:h-[600px]">
+          <Image
+            src="/gallery/pet-10.jpg"
+            alt="Atención veterinaria de urgencia"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink/92 via-ink/60 to-ink/15" />
+          <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+            <div className="max-w-xl">
+              <p className="text-xs font-bold uppercase tracking-[0.28em] text-warning">Urgencias</p>
+              <h1 className="mt-4 text-5xl font-black leading-[1.02] tracking-tight text-white sm:text-6xl">
+                Cuando no puede esperar, actuamos rápido
+              </h1>
+              <p className="mt-6 max-w-md text-lg leading-8 text-white/85">
+                Ante un accidente, una intoxicación o un cuadro que empeora rápido, escribinos o llamá antes de
+                venir para que el equipo esté listo.
+              </p>
+              <div className="mt-9">
+                <CtaLink href={WHATSAPP_URL} variant="cta">
+                  <PhoneCall className="size-4" />
+                  Urgencias por WhatsApp
+                </CtaLink>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="relative z-10 mx-auto -mt-8 max-w-5xl px-4 sm:px-6 lg:px-8">
+          <PriorityBanner label="Línea directa 24/7" detail="+57 601 555 0188" />
+        </div>
+      </section>
 
-      <Section className="pt-0">
+      <Section>
         <Reveal>
           <SectionHeading eyebrow="¿Cuándo es una urgencia?" title="Señales que no hay que esperar a que pasen solas" center={false} />
         </Reveal>
@@ -61,23 +84,15 @@ export default function UrgenciasPage() {
       </Section>
 
       <Section className="bg-secondary/40">
-        <ImageTextSection
-          image="/gallery/pet-10.jpg"
-          imageAlt="Atención veterinaria de urgencia"
-          eyebrow="Prioridad inmediata"
-          title="Línea directa, sin trámite previo"
+        <PhotoFeatureStack
+          image="/gallery/paw-procedure.jpg"
+          imageAlt="Procedimiento veterinario de urgencia"
           reverse
-        >
-          <div className="flex items-center gap-3">
-            <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-card shadow-elevation-1">
-              <Image src="/gallery/icons/icon-2.png" alt="" width={28} height={28} className="size-7" />
-            </span>
-            <p>
-              Una urgencia no espera turno. Escribinos o llamá directo — el equipo se prepara mientras estás en
-              camino, sin formularios ni agenda de por medio.
-            </p>
-          </div>
-        </ImageTextSection>
+          features={[
+            { title: "Prioridad inmediata", text: "Una urgencia no espera turno ni agenda. El equipo se prepara mientras estás en camino." },
+            { title: "Sin trámite previo", text: "Escribinos o llamá directo — no hace falta formulario ni cita para que te atendamos." },
+          ]}
+        />
       </Section>
 
       <Section dark>

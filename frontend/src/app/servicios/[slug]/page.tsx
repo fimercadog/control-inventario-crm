@@ -2,11 +2,11 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
+import { CircularPhotoAbout } from "@/components/marketing/circular-photo-about";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { serviceBySlug, services } from "@/components/marketing/marketing-data";
 import { Section, SectionHeading } from "@/components/marketing/marketing-ui";
-import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
 import { SERVICE_ICON, ServiceGrid } from "@/components/marketing/service-card";
 
@@ -15,6 +15,9 @@ const SERVICE_PHOTO: Record<string, string> = {
   vacunacion: "/gallery/pet-4.jpg",
   cirugia: "/gallery/pet-13.jpg",
   "laboratorio-clinico": "/gallery/vet-clipboard.jpg",
+  "peluqueria-grooming": "/gallery/pet-8.jpg",
+  nutricion: "/gallery/pet-4.jpg",
+  urgencias: "/gallery/pet-10.jpg",
 };
 
 export function generateStaticParams() {
@@ -32,42 +35,52 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
   return (
     <MarketingLayout>
-      <PageHero
-        eyebrow="Servicios"
-        title={service.title}
-        lead={service.description}
-        actions={
-          <CtaLink href="/agendar-cita" variant="cta">
-            Agendar este servicio
-          </CtaLink>
-        }
-      />
-
-      <Section className="pt-0">
-        <div className="grid items-start gap-12 lg:grid-cols-2">
-          <Reveal>
-            <div className="relative aspect-4/3 w-full overflow-hidden rounded-4xl shadow-elevation-3">
-              <Image src={photo} alt="" fill sizes="(min-width: 1024px) 45vw, 90vw" className="object-cover" />
+      {/* Hero: foto de fondo desenfocada + foto nítida recuadrada en capas -- patrón "Service Detail" del pack. */}
+      <section className="relative isolate overflow-hidden">
+        <div className="absolute inset-0">
+          <Image src={photo} alt="" fill sizes="100vw" className="object-cover opacity-25 blur-2xl" />
+        </div>
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1fr_0.9fr] lg:px-8">
+          <Reveal mount>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Servicios</p>
+            <h1 className="mt-3 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+              {service.title}
+            </h1>
+            <p className="mt-5 max-w-md text-lg leading-8 text-muted-foreground">{service.description}</p>
+            <div className="mt-8">
+              <CtaLink href="/agendar-cita" variant="cta">
+                Agendar este servicio
+              </CtaLink>
             </div>
           </Reveal>
-          <Reveal delay={0.1}>
-            <span className="grid size-16 place-items-center rounded-2xl bg-secondary">
-              {iconSrc ? (
-                <Image src={iconSrc} alt="" width={36} height={36} className="size-9" />
-              ) : (
-                <service.icon className="size-7 text-primary" />
-              )}
-            </span>
-            <ul className="mt-8 space-y-3">
-              {service.bullets.map((bullet) => (
-                <li key={bullet} className="flex gap-3 text-base leading-7">
-                  <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
-                  <span>{bullet}</span>
-                </li>
-              ))}
-            </ul>
+          <Reveal mount zoom delay={0.15}>
+            <div className="relative mx-auto aspect-square w-full max-w-md overflow-hidden rounded-[2rem] shadow-elevation-4">
+              <Image src={photo} alt="" fill sizes="(min-width: 1024px) 35vw, 85vw" className="object-cover" />
+            </div>
           </Reveal>
         </div>
+      </section>
+
+      <Section className="pt-0">
+        <CircularPhotoAbout
+          image={photo}
+          imageAlt={`Detalle de ${service.title.toLowerCase()}`}
+          eyebrow="Qué incluye"
+          title={`Sobre ${service.title.toLowerCase()}`}
+        >
+          <div className="flex items-start gap-3">
+            {iconSrc && <Image src={iconSrc} alt="" width={40} height={40} className="mt-1 size-10 shrink-0" />}
+            <p>{service.description}</p>
+          </div>
+          <ul className="mt-6 space-y-3">
+            {service.bullets.map((bullet) => (
+              <li key={bullet} className="flex gap-3 text-base leading-7">
+                <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        </CircularPhotoAbout>
       </Section>
 
       <Section className="bg-secondary/40 pt-0">
