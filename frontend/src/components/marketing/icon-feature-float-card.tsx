@@ -21,7 +21,7 @@ export function IconFeatureFloatCard({ items }: { items: Item[] }) {
             {items.map((item, i) => {
               const Wrapper = item.href ? "a" : "div";
               return (
-                <Reveal key={item.title} delay={(i % 3) * 0.06}>
+                <Reveal key={item.title} delay={0.1 + (i % 3) * 0.08}>
                   <Wrapper
                     {...(item.href ? { href: item.href } : {})}
                     className={item.href ? "group block" : undefined}

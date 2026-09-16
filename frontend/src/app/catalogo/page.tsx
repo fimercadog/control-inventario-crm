@@ -2,10 +2,12 @@
 
 import * as React from "react";
 import { AlertCircle, Search } from "lucide-react";
+import { CtaLink } from "@/components/marketing/cta-link";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
-import { PageHero } from "@/components/marketing/page-hero";
 import { ProductCard } from "@/components/marketing/product-card";
+import { SplitHero } from "@/components/marketing/split-hero";
 import { Section } from "@/components/marketing/marketing-ui";
+import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 import { cn } from "@/lib/utils";
 import {
   fetchCatalog,
@@ -71,10 +73,22 @@ export default function CatalogoPage() {
 
   return (
     <MarketingLayout>
-      <PageHero
-        eyebrow="Catalogo"
-        title="Productos disponibles"
-        lead="Explora el catalogo, arma tu lista y solicita una cotizacion. Te respondemos con precios y disponibilidad."
+      <SplitHero
+        eyebrow="Catálogo"
+        title="Todo lo que tu mascota necesita, en un solo lugar"
+        lead="Explorá el catálogo, armá tu lista y solicitá una cotización — te respondemos con precios y disponibilidad."
+        image="/gallery/illustrations/illustration-1.png"
+        imageAlt="Veterinario levantando en brazos a un cachorro"
+        actions={
+          <>
+            <CtaLink href="/catalogo/cotizacion" variant="cta">
+              Solicitar cotización
+            </CtaLink>
+            <CtaLink href={WHATSAPP_URL} variant="outline">
+              Escribinos por WhatsApp
+            </CtaLink>
+          </>
+        }
       />
 
       <Section className="pt-4 sm:pt-0">

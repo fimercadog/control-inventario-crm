@@ -53,17 +53,20 @@ export default function ContactPage() {
         <Reveal>
           <h2 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl">Dejanos tu mensaje</h2>
         </Reveal>
+        {/* El formulario "sube" desde abajo -- el gesto natural de algo que se
+            va a completar, distinto del fade lateral de la tarjeta de arriba. */}
         <div className="mx-auto mt-10 max-w-2xl">
-          <Reveal delay={0.1}>
+          <Reveal direction="up" duration={0.7} delay={0.1}>
             <ContactForm />
           </Reveal>
         </div>
       </Section>
 
       {/* Mapa -- mismo bloque de ubicacion que Home, patron real del pack
-          (mapa/placeholder despues del formulario en Contact). */}
+          (mapa/placeholder despues del formulario en Contact). Fade puro, sin
+          desplazamiento: es un elemento de utilidad, no protagonista. */}
       <Section className="pt-0">
-        <Reveal>
+        <Reveal direction="fade" duration={0.8}>
           <a
             href="https://www.google.com/maps/search/?api=1&query=Calle+93+%2314-20%2C+Bogot%C3%A1"
             target="_blank"

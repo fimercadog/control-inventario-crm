@@ -31,7 +31,13 @@ export function PhotoFeatureStack({
         reverse ? "lg:grid-cols-[1fr_1.4fr]" : "lg:grid-cols-[1.4fr_1fr]",
       )}
     >
+      {/* Foto entra desde su lado de origen (izq. si va a la izquierda, y
+          viceversa) -- las cards arrancan a los 0.2s, mientras la foto
+          todavia esta asentando, para que el overlap se sienta animado y no
+          como dos elementos que aparecen por separado. */}
       <Reveal
+        direction={reverse ? "right" : "left"}
+        duration={0.7}
         className={cn(
           "relative aspect-4/5 w-full overflow-hidden rounded-3xl shadow-elevation-3 sm:aspect-16/10 lg:aspect-4/5",
           reverse ? "lg:order-2" : "lg:order-1",
@@ -48,7 +54,7 @@ export function PhotoFeatureStack({
         )}
       >
         {features.map((f, i) => (
-          <Reveal key={f.title} delay={i * 0.08}>
+          <Reveal key={f.title} direction={reverse ? "left" : "right"} delay={0.2 + i * 0.09}>
             <div className="rounded-2xl bg-card p-6 shadow-elevation-4">
               {/* Titulos de card en azul secundario, no navy -- getComputedStyle exacto
                   del live-demo ("Vivamus Suscipit Tortor" etc, color rgb(43,135,218)). */}

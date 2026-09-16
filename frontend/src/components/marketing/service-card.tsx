@@ -49,7 +49,7 @@ export function ServiceGrid({ services }: { services: Service[] }) {
     <div className="rounded-[2.5rem] bg-card p-8 shadow-elevation-4 sm:p-12">
       <div className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((service, i) => (
-          <ServiceCard key={service.slug} service={service} delay={(i % 3) * 0.06} />
+          <ServiceCard key={service.slug} service={service} delay={0.08 + (i % 3) * 0.08} />
         ))}
       </div>
     </div>

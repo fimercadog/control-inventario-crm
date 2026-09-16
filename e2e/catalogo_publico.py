@@ -121,7 +121,9 @@ def main() -> int:
             expect(page.get_by_role("button", name="Accesorios")).to_be_visible(timeout=30000)
             page.get_by_role("button", name="Accesorios").click()
             page.wait_for_load_state("networkidle")
-            first_card = page.locator('a[href^="/catalogo/"]').first
+            # Excluye el link a /catalogo/cotizacion del hero -- comparte el
+            # mismo prefijo /catalogo/ que los links a producto (/catalogo/{id}).
+            first_card = page.locator('a[href^="/catalogo/"]:not([href="/catalogo/cotizacion"])').first
             expect(first_card).to_be_visible(timeout=15000)
             page.screenshot(path=ARTIFACTS / "01-catalogo.png", full_page=True)
             first_card.click()

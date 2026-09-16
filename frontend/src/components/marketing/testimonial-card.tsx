@@ -5,7 +5,9 @@ import { cn } from "@/lib/utils";
 
 export function TestimonialCard({ testimonial, delay = 0 }: { testimonial: Testimonial; delay?: number }) {
   return (
-    <Reveal delay={delay}>
+    // Aparicion secuencial con desplazamiento corto (duration mas larga que el
+    // resto: se "asienta" con calma) + sombra que decanta junto con la opacidad.
+    <Reveal delay={delay} duration={0.7} className="transition-shadow shadow-elevation-2">
       <figure className="flex h-full flex-col border-l-4 border-cta/70 pl-5">
         <div className="flex gap-0.5" aria-label={`${testimonial.rating} de 5 estrellas`}>
           {Array.from({ length: 5 }).map((_, i) => (
@@ -30,7 +32,7 @@ export function TestimonialGrid({ testimonials, limit }: { testimonials: Testimo
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((t, i) => (
-        <TestimonialCard key={t.name} testimonial={t} delay={(i % 3) * 0.08} />
+        <TestimonialCard key={t.name} testimonial={t} delay={(i % 3) * 0.12} />
       ))}
     </div>
   );

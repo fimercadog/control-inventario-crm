@@ -1,39 +1,28 @@
-import Image from "next/image";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
+import { CtaLink } from "@/components/marketing/cta-link";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { team } from "@/components/marketing/marketing-data";
 import { Section } from "@/components/marketing/marketing-ui";
 import { PhotoFeatureStack } from "@/components/marketing/photo-feature-stack";
-import { Reveal } from "@/components/marketing/reveal";
+import { SplitHero } from "@/components/marketing/split-hero";
 import { TeamProfileList } from "@/components/marketing/team-profile-row";
 
 export default function EquipoPage() {
   return (
     <MarketingLayout>
-      {/* Hero: mismo lenguaje visual de foto lavada que Nosotros. */}
-      <section className="relative isolate overflow-hidden">
-        <div className="absolute inset-0">
-          {/* hero-bulldog-exam.jpg (landscape) en vez de pet-7.jpg (retrato) --
-              un retrato estirado a una franja panorámica dejaba casi todo el
-              contenido reconocible fuera de cuadro. */}
-          <Image src="/gallery/hero-bulldog-exam.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
-          <div className="absolute inset-0 bg-background/88" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <Reveal mount>
-            <div className="max-w-xl">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Equipo</p>
-              <h1 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-                El equipo que va a conocer a tu mascota
-              </h1>
-              <p className="mt-5 text-lg leading-8 text-muted-foreground">
-                Veterinarios de planta y un equipo de recepción que coordina tu agenda, tus urgencias y el
-                seguimiento de cada tratamiento.
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* Hero: misma familia visual que Servicios/Nosotros. */}
+      <SplitHero
+        eyebrow="Equipo"
+        title="El equipo que va a conocer a tu mascota"
+        lead="Veterinarios de planta y un equipo de recepción que coordina tu agenda, tus urgencias y el seguimiento de cada tratamiento."
+        image="/gallery/illustrations/illustration-4.png"
+        imageAlt="Veterinario sosteniendo en brazos a un cachorro"
+        actions={
+          <CtaLink href="/agendar-cita" variant="cta">
+            Agendar cita
+          </CtaLink>
+        }
+      />
 
       <Section className="pt-0">
         <PhotoFeatureStack

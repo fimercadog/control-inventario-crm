@@ -115,7 +115,7 @@ export function PageHero({
         </div>
 
         {hasVisual && (
-          <Reveal mount zoom delay={0.2}>
+          <Reveal mount direction="zoom-in" delay={0.2}>
             <HeroArt />
           </Reveal>
         )}

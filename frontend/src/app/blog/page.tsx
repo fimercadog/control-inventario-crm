@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
-import { PageHero } from "@/components/marketing/page-hero";
+import { SplitHero } from "@/components/marketing/split-hero";
 import { Section } from "@/components/marketing/marketing-ui";
 import { BlogCard, FeaturedPost } from "@/components/marketing/blog-card";
 import { blogCategories, blogPosts } from "@/components/marketing/marketing-data";
@@ -17,12 +17,14 @@ export default function BlogPage() {
 
   return (
     <MarketingLayout>
-      {/* Hero centrado simple sobre fondo organico -- patron real de "Our Blog"
-          en el pack Divi (sin ilustracion lateral, a diferencia de Servicios). */}
-      <PageHero
+      {/* Hero: misma familia visual que Servicios -- para que el blog se sienta
+          parte del mismo sitio, no una seccion aparte. */}
+      <SplitHero
         eyebrow="Blog"
         title="Cuidado animal, explicado por el equipo que te atiende"
         lead="Prevención, vacunas, nutrición y qué hacer ante una urgencia — notas prácticas para dueños de mascota, escritas por nuestros veterinarios."
+        image="/gallery/illustrations/illustration-10.png"
+        imageAlt="Gato sobre una laptop junto a un botiquín de primeros auxilios"
       />
 
       <Section className="pt-0">
@@ -60,7 +62,7 @@ export default function BlogPage() {
 
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((post, i) => (
-            <BlogCard key={post.slug} post={post} delay={i * 0.05} />
+            <BlogCard key={post.slug} post={post} delay={(i % 3) * 0.1} />
           ))}
         </div>
         {filtered.length === 0 && (

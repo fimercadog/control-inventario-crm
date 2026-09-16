@@ -50,7 +50,9 @@ export function BlogCard({ post, delay = 0 }: { post: BlogPost; delay?: number }
 export function FeaturedPost({ post }: { post: BlogPost }) {
   const author = teamBySlug(post.authorSlug);
   return (
-    <Reveal>
+    // Fade + escala muy leve (0.97->1), sin desplazamiento -- lee como una
+    // portada que "decanta", distinto del sube-y-aparece de las cards chicas.
+    <Reveal direction="zoom-in" duration={0.7}>
       <div className="mx-auto max-w-3xl rounded-[2rem] bg-card px-6 py-14 text-center shadow-elevation-4 sm:px-16">
         <h2 className="text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl">{post.title}</h2>
         <p className="mt-4 text-sm text-muted-foreground">

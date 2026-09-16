@@ -14,7 +14,7 @@ export function FaqAccordion({ faqs }: { faqs: Faq[] }) {
       {faqs.map((faq, i) => {
         const expanded = open === i;
         return (
-          <Reveal key={faq.question} delay={Math.min(i, 6) * 0.04}>
+          <Reveal key={faq.question} delay={Math.min(i, 6) * 0.07}>
             <div>
               <button
                 type="button"

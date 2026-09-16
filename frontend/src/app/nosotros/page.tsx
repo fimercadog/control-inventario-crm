@@ -8,8 +8,10 @@ import { Section, SectionHeading } from "@/components/marketing/marketing-ui";
 import { OffsetBlobBlock } from "@/components/marketing/offset-blob-block";
 import { PhotoFeatureStack } from "@/components/marketing/photo-feature-stack";
 import { Reveal } from "@/components/marketing/reveal";
+import { SplitHero } from "@/components/marketing/split-hero";
 import { StatsSection } from "@/components/marketing/stats-section";
 import { TeamProfileList } from "@/components/marketing/team-profile-row";
+import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 const values = [
   { icon: "/gallery/icons/icon-9.png", title: "Medicina preventiva real", text: "No esperamos a que algo duela: vacunación y chequeos programados desde la primera visita." },
@@ -20,35 +22,25 @@ const values = [
 export default function AboutPage() {
   return (
     <MarketingLayout>
-      {/* Hero: foto full-bleed lavada (blanco) + texto encima -- patrón "About DiviVet" del pack. */}
-      <section className="relative isolate overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/gallery/pet-12.jpg"
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-            style={{ objectPosition: "62% 50%" }}
-          />
-          <div className="absolute inset-0 bg-background/88" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
-          <Reveal mount>
-            <div className="max-w-xl">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Nosotros</p>
-              <h1 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-                Una clínica de barrio, con el equipamiento de una grande
-              </h1>
-              <p className="mt-5 text-lg leading-8 text-muted-foreground">
-                Clínica Veterinaria Los Andes nació para que cada mascota tenga un equipo veterinario que la
-                conozca de verdad, visita tras visita — no una cara distinta cada vez.
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* Hero: misma familia visual que Servicios -- eyebrow, titulo grande,
+          texto, CTAs, ilustracion protagonista a la derecha sobre blob organico. */}
+      <SplitHero
+        eyebrow="Nosotros"
+        title="Una clínica de barrio, con el equipamiento de una grande"
+        lead="Clínica Veterinaria Los Andes nació para que cada mascota tenga un equipo veterinario que la conozca de verdad, visita tras visita — no una cara distinta cada vez."
+        image="/gallery/illustrations/illustration-2.png"
+        imageAlt="Veterinario con estetoscopio examinando a un gato"
+        actions={
+          <>
+            <CtaLink href="/equipo" variant="cta">
+              Conocer al equipo
+            </CtaLink>
+            <CtaLink href={WHATSAPP_URL} variant="outline">
+              Escribinos por WhatsApp
+            </CtaLink>
+          </>
+        }
+      />
 
       {/* Tira de 3 iconos plana, sin tarjeta flotante -- a diferencia del grid de
           "All Vet Services" de Services, el de About va directo sobre blanco. */}
