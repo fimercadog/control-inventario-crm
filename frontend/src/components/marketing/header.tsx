@@ -50,7 +50,7 @@ export function MarketingHeader() {
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "whitespace-nowrap text-sm font-medium transition-colors hover:text-primary",
+                  "whitespace-nowrap text-[15px] font-medium transition-colors hover:text-primary",
                   active ? "text-primary" : "text-[#20292f]",
                 )}
               >
@@ -65,7 +65,7 @@ export function MarketingHeader() {
             href="/login"
             target="_blank"
             rel="noopener noreferrer"
-            className="whitespace-nowrap text-sm font-medium text-[#20292f] transition-colors hover:text-primary"
+            className="whitespace-nowrap text-[15px] font-medium text-[#20292f] transition-colors hover:text-primary"
           >
             Iniciar sesión
           </Link>
