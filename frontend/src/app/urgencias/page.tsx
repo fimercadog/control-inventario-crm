@@ -68,15 +68,19 @@ export default function UrgenciasPage() {
         <Reveal>
           <SectionHeading eyebrow="¿Cuándo es una urgencia?" title="Señales que no hay que esperar a que pasen solas" center={false} />
         </Reveal>
-        <div className="mt-10 grid gap-3 sm:grid-cols-2">
-          {signs.map((sign, i) => (
-            <Reveal key={sign} delay={(i % 4) * 0.05}>
-              <div className="flex gap-3 rounded-xl border border-border bg-card p-4 text-sm leading-6">
-                <AlertTriangle className="mt-0.5 size-4.5 shrink-0 text-warning" />
-                <span>{sign}</span>
-              </div>
-            </Reveal>
-          ))}
+        {/* Una sola tarjeta flotante sin bordes por item -- mismo patron que
+            IconFeatureFloatCard, no un grid de cards individuales. */}
+        <div className="mt-10 rounded-[2rem] bg-card p-6 shadow-elevation-4 sm:p-10">
+          <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
+            {signs.map((sign, i) => (
+              <Reveal key={sign} delay={(i % 4) * 0.05}>
+                <div className="flex gap-3 text-sm leading-6">
+                  <AlertTriangle className="mt-0.5 size-4.5 shrink-0 text-warning" />
+                  <span>{sign}</span>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
           Ante la duda, escribinos: es mejor una consulta de más que llegar tarde a una urgencia real.
@@ -99,18 +103,16 @@ export default function UrgenciasPage() {
         <Reveal>
           <SectionHeading eyebrow="Cómo funciona" title="Qué pasa cuando llegás con una urgencia" dark />
         </Reveal>
-        <div className="mt-14 grid gap-6 sm:grid-cols-3">
+        <div className="mt-14 grid gap-8 sm:grid-cols-3">
           {steps.map((step, i) => {
             const Icon = step.icon;
             return (
               <Reveal key={step.title} delay={i * 0.08}>
-                <div className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/5 p-6">
-                  <span className="grid size-11 place-items-center rounded-xl bg-white/10 text-chart-3">
-                    <Icon className="size-5" />
-                  </span>
-                  <h3 className="mt-5 text-base font-bold">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-white/70">{step.text}</p>
-                </div>
+                <span className="grid size-11 place-items-center rounded-xl bg-white/10 text-chart-3">
+                  <Icon className="size-5" />
+                </span>
+                <h3 className="mt-5 text-base font-bold">{step.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-white/70">{step.text}</p>
               </Reveal>
             );
           })}

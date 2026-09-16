@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
-import { SplitHero } from "@/components/marketing/split-hero";
+import { PageHero } from "@/components/marketing/page-hero";
 import { Section } from "@/components/marketing/marketing-ui";
 import { BlogCard, FeaturedPost } from "@/components/marketing/blog-card";
 import { blogCategories, blogPosts } from "@/components/marketing/marketing-data";
@@ -17,12 +17,12 @@ export default function BlogPage() {
 
   return (
     <MarketingLayout>
-      <SplitHero
+      {/* Hero centrado simple sobre fondo organico -- patron real de "Our Blog"
+          en el pack Divi (sin ilustracion lateral, a diferencia de Servicios). */}
+      <PageHero
         eyebrow="Blog"
         title="Cuidado animal, explicado por el equipo que te atiende"
         lead="Prevención, vacunas, nutrición y qué hacer ante una urgencia — notas prácticas para dueños de mascota, escritas por nuestros veterinarios."
-        image="/gallery/illustrations/illustration-5.png"
-        imageAlt=""
       />
 
       <Section className="pt-0">

@@ -83,7 +83,7 @@ export function PageHero({
           )}
           {eyebrow && (
             <Reveal mount delay={0.05}>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">{eyebrow}</p>
+              <p className="font-heading text-xs font-extrabold uppercase tracking-[0.22em] text-cta">{eyebrow}</p>
             </Reveal>
           )}
           <Reveal mount delay={0.1}>

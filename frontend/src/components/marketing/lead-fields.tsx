@@ -1,7 +1,9 @@
 import Link from "next/link";
 
+// Input gris relleno sin borde -- patron real del formulario de Contact en el
+// pack Divi (no un input con borde + fondo blanco).
 const inputClass =
-  "h-11 w-full rounded-lg border border-input bg-card px-3.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary";
+  "h-11 w-full rounded-lg border-0 bg-muted px-3.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:ring-2 focus:ring-primary";
 
 /**
  * Campos del formulario de contacto del sitio publico. Se renderiza dentro
@@ -32,7 +34,7 @@ export function LeadFields({
       </div>
       <textarea
         name="message"
-        className="mt-4 min-h-32 w-full rounded-lg border border-input bg-card px-3.5 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
+        className="mt-4 min-h-32 w-full rounded-lg border-0 bg-muted px-3.5 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:ring-2 focus:ring-primary"
         placeholder={messagePlaceholder}
         aria-label="Mensaje"
       />

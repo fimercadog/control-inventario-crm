@@ -27,8 +27,10 @@ export function IconFeatureFloatCard({ items }: { items: Item[] }) {
                     className={item.href ? "group block" : undefined}
                   >
                     <Image src={item.icon} alt="" width={56} height={56} className="size-14" />
+                    {/* Azul secundario, no navy -- getComputedStyle exacto del titulo de
+                        icono ("Mauris Blandit" etc, color rgb(43,135,218)) en el live-demo. */}
                     <p
-                      className={`mt-4 text-sm font-bold uppercase tracking-[0.14em] text-primary ${item.href ? "group-hover:underline" : ""}`}
+                      className={`mt-4 font-heading text-sm font-extrabold uppercase tracking-[0.14em] text-chart-4 ${item.href ? "group-hover:underline" : ""}`}
                     >
                       {item.title}
                     </p>

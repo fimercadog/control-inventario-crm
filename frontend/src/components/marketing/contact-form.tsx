@@ -45,7 +45,7 @@ export function ContactForm() {
 
   if (done) {
     return (
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
+      <div className="rounded-2xl bg-card p-6 shadow-elevation-3">
         <div className="flex items-center gap-2 rounded-lg bg-success/10 px-3 py-2 text-sm text-success">
           <CheckCircle2 className="size-4" />
           Recibimos tu mensaje. Te contactaremos pronto.
@@ -55,7 +55,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
+    <form onSubmit={submit} className="rounded-2xl bg-card p-6 shadow-elevation-3 sm:p-8">
       <LeadFields
         messagePlaceholder="Contanos en que podemos ayudarte a vos y a tu mascota"
         secondaryField={{ placeholder: "Mascota (opcional)", label: "Mascota" }}
@@ -65,10 +65,11 @@ export function ContactForm() {
           <AlertCircle className="size-4" /> {error}
         </div>
       ) : null}
+      {/* Boton naranja -- mismo "SUBMIT" del formulario real de Contact en el pack. */}
       <button
         type="submit"
         disabled={loading}
-        className="mt-5 inline-flex h-11 w-full items-center justify-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:opacity-60"
+        className="mt-5 inline-flex h-11 w-full items-center justify-center rounded-full bg-cta px-6 font-heading text-sm font-extrabold uppercase tracking-[0.05em] text-cta-foreground transition-colors hover:bg-cta-hover disabled:opacity-60"
       >
         {loading ? "Enviando..." : "Enviar mensaje"}
       </button>

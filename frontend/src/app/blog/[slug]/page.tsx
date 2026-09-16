@@ -27,7 +27,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
             <ArrowLeft className="size-4" /> Volver al blog
           </Link>
-          <p className="mt-6 text-xs font-bold uppercase tracking-[0.22em] text-primary">{post.category}</p>
+          <p className="mt-6 text-xs font-bold uppercase tracking-[0.22em] text-chart-4">{post.category}</p>
           <h1 className="mt-3 text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl">{post.title}</h1>
           <div className="mt-6 flex items-center justify-center gap-4 text-sm text-muted-foreground">
             {author && <span className="font-semibold text-foreground">{author.name}</span>}

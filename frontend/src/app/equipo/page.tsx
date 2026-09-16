@@ -5,7 +5,7 @@ import { team } from "@/components/marketing/marketing-data";
 import { Section } from "@/components/marketing/marketing-ui";
 import { PhotoFeatureStack } from "@/components/marketing/photo-feature-stack";
 import { Reveal } from "@/components/marketing/reveal";
-import { VetGrid } from "@/components/marketing/vet-card";
+import { TeamProfileList } from "@/components/marketing/team-profile-row";
 
 export default function EquipoPage() {
   return (
@@ -19,7 +19,7 @@ export default function EquipoPage() {
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
           <Reveal mount>
             <div className="max-w-xl">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Equipo</p>
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Equipo</p>
               <h1 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
                 El equipo que va a conocer a tu mascota
               </h1>
@@ -44,8 +44,10 @@ export default function EquipoPage() {
         />
       </Section>
 
+      {/* Fila apilada foto+card -- patron "Highly Trained Veterinarians" de
+          About, en vez de un grid de tarjetas parejas. */}
       <Section className="bg-section-cream">
-        <VetGrid team={team} />
+        <TeamProfileList team={team} />
       </Section>
 
       <AppointmentCta />

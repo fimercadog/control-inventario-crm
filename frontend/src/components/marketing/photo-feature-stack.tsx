@@ -30,7 +30,9 @@ export function PhotoFeatureStack({
         {features.map((f, i) => (
           <Reveal key={f.title} delay={i * 0.08}>
             <div className="rounded-2xl bg-card p-6 shadow-elevation-3">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">{f.title}</p>
+              {/* Titulos de card en azul secundario, no navy -- getComputedStyle exacto
+                  del live-demo ("Vivamus Suscipit Tortor" etc, color rgb(43,135,218)). */}
+              <p className="font-heading text-xs font-extrabold uppercase tracking-[0.18em] text-chart-4">{f.title}</p>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">{f.text}</p>
             </div>
           </Reveal>
