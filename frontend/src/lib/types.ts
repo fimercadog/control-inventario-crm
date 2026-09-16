@@ -434,11 +434,14 @@ export type Procedure = {
   id: number;
   patient_id: number;
   patient?: string | null;
+  consultation_id?: number | null;
   service_id?: number | null;
   service?: string | null;
   vet_id?: number | null;
   vet?: string | null;
   type: string;
+  price?: number;
+  status?: string;
   performed_at: string;
   notes?: string | null;
   consent_document_url?: string | null;
@@ -462,13 +465,53 @@ export type ClinicalApplication = {
   next_due_at?: string | null;
 };
 
+export type ConsultationItem = {
+  id: number;
+  consultation_id: number;
+  item_type: "service" | "procedure" | "medication" | "supply" | "product";
+  product_id?: number | null;
+  product?: string | null;
+  service_id?: number | null;
+  service?: string | null;
+  procedure_id?: number | null;
+  name: string;
+  quantity: number;
+  unit_price: number;
+  unit_cost: number;
+  is_billable: boolean;
+  is_inventoriable: boolean;
+  line_total?: number;
+  stock_movement_id?: number | null;
+  notes?: string | null;
+  created_at?: string;
+};
+
 export type Consultation = {
   id: number;
   patient_id: number;
-  patient?: string | null;
+  patient?: any;
   appointment_id?: number | null;
   vet_id?: number | null;
   vet?: string | null;
+  service_id?: number | null;
+  service?: string | null;
+  price?: number;
+  status: "open" | "completed" | "cancelled";
+  invoice_id?: number | null;
+  invoice?: {
+    id: number;
+    number: string;
+    status: string;
+    total: number;
+    account_receivable?: {
+      id: number;
+      balance: number;
+      status: string;
+    } | null;
+  } | null;
+  warehouse_id?: number | null;
+  warehouse?: string | null;
+  finalized_at?: string | null;
   date: string;
   reason: string;
   weight?: number | string | null;
@@ -477,6 +520,8 @@ export type Consultation = {
   objective?: string | null;
   assessment?: string | null;
   plan?: string | null;
+  diagnoses?: { id: number; name: string; code?: string }[];
+  items?: ConsultationItem[];
   created_at?: string;
 };
 
