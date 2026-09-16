@@ -119,7 +119,7 @@ export default function Home() {
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <Reveal>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Atención preventiva</p>
-            <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
               Prevenir cuesta menos que curar
             </h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">
@@ -223,7 +223,7 @@ export default function Home() {
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Visitanos</p>
-            <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
               Te esperamos en la clínica
             </h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">

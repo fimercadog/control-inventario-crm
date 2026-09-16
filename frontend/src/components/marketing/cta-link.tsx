@@ -7,8 +7,10 @@ import { cn } from "@/lib/utils";
 type Variant = "default" | "outline" | "ghost" | "secondary" | "cta";
 type Size = "sm" | "default";
 
+// Boton real del pack Divi (extraido via getComputedStyle del live-demo):
+// Nunito, peso 800, uppercase, letter-spacing 1px, pastilla completa.
 const base =
-  "relative max-w-full overflow-hidden inline-flex items-center justify-center text-center rounded-full font-semibold transition-colors duration-150 active:scale-[0.98] motion-reduce:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+  "relative max-w-full overflow-hidden inline-flex items-center justify-center text-center rounded-full font-heading font-extrabold uppercase tracking-[0.05em] transition-colors duration-150 active:scale-[0.98] motion-reduce:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
 // min-h en vez de h fija: una etiqueta larga en una pantalla angosta envuelve a
 // dos lineas dentro de la pastilla en vez de desbordar y quedar cortada.
@@ -24,7 +26,9 @@ const variants: Record<Variant, string> = {
   secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
   // Ambar calido: reservado para las dos acciones de maxima prioridad del
   // sitio (Agendar cita / WhatsApp), para que destaquen por encima del teal.
-  cta: "bg-cta text-cta-foreground hover:bg-cta-hover",
+  // Sombra tintada al color del boton -- mismo patron que el boton real del
+  // pack Divi (rgba(255,112,0,.32) 0 12px 18px -6px).
+  cta: "bg-cta text-cta-foreground shadow-[0_12px_18px_-6px_rgb(255_112_0_/_0.32)] hover:bg-cta-hover",
 };
 
 /**

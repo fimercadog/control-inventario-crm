@@ -13,7 +13,7 @@ export function EmergencyBanner() {
             <Siren className="size-6" />
           </span>
           <div>
-            <p className="text-lg font-black tracking-tight sm:text-xl">¿Es una urgencia?</p>
+            <p className="text-lg font-extrabold tracking-tight sm:text-xl">¿Es una urgencia?</p>
             <p className="mt-1 max-w-md text-sm leading-6 text-muted-foreground">
               Accidentes, intoxicaciones o cuadros que empeoran rápido: escribinos o llamá antes de venir para que
               el equipo esté listo cuando llegues.

@@ -43,7 +43,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1fr_0.9fr] lg:px-8">
           <Reveal mount>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Servicios</p>
-            <h1 className="mt-3 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
               {service.title}
             </h1>
             <p className="mt-5 max-w-md text-lg leading-8 text-muted-foreground">{service.description}</p>

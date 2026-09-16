@@ -20,7 +20,7 @@ export function LegalPage({
         <Reveal>
           <article className="mx-auto max-w-3xl">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Legal</p>
-            <h1 className="mt-3 text-4xl font-black leading-tight tracking-tight sm:text-5xl">{title}</h1>
+            <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">{title}</h1>
             <p className="mt-3 text-sm text-muted-foreground">Ultima actualizacion: {updated}</p>
             {intro ? <p className="mt-6 text-base leading-7 text-muted-foreground">{intro}</p> : null}
             <div className="mt-10 space-y-10">

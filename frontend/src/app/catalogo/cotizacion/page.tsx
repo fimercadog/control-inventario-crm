@@ -130,7 +130,7 @@ export default function CotizacionPage() {
                     <td className="px-4 py-4 font-bold" colSpan={2}>
                       Total estimado
                     </td>
-                    <td className="px-4 py-4 text-right text-lg font-black">{formatCOP(total)}</td>
+                    <td className="px-4 py-4 text-right text-lg font-extrabold">{formatCOP(total)}</td>
                     <td />
                   </tr>
                 </tfoot>

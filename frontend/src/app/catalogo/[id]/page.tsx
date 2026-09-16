@@ -46,7 +46,7 @@ export default function ProductoPage() {
           <p className="mt-10 text-sm text-muted-foreground">Cargando producto...</p>
         ) : status === "missing" || !product ? (
           <div className="mt-10">
-            <h1 className="text-2xl font-black tracking-tight">Producto no disponible</h1>
+            <h1 className="text-2xl font-extrabold tracking-tight">Producto no disponible</h1>
             <p className="mt-3 text-sm text-muted-foreground">
               Este producto no esta en el catalogo publico.{" "}
               <Link href="/catalogo" className="font-medium text-primary underline">
@@ -74,7 +74,7 @@ export default function ProductoPage() {
               {product.category ? (
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{product.category}</p>
               ) : null}
-              <h1 className="mt-2 text-3xl font-black leading-tight tracking-tight sm:text-4xl">{product.name}</h1>
+              <h1 className="mt-2 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{product.name}</h1>
               <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm text-muted-foreground">
                 <div className="flex gap-1.5">
                   <dt className="font-medium">SKU:</dt>
@@ -94,7 +94,7 @@ export default function ProductoPage() {
                 ) : null}
               </dl>
 
-              <p className="mt-6 text-3xl font-black tracking-tight">{formatCOP(product.unit_price)}</p>
+              <p className="mt-6 text-3xl font-extrabold tracking-tight">{formatCOP(product.unit_price)}</p>
 
               {product.description ? (
                 <p className="mt-5 text-base leading-8 text-muted-foreground">{product.description}</p>

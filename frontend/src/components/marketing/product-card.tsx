@@ -36,7 +36,7 @@ export function ProductCard({ product, showAdd = true }: { product: PublicProduc
           <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted-foreground">{product.description}</p>
         ) : null}
         <div className="mt-4 flex items-center justify-between gap-3 pt-1">
-          <span className="text-lg font-black tracking-tight">{formatCOP(product.unit_price)}</span>
+          <span className="text-lg font-extrabold tracking-tight">{formatCOP(product.unit_price)}</span>
           {showAdd ? <AddButton product={product} /> : null}
         </div>
       </div>

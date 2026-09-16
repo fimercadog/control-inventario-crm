@@ -41,7 +41,8 @@ export function SectionHeading({
           {eyebrow}
         </p>
       )}
-      <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">{title}</h2>
+      {/* 42px/700 real, extraido de "What We Do" del live-demo via getComputedStyle. */}
+      <h2 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-[2.625rem]">{title}</h2>
       {lead && (
         <p className={cn("mt-4 text-lg leading-8", dark ? "text-white/70" : "text-muted-foreground")}>{lead}</p>
       )}

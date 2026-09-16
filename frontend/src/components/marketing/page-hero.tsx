@@ -26,7 +26,7 @@ function HeroArt() {
       <div className="absolute left-6 top-8 flex items-center gap-2 rounded-2xl bg-card/90 px-4 py-3 shadow-elevation-2 backdrop-blur sm:left-10 sm:top-12">
         <ShieldCheck className="size-4.5 shrink-0 text-primary" />
         <div className="leading-tight">
-          <p className="text-sm font-black">12+ años</p>
+          <p className="text-sm font-extrabold">12+ años</p>
           <p className="text-[11px] text-muted-foreground">de trayectoria</p>
         </div>
       </div>
@@ -34,7 +34,7 @@ function HeroArt() {
       <div className="absolute bottom-8 right-6 flex items-center gap-2 rounded-2xl bg-card/90 px-4 py-3 shadow-elevation-2 backdrop-blur sm:bottom-12 sm:right-10">
         <HeartPulse className="size-4.5 shrink-0 text-chart-3" />
         <div className="leading-tight">
-          <p className="text-sm font-black">3.500+</p>
+          <p className="text-sm font-extrabold">3.500+</p>
           <p className="text-[11px] text-muted-foreground">mascotas atendidas</p>
         </div>
       </div>
@@ -87,7 +87,7 @@ export function PageHero({
             </Reveal>
           )}
           <Reveal mount delay={0.1}>
-            <h1 className="mt-3 text-[2.05rem] font-black leading-[1.08] tracking-tight sm:text-5xl sm:leading-[1.02] lg:text-6xl">
+            <h1 className="mt-3 text-[2.05rem] font-extrabold leading-[1.08] tracking-tight sm:text-5xl sm:leading-[1.02] lg:text-6xl">
               {title}
             </h1>
           </Reveal>

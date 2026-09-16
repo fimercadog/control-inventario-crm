@@ -43,7 +43,7 @@ export default function UrgenciasPage() {
           <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
             <div className="max-w-xl">
               <p className="text-xs font-bold uppercase tracking-[0.28em] text-warning">Urgencias</p>
-              <h1 className="mt-4 text-5xl font-black leading-[1.02] tracking-tight text-white sm:text-6xl">
+              <h1 className="mt-4 text-5xl font-extrabold leading-[1.02] tracking-tight text-white sm:text-6xl">
                 Cuando no puede esperar, actuamos rápido
               </h1>
               <p className="mt-6 max-w-md text-lg leading-8 text-white/85">

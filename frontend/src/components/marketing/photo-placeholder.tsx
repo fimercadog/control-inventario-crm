@@ -63,7 +63,7 @@ export function InitialsAvatar({ name, className }: { name: string; className?: 
       )}
       aria-hidden
     >
-      <span className="text-3xl font-black tracking-tight sm:text-4xl">{initials}</span>
+      <span className="text-3xl font-extrabold tracking-tight sm:text-4xl">{initials}</span>
     </div>
   );
 }

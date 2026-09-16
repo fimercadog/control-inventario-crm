@@ -17,7 +17,7 @@ export function ClinicWordmark({ className }: { className?: string }) {
       <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
         <PawPrint className="size-4.5" />
       </span>
-      <span className="text-base font-black leading-tight tracking-tight">
+      <span className="text-base font-extrabold leading-tight tracking-tight">
         Los Andes
         <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
           Veterinaria

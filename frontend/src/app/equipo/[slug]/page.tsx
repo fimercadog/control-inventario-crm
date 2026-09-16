@@ -31,7 +31,7 @@ export default async function VetProfilePage({ params }: { params: Promise<{ slu
             />
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">{member.role}</p>
-              <h1 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">{member.name}</h1>
+              <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{member.name}</h1>
               <p className="mt-3 text-sm font-semibold text-muted-foreground">{member.specialty}</p>
               <p className="mt-6 text-base leading-7 text-foreground/85">{member.longBio}</p>
             </div>

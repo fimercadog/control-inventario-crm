@@ -26,7 +26,7 @@ export function HomeHero() {
         <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl">
             <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/75">Clínica veterinaria</p>
-            <h1 className="mt-4 text-6xl font-black leading-[0.95] tracking-tight text-white sm:text-7xl lg:text-8xl">
+            <h1 className="mt-4 text-6xl font-extrabold leading-[0.95] tracking-tight text-white sm:text-7xl lg:text-8xl">
               Los Andes
             </h1>
             <p className="mt-6 max-w-md text-lg leading-8 text-white/85">

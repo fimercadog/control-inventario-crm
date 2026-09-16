@@ -1,54 +1,36 @@
 import Image from "next/image";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/marketing/contact-form";
 import { CtaLink } from "@/components/marketing/cta-link";
+import { FloatingContactCard } from "@/components/marketing/floating-contact-card";
+import { GradientBlob } from "@/components/marketing/gradient-blob";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { Section } from "@/components/marketing/marketing-ui";
-import { PageHero } from "@/components/marketing/page-hero";
+import { container } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
-
-const info = [
-  { icon: MapPin, text: "Calle 93 #14-20, Bogotá" },
-  { icon: Phone, text: "+57 601 555 0188" },
-  { icon: Mail, text: "recepcion@vetlosandes.co" },
-  { icon: Clock, text: "Lun a sáb, 8:00 a 19:00 · Urgencias 24/7" },
-];
 
 export default function ContactPage() {
   return (
     <MarketingLayout>
-      <PageHero
-        eyebrow="Contacto"
-        title="Escribinos y te respondemos a la brevedad"
-        lead="Para agendar una cita usá el formulario de “Agendar cita”. Este canal es para consultas generales; ante una urgencia, escribinos directo por WhatsApp."
-      />
+      {/* Hero: texto centrado sobre blob + ilustraciones flanqueando -- patrón "Veterinarian Contact". */}
+      <section className="relative isolate overflow-hidden">
+        <GradientBlob className="left-1/2 top-0 size-[150%] -translate-x-1/2 opacity-40" warm />
+        <div className={`${container} relative py-16 text-center sm:py-20`}>
+          <Reveal mount className="hidden sm:absolute sm:left-4 sm:top-8 sm:block sm:size-28 lg:left-12">
+            <Image src="/gallery/illustrations/illustration-9.png" alt="" width={160} height={160} />
+          </Reveal>
+          <Reveal mount delay={0.1} className="hidden sm:absolute sm:right-4 sm:top-8 sm:block sm:size-28 lg:right-12">
+            <Image src="/gallery/illustrations/illustration-3.png" alt="" width={160} height={160} />
+          </Reveal>
 
-      <Section className="pt-0">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <Reveal>
-            <div className="relative mb-8 aspect-4/3 w-full overflow-hidden rounded-4xl shadow-elevation-3">
-              <Image
-                src="/gallery/pet-2.jpg"
-                alt="Paciente atendido en la clínica"
-                fill
-                sizes="(min-width: 1024px) 40vw, 90vw"
-                className="object-cover"
-              />
-              <span className="absolute left-4 top-4 grid size-11 place-items-center rounded-xl bg-card/95 shadow-elevation-1">
-                <Image src="/gallery/icons/icon-11.png" alt="" width={24} height={24} className="size-6" />
-              </span>
-            </div>
-            <h2 className="text-2xl font-black tracking-tight">Datos de la clínica</h2>
-            <ul className="mt-5 space-y-3 text-sm text-foreground/85">
-              {info.map(({ icon: Icon, text }) => (
-                <li key={text} className="flex items-center gap-2.5">
-                  <Icon className="size-4.5 shrink-0 text-primary" />
-                  {text}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 flex flex-wrap gap-3">
+          <Reveal mount>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Contacto</p>
+            <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">Escribinos</h1>
+            <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-muted-foreground">
+              Para agendar una cita usá el formulario de &ldquo;Agendar cita&rdquo;. Este canal es para consultas
+              generales; ante una urgencia, escribinos directo por WhatsApp.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
               <CtaLink href={WHATSAPP_URL} variant="cta">
                 Escribinos por WhatsApp
               </CtaLink>
@@ -57,6 +39,18 @@ export default function ContactPage() {
               </CtaLink>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      <div className="relative z-10 mx-auto -mt-8 max-w-5xl px-4 sm:px-6 lg:px-8">
+        <FloatingContactCard title="Escribinos cuando quieras" />
+      </div>
+
+      <Section>
+        <Reveal>
+          <h2 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl">Dejanos tu mensaje</h2>
+        </Reveal>
+        <div className="mx-auto mt-10 max-w-2xl">
           <Reveal delay={0.1}>
             <ContactForm />
           </Reveal>

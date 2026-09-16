@@ -26,7 +26,7 @@ export function AppointmentCta({
             <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-white/10 text-chart-3">
               <CalendarCheck className="size-5.5" />
             </span>
-            <h2 className="mt-5 text-3xl font-black leading-tight tracking-tight sm:text-4xl">{title}</h2>
+            <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{title}</h2>
             <p className="mt-4 text-lg leading-8 text-white/70">{lead}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <CtaLink href="/agendar-cita" variant="cta">

@@ -22,7 +22,7 @@ export default function AboutPage() {
           <Reveal mount>
             <div className="max-w-xl">
               <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Nosotros</p>
-              <h1 className="mt-3 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+              <h1 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
                 Una clínica de barrio, con el equipamiento de una grande
               </h1>
               <p className="mt-5 text-lg leading-8 text-muted-foreground">

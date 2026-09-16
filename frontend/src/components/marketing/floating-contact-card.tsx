@@ -11,7 +11,7 @@ export function FloatingContactCard({ title = "Escribinos cuando quieras" }: { t
   return (
     <div className="grid gap-6 rounded-3xl bg-card p-8 shadow-elevation-4 sm:grid-cols-[1.1fr_1fr_1fr] sm:items-center sm:p-10">
       <div>
-        <h2 className="text-xl font-black leading-tight tracking-tight sm:text-2xl">{title}</h2>
+        <h2 className="text-xl font-extrabold leading-tight tracking-tight sm:text-2xl">{title}</h2>
         <p className="mt-2 text-sm text-muted-foreground">Urgencias 24/7 · resto de consultas, horario de atención.</p>
       </div>
       <div className="space-y-2.5 text-sm">

@@ -30,7 +30,7 @@ export function SplitHero({
         <Reveal mount>
           <div className="max-w-lg">
             {eyebrow && <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">{eyebrow}</p>}
-            <h1 className="mt-3 text-[2.05rem] font-black leading-[1.08] tracking-tight sm:text-5xl sm:leading-[1.02] lg:text-6xl">
+            <h1 className="mt-3 text-[2.05rem] font-extrabold leading-[1.08] tracking-tight sm:text-5xl sm:leading-[1.02] lg:text-6xl">
               {title}
             </h1>
             {lead && <p className="mt-5 text-base leading-7 text-foreground/72 sm:mt-6 sm:text-lg sm:leading-8">{lead}</p>}

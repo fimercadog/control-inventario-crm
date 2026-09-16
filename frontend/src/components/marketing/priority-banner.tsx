@@ -16,7 +16,7 @@ export function PriorityBanner({
   return (
     <div className="flex flex-col items-center justify-between gap-4 rounded-full bg-ink px-6 py-4 text-white shadow-elevation-3 sm:flex-row sm:px-10">
       <p className="text-sm font-bold uppercase tracking-[0.14em] sm:text-base">
-        {label} <span className="font-black text-cta">{detail}</span>
+        {label} <span className="font-extrabold text-cta">{detail}</span>
       </p>
       <CtaLink href={WHATSAPP_URL} variant="cta" size="sm">
         Escribir por WhatsApp

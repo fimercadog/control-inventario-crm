@@ -132,10 +132,28 @@
   --blob: linear-gradient(140deg, #0e7490 0%, #14b8a6 45%, #5eead4 100%);
   --blob-warm: linear-gradient(140deg, #ea580c 0%, #fb923c 45%, #fde68a 100%);
   /* Acento calido secundario para CTAs (Agendar cita / WhatsApp) que necesitan
-     destacar por encima del teal primario. */
-  --cta: #ea580c;
-  --cta-hover: #c2410c;
+     destacar por encima del teal primario. Valor exacto extraido del boton
+     real del pack Divi via getComputedStyle (rgb(255,112,0)), no aproximado. */
+  --cta: #ff7000;
+  --cta-hover: #d95f00;
   --cta-foreground: #ffffff;
+
+  /* Tipografia real del pack Divi "Veterinarian" (extraida del live-demo):
+     Nunito para titulos/botones (peso 700-800), Open Sans para cuerpo.
+     Solo dentro de `.site-theme` -- el panel /app/* sigue en Roboto. Redefinir
+     la custom property NO alcanza (nada la relee en el subarbol): hay que
+     re-aplicar `font-family` aca mismo, mismo patron que `background-color`/
+     `color` arriba. */
+  --font-sans: var(--font-body-marketing);
+  --font-heading: var(--font-heading-marketing);
+  font-family: var(--font-sans);
+}
+
+.site-theme h1,
+.site-theme h2,
+.site-theme h3,
+.site-theme h4 {
+  font-family: var(--font-heading);
 }
 
 @theme inline {
@@ -174,6 +192,7 @@
   --color-chart-5: var(--chart-5);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-heading, var(--font-sans));
   --shadow-elevation-1: var(--elevation-1);
   --shadow-elevation-2: var(--elevation-2);
   --shadow-elevation-3: var(--elevation-3);
