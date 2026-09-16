@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-describe("ERP Totals & Calculations", () => {
+describe("ERP Totals & Monetary Arithmetic (Frontend Unit)", () => {
   it("calculates line items with price, discount, and tax", () => {
     const items = [
       { quantity: 3, unit_price: 15000, discount: 5000, tax: 7600 },
@@ -12,15 +12,15 @@ describe("ERP Totals & Calculations", () => {
     let tax = 0;
 
     const calculated = items.map((it) => {
-      const lineSubtotal = it.quantity * it.unit_price;
-      const lineTotal = lineSubtotal - it.discount + it.tax;
+      const lineSubtotal = Math.round(it.quantity * it.unit_price * 100) / 100;
+      const lineTotal = Math.round((lineSubtotal - it.discount + it.tax) * 100) / 100;
       subtotal += lineSubtotal;
       discount += it.discount;
       tax += it.tax;
       return { ...it, lineSubtotal, lineTotal };
     });
 
-    const total = subtotal - discount + tax;
+    const total = Math.round((subtotal - discount + tax) * 100) / 100;
 
     expect(subtotal).toBe(105000);
     expect(discount).toBe(5000);
@@ -30,7 +30,31 @@ describe("ERP Totals & Calculations", () => {
     expect(calculated[1].lineTotal).toBe(71400);
   });
 
-  it("calculates account receivable / payable balance accurately after partial payments", () => {
+  it("handles 100% discount and zero total", () => {
+    const items = [{ quantity: 2, unit_price: 50000, discount: 100000, tax: 0 }];
+    const lineSubtotal = items[0].quantity * items[0].unit_price;
+    const lineTotal = lineSubtotal - items[0].discount + items[0].tax;
+
+    expect(lineSubtotal).toBe(100000);
+    expect(lineTotal).toBe(0);
+  });
+
+  it("handles extreme large values with decimal precision", () => {
+    const quantity = 10000;
+    const unitPrice = 25000000.5;
+    const discount = 500000;
+    const tax = 47500000000;
+
+    const subtotal = Math.round(quantity * unitPrice * 100) / 100;
+    const total = Math.round((subtotal - discount + tax) * 100) / 100;
+
+    expect(subtotal).toBe(250000005000);
+    expect(total).toBe(297500005000 - 500000);
+  });
+});
+
+describe("ERP Accounts Receivable & Payable Logic (Frontend Unit)", () => {
+  it("calculates account balance accurately after partial and full payments", () => {
     const originalAmount = 1000000;
     const payments = [300000, 700000];
 
@@ -40,8 +64,8 @@ describe("ERP Totals & Calculations", () => {
 
     // First payment
     paidAmount += payments[0];
-    balance = originalAmount - paidAmount;
-    status = balance <= 0 ? "paid" : "partial";
+    balance = Math.round((originalAmount - paidAmount) * 100) / 100;
+    status = balance <= 0 ? "paid" : paidAmount > 0 ? "partial" : "pending";
 
     expect(paidAmount).toBe(300000);
     expect(balance).toBe(700000);
@@ -49,15 +73,29 @@ describe("ERP Totals & Calculations", () => {
 
     // Second payment
     paidAmount += payments[1];
-    balance = originalAmount - paidAmount;
-    status = balance <= 0 ? "paid" : "partial";
+    balance = Math.round((originalAmount - paidAmount) * 100) / 100;
+    status = balance <= 0 ? "paid" : paidAmount > 0 ? "partial" : "pending";
 
     expect(paidAmount).toBe(1000000);
     expect(balance).toBe(0);
     expect(status).toBe("paid");
   });
 
-  it("computes cash session difference on closing", () => {
+  it("detects overpayment attempts exceeding current balance", () => {
+    const currentBalance = 450000;
+    const paymentValid = 450000;
+    const paymentOver = 450000.01;
+
+    const isValid1 = paymentValid > 0 && paymentValid <= currentBalance;
+    const isValid2 = paymentOver > 0 && paymentOver <= currentBalance;
+
+    expect(isValid1).toBe(true);
+    expect(isValid2).toBe(false);
+  });
+});
+
+describe("ERP Cash Session & Arqueo Calculations (Frontend Unit)", () => {
+  it("computes cash session difference on closing with exact match", () => {
     const openingAmount = 100000;
     const movements = [
       { type: "in", amount: 50000 },
@@ -68,9 +106,52 @@ describe("ERP Totals & Calculations", () => {
     const movementSum = movements.reduce((acc, m) => acc + m.amount, 0);
     const expectedAmount = openingAmount + movementSum;
     const actualClosingAmount = 160000;
-    const difference = actualClosingAmount - expectedAmount;
+    const difference = Math.round((actualClosingAmount - expectedAmount) * 100) / 100;
 
     expect(expectedAmount).toBe(160000);
     expect(difference).toBe(0);
+  });
+
+  it("computes cash session surplus (sobrante) and deficit (faltante)", () => {
+    const openingAmount = 200000;
+    const movements = [{ type: "in", amount: 50000 }];
+    const expectedAmount = openingAmount + movements[0].amount; // 250000
+
+    const surplusClosing = 255000;
+    const surplusDiff = surplusClosing - expectedAmount;
+    expect(surplusDiff).toBe(5000);
+
+    const deficitClosing = 242000;
+    const deficitDiff = deficitClosing - expectedAmount;
+    expect(deficitDiff).toBe(-8000);
+  });
+});
+
+describe("ERP Inventory & Purchase Logic (Frontend Unit)", () => {
+  it("computes cumulative stock from various movement types", () => {
+    const initialStock = 80;
+    const movements = [
+      { type: "COMPRA", qty: 40 },
+      { type: "VENTA", qty: -25 },
+      { type: "DEVOLUCION_VENTA", qty: 5 },
+      { type: "DEVOLUCION_COMPRA", qty: -10 },
+      { type: "AJUSTE_ENTRADA", qty: 10 },
+      { type: "AJUSTE_SALIDA", qty: -15 },
+    ];
+
+    const finalStock = movements.reduce((acc, m) => acc + m.qty, initialStock);
+    // 80 + 40 - 25 + 5 - 10 + 10 - 15 = 85
+    expect(finalStock).toBe(85);
+  });
+
+  it("calculates purchase order item pending quantity and order status", () => {
+    const orderedQuantity = 100;
+    const receivedQuantity = 45;
+    const pending = Math.max(0, orderedQuantity - receivedQuantity);
+
+    expect(pending).toBe(55);
+
+    const status = pending === 0 ? "received" : receivedQuantity > 0 ? "partial" : "confirmed";
+    expect(status).toBe("partial");
   });
 });

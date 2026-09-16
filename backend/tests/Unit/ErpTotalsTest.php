@@ -36,12 +36,6 @@ class ErpTotalsTest extends TestCase
 
         $result = $this->calculator->calculate($items);
 
-        // Item 1: 3 * 15000 = 45000 - 5000 + 7600 = 47600
-        // Item 2: 2 * 30000 = 60000 - 0 + 11400 = 71400
-        // Subtotal: 105000
-        // Discount: 5000
-        // Tax: 19000
-        // Total: 119000
         $this->assertEquals(105000.00, $result['subtotal']);
         $this->assertEquals(5000.00, $result['discount']);
         $this->assertEquals(19000.00, $result['tax']);
@@ -80,5 +74,99 @@ class ErpTotalsTest extends TestCase
         $this->assertEquals(1000.00, $result['discount']);
         $this->assertEquals(4560.00, $result['tax']);
         $this->assertEquals(28560.00, $result['total']);
+    }
+
+    public function test_handles_zero_values_and_free_items(): void
+    {
+        $items = [
+            [
+                'product_id' => 10,
+                'quantity' => 5,
+                'unit_price' => 0,
+                'discount' => 0,
+                'tax' => 0,
+            ],
+        ];
+
+        $result = $this->calculator->calculate($items);
+
+        $this->assertEquals(0.00, $result['subtotal']);
+        $this->assertEquals(0.00, $result['discount']);
+        $this->assertEquals(0.00, $result['tax']);
+        $this->assertEquals(0.00, $result['total']);
+        $this->assertEquals(0.00, $result['items'][0]['line_total']);
+    }
+
+    public function test_handles_100_percent_discount(): void
+    {
+        $items = [
+            [
+                'product_id' => 11,
+                'quantity' => 2,
+                'unit_price' => 50000,
+                'discount' => 100000, // 100% discount
+                'tax' => 0,
+            ],
+        ];
+
+        $result = $this->calculator->calculate($items);
+
+        $this->assertEquals(100000.00, $result['subtotal']);
+        $this->assertEquals(100000.00, $result['discount']);
+        $this->assertEquals(0.00, $result['tax']);
+        $this->assertEquals(0.00, $result['total']);
+        $this->assertEquals(0.00, $result['items'][0]['line_total']);
+    }
+
+    public function test_handles_extreme_large_monetary_values(): void
+    {
+        $items = [
+            [
+                'product_id' => 20,
+                'quantity' => 10000,
+                'unit_price' => 25000000.50,
+                'discount' => 500000.00,
+                'tax' => 47500000000.00,
+            ],
+        ];
+
+        $result = $this->calculator->calculate($items);
+
+        $expectedSubtotal = 250000005000.00; // 10000 * 25000000.50 = 250,000,005,000.00
+        $expectedTotal = $expectedSubtotal - 500000.00 + 47500000000.00;
+
+        $this->assertEquals($expectedSubtotal, $result['subtotal']);
+        $this->assertEquals(500000.00, $result['discount']);
+        $this->assertEquals(47500000000.00, $result['tax']);
+        $this->assertEquals($expectedTotal, $result['total']);
+    }
+
+    public function test_handles_floating_point_rounding_precision(): void
+    {
+        $items = [
+            [
+                'product_id' => 30,
+                'quantity' => 3,
+                'unit_price' => 33333.3333,
+                'discount' => 0.00,
+                'tax' => 19000.00,
+            ],
+            [
+                'product_id' => 31,
+                'quantity' => 7,
+                'unit_price' => 14285.7142,
+                'discount' => 500.555,
+                'tax' => 18999.444,
+            ],
+        ];
+
+        $result = $this->calculator->calculate($items);
+
+        $this->assertIsFloat($result['subtotal']);
+        $this->assertIsFloat($result['total']);
+        $this->assertEquals(200000.00, $result['subtotal']);
+        $this->assertEquals(500.56, $result['discount']);
+        $this->assertEquals(37999.44, $result['tax']);
+        $this->assertEquals(237498.89, $result['total']);
     }
 }
