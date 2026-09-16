@@ -4,16 +4,16 @@ import { AppointmentCta } from "@/components/marketing/appointment-cta";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { EmergencyBanner } from "@/components/marketing/emergency-banner";
 import { FaqAccordion } from "@/components/marketing/faq-accordion";
+import { HomeHero } from "@/components/marketing/home-hero";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { faqs, featuredServices, stats, team, testimonials } from "@/components/marketing/marketing-data";
 import { FeatureCard, Section, SectionHeading } from "@/components/marketing/marketing-ui";
-import { PageHero } from "@/components/marketing/page-hero";
+import { PhotoFeatureStack } from "@/components/marketing/photo-feature-stack";
 import { Reveal } from "@/components/marketing/reveal";
 import { ServiceGrid } from "@/components/marketing/service-card";
 import { StatsSection } from "@/components/marketing/stats-section";
 import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 import { VetGrid } from "@/components/marketing/vet-card";
-import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 const whyUs = [
   { icon: Stethoscope, title: "Equipo con experiencia", text: "Veterinarios de planta, no rotativos: conocen a tu mascota visita tras visita." },
@@ -32,28 +32,7 @@ const speciesTreated = [
 export default function Home() {
   return (
     <MarketingLayout>
-      <PageHero
-        eyebrow="Clínica Veterinaria Los Andes"
-        title={
-          <>
-            Cuidado veterinario cercano,{" "}
-            <span className="animate-marketing-gradient-text">de la consulta a la urgencia</span>
-          </>
-        }
-        lead="Consulta, vacunación, cirugía y urgencias para perros, gatos y otras mascotas, con un equipo que arma la historia clínica de cada paciente desde la primera visita."
-        visual="art"
-        actions={
-          <>
-            <CtaLink href="/agendar-cita" variant="cta">
-              Agendar cita
-            </CtaLink>
-            <CtaLink href={WHATSAPP_URL} variant="outline">
-              Hablar por WhatsApp
-            </CtaLink>
-          </>
-        }
-        note="Urgencias 24/7 · Laboratorio propio · Historia clínica digital"
-      />
+      <HomeHero />
 
       {/* Servicios principales */}
       <Section>
@@ -76,38 +55,24 @@ export default function Home() {
 
       {/* Presentación de la clínica */}
       <Section className="bg-secondary/40">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <Reveal>
-            <div className="relative aspect-4/3 w-full overflow-hidden rounded-4xl shadow-elevation-3">
-              <Image
-                src="/gallery/vet-clipboard.jpg"
-                alt="Veterinario con bata blanca revisando la historia clínica de un paciente"
-                fill
-                sizes="(min-width: 1024px) 45vw, 90vw"
-                className="object-cover"
-              />
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">La clínica</p>
-            <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
-              Más de una década cuidando mascotas del barrio
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              Somos una clínica de una sola sede, con consultorios equipados, laboratorio propio y quirófano.
-              Preferimos atender pocas mascotas bien que muchas apurados: por eso cada consulta tiene el tiempo que
-              necesita.
-            </p>
-            <div className="mt-6 flex items-center gap-2.5 text-sm text-muted-foreground">
-              <MapPin className="size-4.5 shrink-0 text-primary" />
-              Calle 93 #14-20, Bogotá — a dos cuadras de la Zona T
-            </div>
-            <div className="mt-8">
-              <CtaLink href="/nosotros" variant="outline" size="sm">
-                Conocer la clínica
-              </CtaLink>
-            </div>
-          </Reveal>
+        <Reveal>
+          <SectionHeading eyebrow="La clínica" title="Más de una década cuidando mascotas del barrio" center={false} />
+        </Reveal>
+        <div className="mt-12">
+          <PhotoFeatureStack
+            image="/gallery/vet-clipboard.jpg"
+            imageAlt="Veterinario con bata blanca revisando la historia clínica de un paciente"
+            features={[
+              { title: "Consultorios equipados", text: "Laboratorio propio y quirófano — sin derivar cada caso a otro lado." },
+              { title: "Pocas mascotas, no muchas apuradas", text: "Cada consulta tiene el tiempo que necesita, no un cronómetro." },
+              { title: "Calle 93 #14-20, Bogotá", text: "A dos cuadras de la Zona T. Lun a sáb, 8:00 a 19:00." },
+            ]}
+          />
+        </div>
+        <div className="mt-8 flex justify-center lg:justify-start">
+          <CtaLink href="/nosotros" variant="outline" size="sm">
+            Conocer la clínica
+          </CtaLink>
         </div>
       </Section>
 
