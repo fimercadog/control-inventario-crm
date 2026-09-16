@@ -29,7 +29,7 @@ export function SplitHero({
       <div className={`${container} grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-[1fr_1.05fr] lg:py-24`}>
         <Reveal mount>
           <div className="max-w-lg">
-            {eyebrow && <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">{eyebrow}</p>}
+            {eyebrow && <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">{eyebrow}</p>}
             <h1 className="mt-3 text-[2.05rem] font-extrabold leading-[1.08] tracking-tight sm:text-5xl sm:leading-[1.02] lg:text-6xl">
               {title}
             </h1>

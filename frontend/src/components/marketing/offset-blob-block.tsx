@@ -34,7 +34,7 @@ export function OffsetBlobBlock({
           <Reveal className="relative z-10 flex min-h-64 items-center">
             <GradientBlob className="-inset-y-16 -left-10 size-[160%] opacity-90" warm float />
             <div className="relative z-10 max-w-sm px-6 py-10 sm:px-10">
-              {eyebrow && <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">{eyebrow}</p>}
+              {eyebrow && <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">{eyebrow}</p>}
               <h2 className="mt-3 text-3xl font-extrabold leading-[1.05] tracking-tight sm:text-4xl">{title}</h2>
               {children}
               {actions && <div className="mt-7 flex flex-wrap gap-3">{actions}</div>}

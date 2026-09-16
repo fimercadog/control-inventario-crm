@@ -205,7 +205,7 @@ export default function Home() {
       <Section>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Visitanos</p>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Visitanos</p>
             <h2 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
               Te esperamos en la clínica
             </h2>

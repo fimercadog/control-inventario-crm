@@ -15,7 +15,7 @@ export function FloatingContactCard({ title = "Escribinos cuando quieras" }: { t
         <p className="mt-2 text-sm text-muted-foreground">Urgencias 24/7 · resto de consultas, horario de atención.</p>
       </div>
       <div className="space-y-2.5 text-sm">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Contacto</p>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cta">Contacto</p>
         <p className="flex items-center gap-2">
           <MapPin className="size-4 shrink-0 text-primary" /> Calle 93 #14-20, Bogotá
         </p>
@@ -27,7 +27,7 @@ export function FloatingContactCard({ title = "Escribinos cuando quieras" }: { t
         </p>
       </div>
       <div className="space-y-2.5 text-sm">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Horario</p>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cta">Horario</p>
         <p className="flex items-center gap-2">
           <Clock className="size-4 shrink-0 text-primary" /> Lun a sáb, 8:00 a 19:00
         </p>

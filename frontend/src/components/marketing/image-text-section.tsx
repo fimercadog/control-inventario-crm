@@ -30,7 +30,7 @@ export function ImageTextSection({
         </div>
       </Reveal>
       <Reveal delay={0.1} className={cn(reverse && "lg:order-1")}>
-        {eyebrow && <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">{eyebrow}</p>}
+        {eyebrow && <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">{eyebrow}</p>}
         <h2 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{title}</h2>
         <div className="mt-4 text-lg leading-8 text-muted-foreground">{children}</div>
       </Reveal>
