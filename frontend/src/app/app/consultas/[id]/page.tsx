@@ -11,6 +11,13 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/lib/api";
 import { cn, formatDate, formatCurrency } from "@/lib/utils";
 import { Consultation, Product, Warehouse, CashSession } from "@/lib/types";
+import { getStoredUser, hasAnyPermission } from "@/lib/auth";
+import {
+  isConsultationEditable,
+  validateClinicalQuantity,
+  validateClinicalUnitPrice,
+  validatePaymentPayload,
+} from "@/lib/consultation-helpers";
 
 function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLabelElement>) {
   return <label className={cn("text-xs font-semibold text-muted-foreground block mb-1", className)} {...props} />;
@@ -46,6 +53,7 @@ export default function ConsultationDetailPage() {
   const [isBillable, setIsBillable] = React.useState(true);
   const [isInventoriable, setIsInventoriable] = React.useState(true);
   const [itemNotes, setItemNotes] = React.useState("");
+  const [isSubmittingItem, setIsSubmittingItem] = React.useState(false);
 
   // Modal para finalizar consulta y facturar
   const [openFinalizeModal, setOpenFinalizeModal] = React.useState(false);
@@ -57,6 +65,9 @@ export default function ConsultationDetailPage() {
   const [paymentMethod, setPaymentMethod] = React.useState("cash");
   const [paymentReference, setPaymentReference] = React.useState("");
   const [finalizing, setFinalizing] = React.useState(false);
+
+  const currentUser = getStoredUser();
+  const canManagePayments = hasAnyPermission(currentUser, ["payments.manage", "cash.manage"]);
 
   const fetchConsultation = React.useCallback(async () => {
     try {
@@ -89,6 +100,7 @@ export default function ConsultationDetailPage() {
 
   const handleOpenFinalizeModal = async () => {
     setOpenFinalizeModal(true);
+    setWithPayment(false);
     try {
       const [wRes, sRes] = await Promise.all([
         api.get<{ data: Warehouse[] }>("/warehouses"),
@@ -121,16 +133,31 @@ export default function ConsultationDetailPage() {
 
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingItem) return;
+
+    const qtyValidation = validateClinicalQuantity(itemQuantity);
+    if (!qtyValidation.valid) {
+      toast.error(qtyValidation.error || "Cantidad inválida.");
+      return;
+    }
+
+    const priceValidation = validateClinicalUnitPrice(itemUnitPrice);
+    if (!priceValidation.valid) {
+      toast.error(priceValidation.error || "Precio inválido.");
+      return;
+    }
+
     try {
+      setIsSubmittingItem(true);
       await api.post(`/consultations/${id}/items`, {
         item_type: itemType,
         product_id: selectedProductId ? Number(selectedProductId) : null,
-        name: itemName,
-        quantity: Number(itemQuantity),
-        unit_price: Number(itemUnitPrice),
+        name: itemName.trim(),
+        quantity: qtyValidation.quantity,
+        unit_price: priceValidation.price,
         is_billable: isBillable,
         is_inventoriable: isInventoriable,
-        notes: itemNotes || null,
+        notes: itemNotes.trim() || null,
       });
       toast.success("Ítem clínico agregado con éxito.");
       setOpenItemModal(false);
@@ -141,8 +168,10 @@ export default function ConsultationDetailPage() {
       setItemUnitPrice("0");
       setItemNotes("");
       fetchConsultation();
-    } catch {
-      toast.error("Error al agregar el ítem a la consulta.");
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Error al agregar el ítem a la consulta.");
+    } finally {
+      setIsSubmittingItem(false);
     }
   };
 
@@ -158,6 +187,21 @@ export default function ConsultationDetailPage() {
   };
 
   const handleFinalize = async () => {
+    if (finalizing) return;
+
+    const paymentVal = validatePaymentPayload({
+      withPayment,
+      canManagePayments,
+      paymentMethod,
+      paymentSessionId,
+      hasOpenSessions: cashSessions.length > 0,
+    });
+
+    if (!paymentVal.valid) {
+      toast.error(paymentVal.error);
+      return;
+    }
+
     try {
       setFinalizing(true);
       const payload: any = {
@@ -186,6 +230,7 @@ export default function ConsultationDetailPage() {
   const patientName = typeof c.patient === "object" ? c.patient?.name : c.patient;
   const clientName = typeof c.patient === "object" ? c.patient?.client : null;
   const isCompleted = c.status === "completed";
+  const isOpen = c.status === "open";
 
   // Calcular total de cargos a facturar
   const itemsTotal = (c.items || []).reduce((acc, it) => acc + (it.is_billable ? (it.unit_price || 0) * (it.quantity || 1) : 0), 0);
@@ -200,10 +245,14 @@ export default function ConsultationDetailPage() {
             <h1 className="text-2xl font-bold">Consulta Clínica #{c.id}</h1>
             <span
               className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                isCompleted ? "bg-emerald-100 text-emerald-800" : "bg-blue-100 text-blue-800"
+                isCompleted
+                  ? "bg-emerald-100 text-emerald-800"
+                  : c.status === "cancelled"
+                  ? "bg-red-100 text-red-800"
+                  : "bg-blue-100 text-blue-800"
               }`}
             >
-              {isCompleted ? "Finalizada y Facturada" : "En Atención (Abierta)"}
+              {isCompleted ? "Finalizada y Facturada" : c.status === "cancelled" ? "Cancelada" : "En Atención (Abierta)"}
             </span>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -223,7 +272,7 @@ export default function ConsultationDetailPage() {
           <Button variant="outline" size="sm" onClick={() => router.back()}>
             Volver
           </Button>
-          {!isCompleted && (
+          {isOpen && (
             <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700" onClick={handleOpenFinalizeModal}>
               Finalizar y Facturar en ERP
             </Button>
@@ -305,7 +354,7 @@ export default function ConsultationDetailPage() {
                 Los ítems cobrables se integran a la Factura Interna y los inventariables descuentan existencias automáticamente.
               </p>
             </div>
-            {!isCompleted && (
+            {isOpen && (
               <Button size="sm" onClick={handleOpenItemModal}>
                 + Agregar Concepto Clínico
               </Button>
@@ -325,7 +374,7 @@ export default function ConsultationDetailPage() {
                     <th className="py-2 text-right">Precio Unit.</th>
                     <th className="py-2 text-right">Total</th>
                     <th className="py-2 text-center">Trazabilidad ERP</th>
-                    {!isCompleted && <th className="py-2 text-right">Acción</th>}
+                    {isOpen && <th className="py-2 text-right">Acción</th>}
                   </tr>
                 </thead>
                 <tbody className="divide-y">
@@ -349,7 +398,7 @@ export default function ConsultationDetailPage() {
                           {it.is_inventoriable ? "Descuenta Stock" : "No Inventariable"}
                         </span>
                       </td>
-                      {!isCompleted && (
+                      {isOpen && (
                         <td className="py-2 text-right">
                           <Button variant="ghost" size="sm" className="h-6 text-red-600 hover:text-red-700" onClick={() => handleRemoveItem(it.id)}>
                             Quitar
@@ -420,7 +469,7 @@ export default function ConsultationDetailPage() {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label>Cantidad *</Label>
-                <Input type="number" min="0.1" step="any" value={itemQuantity} onChange={(e) => setItemQuantity(e.target.value)} required />
+                <Input type="number" min="0.0001" step="any" value={itemQuantity} onChange={(e) => setItemQuantity(e.target.value)} required />
               </div>
               <div>
                 <Label>Precio Cobrado ($) *</Label>
@@ -445,10 +494,12 @@ export default function ConsultationDetailPage() {
             </div>
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setOpenItemModal(false)}>
+              <Button type="button" variant="outline" onClick={() => setOpenItemModal(false)} disabled={isSubmittingItem}>
                 Cancelar
               </Button>
-              <Button type="submit">Agregar Ítem</Button>
+              <Button type="submit" disabled={isSubmittingItem}>
+                {isSubmittingItem ? "Guardando..." : "Agregar Ítem"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -496,51 +547,72 @@ export default function ConsultationDetailPage() {
             </div>
 
             <div className="space-y-2 rounded-lg border bg-muted/40 p-3">
-              <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
-                <input type="checkbox" checked={withPayment} onChange={(e) => setWithPayment(e.target.checked)} className="rounded" />
-                <span>Registrar cobro inmediato en Caja (Abono / Pago total)</span>
-              </label>
+              {canManagePayments ? (
+                <>
+                  <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
+                    <input type="checkbox" checked={withPayment} onChange={(e) => setWithPayment(e.target.checked)} className="rounded" />
+                    <span>Registrar cobro inmediato en Caja (Abono / Pago total)</span>
+                  </label>
 
-              {withPayment && (
-                <div className="mt-3 space-y-2 pt-2 border-t">
-                  <div>
-                    <Label className="text-[11px]">Sesión de Caja Abierta *</Label>
-                    <select
-                      value={paymentSessionId}
-                      onChange={(e) => setPaymentSessionId(e.target.value)}
-                      className="mt-1 w-full rounded-md border p-1.5 text-xs"
-                    >
-                      {cashSessions.map((s) => (
-                        <option key={s.id} value={s.id}>
-                          Sesión #{s.id} · Caja {s.cash_register_id} (Apertura: {formatCurrency(s.opening_amount)})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <Label className="text-[11px]">Método</Label>
-                      <select
-                        value={paymentMethod}
-                        onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="mt-1 w-full rounded-md border p-1.5 text-xs"
-                      >
-                        <option value="cash">Efectivo</option>
-                        <option value="card">Tarjeta Débito/Crédito</option>
-                        <option value="transfer">Transferencia</option>
-                      </select>
+                  {withPayment && (
+                    <div className="mt-3 space-y-2 pt-2 border-t">
+                      {cashSessions.length === 0 ? (
+                        <p className="text-xs text-amber-700 bg-amber-50 p-2 rounded border border-amber-200 font-medium">
+                          ⚠️ No hay sesiones de caja abiertas actualmente.
+                        </p>
+                      ) : (
+                        <div>
+                          <Label className="text-[11px]">Sesión de Caja Abierta *</Label>
+                          <select
+                            value={paymentSessionId}
+                            onChange={(e) => setPaymentSessionId(e.target.value)}
+                            className="mt-1 w-full rounded-md border p-1.5 text-xs"
+                          >
+                            {cashSessions.map((s) => (
+                              <option key={s.id} value={s.id}>
+                                Sesión #{s.id} · Caja {s.cash_register_id} (Apertura: {formatCurrency(s.opening_amount)})
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label className="text-[11px]">Método</Label>
+                          <select
+                            value={paymentMethod}
+                            onChange={(e) => setPaymentMethod(e.target.value)}
+                            className="mt-1 w-full rounded-md border p-1.5 text-xs"
+                          >
+                            <option value="cash">Efectivo</option>
+                            <option value="card">Tarjeta Débito/Crédito</option>
+                            <option value="transfer">Transferencia</option>
+                          </select>
+                        </div>
+                        <div>
+                          <Label className="text-[11px]">Referencia</Label>
+                          <Input
+                            value={paymentReference}
+                            onChange={(e) => setPaymentReference(e.target.value)}
+                            className="h-8 text-xs"
+                            placeholder="Ej. POS-001"
+                          />
+                        </div>
+                      </div>
+
+                      {paymentMethod === "cash" && (!paymentSessionId || cashSessions.length === 0) && (
+                        <p className="text-[11px] text-red-600 font-semibold pt-1">
+                          ⚠️ Para cobro en efectivo es obligatorio seleccionar una sesión de caja abierta.
+                        </p>
+                      )}
                     </div>
-                    <div>
-                      <Label className="text-[11px]">Referencia</Label>
-                      <Input
-                        value={paymentReference}
-                        onChange={(e) => setPaymentReference(e.target.value)}
-                        className="h-8 text-xs"
-                        placeholder="Ej. POS-001"
-                      />
-                    </div>
-                  </div>
-                </div>
+                  )}
+                </>
+              ) : (
+                <p className="text-xs text-muted-foreground bg-muted p-2 rounded italic">
+                  Cobro directo deshabilitado (se requiere permiso de gestión de pagos o caja).
+                </p>
               )}
             </div>
           </div>

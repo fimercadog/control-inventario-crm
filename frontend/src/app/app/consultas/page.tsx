@@ -6,6 +6,7 @@ import { ModuleTablePage } from "@/components/module-table-page";
 import { AppColumnDef } from "@/lib/table-types";
 import { Consultation } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import { isConsultationEditable } from "@/lib/consultation-helpers";
 
 const columns: AppColumnDef<Consultation>[] = [
   { header: "Fecha", cell: ({ row }) => formatDate(row.original.date) },
@@ -49,6 +50,7 @@ export default function ConsultationsPage() {
       resource="/consultations"
       columns={columns}
       fields={fields}
+      isRowEditable={(row) => isConsultationEditable(row.status)}
       actionLabel="Nueva consulta"
       modalDescription="Esquema SOAP: Subjetivo · Objetivo · Análisis · Plan."
     />
