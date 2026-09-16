@@ -37,8 +37,8 @@ export default function EquipoPage() {
 
       <Section className="pt-0">
         <PhotoFeatureStack
-          image="/gallery/vet-clipboard.jpg"
-          imageAlt="Veterinario del equipo con bata blanca e historia clínica"
+          image="/gallery/pet-13.jpg"
+          imageAlt="Veterinario examinando la pata de un bulldog con instrumental clínico"
           reverse
           features={[
             { title: "Continuidad, no rotación", text: "Cada mascota tiene un veterinario que la conoce visita tras visita, no un turno con quien esté disponible." },

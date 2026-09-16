@@ -16,7 +16,7 @@ const SERVICE_PHOTO: Record<string, string> = {
   "consulta-veterinaria": "/gallery/hero-bulldog-exam.jpg",
   vacunacion: "/gallery/pet-4.jpg",
   cirugia: "/gallery/pet-13.jpg",
-  "laboratorio-clinico": "/gallery/vet-clipboard.jpg",
+  "laboratorio-clinico": "/gallery/pet-12.jpg",
   "peluqueria-grooming": "/gallery/pet-8.jpg",
   nutricion: "/gallery/pet-4.jpg",
   urgencias: "/gallery/pet-10.jpg",

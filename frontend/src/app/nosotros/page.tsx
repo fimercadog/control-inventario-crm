@@ -23,7 +23,15 @@ export default function AboutPage() {
       {/* Hero: foto full-bleed lavada (blanco) + texto encima -- patrón "About DiviVet" del pack. */}
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/gallery/vet-clipboard.jpg" alt="" fill priority sizes="100vw" className="object-cover" />
+          <Image
+            src="/gallery/pet-12.jpg"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            style={{ objectPosition: "62% 50%" }}
+          />
           <div className="absolute inset-0 bg-background/88" />
         </div>
         <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">

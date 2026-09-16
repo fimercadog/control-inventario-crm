@@ -62,8 +62,8 @@ export default function Home() {
         </Reveal>
         <div className="mt-12">
           <PhotoFeatureStack
-            image="/gallery/vet-clipboard.jpg"
-            imageAlt="Veterinario con bata blanca revisando la historia clínica de un paciente"
+            image="/gallery/pet-7.jpg"
+            imageAlt="Veterinario con bata blanca y estetoscopio revisando a un bulldog en la camilla"
             features={[
               { title: "Consultorios equipados", text: "Laboratorio propio y quirófano — sin derivar cada caso a otro lado." },
               { title: "Pocas mascotas, no muchas apuradas", text: "Cada consulta tiene el tiempo que necesita, no un cronómetro." },
