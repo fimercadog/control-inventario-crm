@@ -1,4 +1,4 @@
-import { ArrowRight, Bird, Cat, Dog, MapPin, Rabbit, Sparkles } from "lucide-react";
+import { ArrowRight, Bird, Cat, Dog, Rabbit, Sparkles } from "lucide-react";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { EmergencyBanner } from "@/components/marketing/emergency-banner";
@@ -224,23 +224,20 @@ export default function Home() {
               </CtaLink>
             </div>
           </Reveal>
-          <Reveal delay={0.1}>
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Calle+93+%2314-20%2C+Bogot%C3%A1"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Ver ubicación de la clínica en Google Maps"
-              className="group relative flex aspect-4/3 w-full items-center justify-center overflow-hidden rounded-3xl border border-border bg-secondary"
-            >
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-[linear-gradient(currentColor_1px,transparent_1px),linear-gradient(90deg,currentColor_1px,transparent_1px)] bg-size-[28px_28px] text-primary/15 opacity-60"
+          <Reveal delay={0.1} direction="fade" duration={0.8}>
+            <div className="aspect-4/3 w-full overflow-hidden rounded-3xl shadow-elevation-3">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d127238.10319071656!2d-74.16085941045108!3d4.736901797248434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sla%2026%20con%207!5e0!3m2!1ses!2sco!4v1789530874639!5m2!1ses!2sco"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title="Ubicación de Clínica Veterinaria Los Andes en Google Maps"
+                className="size-full"
               />
-              <span className="relative flex flex-col items-center gap-2 text-primary">
-                <MapPin className="size-9" />
-                <span className="text-sm font-semibold text-foreground">Ver ubicación en Google Maps</span>
-              </span>
-            </a>
+            </div>
           </Reveal>
         </div>
       </Section>
