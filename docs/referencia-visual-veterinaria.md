@@ -1,5 +1,30 @@
 # Referencia visual del sitio público — vertical veterinaria
 
+## ✅ Baseline visual aprobado (2026-09-16, commit `073330f`)
+
+Esta migración visual está **cerrada**. `073330f` es el estado de referencia
+aprobado — cualquier cambio de estilo futuro se hace **sobre** esta base
+(ajustes puntuales, un componente, una página), no reabriendo la migración
+completa (auditar los 7 live-demos de nuevo, rehacer tokens globales,
+reestructurar páginas enteras) salvo pedido explícito de Fidel en ese
+sentido.
+
+Pendientes explícitamente diferidos, a resolver por separado (no forman
+parte del baseline y no bloquean darlo por cerrado):
+
+1. **Revisión futura del footer** — hoy es navegación multi-columna
+   (sitemap) en vez de las 4 tarjetas de contacto del pack; evaluado y
+   conservado en la última pasada, pero queda abierto a revisión si surge
+   una razón de peso.
+2. **Evaluación del container global de 1280px** — el pack real usa un
+   container más ancho (casi edge-to-edge, ~40px de padding fijo a 1440px
+   de viewport) contra nuestro `max-w-7xl` centrado. `container` es una
+   constante compartida por decenas de componentes de todo el sitio;
+   cambiarla es sitewide y debe evaluarse **en una rama independiente**,
+   no como parte de un ajuste de estilo puntual.
+
+## Qué cubre este documento
+
 El sitio de marketing de esta rama (`vertical/veterinaria`) usa el pack Divi
 **"Veterinarian" (DiviVet)** de Elegant Themes como referencia visual
 **vinculante**: no solo fotos/íconos, sino paleta, tipografía, navbar,
