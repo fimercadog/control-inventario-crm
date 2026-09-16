@@ -309,6 +309,11 @@ export type BlogPost = {
   title: string;
   category: string;
   excerpt: string;
+  image: string;
+  authorSlug: string;
+  date: string;
+  readMinutes: number;
+  body: string[];
 };
 
 export const blogCategories = ["Prevención", "Vacunas", "Nutrición", "Cirugía", "Cachorros", "Urgencias"];
@@ -319,39 +324,114 @@ export const blogPosts: BlogPost[] = [
     title: "Señales que indican que tu mascota necesita una consulta ya",
     category: "Urgencias",
     excerpt: "Decaimiento, vómito persistente, dificultad para respirar: una guía rápida para saber cuándo esperar y cuándo no.",
+    image: "/gallery/pet-7.jpg",
+    authorSlug: "carlos-medina",
+    date: "2026-08-12",
+    readMinutes: 4,
+    body: [
+      "No toda molestia es una urgencia, pero algunas señales sí ameritan atención inmediata y no un \"vamos viendo cómo sigue\". La regla general que usamos en consulta: si el síntoma es súbito, si compromete la respiración, o si tu mascota deja de responder como siempre, es momento de venir.",
+      "Decaimiento marcado — que no se levante a comer, que no reaccione a estímulos que normalmente la entusiasman — es de las señales más subestimadas. Un perro o gato que \"está raro\" desde hace más de unas horas ya justifica una consulta, no una espera de \"a ver si mejora solo\".",
+      "El vómito persistente (más de dos o tres episodios en pocas horas, o con sangre) y la dificultad para respirar son motivo de consulta prioritaria siempre. En el segundo caso, cada minuto cuenta: llamanos antes de salir para que el equipo esté listo cuando llegues.",
+      "Otras señales que no deberían esperar: distensión abdominal repentina, convulsiones, imposibilidad de orinar, sangrado que no cede, o un golpe/caída con cojera inmediata. Ante la duda, la llamada no cuesta nada — preferimos revisar de más que de menos.",
+    ],
   },
   {
     slug: "calendario-de-vacunacion-cachorros",
     title: "El calendario de vacunación de un cachorro, mes a mes",
     category: "Vacunas",
     excerpt: "Qué vacuna toca en cada etapa y por qué saltarse una dosis puede dejar una ventana de riesgo.",
+    image: "/gallery/pet-4.jpg",
+    authorSlug: "laura-pena",
+    date: "2026-07-28",
+    readMinutes: 5,
+    body: [
+      "Un cachorro nace con cierta protección de la madre, pero esa inmunidad baja gradualmente entre las 6 y las 16 semanas de vida — justo la ventana en la que hay que vacunar, y por eso el esquema se aplica en varias dosis, no en una sola.",
+      "El esquema típico arranca alrededor de las 6-8 semanas con la primera dosis de la polivalente (moquillo, parvovirus, hepatitis, entre otras según el laboratorio), se refuerza cada 3-4 semanas hasta las 16 semanas, y la antirrábica se suma desde los 3 meses.",
+      "Saltarse una dosis del esquema inicial no es \"recuperable\" con solo aplicar la siguiente: cada refuerzo depende de que el anterior haya generado la respuesta esperada. Por eso llevamos el registro exacto de lote y fecha, y te avisamos con anticipación cuándo toca la próxima.",
+      "Después del primer año, la mayoría de las vacunas pasan a un esquema de refuerzo anual. Traé siempre el carné de vacunación a cada visita, aunque sea de rutina — es el historial que evita que se repita o se salte una dosis.",
+    ],
   },
   {
     slug: "como-elegir-el-alimento-correcto",
     title: "Cómo elegir el alimento correcto según la edad y tamaño de tu mascota",
     category: "Nutrición",
     excerpt: "No todos los alimentos \"premium\" son iguales. Qué mirar en la etiqueta antes de decidir.",
+    image: "/gallery/pet-4.jpg",
+    authorSlug: "carlos-medina",
+    date: "2026-07-10",
+    readMinutes: 4,
+    body: [
+      "La palabra \"premium\" en el empaque no está regulada — no garantiza nada por sí sola. Lo que sí importa es la lista de ingredientes (una fuente de proteína animal identificada, no genérica como \"subproductos\") y que el alimento esté formulado para la etapa de vida correcta.",
+      "Un cachorro necesita más proteína y calorías por su crecimiento; un adulto sedentario necesita menos de lo que dice la tabla genérica de la bolsa; un senior suele beneficiarse de fórmulas más livianas para las articulaciones y el riñón. Alimentar con la fórmula de otra etapa no es un ahorro, es un desajuste silencioso.",
+      "El tamaño también importa: las razas grandes necesitan un control más estricto de calcio y fósforo en el crecimiento para evitar problemas articulares a futuro, y las razas pequeñas gastan más energía por kilo de lo que parece.",
+      "Si tu mascota tiene una condición clínica (renal, digestiva, sobrepeso), el alimento pasa a ser parte del tratamiento, no una elección de supermercado — ahí sí conviene una dieta terapéutica indicada en consulta, no una decisión por cuenta propia.",
+    ],
   },
   {
     slug: "preparar-a-tu-mascota-para-una-cirugia",
     title: "Cómo preparar a tu mascota (y a vos) para una cirugía programada",
     category: "Cirugía",
     excerpt: "Ayuno, traslado y qué esperar el día de la cirugía y en el post-operatorio.",
+    image: "/gallery/pet-13.jpg",
+    authorSlug: "carlos-medina",
+    date: "2026-06-22",
+    readMinutes: 5,
+    body: [
+      "Toda cirugía con anestesia requiere ayuno previo — típicamente de sólidos desde la noche anterior y de agua unas horas antes, aunque el esquema exacto varía según el paciente y te lo confirmamos al agendar. Un estómago lleno durante la anestesia es un riesgo real de aspiración, así que esta indicación no es opcional.",
+      "El día de la cirugía, traé a tu mascota temprano y con tiempo: hacemos una revisión pre-anestésica antes de proceder. Es normal sentir ansiedad — la mayoría de los propietarios la sienten más que sus mascotas — y preferimos que preguntes todo lo que necesites antes, no durante la espera.",
+      "Durante el procedimiento trabajamos con monitoreo anestésico continuo (frecuencia cardíaca, oxigenación, temperatura) y te llamamos apenas termina para contarte cómo salió y coordinar el retiro.",
+      "El post-operatorio es donde más se juega la recuperación: reposo estricto los primeros días, collar isabelino si aplica para que no se lastime el punto, y los controles que te indiquemos sin saltarte ninguno, aunque la herida se vea bien.",
+    ],
   },
   {
     slug: "chequeos-preventivos-mascotas-senior",
     title: "Por qué los chequeos preventivos importan más después de los 7 años",
     category: "Prevención",
     excerpt: "Los cambios en una mascota senior son graduales — el chequeo semestral detecta lo que el día a día no muestra.",
+    image: "/gallery/pet-3.jpg",
+    authorSlug: "laura-pena",
+    date: "2026-05-30",
+    readMinutes: 4,
+    body: [
+      "A partir de los 7 años (antes en razas grandes), el metabolismo, las articulaciones, los riñones y el corazón empiezan a cambiar de forma gradual — tan gradual que en casa es difícil notarlo, porque lo ves todos los días.",
+      "Por eso pasamos de un chequeo anual a uno semestral en pacientes senior: duplicar la frecuencia de control multiplica las chances de detectar algo a tiempo, cuando todavía es manejable con un ajuste de dieta o tratamiento, y no cuando ya se volvió una urgencia.",
+      "Un chequeo senior típico incluye examen físico completo, control de peso y masa muscular, revisión dental, y un panel básico de laboratorio (función renal, hepática, hemograma) al menos una vez al año, más seguido si el caso lo amerita.",
+      "No es alarmismo: es la misma lógica que un chequeo médico humano después de cierta edad. La mascota no te va a decir que algo le duele distinto — el chequeo periódico es la forma de enterarte antes de que sea evidente.",
+    ],
   },
   {
     slug: "primeros-dias-de-un-cachorro-en-casa",
     title: "Los primeros días de un cachorro en casa: checklist veterinario",
     category: "Cachorros",
     excerpt: "Primera visita, desparasitación, socialización y los errores más comunes de los primeros dueños.",
+    image: "/gallery/pet-1.jpg",
+    authorSlug: "laura-pena",
+    date: "2026-05-08",
+    readMinutes: 5,
+    body: [
+      "La primera visita veterinaria debería pasar en la primera semana en casa, aunque el cachorro se vea perfectamente sano: revisamos peso, examen físico general, y armamos el esquema de vacunación y desparasitación desde cero con fechas concretas.",
+      "La desparasitación interna en cachorros empieza más temprano y con más frecuencia de lo que la mayoría espera — cada 2-3 semanas hasta los 3 meses, después mensual hasta el año. No es opcional ni algo que se resuelve \"cuando se vea algo raro\".",
+      "La socialización tiene una ventana crítica entre las 3 y las 14 semanas: es cuando el cachorro aprende qué es normal (otras personas, otros animales, ruidos, superficies) sin miedo. Perderse esa ventana no es irreversible, pero cuesta mucho más trabajo después.",
+      "El error más común de los primeros dueños: esperar a que \"se vea algo mal\" para consultar. La medicina preventiva en un cachorro no es un gasto extra, es la base de toda la salud que va a tener de adulto — y sale más barata que resolver lo que se pudo prevenir.",
+    ],
   },
 ];
 
 export function blogPostBySlug(slug: string): BlogPost | undefined {
   return blogPosts.find((p) => p.slug === slug);
+}
+
+export function relatedPosts(post: BlogPost, limit = 3): BlogPost[] {
+  return blogPosts
+    .filter((p) => p.slug !== post.slug)
+    .sort((a, b) => (a.category === post.category ? -1 : 0) - (b.category === post.category ? -1 : 0))
+    .slice(0, limit);
+}
+
+export function adjacentPosts(post: BlogPost): { prev: BlogPost | null; next: BlogPost | null } {
+  const i = blogPosts.findIndex((p) => p.slug === post.slug);
+  return {
+    prev: i > 0 ? blogPosts[i - 1] : null,
+    next: i < blogPosts.length - 1 ? blogPosts[i + 1] : null,
+  };
 }

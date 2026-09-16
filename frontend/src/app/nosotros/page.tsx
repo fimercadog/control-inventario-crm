@@ -1,10 +1,10 @@
-import { Heart, ShieldCheck, Sparkles, Stethoscope } from "lucide-react";
+import { Heart, ShieldCheck, Sparkles } from "lucide-react";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
+import { ImageTextSection } from "@/components/marketing/image-text-section";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { stats } from "@/components/marketing/marketing-data";
 import { FeatureCard, Section, SectionHeading } from "@/components/marketing/marketing-ui";
 import { PageHero } from "@/components/marketing/page-hero";
-import { PhotoPlaceholder } from "@/components/marketing/photo-placeholder";
 import { Reveal } from "@/components/marketing/reveal";
 import { StatsSection } from "@/components/marketing/stats-section";
 
@@ -24,34 +24,42 @@ export default function AboutPage() {
       />
 
       <Section>
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <Reveal>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">Nuestra historia</p>
-            <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
-              Más de una década cuidando mascotas
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              Empezamos como una consulta pequeña de barrio y hoy somos una clínica con consultorios equipados,
-              laboratorio propio y quirófano — sin perder lo que nos trajo hasta acá: conocer a cada paciente por su
-              nombre y a cada propietario por el suyo.
-            </p>
-            <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              Preferimos atender pocas mascotas bien que muchas apurados. Cada consulta tiene el tiempo que
-              necesita, y cada historia clínica queda registrada para que el próximo veterinario que la vea sepa
-              exactamente de dónde viene el caso.
-            </p>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <PhotoPlaceholder
-              icon={Stethoscope}
-              label="Foto de la clínica — próximamente"
-              className="aspect-4/3 w-full rounded-4xl shadow-elevation-3"
-            />
-          </Reveal>
-        </div>
+        <ImageTextSection
+          image="/gallery/pet-7.jpg"
+          imageAlt="Veterinario del equipo revisando a un bulldog en consulta"
+          eyebrow="Nuestra historia"
+          title="Más de una década cuidando mascotas"
+        >
+          <p>
+            Empezamos como una consulta pequeña de barrio y hoy somos una clínica con consultorios equipados,
+            laboratorio propio y quirófano — sin perder lo que nos trajo hasta acá: conocer a cada paciente por su
+            nombre y a cada propietario por el suyo.
+          </p>
+          <p className="mt-4">
+            Preferimos atender pocas mascotas bien que muchas apurados. Cada consulta tiene el tiempo que necesita,
+            y cada historia clínica queda registrada para que el próximo veterinario que la vea sepa exactamente de
+            dónde viene el caso.
+          </p>
+        </ImageTextSection>
       </Section>
 
       <Section className="bg-secondary/40">
+        <ImageTextSection
+          image="/gallery/pet-8.jpg"
+          imageAlt="Procedimiento veterinario con instrumental de precisión"
+          eyebrow="Nuestras instalaciones"
+          title="Equipamiento propio, sin derivar a otro lado"
+          reverse
+        >
+          <p>
+            Consultorios equipados, quirófano con monitoreo anestésico y laboratorio propio para los análisis más
+            frecuentes. Cuando tu mascota necesita algo más que una consulta, seguimos siendo el mismo equipo el que
+            la atiende.
+          </p>
+        </ImageTextSection>
+      </Section>
+
+      <Section>
         <Reveal>
           <SectionHeading eyebrow="Lo que nos mueve" title="Misión y valores" lead="Tres cosas que no negociamos, sin importar cuánto crezca la clínica." />
         </Reveal>

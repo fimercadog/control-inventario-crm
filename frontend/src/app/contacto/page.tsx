@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { ContactForm } from "@/components/marketing/contact-form";
 import { CtaLink } from "@/components/marketing/cta-link";
@@ -26,6 +27,18 @@ export default function ContactPage() {
       <Section className="pt-0">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <Reveal>
+            <div className="relative mb-8 aspect-4/3 w-full overflow-hidden rounded-4xl shadow-elevation-3">
+              <Image
+                src="/gallery/pet-2.jpg"
+                alt="Paciente atendido en la clínica"
+                fill
+                sizes="(min-width: 1024px) 40vw, 90vw"
+                className="object-cover"
+              />
+              <span className="absolute left-4 top-4 grid size-11 place-items-center rounded-xl bg-card/95 shadow-elevation-1">
+                <Image src="/gallery/icons/icon-11.png" alt="" width={24} height={24} className="size-6" />
+              </span>
+            </div>
             <h2 className="text-2xl font-black tracking-tight">Datos de la clínica</h2>
             <ul className="mt-5 space-y-3 text-sm text-foreground/85">
               {info.map(({ icon: Icon, text }) => (

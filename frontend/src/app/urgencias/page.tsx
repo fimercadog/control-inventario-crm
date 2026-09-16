@@ -1,5 +1,7 @@
+import Image from "next/image";
 import { AlertTriangle, Clock, PhoneCall, Stethoscope } from "lucide-react";
 import { CtaLink } from "@/components/marketing/cta-link";
+import { ImageTextSection } from "@/components/marketing/image-text-section";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { Section, SectionHeading } from "@/components/marketing/marketing-ui";
 import { PageHero } from "@/components/marketing/page-hero";
@@ -56,6 +58,26 @@ export default function UrgenciasPage() {
         <p className="mt-6 text-sm text-muted-foreground">
           Ante la duda, escribinos: es mejor una consulta de más que llegar tarde a una urgencia real.
         </p>
+      </Section>
+
+      <Section className="bg-secondary/40">
+        <ImageTextSection
+          image="/gallery/pet-10.jpg"
+          imageAlt="Atención veterinaria de urgencia"
+          eyebrow="Prioridad inmediata"
+          title="Línea directa, sin trámite previo"
+          reverse
+        >
+          <div className="flex items-center gap-3">
+            <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-card shadow-elevation-1">
+              <Image src="/gallery/icons/icon-2.png" alt="" width={28} height={28} className="size-7" />
+            </span>
+            <p>
+              Una urgencia no espera turno. Escribinos o llamá directo — el equipo se prepara mientras estás en
+              camino, sin formularios ni agenda de por medio.
+            </p>
+          </div>
+        </ImageTextSection>
       </Section>
 
       <Section dark>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
@@ -7,7 +8,14 @@ import { serviceBySlug, services } from "@/components/marketing/marketing-data";
 import { Section, SectionHeading } from "@/components/marketing/marketing-ui";
 import { PageHero } from "@/components/marketing/page-hero";
 import { Reveal } from "@/components/marketing/reveal";
-import { ServiceGrid } from "@/components/marketing/service-card";
+import { SERVICE_ICON, ServiceGrid } from "@/components/marketing/service-card";
+
+const SERVICE_PHOTO: Record<string, string> = {
+  "consulta-veterinaria": "/gallery/hero-bulldog-exam.jpg",
+  vacunacion: "/gallery/pet-4.jpg",
+  cirugia: "/gallery/pet-13.jpg",
+  "laboratorio-clinico": "/gallery/vet-clipboard.jpg",
+};
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -18,7 +26,8 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const service = serviceBySlug(slug);
   if (!service) notFound();
 
-  const Icon = service.icon;
+  const iconSrc = SERVICE_ICON[service.slug];
+  const photo = SERVICE_PHOTO[service.slug] ?? "/gallery/paw-procedure.jpg";
   const related = services.filter((s) => s.slug !== service.slug).slice(0, 3);
 
   return (
@@ -35,10 +44,19 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       />
 
       <Section className="pt-0">
-        <div className="mx-auto max-w-3xl">
+        <div className="grid items-start gap-12 lg:grid-cols-2">
           <Reveal>
-            <span className="grid size-14 place-items-center rounded-2xl bg-secondary text-primary">
-              <Icon className="size-6.5" />
+            <div className="relative aspect-4/3 w-full overflow-hidden rounded-4xl shadow-elevation-3">
+              <Image src={photo} alt="" fill sizes="(min-width: 1024px) 45vw, 90vw" className="object-cover" />
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <span className="grid size-16 place-items-center rounded-2xl bg-secondary">
+              {iconSrc ? (
+                <Image src={iconSrc} alt="" width={36} height={36} className="size-9" />
+              ) : (
+                <service.icon className="size-7 text-primary" />
+              )}
             </span>
             <ul className="mt-8 space-y-3">
               {service.bullets.map((bullet) => (
