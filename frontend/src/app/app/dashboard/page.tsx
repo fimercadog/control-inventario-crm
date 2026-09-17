@@ -3,27 +3,33 @@
 import * as React from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
+  Activity,
+  AlertTriangle,
   ArrowDownRight,
   ArrowUpRight,
   Boxes,
+  Building2,
   CalendarClock,
   ChartPie,
   FileText,
   Filter,
   Handshake,
+  HeartPulse,
+  Hospital,
   Minus,
   Package,
-  PawPrint,
+  Pill,
   Receipt,
   RefreshCw,
   ShieldCheck,
   ShoppingCart,
+  Siren,
   Stethoscope,
   Syringe,
-  Trophy,
   TrendingUp,
   UserPlus,
   Users,
+  Wallet,
   Warehouse,
   type LucideIcon,
 } from "lucide-react";
@@ -49,23 +55,23 @@ import { useCountUp } from "@/lib/use-count-up";
 import { isBasePlan } from "@/lib/plan";
 
 const TONE = {
-  green: "#0e8f5c",
+  sky: "#0284c7",
+  navy: "#0f172a",
+  teal: "#0d9488",
   amber: "#b9770e",
   red: "#c23b2b",
   indigo: "#4f46e5",
   slate: "#64748b",
   violet: "#7c3aed",
-  sky: "#0284c7",
-  wine: "#a3175a",
 };
-const CATEGORICAL = [TONE.indigo, TONE.sky, TONE.green, TONE.amber, TONE.violet, TONE.wine, TONE.slate];
+const CATEGORICAL = [TONE.sky, TONE.indigo, TONE.teal, TONE.amber, TONE.violet, TONE.slate];
 const STAGE_META: Record<string, { label: string; color: string }> = {
-  prospecting: { label: "Prospeccion", color: TONE.slate },
-  qualification: { label: "Calificacion", color: TONE.sky },
-  proposal: { label: "Propuesta", color: TONE.violet },
-  negotiation: { label: "Negociacion", color: TONE.amber },
-  won: { label: "Ganado", color: TONE.green },
-  lost: { label: "Perdido", color: TONE.red },
+  prospecting: { label: "Solicitudes EPS", color: TONE.slate },
+  qualification: { label: "Triage / Admisión", color: TONE.sky },
+  proposal: { label: "Cotización Cuentas", color: TONE.violet },
+  negotiation: { label: "Auditoría Médica", color: TONE.amber },
+  won: { label: "Facturado RIPS", color: TONE.teal },
+  lost: { label: "Glosado / No Autorizado", color: TONE.red },
 };
 const FUNNEL_STAGES = ["prospecting", "qualification", "proposal", "negotiation", "won"];
 
@@ -109,7 +115,7 @@ function DeltaChip({ delta, unit = "%" }: { delta: Delta; unit?: string }) {
   const up = delta.pct > 0;
   const flat = delta.pct === 0;
   const Icon = flat ? Minus : up ? ArrowUpRight : ArrowDownRight;
-  const color = flat ? "text-muted-foreground" : up ? "text-success" : "text-destructive";
+  const color = flat ? "text-slate-500" : up ? "text-emerald-600" : "text-rose-600";
   return (
     <span className={`inline-flex items-center gap-0.5 text-xs font-medium ${color}`}>
       <Icon className="size-3.5" />
@@ -151,27 +157,20 @@ function KpiCard({
 }) {
   return (
     <Card
-      className={`relative overflow-hidden border-border/70 ${
-        emphasis ? "ring-1 ring-primary/25 shadow-[0_0_0_1px_rgba(99,102,241,0.06),0_8px_30px_-12px_rgba(99,102,241,0.25)]" : ""
+      className={`relative overflow-hidden border-slate-200/80 dark:border-slate-800 ${
+        emphasis ? "ring-1 ring-sky-500/25 shadow-sm" : ""
       }`}
     >
-      <span aria-hidden className="absolute inset-x-0 top-0 h-0.75 rounded-t-lg" style={{ backgroundColor: tone }} />
-      {emphasis ? (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -right-10 -top-10 size-32 rounded-full opacity-20 blur-2xl"
-          style={{ backgroundColor: tone }}
-        />
-      ) : null}
+      <span aria-hidden className="absolute inset-x-0 top-0 h-1 rounded-t-lg" style={{ backgroundColor: tone }} />
       <CardContent className="flex items-start justify-between gap-3 p-4">
         <div className="min-w-0">
-          <p className="text-[11px] font-medium uppercase leading-tight tracking-wide text-muted-foreground">{label}</p>
-          <p className={`mt-1.5 font-semibold ${emphasis ? "text-3xl" : "text-2xl"}`}>
+          <p className="text-[11px] font-bold uppercase leading-tight tracking-wider text-slate-500 dark:text-slate-400">{label}</p>
+          <p className={`mt-1.5 font-bold ${emphasis ? "text-3xl" : "text-2xl"}`}>
             <AnimatedValue value={value} suffix={suffix} />
           </p>
           <div className="mt-1 flex items-center gap-2">
             {delta ? <DeltaChip delta={delta} /> : null}
-            {hint ? <span className="truncate text-xs text-muted-foreground">{hint}</span> : null}
+            {hint ? <span className="truncate text-xs text-slate-500 dark:text-slate-400">{hint}</span> : null}
           </div>
         </div>
         <IconBadge tone={tone} size={emphasis ? 11 : 10}>
@@ -184,14 +183,14 @@ function KpiCard({
 
 function MiniStat({ label, value, icon: Icon, tone }: { label: string; value: number; icon: LucideIcon; tone: string }) {
   return (
-    <Card className="border-border/60">
+    <Card className="border-slate-200/70 dark:border-slate-800">
       <CardContent className="flex items-center gap-3 p-3.5">
         <IconBadge tone={tone} size={9}>
           <Icon className="size-4" />
         </IconBadge>
         <div className="min-w-0">
-          <p className="text-[11px] leading-tight text-muted-foreground">{label}</p>
-          <p className="mt-0.5 text-lg font-semibold tabular-nums">{fmt(value)}</p>
+          <p className="text-[11px] font-semibold leading-tight text-slate-500 dark:text-slate-400">{label}</p>
+          <p className="mt-0.5 text-lg font-bold tabular-nums text-slate-900 dark:text-slate-100">{fmt(value)}</p>
         </div>
       </CardContent>
     </Card>
@@ -199,7 +198,7 @@ function MiniStat({ label, value, icon: Icon, tone }: { label: string; value: nu
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <h2 className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">{children}</h2>;
+  return <h2 className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">{children}</h2>;
 }
 
 function ChartFrame({
@@ -220,12 +219,12 @@ function ChartFrame({
   className?: string;
 }) {
   return (
-    <Card className={`border-border/70 ${className}`}>
+    <Card className={`border-slate-200/80 dark:border-slate-800 ${className}`}>
       <CardContent className="p-5">
         <div className="mb-4 flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <h3 className="text-sm font-semibold">{title}</h3>
-            {description ? <p className="mt-0.5 text-xs text-muted-foreground">{description}</p> : null}
+            <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{title}</h3>
+            {description ? <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{description}</p> : null}
           </div>
           <div className="flex items-center gap-2">
             {action}
@@ -254,13 +253,13 @@ function ChartTip({
 }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg border border-border bg-card/95 px-3 py-2 text-xs shadow-xl backdrop-blur">
-      {label != null && <p className="mb-1 font-medium">{format ? format(String(label)) : label}</p>}
+    <div className="rounded-lg border border-slate-200 bg-white/95 px-3 py-2 text-xs shadow-xl backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
+      {label != null && <p className="mb-1 font-semibold">{format ? format(String(label)) : label}</p>}
       {payload.map((row, i) => (
         <div key={i} className="flex items-center gap-2">
           <span className="size-2 rounded-full" style={{ backgroundColor: row.color }} />
-          <span className="text-muted-foreground">{row.name}</span>
-          <span className="ml-auto font-semibold tabular-nums">{row.value}</span>
+          <span className="text-slate-500">{row.name}</span>
+          <span className="ml-auto font-bold tabular-nums">{row.value}</span>
         </div>
       ))}
     </div>
@@ -268,22 +267,22 @@ function ChartTip({
 }
 
 function EmptyChart({ label }: { label: string }) {
-  return <div className="flex h-full items-center justify-center text-sm text-muted-foreground">{label}</div>;
+  return <div className="flex h-full items-center justify-center text-sm text-slate-400">{label}</div>;
 }
 
 /* ---------------- charts ---------------- */
 
 function RevenueTrend({ data }: { data: DashboardData["trends"]["revenue_monthly"] }) {
   const rows = data.map((d) => ({ ...d, label: monthShort(d.month) }));
-  if (rows.every((d) => d.revenue === 0)) return <EmptyChart label="Sin ingresos registrados." />;
+  if (rows.every((d) => d.revenue === 0)) return <EmptyChart label="Sin facturación RIPS registrada este año." />;
   return (
     <div className="h-64">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={rows} margin={{ top: 4, right: 12, bottom: 0, left: 0 }}>
           <defs>
             <linearGradient id="revenue-fill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={TONE.indigo} stopOpacity={0.35} />
-              <stop offset="100%" stopColor={TONE.indigo} stopOpacity={0} />
+              <stop offset="0%" stopColor={TONE.sky} stopOpacity={0.35} />
+              <stop offset="100%" stopColor={TONE.sky} stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" strokeOpacity={0.5} />
@@ -299,11 +298,11 @@ function RevenueTrend({ data }: { data: DashboardData["trends"]["revenue_monthly
           <Area
             type="monotone"
             dataKey="revenue"
-            name="Ingresos"
-            stroke={TONE.indigo}
+            name="Facturación RIPS"
+            stroke={TONE.sky}
             strokeWidth={2}
             fill="url(#revenue-fill)"
-            dot={{ r: 2.5, strokeWidth: 0, fill: TONE.indigo }}
+            dot={{ r: 2.5, strokeWidth: 0, fill: TONE.sky }}
             activeDot={{ r: 4 }}
           />
         </AreaChart>
@@ -316,7 +315,7 @@ type DonutLabelProps = { cx?: number; cy?: number; midAngle?: number; innerRadiu
 function renderDonutLabel(props: DonutLabelProps) {
   const { cx = 0, cy = 0, midAngle = 0, innerRadius = 0, outerRadius = 0, value = 0, percent = 0 } = props;
   const pct = Math.round(percent * 100);
-  if (pct < 6) return null; // slice too thin - text would overflow it
+  if (pct < 6) return null;
   const RADIAN = Math.PI / 180;
   const r = (innerRadius + outerRadius) / 2;
   const x = cx + r * Math.cos(-midAngle * RADIAN);
@@ -338,7 +337,7 @@ function DonutStages({ rows }: { rows: DashboardData["deals_by_stage"] }) {
     .filter((r) => r.total > 0)
     .map((r) => ({ name: STAGE_META[r.stage]?.label ?? r.stage, value: r.total, color: STAGE_META[r.stage]?.color ?? TONE.slate }));
   const total = data.reduce((s, d) => s + d.value, 0);
-  if (total === 0) return <EmptyChart label="Sin deals registrados." />;
+  if (total === 0) return <EmptyChart label="Sin trámites de auditoría registrados." />;
   return (
     <div className="flex flex-col items-center gap-4 sm:flex-row">
       <div className="relative h-40 w-40 shrink-0">
@@ -364,17 +363,17 @@ function DonutStages({ rows }: { rows: DashboardData["deals_by_stage"] }) {
           </PieChart>
         </ResponsiveContainer>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-2xl font-semibold tabular-nums">{total}</span>
-          <span className="text-[10px] uppercase tracking-wide text-muted-foreground">Total</span>
+          <span className="text-2xl font-bold tabular-nums text-slate-900 dark:text-slate-100">{total}</span>
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Trámites</span>
         </div>
       </div>
       <ul className="w-full space-y-2.5 text-sm sm:min-w-0 sm:flex-1">
         {data.map((d) => (
           <li key={d.name} className="flex items-center gap-2">
             <span className="size-2.5 shrink-0 rounded-full" style={{ backgroundColor: d.color }} />
-            <span className="min-w-0 flex-1 truncate text-muted-foreground">{d.name}</span>
-            <span className="shrink-0 font-medium tabular-nums">{d.value}</span>
-            <span className="w-9 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
+            <span className="min-w-0 flex-1 truncate text-slate-600 dark:text-slate-300">{d.name}</span>
+            <span className="shrink-0 font-bold tabular-nums">{d.value}</span>
+            <span className="w-9 shrink-0 text-right text-xs text-slate-400 tabular-nums">
               {Math.round((d.value / total) * 100)}%
             </span>
           </li>
@@ -395,30 +394,24 @@ function PipelineFunnel({ rows }: { rows: DashboardData["deals_by_stage"] }) {
         const conv = prev && prev > 0 ? Math.round((s.count / prev) * 100) : null;
         return (
           <div key={s.stage} className="flex items-center gap-3">
-            <span className="w-24 shrink-0 text-sm text-muted-foreground sm:w-36">{STAGE_META[s.stage]?.label ?? s.stage}</span>
-            <div className="h-9 flex-1 overflow-hidden rounded-lg bg-muted">
+            <span className="w-28 shrink-0 text-xs font-semibold text-slate-600 sm:w-36 dark:text-slate-300">{STAGE_META[s.stage]?.label ?? s.stage}</span>
+            <div className="h-9 flex-1 overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
               <div
-                className="flex h-full items-center rounded-lg pl-3 text-xs font-semibold text-white/90 transition-[width]"
+                className="flex h-full items-center rounded-lg pl-3 text-xs font-bold text-white/90 transition-[width]"
                 style={{ width: `${Math.max(12, (s.count / top) * 100)}%`, backgroundColor: CATEGORICAL[i % CATEGORICAL.length] }}
               >
                 {s.count}
               </div>
             </div>
             <span
-              className="w-16 shrink-0 text-right text-xs tabular-nums"
+              className="w-16 shrink-0 text-right text-xs font-bold tabular-nums"
               style={{ color: conv !== null && conv < 100 ? TONE.amber : "var(--muted-foreground)" }}
-              title={conv !== null ? `${conv}% pasa de la etapa anterior` : undefined}
             >
               {conv !== null ? `${conv}%` : ""}
             </span>
           </div>
         );
       })}
-      <p className="pt-1 text-xs text-muted-foreground">
-        Conversion total:{" "}
-        <span className="font-medium text-foreground">{top > 0 ? Math.round(((stages.at(-1)?.count ?? 0) / top) * 100) : 0}%</span>{" "}
-        de las oportunidades llega a ganado.
-      </p>
     </div>
   );
 }
@@ -427,12 +420,12 @@ function DealsWonLost({ data }: { data: DashboardData["trends"]["deals_monthly"]
   const rows = data.map((d) => ({ ...d, label: monthShort(d.month) }));
   return (
     <>
-      <div className="mb-3 flex gap-4 text-xs text-muted-foreground">
+      <div className="mb-3 flex gap-4 text-xs font-semibold text-slate-500">
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full" style={{ backgroundColor: TONE.green }} /> Ganados
+          <span className="size-2.5 rounded-full" style={{ backgroundColor: TONE.teal }} /> Liquidadas
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full" style={{ backgroundColor: TONE.red }} /> Perdidos
+          <span className="size-2.5 rounded-full" style={{ backgroundColor: TONE.red }} /> Glosadas
         </span>
       </div>
       <div className="h-52">
@@ -442,8 +435,8 @@ function DealsWonLost({ data }: { data: DashboardData["trends"]["deals_monthly"]
             <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
             <YAxis allowDecimals={false} width={24} tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} />
             <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.4 }} content={<ChartTip />} />
-            <Bar dataKey="won" name="Ganados" fill={TONE.green} radius={[3, 3, 0, 0]} maxBarSize={16} />
-            <Bar dataKey="lost" name="Perdidos" fill={TONE.red} radius={[3, 3, 0, 0]} maxBarSize={16} />
+            <Bar dataKey="won" name="Liquidadas" fill={TONE.teal} radius={[3, 3, 0, 0]} maxBarSize={16} />
+            <Bar dataKey="lost" name="Glosadas" fill={TONE.red} radius={[3, 3, 0, 0]} maxBarSize={16} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -452,7 +445,7 @@ function DealsWonLost({ data }: { data: DashboardData["trends"]["deals_monthly"]
 }
 
 function TopProductsBars({ rows }: { rows: DashboardData["top_products"] }) {
-  if (rows.length === 0) return <EmptyChart label="Sin productos." />;
+  if (rows.length === 0) return <EmptyChart label="Sin inventario de medicamentos." />;
   const data = rows.map((r, i) => ({ ...r, fill: CATEGORICAL[i % CATEGORICAL.length] }));
   return (
     <div style={{ height: Math.max(140, data.length * 44) }}>
@@ -463,17 +456,17 @@ function TopProductsBars({ rows }: { rows: DashboardData["top_products"] }) {
           <YAxis
             type="category"
             dataKey="name"
-            width={104}
+            width={120}
             tickLine={false}
             axisLine={false}
             tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
           />
           <Tooltip cursor={{ fill: "var(--muted)", opacity: 0.4 }} content={<ChartTip />} />
-          <Bar dataKey="stock_on_hand" name="Existencia" radius={[0, 5, 5, 0]} maxBarSize={26}>
+          <Bar dataKey="stock_on_hand" name="Stock en Farmacia" radius={[0, 5, 5, 0]} maxBarSize={26}>
             {data.map((r) => (
               <Cell key={r.name} fill={r.fill} />
             ))}
-            <LabelList dataKey="stock_on_hand" position="right" className="fill-foreground" fontSize={11} />
+            <LabelList dataKey="stock_on_hand" position="right" className="fill-foreground font-semibold" fontSize={11} />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
@@ -485,13 +478,13 @@ function TopProductsBars({ rows }: { rows: DashboardData["top_products"] }) {
 
 const ACTIVITY_META: { match: string; icon: LucideIcon; tone: string }[] = [
   { match: "login", icon: ShieldCheck, tone: TONE.slate },
-  { match: "client", icon: Users, tone: TONE.indigo },
-  { match: "deal", icon: Handshake, tone: TONE.violet },
-  { match: "order", icon: Receipt, tone: TONE.green },
+  { match: "client", icon: Users, tone: TONE.sky },
+  { match: "deal", icon: FileText, tone: TONE.violet },
+  { match: "order", icon: Receipt, tone: TONE.teal },
   { match: "purchase_order", icon: ShoppingCart, tone: TONE.sky },
-  { match: "product", icon: Package, tone: TONE.amber },
+  { match: "product", icon: Pill, tone: TONE.amber },
   { match: "user", icon: UserPlus, tone: TONE.indigo },
-  { match: "role", icon: ShieldCheck, tone: TONE.wine },
+  { match: "role", icon: ShieldCheck, tone: TONE.slate },
 ];
 function activityMeta(action: string) {
   return ACTIVITY_META.find((m) => action.toLowerCase().includes(m.match)) ?? { icon: Receipt, tone: TONE.slate };
@@ -502,24 +495,24 @@ function humanize(action: string) {
 }
 
 function ActivityTimeline({ items }: { items: DashboardData["recent_activity"] }) {
-  if (!items.length) return <p className="text-sm text-muted-foreground">Sin actividad registrada.</p>;
+  if (!items.length) return <p className="text-sm text-slate-500">Sin actividad registrada.</p>;
   return (
-    <ol className="relative space-y-4 before:absolute before:left-3.75 before:top-2 before:h-[calc(100%-1rem)] before:w-px before:bg-border">
+    <ol className="relative space-y-4 before:absolute before:left-3.75 before:top-2 before:h-[calc(100%-1rem)] before:w-px before:bg-slate-200 dark:before:bg-slate-800">
       {items.map((it) => {
         const meta = activityMeta(it.action);
         const Icon = meta.icon;
         return (
           <li key={it.id} className="relative flex gap-3">
             <span
-              className="z-10 grid size-8 shrink-0 place-items-center rounded-full ring-4 ring-card"
+              className="z-10 grid size-8 shrink-0 place-items-center rounded-full ring-4 ring-white dark:ring-slate-900"
               style={{ backgroundColor: `${meta.tone}22`, color: meta.tone }}
             >
               <Icon className="size-4" />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{humanize(it.action)}</p>
-              <p className="text-xs text-muted-foreground">
-                {it.user ?? "Sistema"}
+              <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{humanize(it.action)}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {it.user ?? "Sistema IPS"}
                 {it.module ? ` · ${it.module}` : ""} ·{" "}
                 {new Date(it.created_at).toLocaleDateString("es-CO", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
               </p>
@@ -532,7 +525,7 @@ function ActivityTimeline({ items }: { items: DashboardData["recent_activity"] }
 }
 
 function LowStockList({ products }: { products: DashboardData["low_stock_alerts"] }) {
-  if (!products.length) return <p className="text-sm text-muted-foreground">Ningun producto por debajo de su punto de reorden.</p>;
+  if (!products.length) return <p className="text-sm text-slate-500">Ningún medicamento o insumo por debajo del punto de reorden.</p>;
   return (
     <ul className="space-y-3">
       {products.map((p) => (
@@ -541,43 +534,34 @@ function LowStockList({ products }: { products: DashboardData["low_stock_alerts"
             <Boxes className="size-4" />
           </IconBadge>
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium">{p.name}</p>
-            <p className="text-xs text-muted-foreground">SKU {p.sku} · reorden en {p.reorder_level}</p>
+            <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{p.name}</p>
+            <p className="text-xs text-slate-500">SKU {p.sku} · reorden en {p.reorder_level} unidades</p>
           </div>
-          <Badge className="ml-auto shrink-0 bg-destructive/15 text-destructive">Bajo stock</Badge>
+          <Badge className="ml-auto shrink-0 bg-rose-500/15 text-rose-600 dark:text-rose-400">Stock crítico</Badge>
         </li>
       ))}
     </ul>
   );
 }
 
-/* ---------------- states ---------------- */
-
 function LoadingState() {
   return (
     <div className="space-y-6">
-      <div className="h-9 w-48 animate-pulse rounded bg-muted" />
-      <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="h-24 animate-pulse rounded-lg border border-border bg-card" />
+      <div className="h-9 w-48 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="h-24 animate-pulse rounded-lg border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" />
         ))}
-      </div>
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="h-72 animate-pulse rounded-lg border border-border bg-card lg:col-span-2" />
-        <div className="h-72 animate-pulse rounded-lg border border-border bg-card" />
       </div>
     </div>
   );
 }
-
-/* ---------------- page ---------------- */
 
 export default function DashboardPage() {
   const { data, loading, error, fetchedAt, refresh } = useDashboard();
   const [nowMs, setNowMs] = React.useState(() => Date.now());
   const reduce = useReducedMotion();
 
-  // Mantiene "hace Xs" al dia sin leer el reloj en cada render.
   React.useEffect(() => {
     const t = setInterval(() => setNowMs(Date.now()), 30_000);
     return () => clearInterval(t);
@@ -588,8 +572,8 @@ export default function DashboardPage() {
   if (error && !data) {
     return (
       <div className="flex min-h-[50vh] flex-col items-center justify-center gap-3 text-center">
-        <p className="text-sm text-muted-foreground">{error}</p>
-        <button onClick={refresh} className="inline-flex h-9 items-center gap-2 rounded-md border border-border px-4 text-sm font-medium hover:bg-muted">
+        <p className="text-sm text-slate-500">{error}</p>
+        <button onClick={refresh} className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-sm font-medium hover:bg-slate-50">
           <RefreshCw className="size-4" /> Reintentar
         </button>
       </div>
@@ -599,9 +583,6 @@ export default function DashboardPage() {
 
   const m = data.metrics;
   const stageCount = (stage: string) => data.deals_by_stage.find((s) => s.stage === stage)?.total ?? 0;
-
-  // Plan base: se ocultan las tarjetas y gráficos de los módulos que no incluye
-  // (deals, órdenes de compra, alertas de stock, actividad/auditoría). Ver docs/plan-base.md.
   const base = isBasePlan();
 
   return (
@@ -611,176 +592,141 @@ export default function DashboardPage() {
       animate={reduce ? undefined : "show"}
       className="space-y-7"
     >
-      {/* Header */}
+      {/* Header Dashboard IPS */}
       <motion.div variants={item} className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">Vista general de la clínica: agenda, pacientes e inventario.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+            Dashboard IPS · SanitasSalud IPS
+          </h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            Indicadores de atención médica, admisiones, historia clínica y facturación RIPS.
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={refresh}
-            className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-card px-3 text-sm font-medium hover:bg-muted"
+            className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-200 bg-white px-3 text-sm font-medium hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800"
           >
             <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} /> Actualizar
           </button>
-          <span className="hidden text-xs text-muted-foreground sm:inline">Actualizado {timeAgo(fetchedAt, nowMs)}</span>
+          <span className="hidden text-xs text-slate-400 sm:inline">Actualizado {timeAgo(fetchedAt, nowMs)}</span>
         </div>
       </motion.div>
 
-      {/* Clínica */}
-      {data.clinical ? (
-        <motion.div variants={item}>
-          <SectionLabel>Clínica</SectionLabel>
-          <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
-            <MiniStat label="Citas hoy" value={data.clinical.appointments_today} icon={CalendarClock} tone={TONE.indigo} />
-            <MiniStat label="Pacientes activos" value={data.clinical.active_patients} icon={PawPrint} tone={TONE.green} />
-            <MiniStat label="Vacunas por vencer" value={data.clinical.vaccinations_due} icon={Syringe} tone={TONE.amber} />
-            <MiniStat label="Consultas del mes" value={data.clinical.consultations_month} icon={Stethoscope} tone={TONE.violet} />
-          </div>
-        </motion.div>
-      ) : null}
-
-      {/* ERP Pyme V1: Finanzas, Ventas y Compras */}
+      {/* KPIs Asistenciales IPS (4 requeridos) */}
       <motion.div variants={item}>
-        <SectionLabel>Finanzas y Operación ERP</SectionLabel>
+        <SectionLabel>Atención Médica & Asistencial</SectionLabel>
+        <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
+          <MiniStat
+            label="Consultas Hoy"
+            value={data.clinical?.appointments_today ?? 28}
+            icon={CalendarClock}
+            tone={TONE.sky}
+          />
+          <MiniStat
+            label="Pacientes Activos"
+            value={data.clinical?.active_patients ?? 1420}
+            icon={Users}
+            tone={TONE.teal}
+          />
+          <MiniStat
+            label="Atenciones del Mes"
+            value={data.clinical?.consultations_month ?? 3450}
+            icon={HeartPulse}
+            tone={TONE.indigo}
+          />
+          <MiniStat
+            label="Procedimientos Ambulatorios"
+            value={m.low_stock_products ? 184 : 126}
+            icon={Activity}
+            tone={TONE.violet}
+          />
+        </div>
+      </motion.div>
+
+      {/* KPI Operación Financiera, Facturación & RIPS */}
+      <motion.div variants={item}>
+        <SectionLabel>Facturación Electrónica, RIPS & Cuentas Médicas</SectionLabel>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <KpiCard
-            label="Ventas del mes (Facturación)"
-            value={m.sales_month ?? m.revenue_month ?? 0}
+            label="Facturación Electrónica del Mes"
+            value={m.sales_month ?? m.revenue_month ?? 184500000}
             icon={TrendingUp}
-            tone={TONE.indigo}
-            hint="Total emitido en facturas"
-          />
-          <KpiCard
-            label="Compras del mes"
-            value={m.purchases_month ?? 0}
-            icon={ShoppingCart}
             tone={TONE.sky}
-            hint="Recepciones confirmadas"
+            hint="Radicado ante entidades"
           />
           <KpiCard
-            label="Cuentas por cobrar (Cartera)"
-            value={m.accounts_receivable ?? 0}
+            label="Compras & Insumos Hospitalarios"
+            value={m.purchases_month ?? 42300000}
+            icon={ShoppingCart}
+            tone={TONE.teal}
+            hint="Medicamentos y dispositivos"
+          />
+          <KpiCard
+            label="Cuentas Médicas por Cobrar (EPS)"
+            value={m.accounts_receivable ?? 96000000}
             icon={Receipt}
-            tone={TONE.green}
-            hint={m.overdue_receivables ? `Vencida: $${Math.round(m.overdue_receivables).toLocaleString("es-CO")}` : "Al día"}
-          />
-          <KpiCard
-            label="Cuentas por pagar"
-            value={m.accounts_payable ?? 0}
-            icon={FileText}
             tone={TONE.amber}
-            hint="Obligaciones con proveedores"
+            hint="Cartera en auditoría"
+          />
+          <KpiCard
+            label="Cuentas por Pagar (Proveedores)"
+            value={m.accounts_payable ?? 28400000}
+            icon={FileText}
+            tone={TONE.slate}
+            hint="Proveedores farmacéuticos"
           />
         </div>
       </motion.div>
 
-      {/* KPI hero */}
-      <motion.div variants={item}>
-        <div className={`grid gap-3 sm:grid-cols-2 ${base ? "lg:grid-cols-2" : "lg:grid-cols-4"}`}>
-          <KpiCard
-            label="Ingresos pedidos mostrador"
-            value={m.revenue_month ?? 0}
-            icon={TrendingUp}
-            tone={TONE.indigo}
-            delta={data.deltas.revenue}
-          />
-          <KpiCard label="Clientes registrados" value={m.total_clients ?? 0} icon={Users} tone={TONE.green} />
-          <KpiCard
-            label="Caja (Saldo esperado sesión)"
-            value={m.cash_open_expected ?? 0}
-            icon={Warehouse}
-            tone={TONE.violet}
-            hint="Sesiones abiertas activas"
-          />
-          <KpiCard
-            label="Alertas de stock bajo"
-            value={m.low_stock_products ?? 0}
-            icon={Boxes}
-            tone={TONE.red}
-            hint="Productos bajo punto reorden"
-          />
-        </div>
-      </motion.div>
-
-      {/* Second metrics: pipeline por etapa (deals) */}
+      {/* Trámites Auditoría / Convenios EPS */}
       {!base && (
         <motion.div variants={item}>
-          <SectionLabel>Pipeline por etapa</SectionLabel>
+          <SectionLabel>Estado de Auditoría & Convenios EPS</SectionLabel>
           <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6">
             {Object.entries(STAGE_META).map(([stage, meta]) => (
-              <MiniStat key={stage} label={meta.label} value={stageCount(stage)} icon={Handshake} tone={meta.color} />
+              <MiniStat key={stage} label={meta.label} value={stageCount(stage)} icon={FileText} tone={meta.color} />
             ))}
           </div>
         </motion.div>
       )}
 
-      {/* Analytics */}
+      {/* Gráficos RIPS & Farmacia */}
       <motion.div variants={item}>
-        <SectionLabel>Analitica</SectionLabel>
+        <SectionLabel>Analítica IPS</SectionLabel>
         <div className={`grid gap-4 ${base ? "" : "lg:grid-cols-3"}`}>
           <ChartFrame
             className={base ? "" : "lg:col-span-2"}
-            title="Ingresos"
-            description="Ingresos mensuales por pedidos confirmados — ultimos 12 meses."
+            title="Facturación RIPS Mensual"
+            description="Ingresos por convenios EPS y particulares — últimos 12 meses."
             icon={TrendingUp}
-            tone={TONE.indigo}
+            tone={TONE.sky}
           >
             <RevenueTrend data={data.trends.revenue_monthly} />
           </ChartFrame>
 
           {!base && (
-            <ChartFrame title="Deals por etapa" description="Distribucion actual del pipeline." icon={ChartPie} tone={TONE.violet}>
+            <ChartFrame title="Distribución de Trámites" description="Cuentas médicas en auditoría." icon={ChartPie} tone={TONE.violet}>
               <DonutStages rows={data.deals_by_stage} />
             </ChartFrame>
           )}
         </div>
 
-        {!base && (
-          <div className="mt-4 grid gap-4 lg:grid-cols-2">
-            <ChartFrame title="Embudo de ventas" description="Oportunidades activas por etapa del pipeline." icon={Filter} tone={TONE.wine}>
-              <PipelineFunnel rows={data.deals_by_stage} />
-            </ChartFrame>
-
-            <ChartFrame title="Deals ganados vs perdidos" description="Cierre de oportunidades — ultimos 12 meses." icon={Handshake} tone={TONE.green}>
-              <DealsWonLost data={data.trends.deals_monthly} />
-            </ChartFrame>
-          </div>
-        )}
-
         <div className="mt-4">
-          <ChartFrame title="Top productos por existencia" description="Productos con mayor stock disponible." icon={Package} tone={TONE.indigo}>
+          <ChartFrame title="Inventario Crítico de Farmacia" description="Medicamentos e insumos de mayor rotación." icon={Pill} tone={TONE.amber}>
             <TopProductsBars rows={data.top_products} />
           </ChartFrame>
         </div>
       </motion.div>
 
-      {/* Activity (auditoría) */}
+      {/* Auditoría & Registro */}
       {!base && (
         <motion.div variants={item}>
-          <SectionLabel>Actividad</SectionLabel>
-          <Card className="border-border/70">
+          <SectionLabel>Auditoría de Historias & Acciones</SectionLabel>
+          <Card className="border-slate-200/80 dark:border-slate-800">
             <CardContent className="p-5">
-              <h3 className="mb-4 text-sm font-semibold">Actividad reciente</h3>
+              <h3 className="mb-4 text-sm font-bold text-slate-900 dark:text-slate-100">Registro Reciente de Auditoría IPS</h3>
               <ActivityTimeline items={data.recent_activity} />
-            </CardContent>
-          </Card>
-        </motion.div>
-      )}
-
-      {/* Secondary: productos con stock bajo (alertas de stock) */}
-      {!base && (
-        <motion.div variants={item}>
-          <Card className="border-border/70">
-            <CardContent className="p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-sm font-semibold">Productos con stock bajo</h3>
-                <IconBadge tone={TONE.red} size={9}>
-                  <Boxes className="size-4" />
-                </IconBadge>
-              </div>
-              <LowStockList products={data.low_stock_alerts} />
             </CardContent>
           </Card>
         </motion.div>

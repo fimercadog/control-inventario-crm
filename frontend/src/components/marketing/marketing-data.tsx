@@ -1,24 +1,25 @@
 import {
   Activity,
-  Bone,
+  Building2,
+  CalendarDays,
+  Clock,
   Cross,
+  FileText,
   FlaskConical,
   HeartPulse,
-  Scissors,
+  Hospital,
+  Pill,
   Scan,
+  ShieldCheck,
   Siren,
   Smile,
   Sparkles,
   Stethoscope,
   Syringe,
+  UserCheck,
+  Users,
   type LucideIcon,
 } from "lucide-react";
-
-// Contenido demo de la vertical veterinaria. Nombres y roles coinciden con el
-// dataset sembrado en el backend (`DatabaseSeeder.php`: "Clínica Veterinaria
-// Los Andes", Dr. Carlos Medina, Dra. Laura Peña, Marcela Duarte) para que el
-// sitio público y el panel cuenten la misma historia. Listo para reemplazar
-// por la información real de la clínica antes de vender/desplegar.
 
 export type Service = {
   slug: string;
@@ -32,127 +33,121 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    slug: "consulta-veterinaria",
+    slug: "consulta-medica-general",
     icon: Stethoscope,
-    title: "Consulta veterinaria",
-    short: "Revisión general, diagnóstico y seguimiento con un veterinario de planta.",
+    title: "Consulta Medicina General",
+    short: "Evaluación clínica integral, diagnósticos precisos y seguimiento continúo por médicos de planta.",
     description:
-      "La consulta general es la puerta de entrada a la atención de tu mascota: examen físico completo, revisión de peso y signos vitales, y una conversación honesta sobre lo que necesita. Queda registrada en su historia clínica para que cada visita siguiente parta de donde quedó la anterior.",
+      "Atención médica primaria para pacientes de todas las edades. Examen físico detallado, revisión de antecedentes y emisión de órdenes médicas o derivaciones a especialidades en nuestra red de sedes.",
     bullets: [
-      "Examen físico completo y control de peso",
-      "Historia clínica digital por paciente",
-      "Orientación sobre alimentación y cuidados",
-      "Derivación a especialista si el caso lo requiere",
+      "Examen físico completo y toma de signos vitales",
+      "Historia clínica digital unificada",
+      "Expedición de fórmulas médicas e incapacidades",
+      "Derivación directa a médicos especialistas",
     ],
     featured: true,
   },
   {
-    slug: "vacunacion",
-    icon: Syringe,
-    title: "Vacunación",
-    short: "Esquemas de vacunación al día, con recordatorio de la próxima dosis.",
-    description:
-      "Aplicamos los esquemas de vacunación recomendados para perros y gatos según edad y estilo de vida, y dejamos registrado el lote y la fecha exacta para avisarte cuándo toca la próxima dosis, sin que se te pase.",
-    bullets: [
-      "Polivalente, antirrábica y triple felina",
-      "Lote y vencimiento registrados por aplicación",
-      "Recordatorio de la próxima dosis",
-      "Carné de vacunación disponible en cada visita",
-    ],
-    featured: true,
-  },
-  {
-    slug: "desparasitacion",
-    icon: Bone,
-    title: "Desparasitación",
-    short: "Control interno y externo, con calendario según peso y edad.",
-    description:
-      "La desparasitación interna y externa es preventiva: protege a tu mascota y a tu familia. Definimos el producto y la frecuencia según peso, edad y estilo de vida, y lo dejamos anotado en su historia para el próximo control.",
-    bullets: ["Desparasitación interna y externa", "Dosis según peso y edad", "Calendario de refuerzos", "Seguro para cachorros y gatitos"],
-  },
-  {
-    slug: "medicina-preventiva",
+    slug: "pediatria-neonatologia",
     icon: HeartPulse,
-    title: "Medicina preventiva",
-    short: "Chequeos periódicos para detectar a tiempo lo que todavía no duele.",
+    title: "Pediatría & Neonatología",
+    short: "Control del desarrollo, vacunación y atención médica cálida para lactantes, niños y adolescentes.",
     description:
-      "Un chequeo preventivo anual (o semestral en pacientes senior) detecta cambios antes de que se conviertan en un problema serio: peso, dentadura, piel, corazón y un panel básico de laboratorio si hace falta.",
-    bullets: ["Chequeo anual o semestral", "Panel de laboratorio preventivo", "Plan de salud por etapa de vida", "Seguimiento de pacientes senior"],
+      "Acompañamiento médico especializado en el crecimiento y desarrollo infantil. Evaluaciones pediátricas periódicas, esquemas de vacunación y manejo de patologías pediátricas frecuentes.",
+    bullets: [
+      "Control de crecimiento y desarrollo pediátrico",
+      "Esquema oficial de vacunación PAI",
+      "Atención prioritaria pediátrica",
+      "Orientación nutricional infantil",
+    ],
     featured: true,
   },
   {
     slug: "laboratorio-clinico",
     icon: FlaskConical,
-    title: "Laboratorio clínico",
-    short: "Análisis de sangre, orina y heces con resultados el mismo día.",
+    title: "Laboratorio Clínico Especializado",
+    short: "Toma de muestras y procesamiento de exámenes hematológicos, bioquímicos y microbiológicos con alta precisión.",
     description:
-      "Contamos con laboratorio propio para los análisis más frecuentes, lo que agiliza el diagnóstico en consultas de urgencia y en el seguimiento de tratamientos en curso.",
-    bullets: ["Hemograma y química sanguínea", "Uroanálisis y coproanálisis", "Resultados el mismo día en la mayoría de los casos", "Interpretación con tu veterinario tratante"],
-  },
-  {
-    slug: "cirugia",
-    icon: Scissors,
-    title: "Cirugía",
-    short: "Cirugías de tejidos blandos y esterilización con protocolo anestésico seguro.",
-    description:
-      "Desde esterilizaciones de rutina hasta cirugías de tejidos blandos, trabajamos con protocolo anestésico monitoreado y control post-operatorio hasta el alta.",
-    bullets: ["Esterilización canina y felina", "Cirugía de tejidos blandos", "Monitoreo anestésico", "Control post-operatorio incluido"],
+      "Laboratorio clínico automatizado con entrega rápida de resultados en línea. Procesamiento de pruebas de rutina y especializadas bajo rigurosos estándares de control de calidad.",
+    bullets: [
+      "Hemogramas, perfil lipídico y glicemia",
+      "Pruebas hormonales y marcadores tumorales",
+      "Resultados digitales en línea el mismo día",
+      "Toma de muestras domiciliaria coordinada",
+    ],
     featured: true,
   },
   {
-    slug: "odontologia-veterinaria",
-    icon: Smile,
-    title: "Odontología veterinaria",
-    short: "Profilaxis dental bajo anestesia para frenar la enfermedad periodontal.",
-    description:
-      "La enfermedad periodontal es una de las causas más comunes de dolor crónico no diagnosticado en mascotas adultas. La profilaxis dental bajo anestesia controlada, con limpieza y pulido, la previene y trata.",
-    bullets: ["Profilaxis y limpieza bajo anestesia", "Extracciones cuando son necesarias", "Evaluación del estado dental en cada consulta", "Recomendaciones de higiene en casa"],
-  },
-  {
-    slug: "hospitalizacion",
-    icon: Cross,
-    title: "Hospitalización",
-    short: "Internación con monitoreo para pacientes que necesitan observación.",
-    description:
-      "Para pacientes que requieren fluidoterapia, medicación continua u observación post-quirúrgica, contamos con área de hospitalización con seguimiento por el equipo veterinario.",
-    bullets: ["Fluidoterapia y medicación continua", "Observación post-quirúrgica", "Reportes de evolución al propietario", "Alta coordinada con tu veterinario"],
-  },
-  {
-    slug: "urgencias",
+    slug: "urgencias-triage",
     icon: Siren,
-    title: "Urgencias",
-    short: "Atención prioritaria para las situaciones que no pueden esperar.",
+    title: "Atención Prioritaria / Urgencias",
+    short: "Atención médica inmediata y clasificación por Triage en situaciones agudas (Configurable según habilitación).",
     description:
-      "Ante un accidente, una intoxicación o un cuadro que empeora rápido, la prioridad es estabilizar. Llamanos antes de venir para que el equipo esté listo cuando llegues.",
-    bullets: ["Atención prioritaria sin cita previa", "Estabilización y manejo del dolor", "Línea directa para casos urgentes", "Derivación si el caso supera nuestra capacidad"],
+      "Servicio de atención prioritaria y Triage médico según la configuración de servicios habilitados del prestador.",
+    bullets: [
+      "Clasificación médica por Triage estándar",
+      "Sala de observación y nebulizaciones",
+      "Estabilización médica asistencial",
+      "Remisión y coordinación de traslado",
+    ],
     featured: true,
   },
   {
-    slug: "nutricion",
+    slug: "cardiologia-ekg",
     icon: Activity,
-    title: "Nutrición",
-    short: "Planes de alimentación por etapa de vida o condición clínica.",
+    title: "Cardiología & Electrocardiografía",
+    short: "Evaluación de la salud cardiovascular, electrocardiogramas y lectura especializada de hallazgos.",
     description:
-      "La nutrición es parte del tratamiento, no un accesorio: acompañamos con planes de alimentación para cachorros, adultos, pacientes senior o con condiciones específicas como renal, digestiva o de control de peso.",
-    bullets: ["Plan nutricional por etapa de vida", "Dietas terapéuticas (renal, digestiva, peso)", "Seguimiento de peso en cada visita", "Recomendación de marca y porción"],
+      "Diagnóstico y control de hipertensión, arritmias y enfermedades cardiovasculares. Monitoreo especializado con equipos de electrocardiografía digital de última generación.",
+    bullets: [
+      "Electrocardiograma de 12 derivadas",
+      "Control de riesgo cardiovascular",
+      "Evaluación preoperatoria cardiológica",
+      "Lectura e informe por cardiólogo",
+    ],
+    featured: true,
   },
   {
-    slug: "diagnostico-por-imagen",
+    slug: "imagenes-diagnosticas",
     icon: Scan,
-    title: "Diagnóstico por imagen",
-    short: "Radiografía y ecografía para ver lo que el examen físico no alcanza.",
+    title: "Imágenes Diagnósticas & Ecografía",
+    short: "Ecografía general, articular, ginecológica y radiografía digital interpretada por radiólogos.",
     description:
-      "Cuando el examen físico y el laboratorio no bastan, la imagenología ayuda a confirmar un diagnóstico: fracturas, cuerpos extraños, patologías abdominales o cardíacas.",
-    bullets: ["Radiografía digital", "Ecografía abdominal", "Informe interpretado por el veterinario tratante", "Coordinación con cirugía si el caso lo requiere"],
+      "Servicio de ayuda diagnóstica no invasiva para la detección oportuna de condiciones abdominales, pélvicas, musculares y osteoarticulares.",
+    bullets: [
+      "Ecografía abdominal, pélvica y tiroidea",
+      "Radiografía digital de alta resolución",
+      "Informes radiológicos detallados",
+      "Priorización de hallazgos críticos",
+    ],
   },
   {
-    slug: "peluqueria-grooming",
-    icon: Sparkles,
-    title: "Peluquería / grooming",
-    short: "Baño y corte de higiene, ideal para combinar con la consulta.",
+    slug: "odontologia-integral",
+    icon: Smile,
+    title: "Odontología & Salud Oral",
+    short: "Odontología general, prevención, higiene oral y tratamientos restauradores para toda la familia.",
     description:
-      "Baño medicado o de rutina, corte de higiene y limpieza de oídos, a cargo de personal capacitado. Se puede combinar con la consulta para aprovechar la misma visita.",
-    bullets: ["Baño de rutina o medicado", "Corte de higiene", "Limpieza de oídos", "Ideal para combinar con la consulta"],
+      "Cuidado integral de la cavidad oral: profilaxis, calzas estéticas, endodoncia básica y valoración odontológica preventiva.",
+    bullets: [
+      "Limpieza y profilaxis ultrasonido",
+      "Operatoria y resinas estéticas",
+      "Valoración preventiva y fluorización",
+      "Odontopediatría",
+    ],
+  },
+  {
+    slug: "fisioterapia-rehabilitacion",
+    icon: Sparkles,
+    title: "Fisioterapia & Rehabilitación",
+    short: "Planes de rehabilitación física, manejo del dolor muscular y recuperación postquirúrgica o traumática.",
+    description:
+      "Tratamiento especializado por fisioterapeutas certificados. Sesiones orientadas al alivio del dolor, reacondicionamiento motor y rehabilitación neuromuscular.",
+    bullets: [
+      "Rehabilitación osteomuscular y articular",
+      "Manejo del dolor crónico y agudo",
+      "Terapia física postquirúrgica",
+      "Ejercicios terapéuticos guiados",
+    ],
   },
 ];
 
@@ -169,35 +164,49 @@ export type TeamMember = {
   specialty: string;
   bio: string;
   longBio: string;
+  isDemo?: boolean;
 };
 
 export const team: TeamMember[] = [
   {
-    slug: "carlos-medina",
-    name: "Dr. Carlos Medina",
-    role: "Médico veterinario",
-    specialty: "Medicina general y cirugía de tejidos blandos",
-    bio: "Más de 10 años atendiendo perros y gatos, con especial interés en medicina preventiva y cirugía.",
+    slug: "alejandro-morales",
+    name: "Dr. Alejandro Morales",
+    role: "Director Médico (Demo)",
+    specialty: "Medicina Interna & Salud Pública",
+    bio: "Experiencia en dirección asistencial, atención primaria y medicina preventiva.",
     longBio:
-      "El Dr. Carlos Medina lidera la consulta general y el área quirúrgica de la clínica. Cree que la mejor cirugía es la que se evita con un buen chequeo preventivo a tiempo, y dedica parte de cada consulta a explicarle al propietario qué está viendo y por qué.",
+      "El Dr. Alejandro Morales coordina el equipo médico y la calidad asistencial de SanitasSalud IPS. Su enfoque combina el rigor de la medicina interna con un trato humano y cercano hacia cada paciente.",
+    isDemo: true,
   },
   {
-    slug: "laura-pena",
-    name: "Dra. Laura Peña",
-    role: "Médica veterinaria",
-    specialty: "Medicina interna y diagnóstico por imagen",
-    bio: "Se enfoca en casos de medicina interna, laboratorio y diagnóstico por imagen.",
+    slug: "natalia-cardenas",
+    name: "Dra. Natalia Cárdenas",
+    role: "Médica Especialista (Demo)",
+    specialty: "Pediatría & Puericultura",
+    bio: "Especialista en desarrollo infantil, esquemas de vacunación y nutrición en la infancia.",
     longBio:
-      "La Dra. Laura Peña se especializa en medicina interna: los casos que necesitan laboratorio, ecografía y seguimiento cercano. Trabaja de la mano con el propietario para que el plan de tratamiento sea claro y sostenible en casa.",
+      "La Dra. Natalia Cárdenas lidera la consulta pediátrica y los programas de promoción de la salud infantil. Apasionada por brindar consultas tranquilas y explicaciones claras a los padres.",
+    isDemo: true,
   },
   {
-    slug: "marcela-duarte",
-    name: "Marcela Duarte",
-    role: "Coordinadora de recepción",
-    specialty: "Agenda, urgencias y atención al propietario",
-    bio: "El primer contacto de la clínica: agenda tu cita, resuelve dudas y coordina las urgencias.",
+    slug: "gabriel-restrepo",
+    name: "Dr. Gabriel Restrepo",
+    role: "Médico Especialista (Demo)",
+    specialty: "Cardiología & Riesgo Cardiovascular",
+    bio: "Especialista en electrocardiografía, ecocardiograma y control preventivo cardiovascular.",
     longBio:
-      "Marcela coordina la recepción y la agenda de la clínica. Es quien contesta el WhatsApp, confirma tu cita y prioriza una urgencia en cuanto entra. Si no sabés por dónde empezar, empezá por ella.",
+      "El Dr. Gabriel Restrepo es responsable de la unidad de cardiología y diagnóstico no invasivo. Trabaja en la prevención primaria de eventos cardiovasculares mediante chequeos y monitoreo continuo.",
+    isDemo: true,
+  },
+  {
+    slug: "andrea-gomez",
+    name: "Lic. Andrea Gómez",
+    role: "Coordinadora de Atenciones (Demo)",
+    specialty: "Gestión de Pacientes & Admisiones",
+    bio: "Primer punto de contacto para agendamiento, trámites asistenciales y orientación al paciente.",
+    longBio:
+      "Andrea coordina las líneas de atención, admisiones y turnos de consulta. Se asegura de que cada paciente reciba atención ágil y sin complicaciones administrativas.",
+    isDemo: true,
   },
 ];
 
@@ -214,39 +223,27 @@ export type Testimonial = {
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Camila Herrera",
-    pet: "dueña de Luna (golden retriever)",
-    text: "Llevamos a Luna desde cachorra. Siempre nos explican todo antes de hacer cualquier procedimiento, y el seguimiento de las vacunas nos salvó más de un olvido.",
+    name: "Carlos Eduardo Mendoza",
+    pet: "Paciente en Consulta Externa (Demo)",
+    text: "Excelente atención en la Sede Chicó. El Dr. Morales me atendió puntual, explicó mi diagnóstico con calma y la fórmula me llegó de inmediato al correo.",
     rating: 5,
   },
   {
-    name: "Andrés Vargas",
-    pet: "dueño de Michi (gata)",
-    text: "Michi es súper arisca en el veterinario y acá tienen una paciencia increíble. La cirugía de esterilización fue impecable, con controles post-operatorios muy claros.",
+    name: "María Fernanda Suárez",
+    pet: "Madre de paciente pediátrico (Demo)",
+    text: "Llevo a mis dos hijos con la Dra. Cárdenas para sus controles. Las instalaciones son impecables y el área pediátrica transmite mucha tranquilidad.",
     rating: 5,
   },
   {
-    name: "Marcela Ríos",
-    pet: "dueña de Kiara",
-    text: "Un fin de semana Kiara se lastimó una pata y nos atendieron de urgencia sin drama. Desde entonces no la llevamos a otro lado.",
+    name: "Roberto Gómez Trujillo",
+    pet: "Paciente servicio Prioritario (Demo)",
+    text: "Tuve una consulta prioritaria un domingo por la noche. El proceso de Triage fue rápido, me estabilizaron en observación y salí con el tratamiento completo.",
     rating: 5,
   },
   {
-    name: "Felipe Castaño",
-    pet: "dueño de Toby y Rocco",
-    text: "Tengo dos perros con esquemas de vacunación distintos y nunca se me confunden las fechas: siempre me avisan a tiempo.",
-    rating: 5,
-  },
-  {
-    name: "Diana Torres",
-    pet: "dueña de Nina",
-    text: "Nina es una perrita senior y el chequeo preventivo semestral nos ha permitido llegar a tiempo a un par de cosas que ni notábamos.",
-    rating: 4,
-  },
-  {
-    name: "Juan David Peláez",
-    pet: "dueño de Zeus",
-    text: "La profilaxis dental de Zeus le cambió el aliento y, según el veterinario, le evitó un dolor que ni sabíamos que tenía.",
+    name: "Patricia Alarcón",
+    pet: "Paciente de Cardiología (Demo)",
+    text: "El electrocardiograma y la consulta de control me permitieron ajustar mi medicación a tiempo. Todo el personal de enfermería es sumamente profesional.",
     rating: 5,
   },
 ];
@@ -255,53 +252,39 @@ export type Faq = { question: string; answer: string };
 
 export const faqs: Faq[] = [
   {
-    question: "¿Necesito pedir cita o puedo llegar directamente?",
+    question: "¿Cómo puedo agendar una cita médica en SanitasSalud IPS?",
     answer:
-      "Para consultas de rutina recomendamos agendar cita (por el sitio, WhatsApp o teléfono) para no hacerte esperar. Las urgencias se atienden siempre, con o sin cita previa.",
+      "Puedes agendar directamente a través de nuestro sitio web en 'Solicitar Cita', comunicándote a nuestro PBX +57 (601) 745-9000 o por WhatsApp al +57 310 890 2020.",
   },
   {
-    question: "¿Qué hago si es una urgencia fuera de horario?",
+    question: "¿Qué servicios de salud están habilitados en esta IPS?",
     answer:
-      "Escribinos por WhatsApp o llamá a la línea de la clínica. Te vamos a indicar si podemos recibirte de inmediato o coordinar la atención más cercana.",
+      "Los servicios habilitados dependen de la configuración REPS registrada por el prestador. En el sistema demo se incluyen Consulta Externa General, Pediatría, Cardiología, Laboratorio Clínico y Atención Prioritaria.",
   },
   {
-    question: "¿Cómo es la primera consulta de mi mascota?",
+    question: "¿Cómo funciona el servicio de Triage y Consulta Prioritaria?",
     answer:
-      "Empezamos con una historia clínica completa: antecedentes, alimentación y estilo de vida, seguido de un examen físico general. Si trae vacunas previas, llevá el carné.",
+      "El servicio opera según la habilitación de la sede principal. El médico de Triage clasifica la prioridad clínica según el protocolo asistencial.",
   },
   {
-    question: "¿Con qué frecuencia hay que vacunar?",
+    question: "¿En cuánto tiempo puedo consultar mis resultados de laboratorio?",
     answer:
-      "Depende de la vacuna y la edad: los cachorros y gatitos llevan un esquema inicial de varias dosis, y luego refuerzos anuales. Nosotros llevamos el registro y te avisamos cuándo toca.",
+      "La mayoría de los exámenes de laboratorio de rutina están disponibles el mismo día a través del Portal de Pacientes o mediante envío al correo electrónico registrado.",
   },
   {
-    question: "¿Atienden otras especies además de perros y gatos?",
+    question: "¿Tienen servicio de vacunación y esquema PAI?",
     answer:
-      "Sí, también atendemos aves, conejos y algunos exóticos. Si no estás seguro, escribinos antes con el caso puntual.",
-  },
-  {
-    question: "¿Qué medios de pago aceptan?",
-    answer: "Efectivo, tarjeta débito/crédito y transferencia. Para procedimientos mayores entregamos presupuesto por escrito antes de proceder.",
-  },
-  {
-    question: "¿Necesito ayuno antes de una cirugía?",
-    answer:
-      "Sí. Para cualquier procedimiento con anestesia te vamos a indicar el ayuno de sólidos y líquidos requerido según el caso, con al menos un día de anticipación.",
-  },
-  {
-    question: "¿Puedo pedir mi cita por WhatsApp?",
-    answer:
-      "Sí, es la vía más rápida. También podés usar el formulario de \"Agendar cita\" del sitio: recepción confirma disponibilidad y te contacta.",
+      "Sí, aplicamos el esquema oficial de vacunación pediátrica y de adultos, además de vacunas adicionales con registro oficial.",
   },
 ];
 
 export type Stat = { value: string; label: string };
 
 export const stats: Stat[] = [
-  { value: "12+", label: "años de trayectoria" },
-  { value: "3.500+", label: "mascotas atendidas" },
-  { value: "2", label: "veterinarios de planta" },
-  { value: "4.9/5", label: "satisfacción de propietarios" },
+  { value: "+150.000", label: "atenciones médicas registradas" },
+  { value: "+45", label: "médicos especialistas en red" },
+  { value: "3", label: "sedes integrales de atención" },
+  { value: "98.5%", label: "satisfacción de pacientes" },
 ];
 
 export type BlogPost = {
@@ -316,103 +299,50 @@ export type BlogPost = {
   body: string[];
 };
 
-export const blogCategories = ["Prevención", "Vacunas", "Nutrición", "Cirugía", "Cachorros", "Urgencias"];
+export const blogCategories = ["Salud Preventiva", "Pediatría", "Cardiología", "Laboratorio", "Atención Prioritaria"];
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "cuando-llevar-a-tu-mascota-al-veterinario",
-    title: "Señales que indican que tu mascota necesita una consulta ya",
-    category: "Urgencias",
-    excerpt: "Decaimiento, vómito persistente, dificultad para respirar: una guía rápida para saber cuándo esperar y cuándo no.",
-    image: "/gallery/pet-7.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-08-12",
+    slug: "check-up-preventivo-anual-salud",
+    title: "Por qué el chequeo médico preventivo anual es tu mejor inversión en salud",
+    category: "Salud Preventiva",
+    excerpt: "La hipertensión, la diabetes y otras patologías suelen ser asintomáticas en sus fases iniciales. Conoce qué exámenes deberías realizarte cada año.",
+    image: "/gallery/ips/consulta_medica.jpg",
+    authorSlug: "alejandro-morales",
+    date: "2026-09-01",
     readMinutes: 4,
     body: [
-      "No toda molestia es una urgencia, pero algunas señales sí ameritan atención inmediata y no un \"vamos viendo cómo sigue\". La regla general que usamos en consulta: si el síntoma es súbito, si compromete la respiración, o si tu mascota deja de responder como siempre, es momento de venir.",
-      "Decaimiento marcado — que no se levante a comer, que no reaccione a estímulos que normalmente la entusiasman — es de las señales más subestimadas. Un perro o gato que \"está raro\" desde hace más de unas horas ya justifica una consulta, no una espera de \"a ver si mejora solo\".",
-      "El vómito persistente (más de dos o tres episodios en pocas horas, o con sangre) y la dificultad para respirar son motivo de consulta prioritaria siempre. En el segundo caso, cada minuto cuenta: llamanos antes de salir para que el equipo esté listo cuando llegues.",
-      "Otras señales que no deberían esperar: distensión abdominal repentina, convulsiones, imposibilidad de orinar, sangrado que no cede, o un golpe/caída con cojera inmediata. Ante la duda, la llamada no cuesta nada — preferimos revisar de más que de menos.",
+      "Muchas patologías crónicas no generan dolor ni síntomas evidentes en sus etapas tempranas. Realizar un chequeo médico preventivo anual es la herramienta fundamental de la salud pública moderna para identificar factores de riesgo y actuar a tiempo.",
+      "Un chequeo integral incluye la evaluación clínica por medicina general, la medición rigurosa de la presión arterial, cálculo de índice de masa corporal y un panel básico de laboratorio (glicemia, perfil lipídico, función renal).",
+      "En SanitasSalud IPS priorizamos la medicina preventiva porque reducir el riesgo de eventos mayores es el pilar de una vida longeva y saludable.",
     ],
   },
   {
-    slug: "calendario-de-vacunacion-cachorros",
-    title: "El calendario de vacunación de un cachorro, mes a mes",
-    category: "Vacunas",
-    excerpt: "Qué vacuna toca en cada etapa y por qué saltarse una dosis puede dejar una ventana de riesgo.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-07-28",
+    slug: "vacunacion-infantil-esquema-completo",
+    title: "La importancia de mantener el esquema de vacunación infantil al día",
+    category: "Pediatría",
+    excerpt: "Guía clara para padres sobre cada dosis del esquema oficial y cómo protegen a los niños en sus primeros años de vida.",
+    image: "/gallery/ips/hero_ips.jpg",
+    authorSlug: "natalia-cardenas",
+    date: "2026-08-15",
     readMinutes: 5,
     body: [
-      "Un cachorro nace con cierta protección de la madre, pero esa inmunidad baja gradualmente entre las 6 y las 16 semanas de vida — justo la ventana en la que hay que vacunar, y por eso el esquema se aplica en varias dosis, no en una sola.",
-      "El esquema típico arranca alrededor de las 6-8 semanas con la primera dosis de la polivalente (moquillo, parvovirus, hepatitis, entre otras según el laboratorio), se refuerza cada 3-4 semanas hasta las 16 semanas, y la antirrábica se suma desde los 3 meses.",
-      "Saltarse una dosis del esquema inicial no es \"recuperable\" con solo aplicar la siguiente: cada refuerzo depende de que el anterior haya generado la respuesta esperada. Por eso llevamos el registro exacto de lote y fecha, y te avisamos con anticipación cuándo toca la próxima.",
-      "Después del primer año, la mayoría de las vacunas pasan a un esquema de refuerzo anual. Traé siempre el carné de vacunación a cada visita, aunque sea de rutina — es el historial que evita que se repita o se salte una dosis.",
+      "Las vacunas son el descubrimiento más trascendental en la historia de la pediatría. Cumplir oportunamente con las fechas del esquema oficial garantiza que los anticuerpos del niño se desarrollen antes de exponerse a patógenos severos.",
+      "Es primordial no postergar las dosis de refuerzo. Cada refuerzo consolida la memoria inmunológica necesaria para proteger contra enfermedades respiratorias, virales y bacterianas.",
     ],
   },
   {
-    slug: "como-elegir-el-alimento-correcto",
-    title: "Cómo elegir el alimento correcto según la edad y tamaño de tu mascota",
-    category: "Nutrición",
-    excerpt: "No todos los alimentos \"premium\" son iguales. Qué mirar en la etiqueta antes de decidir.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-07-10",
-    readMinutes: 4,
+    slug: "tecnologia-diagnostica-ips-moderna",
+    title: "Tecnología en Imágenes Diagnósticas y Laboratorio al Servicio del Paciente",
+    category: "Laboratorio",
+    excerpt: "Cómo la automatización y la digitalización de resultados reducen los tiempos de diagnóstico médico.",
+    image: "/gallery/ips/urgencias_prioritaria.jpg",
+    authorSlug: "gabriel-restrepo",
+    date: "2026-07-20",
+    readMinutes: 3,
     body: [
-      "La palabra \"premium\" en el empaque no está regulada — no garantiza nada por sí sola. Lo que sí importa es la lista de ingredientes (una fuente de proteína animal identificada, no genérica como \"subproductos\") y que el alimento esté formulado para la etapa de vida correcta.",
-      "Un cachorro necesita más proteína y calorías por su crecimiento; un adulto sedentario necesita menos de lo que dice la tabla genérica de la bolsa; un senior suele beneficiarse de fórmulas más livianas para las articulaciones y el riñón. Alimentar con la fórmula de otra etapa no es un ahorro, es un desajuste silencioso.",
-      "El tamaño también importa: las razas grandes necesitan un control más estricto de calcio y fósforo en el crecimiento para evitar problemas articulares a futuro, y las razas pequeñas gastan más energía por kilo de lo que parece.",
-      "Si tu mascota tiene una condición clínica (renal, digestiva, sobrepeso), el alimento pasa a ser parte del tratamiento, no una elección de supermercado — ahí sí conviene una dieta terapéutica indicada en consulta, no una decisión por cuenta propia.",
-    ],
-  },
-  {
-    slug: "preparar-a-tu-mascota-para-una-cirugia",
-    title: "Cómo preparar a tu mascota (y a vos) para una cirugía programada",
-    category: "Cirugía",
-    excerpt: "Ayuno, traslado y qué esperar el día de la cirugía y en el post-operatorio.",
-    image: "/gallery/pet-13.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-06-22",
-    readMinutes: 5,
-    body: [
-      "Toda cirugía con anestesia requiere ayuno previo — típicamente de sólidos desde la noche anterior y de agua unas horas antes, aunque el esquema exacto varía según el paciente y te lo confirmamos al agendar. Un estómago lleno durante la anestesia es un riesgo real de aspiración, así que esta indicación no es opcional.",
-      "El día de la cirugía, traé a tu mascota temprano y con tiempo: hacemos una revisión pre-anestésica antes de proceder. Es normal sentir ansiedad — la mayoría de los propietarios la sienten más que sus mascotas — y preferimos que preguntes todo lo que necesites antes, no durante la espera.",
-      "Durante el procedimiento trabajamos con monitoreo anestésico continuo (frecuencia cardíaca, oxigenación, temperatura) y te llamamos apenas termina para contarte cómo salió y coordinar el retiro.",
-      "El post-operatorio es donde más se juega la recuperación: reposo estricto los primeros días, collar isabelino si aplica para que no se lastime el punto, y los controles que te indiquemos sin saltarte ninguno, aunque la herida se vea bien.",
-    ],
-  },
-  {
-    slug: "chequeos-preventivos-mascotas-senior",
-    title: "Por qué los chequeos preventivos importan más después de los 7 años",
-    category: "Prevención",
-    excerpt: "Los cambios en una mascota senior son graduales — el chequeo semestral detecta lo que el día a día no muestra.",
-    image: "/gallery/pet-3.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-30",
-    readMinutes: 4,
-    body: [
-      "A partir de los 7 años (antes en razas grandes), el metabolismo, las articulaciones, los riñones y el corazón empiezan a cambiar de forma gradual — tan gradual que en casa es difícil notarlo, porque lo ves todos los días.",
-      "Por eso pasamos de un chequeo anual a uno semestral en pacientes senior: duplicar la frecuencia de control multiplica las chances de detectar algo a tiempo, cuando todavía es manejable con un ajuste de dieta o tratamiento, y no cuando ya se volvió una urgencia.",
-      "Un chequeo senior típico incluye examen físico completo, control de peso y masa muscular, revisión dental, y un panel básico de laboratorio (función renal, hepática, hemograma) al menos una vez al año, más seguido si el caso lo amerita.",
-      "No es alarmismo: es la misma lógica que un chequeo médico humano después de cierta edad. La mascota no te va a decir que algo le duele distinto — el chequeo periódico es la forma de enterarte antes de que sea evidente.",
-    ],
-  },
-  {
-    slug: "primeros-dias-de-un-cachorro-en-casa",
-    title: "Los primeros días de un cachorro en casa: checklist veterinario",
-    category: "Cachorros",
-    excerpt: "Primera visita, desparasitación, socialización y los errores más comunes de los primeros dueños.",
-    image: "/gallery/pet-1.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-08",
-    readMinutes: 5,
-    body: [
-      "La primera visita veterinaria debería pasar en la primera semana en casa, aunque el cachorro se vea perfectamente sano: revisamos peso, examen físico general, y armamos el esquema de vacunación y desparasitación desde cero con fechas concretas.",
-      "La desparasitación interna en cachorros empieza más temprano y con más frecuencia de lo que la mayoría espera — cada 2-3 semanas hasta los 3 meses, después mensual hasta el año. No es opcional ni algo que se resuelve \"cuando se vea algo raro\".",
-      "La socialización tiene una ventana crítica entre las 3 y las 14 semanas: es cuando el cachorro aprende qué es normal (otras personas, otros animales, ruidos, superficies) sin miedo. Perderse esa ventana no es irreversible, pero cuesta mucho más trabajo después.",
-      "El error más común de los primeros dueños: esperar a que \"se vea algo mal\" para consultar. La medicina preventiva en un cachorro no es un gasto extra, es la base de toda la salud que va a tener de adulto — y sale más barata que resolver lo que se pudo prevenir.",
+      "El uso de analizadores bioquímicos de última generación permite procesar muestras con márgenes de precisión excepcionales y tiempos de respuesta reducidos a pocas horas.",
+      "En SanitasSalud IPS nos mantenemos a la vanguardia diagnóstica para brindar soporte confiable a las decisiones clínicas de nuestro cuerpo médico.",
     ],
   },
 ];

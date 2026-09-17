@@ -15,7 +15,7 @@ describe("BlogCard", () => {
 
   it("shows the publish date", () => {
     render(<BlogCard post={post} />);
-    expect(screen.getByText(/de agosto de 2026/)).toBeInTheDocument();
+    expect(screen.getByText(/de septiembre de 2026/)).toBeInTheDocument();
   });
 });
 
@@ -23,6 +23,6 @@ describe("FeaturedPost", () => {
   it("renders the author name and links to the post", () => {
     render(<FeaturedPost post={post} />);
     expect(screen.getByRole("link")).toHaveAttribute("href", `/blog/${post.slug}`);
-    expect(screen.getByText("Dr. Carlos Medina")).toBeInTheDocument();
+    expect(screen.getByText("Dr. Alejandro Morales")).toBeInTheDocument();
   });
 });
