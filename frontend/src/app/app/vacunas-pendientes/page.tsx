@@ -9,7 +9,7 @@ import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
 import { ClinicalApplication } from "@/lib/types";
 
-const TYPE_LABEL: Record<string, string> = { vaccine: "Vacuna", deworming: "Desparasitación" };
+const TYPE_LABEL: Record<string, string> = { vaccine: "Vacuna", deworming: "Tratamiento Antiparasitario" };
 
 export default function VaccinationsDuePage() {
   const [items, setItems] = React.useState<ClinicalApplication[] | null>(null);

@@ -27,7 +27,7 @@ export default function OrdersPage() {
   return (
     <ModuleTablePage<Order>
       title="Pedidos"
-      description="Ventas de mostrador a propietarios (alimento, accesorios, medicamentos). Al confirmarse descuentan stock."
+      description="Ventas y entregas de mostrador a pacientes / afiliados (medicamentos e insumos). Al confirmarse descuentan stock."
       resource="/orders"
       exportResource="orders"
       columns={columns}

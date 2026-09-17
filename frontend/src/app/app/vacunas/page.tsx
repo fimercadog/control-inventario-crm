@@ -8,7 +8,7 @@ import { AppColumnDef } from "@/lib/table-types";
 import { ClinicalApplication } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 
-const TYPE_LABEL: Record<string, string> = { vaccine: "Vacuna", deworming: "Desparasitación" };
+const TYPE_LABEL: Record<string, string> = { vaccine: "Vacuna", deworming: "Tratamiento Antiparasitario" };
 
 const columns: AppColumnDef<ClinicalApplication>[] = [
   { header: "Fecha", cell: ({ row }) => formatDate(row.original.applied_at) },
@@ -35,7 +35,7 @@ const fields: CrudField[] = [
     required: true,
     options: [
       { label: "Vacuna", value: "vaccine" },
-      { label: "Desparasitación", value: "deworming" },
+      { label: "Tratamiento Antiparasitario", value: "deworming" },
     ],
   },
   { name: "patient_id", label: "Paciente", type: "select", optionsResource: "/patients", required: true },
@@ -57,7 +57,7 @@ const fields: CrudField[] = [
 export default function VaccinationsPage() {
   return (
     <ModuleTablePage<ClinicalApplication>
-      title="Vacunas y desparasitación"
+      title="Vacunación e Inmunización"
       description="Aplicaciones registradas en la historia del paciente. Con lote y próxima dosis."
       resource="/clinical-applications"
       columns={columns}

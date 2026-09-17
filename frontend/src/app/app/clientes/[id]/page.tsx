@@ -83,7 +83,7 @@ export default function ClientDetailPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Section title="Mascotas" count={data.patients.length}>
+        <Section title="Pacientes a cargo / Beneficiarios" count={data.patients.length}>
           {data.patients.map((p) => (
             <Row
               key={p.id}
@@ -92,7 +92,7 @@ export default function ClientDetailPage() {
                   {p.name}
                 </Link>
               }
-              right={[p.species, p.breed].filter(Boolean).join(" · ")}
+              right={[p.document_type && p.document_number ? `${p.document_type}: ${p.document_number}` : p.document_number, p.eps].filter(Boolean).join(" · ") || (p.sex ?? "—")}
             />
           ))}
         </Section>

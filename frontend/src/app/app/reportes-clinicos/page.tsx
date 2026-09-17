@@ -94,7 +94,7 @@ export default function ClinicalReportsPage() {
             <Stat label="Pacientes atendidos" value={report.patients_attended} />
             <Stat label="Consultas" value={report.consultations} />
             <Stat label="Vacunas aplicadas" value={report.vaccinations_applied} />
-            <Stat label="Desparasitaciones" value={report.dewormings_applied} />
+            <Stat label="Esquemas Antiparasitarios" value={report.dewormings_applied} />
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
