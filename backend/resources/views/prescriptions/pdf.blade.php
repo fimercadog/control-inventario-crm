@@ -16,14 +16,18 @@
 </head>
 <body>
   <div class="header">
-    <h1>{{ $p->company->name ?? 'Clínica veterinaria' }}</h1>
-    <div class="muted">Receta médica veterinaria</div>
+    <h1>{{ $p->company->name ?? 'IPS Institución Prestadora de Salud' }}</h1>
+    <div class="muted">Fórmula Médica / Prescripción IPS</div>
   </div>
 
   <p>
-    <strong>Paciente:</strong> {{ $p->patient->name ?? '—' }}<br>
+    <strong>Paciente:</strong> {{ $p->patient->name ?? '—' }}
+    @if ($p->patient->document_number)
+      (Doc: {{ $p->patient->document_type ?? 'CC' }} {{ $p->patient->document_number }})
+    @endif
+    <br>
     <strong>Fecha:</strong> {{ optional($p->created_at)->format('d/m/Y') }}<br>
-    <strong>Veterinario/a:</strong> {{ $p->vet->name ?? '—' }}
+    <strong>Médico/a Tratante:</strong> {{ $p->vet->name ?? '—' }}
   </p>
 
   <table>

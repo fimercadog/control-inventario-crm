@@ -25,6 +25,25 @@ class Appointment extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::creating(function (Appointment $appointment): void {
+            if (! $appointment->duration_minutes && $appointment->starts_at && $appointment->ends_at) {
+                $start = \Carbon\Carbon::parse($appointment->starts_at);
+                $end = \Carbon\Carbon::parse($appointment->ends_at);
+                $appointment->duration_minutes = max(1, (int) $start->diffInMinutes($end));
+            }
+        });
+
+        static::updating(function (Appointment $appointment): void {
+            if ($appointment->isDirty(['starts_at', 'ends_at']) && $appointment->starts_at && $appointment->ends_at) {
+                $start = \Carbon\Carbon::parse($appointment->starts_at);
+                $end = \Carbon\Carbon::parse($appointment->ends_at);
+                $appointment->duration_minutes = max(1, (int) $start->diffInMinutes($end));
+            }
+        });
+    }
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class);

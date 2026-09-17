@@ -19,9 +19,9 @@ class PatientController extends BaseCrudController
 
     protected array $with = ['client', 'species', 'breed'];
 
-    protected array $searchable = ['name', 'microchip'];
+    protected array $searchable = ['name', 'first_name', 'last_name', 'document_number', 'phone', 'email', 'eps'];
 
-    protected array $filterable = ['status' => 'status', 'client_id' => 'client_id', 'species_id' => 'species_id'];
+    protected array $filterable = ['status' => 'status', 'client_id' => 'client_id', 'eps' => 'eps', 'blood_type' => 'blood_type', 'document_type' => 'document_type'];
 
     /** Restaura un paciente soft-deleteado. */
     public function restore(Request $request, string $id, AuditService $audit)

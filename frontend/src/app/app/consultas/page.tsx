@@ -12,18 +12,18 @@ const columns: AppColumnDef<Consultation>[] = [
   {
     header: "Paciente",
     cell: ({ row }) => (
-      <Link href={`/app/pacientes/${row.original.patient_id}`} className="text-primary hover:underline">
+      <Link href={`/app/pacientes/${row.original.patient_id}`} className="text-primary hover:underline font-medium">
         {row.original.patient ?? "—"}
       </Link>
     ),
   },
-  { header: "Motivo", cell: ({ row }) => row.original.reason },
-  { header: "Veterinario", cell: ({ row }) => row.original.vet ?? "—" },
+  { header: "Motivo de Consulta", cell: ({ row }) => row.original.reason },
+  { header: "Médico Tratante", cell: ({ row }) => row.original.practitioner || row.original.vet || "—" },
   {
     header: "",
     cell: ({ row }) => (
-      <Link href={`/app/consultas/${row.original.id}`} className="text-xs text-primary hover:underline">
-        Ver SOAP
+      <Link href={`/app/consultas/${row.original.id}`} className="text-xs text-primary hover:underline font-medium">
+        Ver Historia (SOAP)
       </Link>
     ),
   },
@@ -31,26 +31,27 @@ const columns: AppColumnDef<Consultation>[] = [
 
 const fields: CrudField[] = [
   { name: "patient_id", label: "Paciente", type: "select", optionsResource: "/patients", required: true },
-  { name: "date", label: "Fecha", type: "date", required: true },
+  { name: "vet_id", label: "Médico Tratante", type: "select", optionsResource: "/users", required: true },
+  { name: "date", label: "Fecha de atención", type: "date", required: true },
   { name: "reason", label: "Motivo de consulta", required: true },
   { name: "weight", label: "Peso (kg)", type: "number", step: 0.01, min: 0, omitWhenEmpty: true },
   { name: "temperature", label: "Temperatura (°C)", type: "number", step: 0.1, omitWhenEmpty: true },
-  { name: "subjective", label: "S — Subjetivo", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
-  { name: "objective", label: "O — Objetivo", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
-  { name: "assessment", label: "A — Análisis", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
-  { name: "plan", label: "P — Plan", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
+  { name: "subjective", label: "S — Subjetivo (Anamnesis / Motivo / Síntomas)", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
+  { name: "objective", label: "O — Objetivo (Examen Físico / Signos Vitales)", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
+  { name: "assessment", label: "A — Análisis (Diagnóstico / Evolución)", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
+  { name: "plan", label: "P — Plan (Tratamiento / Formulación / Conducta)", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
 ];
 
 export default function ConsultationsPage() {
   return (
     <ModuleTablePage<Consultation>
-      title="Historia clínica"
-      description="Consultas SOAP de todos los pacientes."
+      title="Historias Clínicas & Consultas IPS"
+      description="Registro asistencial SOAP de atenciones a pacientes humanos."
       resource="/consultations"
       columns={columns}
       fields={fields}
       actionLabel="Nueva consulta"
-      modalDescription="Esquema SOAP: Subjetivo · Objetivo · Análisis · Plan."
+      modalDescription="Metodología SOAP: Subjetivo · Objetivo · Análisis · Plan."
     />
   );
 }

@@ -381,39 +381,42 @@ class DatabaseSeeder extends Seeder
     /** @return Collection<int,Patient> */
     private function seedPatients(Company $company, Collection $clients, array $species): Collection
     {
-        $breedId = fn (string $sp, string $br) => Breed::query()
-            ->where(['company_id' => $company->id, 'species_id' => $species[$sp]->id, 'name' => $br])->value('id');
+        $speciesId = $species['Humana']->id ?? null;
 
-        // [ownerIdx, nombre, especie, raza, sexo, nacimiento, peso, esterilizado, microchip]
+        // [clientIdx, nombre, docType, docNum, firstName, lastName, sexo, nacimiento, eps, RH, tel, email]
         $rows = [
-            [0, 'Luna', 'Perro', 'Golden Retriever', 'female', '2021-03-14', 28.4, true, '900215001234567'],
-            [0, 'Max', 'Perro', 'Labrador Retriever', 'male', '2019-07-02', 33.1, false, '900215001234568'],
-            [1, 'Michi', 'Gato', 'Criollo / Mestizo', 'female', '2022-11-20', 4.2, true, null],
-            [1, 'Simón', 'Gato', 'Siamés', 'male', '2020-02-10', 5.1, true, '900215001234569'],
-            [2, 'Kiara', 'Perro', 'Criollo / Mestizo', 'female', '2020-01-05', 15.8, true, null],
-            [3, 'Toby', 'Perro', 'Poodle', 'male', '2023-05-30', 6.7, false, '900215001234570'],
-            [3, 'Rocco', 'Perro', 'Bulldog Francés', 'male', '2022-01-18', 11.2, false, '900215001234571'],
-            [4, 'Nina', 'Perro', 'Schnauzer', 'female', '2018-09-12', 8.9, true, '900215001234572'],
-            [4, 'Pipo', 'Ave', 'Periquito', 'unknown', null, 0.04, false, null],
-            [5, 'Zeus', 'Perro', 'Pastor Alemán', 'male', '2021-12-01', 34.7, false, '900215001234573'],
-            [6, 'Coco', 'Gato', 'Persa', 'female', '2019-06-25', 3.8, true, '900215001234574'],
-            [7, 'Bruno', 'Perro', 'Beagle', 'male', '2020-08-08', 13.4, true, '900215001234575'],
-            [8, 'Manchas', 'Conejo', 'Mini Lop', 'female', '2023-02-14', 1.6, false, null],
-            [9, 'Estrella', 'Perro', 'Criollo / Mestizo', 'female', '2022-04-03', 17.2, true, null],
-            [9, 'Canela', 'Perro', 'Criollo / Mestizo', 'female', '2021-10-19', 19.0, false, null],
-            [10, 'Duque', 'Perro', 'Golden Retriever', 'male', '2023-06-11', 24.5, false, '900215001234576'],
+            [0, 'Carlos Andrés Mendoza', 'CC', '1018293847', 'Carlos Andrés', 'Mendoza', 'male', '1988-03-14', 'Sura', 'O+', '+57 310 555 0101', 'carlos.mendoza@example.com'],
+            [0, 'Mariana Gómez Ortiz', 'CC', '1020394857', 'Mariana', 'Gómez Ortiz', 'female', '1992-07-02', 'Sanitas', 'A+', '+57 311 555 0102', 'mariana.gomez@example.com'],
+            [1, 'Lucía Fernández', 'CC', '52839201', 'Lucía', 'Fernández', 'female', '1995-11-20', 'Compensar', 'O-', '+57 312 555 0103', 'lucia.fernandez@example.com'],
+            [1, 'Santiago Morales', 'CC', '1032948201', 'Santiago', 'Morales', 'male', '1985-02-10', 'Salud Total', 'B+', '+57 313 555 0104', 'santiago.morales@example.com'],
+            [2, 'Valentina Torres', 'CC', '1015839201', 'Valentina', 'Torres', 'female', '1998-01-05', 'Sura', 'A-', '+57 314 555 0105', 'valentina.torres@example.com'],
+            [3, 'Mateo Benítez', 'TI', '1098293847', 'Mateo', 'Benítez', 'male', '2012-05-30', 'Sanitas', 'O+', '+57 315 555 0106', 'mateo.benitez@example.com'],
+            [3, 'Sofia Benítez', 'RC', '1192837465', 'Sofia', 'Benítez', 'female', '2018-01-18', 'Sanitas', 'O+', '+57 315 555 0107', 'sofia.benitez@example.com'],
+            [4, 'Gabriel Silva', 'CC', '80192837', 'Gabriel', 'Silva', 'male', '1976-09-12', 'Compensar', 'AB+', '+57 316 555 0108', 'gabriel.silva@example.com'],
+            [5, 'Camila Vargas', 'CC', '1028394812', 'Camila', 'Vargas', 'female', '1990-12-01', 'Sura', 'O+', '+57 317 555 0109', 'camila.vargas@example.com'],
+            [6, 'Daniela Ríos', 'CC', '52938471', 'Daniela', 'Ríos', 'female', '1984-06-25', 'Salud Total', 'A+', '+57 318 555 0110', 'daniela.rios@example.com'],
+            [7, 'Alejandro Castro', 'CC', '1019283746', 'Alejandro', 'Castro', 'male', '1989-08-08', 'Compensar', 'O+', '+57 319 555 0111', 'alejandro.castro@example.com'],
+            [8, 'Isabela Restrepo', 'TI', '1082736451', 'Isabela', 'Restrepo', 'female', '2010-02-14', 'Sura', 'B-', '+57 320 555 0112', 'isabela.restrepo@example.com'],
+            [9, 'Felipe Osorio', 'CC', '1027384950', 'Felipe', 'Osorio', 'male', '1993-04-03', 'Sanitas', 'O+', '+57 321 555 0113', 'felipe.osorio@example.com'],
+            [10, 'Nicolás Suárez', 'CC', '1038472910', 'Nicolás', 'Suárez', 'male', '2000-06-11', 'Sura', 'A+', '+57 322 555 0114', 'nicolas.suarez@example.com'],
         ];
 
         return collect($rows)->map(fn ($d) => Patient::firstOrCreate(
-            ['company_id' => $company->id, 'client_id' => $clients[$d[0]]->id, 'name' => $d[1]],
+            ['company_id' => $company->id, 'document_number' => $d[3]],
             [
-                'species_id' => $species[$d[2]]->id,
-                'breed_id' => $breedId($d[2], $d[3]),
-                'sex' => $d[4],
-                'birth_date' => $d[5],
-                'weight' => $d[6],
-                'sterilized' => $d[7],
-                'microchip' => $d[8],
+                'client_id' => $clients[$d[0]]->id ?? null,
+                'species_id' => $speciesId,
+                'name' => $d[1],
+                'document_type' => $d[2],
+                'document_number' => $d[3],
+                'first_name' => $d[4],
+                'last_name' => $d[5],
+                'sex' => $d[6],
+                'birth_date' => $d[7],
+                'eps' => $d[8],
+                'blood_type' => $d[9],
+                'phone' => $d[10],
+                'email' => $d[11],
                 'status' => 'active',
             ],
         ));
@@ -514,35 +517,35 @@ class DatabaseSeeder extends Seeder
         array $services,
         array $vets,
     ): Collection {
-        $general = $services['Consulta general'];
-        $vac = $services['Vacunación'];
-        $espec = $services['Consulta especializada'];
-        $dental = $services['Profilaxis dental'];
-        $ester = $services['Esterilización'];
+        $general = $services['Consulta general'] ?? $services[array_key_first($services)];
+        $vac = $services['Vacunación'] ?? $general;
+        $espec = $services['Consulta especializada'] ?? $general;
+        $dental = $services['Procedimientos ambulatorios'] ?? $general;
+        $ester = $services['Triage / Urgencias'] ?? $general;
 
         // [patientIdx, service, start, status, motivo, consultorio, vetIdx]
         $plan = [
             // Pasadas
-            [0, $general, now()->subDays(24)->setTime(9, 0), 'attended', 'Control anual', 'Consultorio 1', 0],
-            [4, $general, now()->subDays(18)->setTime(10, 30), 'attended', 'Chequeo por vómitos', 'Consultorio 2', 1],
-            [7, $dental, now()->subDays(12)->setTime(8, 0), 'attended', 'Profilaxis dental', 'Quirófano', 0],
-            [2, $vac, now()->subDays(9)->setTime(11, 0), 'attended', 'Refuerzo triple felina', 'Consultorio 1', 1],
-            [9, $general, now()->subDays(6)->setTime(15, 30), 'attended', 'Cojera pata posterior', 'Consultorio 2', 0],
-            [11, $general, now()->subDays(5)->setTime(16, 0), 'no_show', 'Control post-operatorio', 'Consultorio 1', 1],
-            [3, $vac, now()->subDays(3)->setTime(9, 30), 'attended', 'Primera dosis polivalente', 'Consultorio 1', 0],
-            [10, $general, now()->subDays(2)->setTime(14, 0), 'cancelled', 'Dermatitis', 'Consultorio 2', 1],
+            [0, $general, now()->subDays(24)->setTime(9, 0), 'attended', 'Control medico preventivo', 'Consultorio 101', 0],
+            [4, $general, now()->subDays(18)->setTime(10, 30), 'attended', 'Chequeo por malestar digestivo', 'Consultorio 102', 1],
+            [7, $dental, now()->subDays(12)->setTime(8, 0), 'attended', 'Curación ambulatoria de herida', 'Sala de Procedimientos', 0],
+            [2, $vac, now()->subDays(9)->setTime(11, 0), 'attended', 'Refuerzo de esquema de vacunación', 'Consultorio 101', 1],
+            [9, $general, now()->subDays(6)->setTime(15, 30), 'attended', 'Dolor en articulación de rodilla', 'Consultorio 102', 0],
+            [11, $general, now()->subDays(5)->setTime(16, 0), 'no_show', 'Control de presión arterial', 'Consultorio 101', 1],
+            [3, $vac, now()->subDays(3)->setTime(9, 30), 'attended', 'Inmunización esquema estacional', 'Consultorio 101', 0],
+            [10, $general, now()->subDays(2)->setTime(14, 0), 'cancelled', 'Valoración dermatológica', 'Consultorio 102', 1],
             // Hoy
-            [1, $general, now()->setTime(8, 30), 'attended', 'Revisión de herida', 'Consultorio 1', 0],
-            [5, $vac, now()->setTime(9, 30), 'confirmed', 'Refuerzo antirrábica', 'Consultorio 1', 0],
-            [8, $espec, now()->setTime(10, 30), 'confirmed', 'Chequeo de ave — plumaje', 'Consultorio 2', 1],
-            [13, $general, now()->setTime(11, 30), 'scheduled', 'Valoración para adopción', 'Consultorio 1', 0],
-            [6, $general, now()->setTime(15, 0), 'scheduled', 'Estornudos y secreción', 'Consultorio 2', 1],
+            [1, $general, now()->setTime(8, 30), 'attended', 'Revisión y retirar puntos de sutura', 'Consultorio 101', 0],
+            [5, $vac, now()->setTime(9, 30), 'confirmed', 'Vacuna de refuerzo', 'Consultorio 101', 0],
+            [8, $espec, now()->setTime(10, 30), 'confirmed', 'Consulta prioritaria por migraña', 'Consultorio 102', 1],
+            [13, $general, now()->setTime(11, 30), 'scheduled', 'Valoración ocupacional de ingreso', 'Consultorio 101', 0],
+            [6, $general, now()->setTime(15, 0), 'scheduled', 'Congestión nasal y fiebre', 'Consultorio 102', 1],
             // Próximos días
-            [12, $general, now()->addDay()->setTime(9, 0), 'scheduled', 'Primera consulta conejo', 'Consultorio 1', 1],
-            [15, $vac, now()->addDay()->setTime(10, 0), 'scheduled', 'Segunda dosis polivalente', 'Consultorio 1', 0],
-            [7, $ester, now()->addDays(2)->setTime(7, 30), 'confirmed', 'Esterilización programada', 'Quirófano', 0],
-            [0, $general, now()->addDays(3)->setTime(16, 0), 'scheduled', 'Control de peso', 'Consultorio 2', 1],
-            [14, $general, now()->addDays(4)->setTime(11, 0), 'scheduled', 'Chequeo general', 'Consultorio 1', 0],
+            [12, $general, now()->addDay()->setTime(9, 0), 'scheduled', 'Consulta médica general', 'Consultorio 101', 1],
+            [15, $vac, now()->addDay()->setTime(10, 0), 'scheduled', 'Segunda dosis de inmunización', 'Consultorio 101', 0],
+            [7, $ester, now()->addDays(2)->setTime(7, 30), 'confirmed', 'Procedimiento menor programado', 'Sala de Procedimientos', 0],
+            [0, $general, now()->addDays(3)->setTime(16, 0), 'scheduled', 'Control de laboratorio clínico', 'Consultorio 102', 1],
+            [14, $general, now()->addDays(4)->setTime(11, 0), 'scheduled', 'Chequeo preventivo', 'Consultorio 101', 0],
         ];
 
         $out = collect();
@@ -577,36 +580,36 @@ class DatabaseSeeder extends Seeder
     ): Collection {
         // [patientIdx, díasAtrás, motivo, peso, temp, S, O, A, P, vetIdx]
         $rows = [
-            [0, 24, 'Control anual', 28.4, 38.6,
-                'Propietaria refiere apetito y actividad normales. Sin cambios en casa.',
-                'Mucosas rosadas, TLLC < 2s. Auscultación cardiopulmonar sin hallazgos. CC 3/5.',
-                'Paciente geriátrico joven, sano. Peso adecuado.',
-                'Continuar dieta actual. Refuerzo de vacunas al día. Próximo control en 12 meses.', 0],
-            [4, 18, 'Vómitos de 24 horas', 15.6, 39.1,
-                'Vómito x3 en 24h, última comida no retenida. Bebe agua. Decaída.',
-                'Abdomen doloroso a la palpación craneal. Deshidratación estimada 5%.',
-                'Gastroenteritis aguda, probable indiscreción alimentaria.',
-                'Fluidoterapia SC. Dieta blanda 48h. Antiemético. Metronidazol 7 días. Control en 48h.', 1],
-            [7, 12, 'Profilaxis dental — halitosis y sarro', 8.9, 38.4,
-                'Mal aliento marcado hace 2 meses. Come normal.',
-                'Cálculo dental grado 3 en premolares/molares. Gingivitis moderada. Sin movilidad dentaria.',
-                'Enfermedad periodontal grado 2.',
-                'Profilaxis bajo anestesia realizada. Extracción de 108. Amoxicilina 7 días. Cepillado en casa.', 0],
-            [9, 6, 'Cojera de pata posterior derecha', 34.7, 38.7,
-                'Cojea desde ayer tras jugar en el parque. Apoya poco.',
-                'Dolor a la extensión de rodilla derecha. Prueba de cajón negativa. Sin crepitación.',
-                'Sospecha de esguince de ligamento colateral. Descartar lesión meniscal.',
-                'Reposo estricto 10 días. Meloxicam 5 días. Rx si no mejora. Control en 1 semana.', 0],
-            [1, 0, 'Revisión de herida en miembro anterior', 33.1, 38.5,
-                'Herida por mordida hace 5 días, en curación en casa.',
-                'Herida de 2 cm en cara lateral del antebrazo, bordes limpios, tejido de granulación sano. Sin exudado.',
-                'Herida en cicatrización por segunda intención, evolución favorable.',
-                'Continuar curación diaria con solución salina. Retirar puntos en 3 días. Mantener collar isabelino.', 0],
-            [11, 3, 'Primera dosis de vacuna polivalente', 13.4, 38.3,
-                'Cachorro adoptado hace 2 semanas, sin antecedentes de vacunación.',
-                'Actitud alerta. Mucosas rosadas. Sin parásitos externos visibles. CC 3/5.',
-                'Paciente sano apto para plan vacunal.',
-                'Polivalente hoy. Desparasitación interna. Segunda dosis en 21 días. Antirrábica al completar esquema.', 0],
+            [0, 24, 'Control médico preventivo anual', 72.4, 36.6,
+                'Paciente acude a chequeo general. Refiere buen estado general, hábito intestinal y sueño normales. Sin dolor.',
+                'TA 120/80 mmHg, FC 72 lpm, FR 16 rpm, SpO2 98%. Auscultación cardiopulmonar limpia. Abdomen blando no doloroso.',
+                'Paciente adulto sano. Evaluación de riesgo cardiovascular bajo.',
+                'Continuar estilo de vida saludable. Solicitud de laboratorio básico de rutina. Próximo control en 12 meses.', 0],
+            [4, 18, 'Consulta por malestar gastrointestinal', 65.6, 37.1,
+                'Paciente refiere náuseas y episodios eméticos x3 de 24 horas de evolución tras consumo de alimento en la calle.',
+                'TA 115/75 mmHg, FC 78 lpm. Mucosas hidratadas. Abdomen blando, blando depresible, dolor leve a la palpación en epigastrio.',
+                'Gastroenteritis aguda sin deshidratación severa.',
+                'Reposo alimentario inicial, hidratación oral con sales, suero oral. Antiemético por 3 días. Control en 48 horas.', 1],
+            [7, 12, 'Dolor lumbar y esguince moderado', 68.9, 36.4,
+                'Paciente refiere dolor lumbar de 5 días de evolución tras esfuerzo físico al levantar carga pesada.',
+                'Dolor a la palpación de paravertebrales lumbares L4-L5. Lasegue negativo. Marcha conservada.',
+                'Lumbago mecánico agudo.',
+                'Analgésico y antiinflamatorio por 5 días. Reposo relativo, compresas húmedo-calientes. Control en 1 semana.', 0],
+            [9, 6, 'Gripa e infección respiratoria alta', 74.7, 37.2,
+                'Paciente consulta por congestión nasal, odinofagia y tos seca de 3 días de evolución.',
+                'Orofaringe hiperémica sin exudados amigdalinos. Otoscopia bilateral normal. Campos pulmonares bien ventilados.',
+                'Infección agudo de vías respiratorias superiores (Rinofaringitis aguda).',
+                'Tratamiento sintomático: analgésico/antipirético, abundantes líquidos, lavados nasales con solución salina.', 0],
+            [1, 0, 'Revisión y curación de herida quirúrgica', 63.1, 36.5,
+                'Paciente acude para revisión de sutura de herida limpia en antebrazo derecho realizada hace 5 días.',
+                'Herida quirúrgica de 3 cm con afrontamiento adecuado de bordes, sin eritema ni secreción purulenta.',
+                'Herida limpia en fase adecuada de cicatrización.',
+                'Curación local diaria con solución antiséptica. Retiro de puntos de sutura en 3 días.', 0],
+            [2, 3, 'Control posoperatorio y evaluación de cicatrización', 58.4, 36.6,
+                'Paciente acude a cita de control post-procedimiento ambulatorio sin complicaciones.',
+                'Buen estado general, constantes vitales estables, herida quirúrgica con adecuada cicatrización.',
+                'Evolución clínica satisfactoria post-procedimiento.',
+                'Se dan indicaciones de cuidado domiciliario y signos de alarma.', 0],
         ];
 
         $out = collect();
@@ -807,16 +810,18 @@ class DatabaseSeeder extends Seeder
         array $services,
         array $vets,
     ): void {
+        $procSvc = $services['Procedimientos ambulatorios'] ?? $services['Consulta general'] ?? reset($services);
+
         // [patientIdx, tipo, servicio, díasAtrás, notas, vetIdx]
         $rows = [
-            [7, 'Profilaxis dental con extracción de 108', $services['Profilaxis dental'], 12,
-                'Anestesia con propofol/isoflurano. Sangrado controlado. Alta el mismo día. Recomendado cepillado diario.', 0],
-            [4, 'Sutura de herida en miembro anterior', $services['Curación / manejo de heridas'], 6,
-                'Herida por mordida. 3 puntos con nylon 3-0. Antibiótico y collar isabelino. Retiro de puntos en 10 días.', 1],
-            [8, 'Ovariohisterectomía (esterilización)', $services['Esterilización'], 40,
-                'Cirugía sin complicaciones. Recuperación anestésica normal. Control post-operatorio a los 3 y 10 días.', 0],
-            [0, 'Limpieza de oídos bajo sedación', $services['Consulta especializada'], 60,
-                'Otitis externa bilateral. Citología: cocos y levaduras. Tratamiento tópico 14 días.', 1],
+            [7, 'Curación y lavado de herida asistencial', $procSvc, 12,
+                'Procedimiento ambulatorio bajo técnica aséptica. Lavado con solución salina 0.9% y aplicación de apósito estéril.', 0],
+            [4, 'Sutura de herida en miembro superior', $procSvc, 6,
+                'Afrontamiento de bordes con nylon 3-0 bajo anestesia local con lidocaína. Evolución y hemostasia adecuadas.', 1],
+            [8, 'Retiro de puntos de sutura post-quirúrgico', $procSvc, 40,
+                'Retiro de material de sutura en región abdominal sin complicaciones. Cicatrización de primera intención.', 0],
+            [0, 'Toma de electrocardiograma y valoración', $procSvc, 60,
+                'Electrocardiograma de 12 derivaciones en reposo. Ritmo sinusal regular sin alteraciones agudas del segmento ST.', 1],
         ];
 
         foreach ($rows as [$pIdx, $type, $service, $daysAgo, $notes, $vetIdx]) {
@@ -839,17 +844,17 @@ class DatabaseSeeder extends Seeder
     {
         $rows = [
             ['Andrea Salcedo', 'andrea.salcedo@gmail.com', '+57 300 555 0401', 'appointment', 'new',
-                'Mascota: Rocky (labrador). Motivo: vacunación. Fecha preferida: sábado en la mañana.'],
+                'Paciente: Andrea Salcedo. Motivo: Consulta de medicina general y chequeo preventivo. Fecha preferida: sábado en la mañana.'],
             ['Miguel Ángel Ruiz', 'miguel.ruiz@gmail.com', '+57 301 555 0402', 'appointment', 'new',
-                'Mascota: Pelusa (gata). Motivo: control por estornudos. Fecha preferida: entre semana en la tarde.'],
+                'Paciente: Miguel Ruiz. Motivo: Valoración médica por cuadro gripal persistente. Fecha preferida: entre semana en la tarde.'],
             ['Carolina Méndez', 'carolina.mendez@hotmail.com', '+57 302 555 0403', 'appointment', 'contacted',
-                'Mascota: Thor (bulldog). Motivo: revisión de piel. Fecha preferida: lunes.'],
+                'Paciente: Carolina Méndez. Motivo: Consulta especializada dermatológica. Fecha preferida: lunes.'],
             ['Julián Pardo', 'julian.pardo@gmail.com', '+57 303 555 0404', 'appointment', 'new',
-                'Mascota: Nala. Motivo: primera consulta cachorro.'],
+                'Paciente: Julián Pardo. Motivo: Examen médico ocupacional de ingreso.'],
             ['Verónica Lozano', 'veronica.lozano@nexabpo.example', '+57 304 555 0405', 'contact', 'new',
-                'Consulta por convenio de bienestar animal para colaboradores.'],
+                'Consulta por convenio empresarial de salud ocupacional para colaboradores.'],
             ['Tomás Salazar', 'tomas.salazar@gmail.com', '+57 305 555 0406', 'contact', 'discarded',
-                'Preguntó por horarios; no volvió a responder.'],
+                'Preguntó por horarios de atención y convenios EPS; no volvió a responder.'],
         ];
 
         foreach ($rows as [$name, $email, $phone, $source, $status, $message]) {

@@ -16,6 +16,8 @@ class ConsultationResource extends JsonResource
             'appointment_id' => $this->appointment_id,
             'vet_id' => $this->vet_id,
             'vet' => $this->whenLoaded('vet', fn () => $this->vet?->name),
+            'practitioner_id' => $this->vet_id,
+            'practitioner' => $this->whenLoaded('vet', fn () => $this->vet?->name) ?? $this->whenLoaded('practitioner', fn () => $this->practitioner?->name),
             'date' => $this->date?->toDateString(),
             'reason' => $this->reason,
             'weight' => $this->weight,

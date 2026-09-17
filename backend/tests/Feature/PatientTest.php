@@ -74,6 +74,41 @@ class PatientTest extends TestCase
         ]);
     }
 
+    public function test_creates_a_human_patient_with_ips_fields(): void
+    {
+        $payload = [
+            'company_id' => $this->company->id,
+            'client_id' => $this->owner->id,
+            'name' => 'Carlos Andrés Mendoza',
+            'document_type' => 'CC',
+            'document_number' => '1018293847',
+            'first_name' => 'Carlos Andrés',
+            'last_name' => 'Mendoza',
+            'sex' => 'male',
+            'birth_date' => '1988-03-14',
+            'blood_type' => 'O+',
+            'eps' => 'Sura',
+            'phone' => '+57 310 555 0101',
+            'email' => 'carlos.mendoza@example.com',
+            'status' => 'active',
+        ];
+
+        $this->postJson('/api/patients', $payload)
+            ->assertCreated()
+            ->assertJsonPath('data.name', 'Carlos Andrés Mendoza')
+            ->assertJsonPath('data.document_type', 'CC')
+            ->assertJsonPath('data.document_number', '1018293847')
+            ->assertJsonPath('data.eps', 'Sura')
+            ->assertJsonPath('data.blood_type', 'O+');
+
+        $this->assertDatabaseHas('patients', [
+            'name' => 'Carlos Andrés Mendoza',
+            'document_number' => '1018293847',
+            'eps' => 'Sura',
+            'company_id' => $this->company->id,
+        ]);
+    }
+
     public function test_owner_must_belong_to_the_same_company(): void
     {
         $foreignOwner = Client::factory()->create([

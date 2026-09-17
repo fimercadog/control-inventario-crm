@@ -12,8 +12,11 @@ class Patient extends Model
 
     /** `photo_url` no es fillable: lo fija el servidor por POST /patients/{id}/photo. */
     protected $fillable = [
-        'company_id', 'client_id', 'species_id', 'breed_id', 'name', 'sex',
-        'birth_date', 'weight', 'microchip', 'sterilized', 'status',
+        'company_id', 'client_id', 'species_id', 'breed_id', 'name',
+        'document_type', 'document_number', 'first_name', 'last_name',
+        'sex', 'birth_date', 'blood_type', 'eps', 'phone', 'email',
+        'address', 'emergency_contact_name', 'emergency_contact_phone',
+        'weight', 'microchip', 'sterilized', 'status',
     ];
 
     protected function casts(): array

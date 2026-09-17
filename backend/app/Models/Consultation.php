@@ -45,6 +45,11 @@ class Consultation extends Model
         return $this->belongsTo(User::class, 'vet_id');
     }
 
+    public function practitioner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'vet_id');
+    }
+
     public function diagnoses(): BelongsToMany
     {
         return $this->belongsToMany(Diagnosis::class, 'consultation_diagnosis');

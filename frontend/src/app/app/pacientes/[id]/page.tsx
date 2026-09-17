@@ -9,9 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
-import { ClinicalApplication, Consultation, Patient } from "@/lib/types";
+import { ClinicalApplication, Consultation, Patient, Procedure } from "@/lib/types";
 
-const SEX_LABEL: Record<string, string> = { male: "Macho", female: "Hembra", unknown: "Sin dato" };
+const SEX_LABEL: Record<string, string> = {
+  male: "Masculino",
+  female: "Femenino",
+  other: "Otro",
+  unknown: "Sin dato",
+};
 
 function ageFrom(birth?: string | null): string | null {
   if (!birth) return null;
@@ -30,22 +35,12 @@ function Fact({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-function PlaceholderCard({ title, hint }: { title: string; hint: string }) {
-  return (
-    <Card>
-      <CardContent className="p-5">
-        <h3 className="text-base font-medium">{title}</h3>
-        <p className="mt-2 text-sm text-muted-foreground">{hint}</p>
-      </CardContent>
-    </Card>
-  );
-}
-
 export default function PatientDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [patient, setPatient] = React.useState<Patient | null>(null);
   const [consultations, setConsultations] = React.useState<Consultation[]>([]);
+  const [procedures, setProcedures] = React.useState<Procedure[]>([]);
   const [applications, setApplications] = React.useState<ClinicalApplication[]>([]);
   const [loading, setLoading] = React.useState(true);
   const [uploading, setUploading] = React.useState(false);
@@ -59,6 +54,10 @@ export default function PatientDetailPage() {
     api
       .get<{ data: Consultation[] }>("/consultations", { params: { patient_id: id, per_page: 50 } })
       .then((r) => setConsultations(r.data.data))
+      .catch(() => undefined);
+    api
+      .get<{ data: Procedure[] }>("/procedures", { params: { patient_id: id, per_page: 50 } })
+      .then((r) => setProcedures(r.data.data))
       .catch(() => undefined);
     api
       .get<{ data: ClinicalApplication[] }>("/clinical-applications", { params: { patient_id: id, per_page: 50 } })
@@ -96,12 +95,16 @@ export default function PatientDetailPage() {
         <div>
           <h1 className="text-2xl font-semibold">{patient.name}</h1>
           <p className="text-sm text-muted-foreground">
-            {[patient.species, patient.breed].filter(Boolean).join(" · ") || "Sin especie"}
-            {" · "}
-            Propietario:{" "}
-            <Link href={`/app/clientes/${patient.client_id}`} className="text-primary hover:underline">
-              {patient.client ?? "—"}
-            </Link>
+            {patient.document_number ? `Doc: ${patient.document_type || "CC"} ${patient.document_number}` : "Sin documento"}
+            {patient.eps ? ` · EPS: ${patient.eps}` : ""}
+            {patient.client_id ? (
+              <>
+                {" · "}Titular / Responsable:{" "}
+                <Link href={`/app/clientes/${patient.client_id}`} className="text-primary hover:underline">
+                  {patient.client ?? "—"}
+                </Link>
+              </>
+            ) : null}
           </p>
         </div>
         <Button variant="ghost" size="sm" onClick={() => router.push("/app/pacientes")}>
@@ -135,12 +138,16 @@ export default function PatientDetailPage() {
 
         <Card className="lg:col-span-2">
           <CardContent className="grid grid-cols-2 gap-4 p-5 sm:grid-cols-3">
-            <Fact label="Sexo" value={SEX_LABEL[patient.sex] ?? patient.sex} />
-            <Fact label="Nacimiento" value={patient.birth_date ? formatDate(patient.birth_date) : null} />
+            <Fact label="Documento" value={patient.document_number ? `${patient.document_type || "CC"} ${patient.document_number}` : null} />
+            <Fact label="Sexo / Género" value={SEX_LABEL[patient.sex] ?? patient.sex} />
+            <Fact label="Fecha Nacimiento" value={patient.birth_date ? formatDate(patient.birth_date) : null} />
             <Fact label="Edad" value={ageFrom(patient.birth_date)} />
-            <Fact label="Peso" value={patient.weight != null ? `${patient.weight} kg` : null} />
-            <Fact label="Microchip" value={patient.microchip} />
-            <Fact label="Esterilizado" value={patient.sterilized ? "Sí" : "No"} />
+            <Fact label="EPS / Entidad" value={patient.eps} />
+            <Fact label="Grupo Sanguíneo (RH)" value={patient.blood_type} />
+            <Fact label="Teléfono" value={patient.phone} />
+            <Fact label="Correo" value={patient.email} />
+            <Fact label="Dirección" value={patient.address} />
+            <Fact label="Contacto Emergencia" value={patient.emergency_contact_name ? `${patient.emergency_contact_name} (${patient.emergency_contact_phone || "—"})` : null} />
             <Fact
               label="Estado"
               value={<Badge>{patient.status === "active" ? "Activo" : "Inactivo"}</Badge>}
@@ -152,7 +159,7 @@ export default function PatientDetailPage() {
       <Card>
         <CardContent className="p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-base font-medium">Historia clínica</h3>
+            <h3 className="text-base font-medium">Historia Clínica (Consultas SOAP)</h3>
             <Link href="/app/consultas" className="text-xs text-primary hover:underline">
               Nueva consulta
             </Link>
@@ -171,7 +178,7 @@ export default function PatientDetailPage() {
                     </p>
                     <span className="shrink-0 text-xs text-muted-foreground">
                       {formatDate(c.date)}
-                      {c.vet ? ` · ${c.vet}` : ""}
+                      {c.practitioner || c.vet ? ` · Dr(a). ${c.practitioner || c.vet}` : ""}
                     </span>
                   </div>
                   {c.assessment ? <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{c.assessment}</p> : null}
@@ -186,10 +193,35 @@ export default function PatientDetailPage() {
         <Card>
           <CardContent className="p-5">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-base font-medium">Vacunas y desparasitación</h3>
-              <Link href="/app/vacunas" className="text-xs text-primary hover:underline">
-                Registrar
+              <h3 className="text-base font-medium">Procedimientos Ambulatorios</h3>
+              <Link href="/app/procedimientos" className="text-xs text-primary hover:underline">
+                Registrar procedimiento
               </Link>
+            </div>
+            {procedures.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Sin procedimientos registrados.</p>
+            ) : (
+              <ul className="space-y-2">
+                {procedures.map((p) => (
+                  <li key={p.id} className="flex items-center justify-between gap-3 border-b border-border pb-2 text-sm last:border-0 last:pb-0">
+                    <span className="min-w-0 truncate">
+                      {p.type}
+                      {p.service ? <span className="text-muted-foreground"> · {p.service}</span> : null}
+                    </span>
+                    <span className="shrink-0 text-xs text-muted-foreground">
+                      {formatDate(p.performed_at)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-5">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-base font-medium">Aplicaciones Clínicas / Inmunización</h3>
             </div>
             {applications.length === 0 ? (
               <p className="text-sm text-muted-foreground">Sin aplicaciones registradas.</p>
@@ -199,7 +231,6 @@ export default function PatientDetailPage() {
                   <li key={a.id} className="flex items-center justify-between gap-3 border-b border-border pb-2 text-sm last:border-0 last:pb-0">
                     <span className="min-w-0 truncate">
                       {a.name}
-                      <span className="text-muted-foreground"> · {a.type === "vaccine" ? "vacuna" : "desparasitación"}</span>
                     </span>
                     <span className="shrink-0 text-xs text-muted-foreground">
                       {formatDate(a.applied_at)}
@@ -211,8 +242,6 @@ export default function PatientDetailPage() {
             )}
           </CardContent>
         </Card>
-
-        <PlaceholderCard title="Citas" hint="Las citas del paciente aparecerán acá." />
       </div>
     </div>
   );

@@ -15,6 +15,7 @@ class StoreConsultationRequest extends ApiFormRequest
             'patient_id' => ['required', 'integer', $inCompany('patients')->whereNull('deleted_at')],
             'appointment_id' => ['nullable', 'integer', $inCompany('appointments')],
             'vet_id' => ['nullable', 'integer', $inCompany('users')],
+            'practitioner_id' => ['nullable', 'integer', $inCompany('users')],
             'date' => ['required', 'date', 'before_or_equal:today'],
             'reason' => ['required', 'string', 'max:255'],
             'weight' => ['nullable', 'numeric', 'min:0', 'max:9999'],
@@ -33,6 +34,9 @@ class StoreConsultationRequest extends ApiFormRequest
         $merge = [];
         if (! $this->filled('date')) {
             $merge['date'] = now()->toDateString();
+        }
+        if (! $this->filled('vet_id') && $this->filled('practitioner_id')) {
+            $merge['vet_id'] = $this->input('practitioner_id');
         }
         if (! $this->filled('vet_id') && $this->user()) {
             $merge['vet_id'] = $this->user()->id;

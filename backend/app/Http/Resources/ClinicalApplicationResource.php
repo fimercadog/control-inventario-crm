@@ -19,6 +19,8 @@ class ClinicalApplicationResource extends JsonResource
             'consultation_id' => $this->consultation_id,
             'vet_id' => $this->vet_id,
             'vet' => $this->whenLoaded('vet', fn () => $this->vet?->name),
+            'practitioner_id' => $this->vet_id,
+            'practitioner' => $this->whenLoaded('vet', fn () => $this->vet?->name) ?? $this->whenLoaded('practitioner', fn () => $this->practitioner?->name),
             'stock_movement_id' => $this->stock_movement_id,
             'name' => $this->name,
             'applied_at' => $this->applied_at?->toDateString(),

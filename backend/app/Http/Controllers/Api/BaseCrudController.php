@@ -41,20 +41,32 @@ abstract class BaseCrudController extends Controller
             return $request->all();
         }
 
-        if (! $isUpdate) {
-            return app($class)->validated();
+        $form = $class::createFrom($request, new $class);
+        $form->setUserResolver($request->getUserResolver());
+        $form->setContainer(app())->setRedirector(app('redirect'));
+
+        try {
+            (fn () => $this->prepareForValidation())->call($form);
+        } catch (\Throwable) {
+            // prepareForValidation skipped
         }
 
-        // createFrom copia los resolvers de usuario y ruta (sin disparar la
-        // validacion automatica): las reglas que dependen de $this->user() o
-        // $this->route() —company scoping, unique con ignore— funcionan igual
-        // que en el alta.
-        $form = $class::createFrom($request, new $class);
-        $rules = collect($form->rules())
-            ->map(fn ($rule) => array_values(array_unique(['sometimes', ...(array) $rule])))
-            ->all();
+        $rules = $form->rules();
+        if ($isUpdate) {
+            $rules = collect($rules)
+                ->map(fn ($rule) => array_values(array_unique(['sometimes', ...(array) $rule])))
+                ->all();
+        }
 
-        return validator($request->all(), $rules, $form->messages(), $form->attributes())->validate();
+        $validator = validator($form->all(), $rules, $form->messages(), $form->attributes());
+        if (method_exists($form, 'withValidator')) {
+            $form->withValidator($validator);
+        }
+
+        $validator->validate();
+        $form->setValidator($validator);
+
+        return $form->validated();
     }
 
     public function index(Request $request, TableQueryService $tables)

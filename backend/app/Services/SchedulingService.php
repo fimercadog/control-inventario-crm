@@ -90,12 +90,12 @@ class SchedulingService
         return $slots;
     }
 
-    /** @return Collection<int, User> veterinarios activos de la empresa */
+    /** @return Collection<int, User> médicos y profesionales activos de la empresa */
     public function practitioners(int $companyId): Collection
     {
         return User::query()
             ->where('company_id', $companyId)
-            ->role('Veterinario/a')
+            ->whereHas('roles', fn ($q) => $q->whereIn('name', ['Veterinario/a', 'Médico/a', 'Médico Tratante', 'Doctor/a', 'Especialista', 'Médico']))
             ->get(['id', 'name']);
     }
 

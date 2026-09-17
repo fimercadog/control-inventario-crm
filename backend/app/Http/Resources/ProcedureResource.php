@@ -17,6 +17,8 @@ class ProcedureResource extends JsonResource
             'service' => $this->whenLoaded('service', fn () => $this->service?->name),
             'vet_id' => $this->vet_id,
             'vet' => $this->whenLoaded('vet', fn () => $this->vet?->name),
+            'practitioner_id' => $this->vet_id,
+            'practitioner' => $this->whenLoaded('vet', fn () => $this->vet?->name) ?? $this->whenLoaded('practitioner', fn () => $this->practitioner?->name),
             'type' => $this->type,
             'performed_at' => $this->performed_at?->toDateString(),
             'notes' => $this->notes,

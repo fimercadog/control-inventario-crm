@@ -16,6 +16,8 @@ class PrescriptionResource extends JsonResource
             'patient' => $this->whenLoaded('patient', fn () => $this->patient?->name),
             'vet_id' => $this->vet_id,
             'vet' => $this->whenLoaded('vet', fn () => $this->vet?->name),
+            'practitioner_id' => $this->vet_id,
+            'practitioner' => $this->whenLoaded('vet', fn () => $this->vet?->name) ?? $this->whenLoaded('practitioner', fn () => $this->practitioner?->name),
             'notes' => $this->notes,
             'created_at' => $this->created_at,
             'items' => $this->whenLoaded('items', fn () => $this->items->map(fn ($i) => [

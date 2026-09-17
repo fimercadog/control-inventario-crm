@@ -18,7 +18,7 @@ return new class extends Migration
             // default implícito por tabla; dos rompen con "Invalid default value".
             $table->dateTime('starts_at');
             $table->dateTime('ends_at');
-            $table->unsignedInteger('duration_minutes');
+            $table->unsignedInteger('duration_minutes')->nullable()->default(30);
             $table->string('resource')->nullable(); // box / consultorio
             $table->string('reason')->nullable();
             $table->string('status')->default('scheduled'); // scheduled | confirmed | attended | no_show | cancelled

@@ -352,7 +352,7 @@ export type AppUser = {
   roles: string[];
 };
 
-/* ---- Vertical veterinaria ---- */
+/* ---- Módulos Clínicos IPS ---- */
 
 export type Species = {
   id: number;
@@ -425,6 +425,8 @@ export type Prescription = {
   patient?: string | null;
   vet_id?: number | null;
   vet?: string | null;
+  practitioner_id?: number | null;
+  practitioner?: string | null;
   notes?: string | null;
   created_at?: string;
   items?: PrescriptionItem[];
@@ -438,6 +440,8 @@ export type Procedure = {
   service?: string | null;
   vet_id?: number | null;
   vet?: string | null;
+  practitioner_id?: number | null;
+  practitioner?: string | null;
   type: string;
   performed_at: string;
   notes?: string | null;
@@ -454,6 +458,8 @@ export type ClinicalApplication = {
   consultation_id?: number | null;
   vet_id?: number | null;
   vet?: string | null;
+  practitioner_id?: number | null;
+  practitioner?: string | null;
   stock_movement_id?: number | null;
   name: string;
   applied_at: string;
@@ -469,6 +475,8 @@ export type Consultation = {
   appointment_id?: number | null;
   vet_id?: number | null;
   vet?: string | null;
+  practitioner_id?: number | null;
+  practitioner?: string | null;
   date: string;
   reason: string;
   weight?: number | string | null;
@@ -483,16 +491,27 @@ export type Consultation = {
 export type Patient = {
   id: number;
   name: string;
-  sex: "male" | "female" | "unknown";
+  document_type?: string | null;
+  document_number?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
+  sex: "male" | "female" | "other" | "unknown";
   birth_date?: string | null;
+  blood_type?: string | null;
+  eps?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  address?: string | null;
+  emergency_contact_name?: string | null;
+  emergency_contact_phone?: string | null;
   weight?: number | string | null;
   microchip?: string | null;
-  sterilized: boolean;
+  sterilized?: boolean;
   photo_url?: string | null;
   status: string;
-  client_id: number;
+  client_id?: number | null;
   client?: string | null;
-  species_id: number;
+  species_id?: number | null;
   species?: string | null;
   breed_id?: number | null;
   breed?: string | null;

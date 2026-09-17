@@ -37,19 +37,21 @@ export default function ConsultationDetailPage() {
 
   if (!c) return <p className="text-sm text-muted-foreground">Cargando consulta...</p>;
 
+  const practitionerName = c.practitioner || c.vet;
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Consulta · {formatDate(c.date)}</h1>
+          <h1 className="text-2xl font-semibold">Atención Médica · {formatDate(c.date)}</h1>
           <p className="text-sm text-muted-foreground">
-            {c.reason}
+            Motivo: {c.reason}
             {" · "}
             Paciente:{" "}
-            <Link href={`/app/pacientes/${c.patient_id}`} className="text-primary hover:underline">
+            <Link href={`/app/pacientes/${c.patient_id}`} className="text-primary hover:underline font-medium">
               {c.patient ?? "—"}
             </Link>
-            {c.vet ? ` · ${c.vet}` : ""}
+            {practitionerName ? ` · Médico: Dr(a). ${practitionerName}` : ""}
           </p>
         </div>
         <Button variant="ghost" size="sm" onClick={() => router.back()}>
@@ -77,13 +79,13 @@ export default function ConsultationDetailPage() {
       )}
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Soap letter="S" title="Subjetivo" text={c.subjective} />
-        <Soap letter="O" title="Objetivo" text={c.objective} />
-        <Soap letter="A" title="Análisis" text={c.assessment} />
-        <Soap letter="P" title="Plan" text={c.plan} />
+        <Soap letter="S" title="Subjetivo (Anamnesis / Sintomatología)" text={c.subjective} />
+        <Soap letter="O" title="Objetivo (Examen Físico / Hallazgos)" text={c.objective} />
+        <Soap letter="A" title="Análisis (Diagnóstico / Impresión Clínica)" text={c.assessment} />
+        <Soap letter="P" title="Plan (Conducta Médica / Tratamiento)" text={c.plan} />
       </div>
 
-      <p className="text-xs text-muted-foreground">Para editar esta consulta, usá la lista de Historia clínica.</p>
+      <p className="text-xs text-muted-foreground">Para modificar este registro de historia clínica, usá el listado principal de Historia clínica.</p>
     </div>
   );
 }
