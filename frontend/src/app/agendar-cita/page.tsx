@@ -199,14 +199,14 @@ export default function AgendarCitaPage() {
               <>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   <label className="block text-sm">
-                    <span>Especie *</span>
+                    <span>Categoría de atención *</span>
                     <select
                       className={`mt-1 ${inputClass}`}
                       value={speciesId}
                       onChange={(e) => selectSpecies(e.target.value)}
                       required
                     >
-                      <option value="">Elegí una especie</option>
+                      <option value="">Elegí categoría de atención</option>
                       {species.map((s) => (
                         <option key={s.id} value={s.id}>
                           {s.name}
@@ -215,9 +215,9 @@ export default function AgendarCitaPage() {
                     </select>
                   </label>
                   <label className="block text-sm">
-                    <span>Raza</span>
+                    <span>Especialidad / Subtipo</span>
                     <select name="breed_id" className={`mt-1 ${inputClass}`} disabled={breeds.length === 0}>
-                      <option value="">{breeds.length === 0 ? "—" : "Elegí una raza (opcional)"}</option>
+                      <option value="">{breeds.length === 0 ? "—" : "Elegí especialidad (opcional)"}</option>
                       {breeds.map((b) => (
                         <option key={b.id} value={b.id}>
                           {b.name}

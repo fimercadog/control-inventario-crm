@@ -21,10 +21,10 @@ export default function BlogPage() {
           parte del mismo sitio, no una seccion aparte. */}
       <SplitHero
         eyebrow="Blog"
-        title="Cuidado animal, explicado por el equipo que te atiende"
-        lead="Prevención, vacunas, nutrición y qué hacer ante una urgencia — notas prácticas para dueños de mascota, escritas por nuestros veterinarios."
+        title="Educación y consejos de salud, explicados por nuestros médicos"
+        lead="Prevención, hábitos saludables, vacunación y guías ante señales de alarma — notas prácticas escritas por nuestros especialistas."
         image="/gallery/illustrations/illustration-10.png"
-        imageAlt="Gato sobre una laptop junto a un botiquín de primeros auxilios"
+        imageAlt="Paciente consultando un portal médico de salud"
       />
 
       <Section className="pt-0">

@@ -9,38 +9,36 @@ import { SplitHero } from "@/components/marketing/split-hero";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 const signs = [
-  "Dificultad para respirar o encías muy pálidas o azuladas",
-  "Vómito o diarrea persistente, sobre todo con sangre",
-  "Convulsiones, desmayo o incapacidad de pararse",
-  "Traumatismo: atropello, caída o golpe fuerte",
-  "Sospecha de intoxicación (comió algo tóxico)",
-  "Sangrado que no se detiene o herida abierta profunda",
-  "Distensión o dolor abdominal severo",
-  "Trabajo de parto complicado",
+  "Dificultad para respirar, dolor torácico o cianosis",
+  "Vómito o diarrea persistente con signos de deshidratación",
+  "Convulsiones, alteración del estado de conciencia o síncope",
+  "Traumatismo severo, caída o accidente de tránsito",
+  "Sospecha de intoxicación o envenenamiento",
+  "Sangrado activo que no cede o herida profunda",
+  "Dolor abdominal agudo o severo",
+  "Complicaciones en estado de gestación o parto",
 ];
 
 const steps = [
-  { icon: PhoneCall, title: "Avisanos antes de venir", text: "Escribinos por WhatsApp o llamá a la clínica con el caso. El equipo se prepara mientras estás en camino." },
-  { icon: Stethoscope, title: "Estabilización inmediata", text: "Al llegar, la prioridad es estabilizar: dolor, sangrado, respiración. El diagnóstico completo viene después." },
-  { icon: Clock, title: "Seguimiento hasta el alta", text: "Si el paciente necesita quedar en observación, te mantenemos informado de su evolución." },
+  { icon: PhoneCall, title: "Avisanos antes de venir", text: "Escribinos por WhatsApp o llamá al centro con el caso. El equipo de triaje se prepara mientras estás en camino." },
+  { icon: Stethoscope, title: "Estabilización inmediata", text: "Al llegar, la prioridad es la valoración de triaje y estabilizar: dolor, respiración, signos vitales." },
+  { icon: Clock, title: "Seguimiento hasta el alta", text: "Si el paciente requiere observación o remisión a salas, mantenemos informado al núcleo familiar." },
 ];
 
 export default function UrgenciasPage() {
   return (
     <MarketingLayout>
-      {/* Hero: misma familia visual que Servicios/Productos/Equipo/Nosotros/Blog
-          -- ilustracion protagonista (veterinario aplicando una inyeccion, sobre
-          fondo rojo/salmon, tono de alerta) en vez del full-bleed anterior. */}
+      {/* Hero: misma familia visual que Servicios/Productos/Equipo/Nosotros/Blog */}
       <SplitHero
-        eyebrow="Urgencias"
-        title="Cuando no puede esperar, actuamos rápido"
-        lead="Ante un accidente, una intoxicación o un cuadro que empeora rápido, escribinos o llamá antes de venir para que el equipo esté listo."
+        eyebrow="Urgencias Prioritarias"
+        title="Cuando no puede esperar, actuamos con rapidez y rigor médico"
+        lead="Ante un accidente, un cuadro agudo o dolor intenso, escribinos o llamá para que nuestro personal asistencial esté listo a tu llegada."
         image="/gallery/illustrations/illustration-8.png"
-        imageAlt="Veterinaria aplicando una inyección a un gato"
+        imageAlt="Médico de urgencias en atención médica"
         actions={
           <CtaLink href={WHATSAPP_URL} variant="cta">
             <PhoneCall className="size-4" />
-            Urgencias por WhatsApp
+            Línea Prioritaria por WhatsApp
           </CtaLink>
         }
       />
@@ -50,10 +48,8 @@ export default function UrgenciasPage() {
 
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="¿Cuándo es una urgencia?" title="Señales que no hay que esperar a que pasen solas" center={false} />
+          <SectionHeading eyebrow="¿Cuándo es una urgencia?" title="Señales que requieren atención médica inmediata" center={false} />
         </Reveal>
-        {/* Una sola tarjeta flotante sin bordes por item -- mismo patron que
-            IconFeatureFloatCard, no un grid de cards individuales. */}
         <div className="mt-10 rounded-[2rem] bg-card p-6 shadow-elevation-4 sm:p-10">
           <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
             {signs.map((sign, i) => (
@@ -67,18 +63,18 @@ export default function UrgenciasPage() {
           </div>
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Ante la duda, escribinos: es mejor una consulta de más que llegar tarde a una urgencia real.
+          Ante la duda, escribinos: nuestro equipo de triaje valorará la prioridad de tu atención médica.
         </p>
       </Section>
 
       <Section className="bg-section-cream">
         <PhotoFeatureStack
           image="/gallery/paw-procedure.jpg"
-          imageAlt="Procedimiento veterinario de urgencia"
+          imageAlt="Procedimiento médico de urgencia prioritaria"
           reverse
           features={[
-            { title: "Prioridad inmediata", text: "Una urgencia no espera turno ni agenda. El equipo se prepara mientras estás en camino." },
-            { title: "Sin trámite previo", text: "Escribinos o llamá directo — no hace falta formulario ni cita para que te atendamos." },
+            { title: "Valoración de Triaje", text: "Una urgencia clasificada en triaje prioritario recibe atención de inmediato sin esperas innecesarias." },
+            { title: "Atención ágil", text: "Escribinos o llamá directo — coordinamos la recepción asistencial a tu llegada." },
           ]}
         />
       </Section>

@@ -75,10 +75,10 @@ export default function CatalogoPage() {
     <MarketingLayout>
       <SplitHero
         eyebrow="Catálogo"
-        title="Todo lo que tu mascota necesita, en un solo lugar"
-        lead="Explorá el catálogo, armá tu lista y solicitá una cotización — te respondemos con precios y disponibilidad."
+        title="Farmacia & Insumos Hospitalarios de SanitasSalud IPS"
+        lead="Explorá nuestro catálogo de medicamentos e insumos médicos, armá tu lista y solicitá cotización o disponibilidad."
         image="/gallery/illustrations/illustration-1.png"
-        imageAlt="Veterinario levantando en brazos a un cachorro"
+        imageAlt="Profesional de farmacia hospitalaria"
         actions={
           <>
             <CtaLink href="/catalogo/cotizacion" variant="cta">

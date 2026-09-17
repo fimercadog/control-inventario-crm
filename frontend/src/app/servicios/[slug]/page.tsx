@@ -56,7 +56,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
                 Agendar este servicio
               </CtaLink>
               <CtaLink href={WHATSAPP_URL} variant="default" size="sm">
-                Hablar con un veterinario
+                Hablar con un profesional médico
               </CtaLink>
             </div>
             <CtaLink href="/preguntas-frecuentes" variant="ghost" size="sm" className="mt-3 px-0">
@@ -112,8 +112,8 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       </Section>
 
       <AppointmentCta
-        title={`¿Agendamos ${service.title.toLowerCase()} para tu mascota?`}
-        lead="Contanos el caso y te confirmamos disponibilidad. Para urgencias, escribinos directo por WhatsApp."
+        title={`¿Agendamos ${service.title.toLowerCase()} para tu cita médica?`}
+        lead="Elegí el horario que más te convenga y te confirmamos disponibilidad al instante. Para urgencias, escribinos directo por WhatsApp."
       />
     </MarketingLayout>
   );

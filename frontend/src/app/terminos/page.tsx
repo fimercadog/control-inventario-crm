@@ -11,13 +11,13 @@ export default function TermsPage() {
     <LegalPage
       title="Terminos y Condiciones"
       updated="30 de agosto de 2026"
-      intro="Estos terminos regulan el acceso y uso de este sitio web, operado por [Razon social] (Clínica Veterinaria Los Andes), NIT [NIT]. Al navegar el sitio o enviar un formulario aceptas estos terminos."
+      intro="Estos términos regulan el acceso y uso de este sitio web, operado por SanitasSalud IPS, NIT [NIT]. Al navegar el sitio o enviar un formulario aceptas estos términos."
       sections={[
         {
           heading: "1. Objeto del sitio",
           body: [
-            "Este sitio tiene una finalidad informativa: presentar los servicios de la clínica y su equipo, y permitir solicitar una cita o enviar una consulta.",
-            "El acceso al panel privado de gestión de la clínica requiere credenciales asignadas al personal y se rige por su propia política interna; no está dirigido al público general.",
+            "Este sitio tiene una finalidad informativa: presentar los servicios del centro médico IPS y su equipo asistencial, y permitir solicitar una cita médica o enviar una consulta.",
+            "El acceso al panel privado de gestión de la IPS requiere credenciales asignadas al personal asistencial y administrativo y se rige por su propia política interna; no está dirigido al público general.",
           ],
         },
         {

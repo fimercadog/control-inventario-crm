@@ -16,7 +16,7 @@ function HeroArt() {
     <div className="relative flex aspect-4/5 w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-secondary shadow-elevation-4 sm:aspect-5/4.6 lg:aspect-4/4.6">
       <Image
         src="/gallery/hero-bulldog-exam.jpg"
-        alt="Veterinario revisando a un bulldog en la camilla de consulta"
+        alt="Médico especialista en consulta médica"
         fill
         priority
         sizes="(min-width: 1024px) 40vw, 90vw"
@@ -35,7 +35,7 @@ function HeroArt() {
         <HeartPulse className="size-4.5 shrink-0 text-chart-3" />
         <div className="leading-tight">
           <p className="text-sm font-extrabold">3.500+</p>
-          <p className="text-[11px] text-muted-foreground">mascotas atendidas</p>
+          <p className="text-[11px] text-muted-foreground">pacientes atendidos</p>
         </div>
       </div>
     </div>

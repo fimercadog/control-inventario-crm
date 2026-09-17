@@ -53,8 +53,8 @@ export default function SolicitarCitaPage() {
     <MarketingLayout>
       <PageHero
         eyebrow="Solicitá tu cita"
-        title="Pedí un turno para tu mascota"
-        lead="Dejanos tus datos y la clínica confirmará disponibilidad y te contactará para agendar."
+        title="Pedí una cita médica"
+        lead="Dejanos tus datos y nuestro centro médico confirmará disponibilidad y te contactará para agendar."
       />
 
       <section className="mx-auto max-w-2xl px-4 pb-24 sm:px-6">
@@ -62,7 +62,7 @@ export default function SolicitarCitaPage() {
           <div className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
             <div className="flex items-center gap-2 rounded-lg bg-success/10 px-3 py-2 text-sm text-success">
               <CheckCircle2 className="size-4" />
-              Recibimos tu solicitud. La clínica confirmará disponibilidad y te contactará.
+              Recibimos tu solicitud. Nuestro centro médico confirmará disponibilidad y te contactará.
             </div>
           </div>
         ) : (
@@ -83,7 +83,7 @@ export default function SolicitarCitaPage() {
                 <input name="phone" className={inputClass} />
               </label>
               <label className="block text-sm">
-                <span>Nombre de la mascota</span>
+                <span>Nombre del paciente</span>
                 <input name="pet_name" className={inputClass} />
               </label>
               <label className="block text-sm">

@@ -83,9 +83,9 @@ function PortalEntrarContent() {
   return (
     <MarketingLayout>
       <PageHero
-        eyebrow="Portal del dueño"
+        eyebrow="Portal del paciente"
         title="Entrá a tu portal"
-        lead="Escribí tu correo y te mandamos un enlace para ver y gestionar las citas de tu mascota. Sin contraseña."
+        lead="Escribí tu correo y te enviamos un enlace para ver y gestionar tus citas médicas. Sin contraseña."
       />
       <section className="mx-auto max-w-md px-4 pb-24 sm:px-6">
         {sent ? (

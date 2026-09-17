@@ -13,13 +13,13 @@ export default function EquipoPage() {
       {/* Hero: misma familia visual que Servicios/Nosotros. */}
       <SplitHero
         eyebrow="Equipo"
-        title="El equipo que va a conocer a tu mascota"
-        lead="Veterinarios de planta y un equipo de recepción que coordina tu agenda, tus urgencias y el seguimiento de cada tratamiento."
+        title="El equipo médico que te acompaña en cada consulta"
+        lead="Médicos de planta, especialistas y personal asistencial que coordinan tu atención, citas y seguimiento médico."
         image="/gallery/illustrations/illustration-4.png"
-        imageAlt="Veterinario sosteniendo en brazos a un cachorro"
+        imageAlt="Médico del equipo en atención médica"
         actions={
           <CtaLink href="/agendar-cita" variant="cta">
-            Agendar cita
+            Agendar cita médica
           </CtaLink>
         }
       />
@@ -27,11 +27,11 @@ export default function EquipoPage() {
       <Section className="pt-0">
         <PhotoFeatureStack
           image="/gallery/pet-13.jpg"
-          imageAlt="Veterinario examinando la pata de un bulldog con instrumental clínico"
+          imageAlt="Médico especialista realizando una valoración en consulta"
           reverse
           features={[
-            { title: "Continuidad, no rotación", text: "Cada mascota tiene un veterinario que la conoce visita tras visita, no un turno con quien esté disponible." },
-            { title: "Seguimiento real", text: "Un cambio sutil se nota antes cuando es el mismo equipo el que compara con la visita anterior." },
+            { title: "Continuidad y rigor profesional", text: "Médicos tratantes que conocen tu historia clínica y brindan seguimiento continuo en cada visita." },
+            { title: "Atención multidisciplinaria", text: "Especialistas en consulta general, medicina interna, pediatría y prevención trabajando de forma coordinada." },
           ]}
         />
       </Section>

@@ -40,22 +40,22 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Clínica Veterinaria Los Andes | Veterinaria en Bogotá",
-    template: "%s | Clínica Veterinaria Los Andes",
+    default: "SanitasSalud IPS | Centro Médico & Servicios de Salud Humana",
+    template: "%s | SanitasSalud IPS",
   },
   description:
-    "Clínica veterinaria en Bogotá: consulta general, vacunación, cirugía, laboratorio clínico y urgencias para perros, gatos y otras mascotas. Agendá tu cita online o por WhatsApp.",
+    "IPS de salud humana en Bogotá: consulta médica general, especialidades, vacunación, laboratorio clínico y atención priorizada. Agendá tu cita médica online o por WhatsApp.",
   openGraph: {
-    title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",
-    description: "Consulta, vacunación, cirugía y urgencias para tu mascota, con historia clínica digital por paciente.",
+    title: "SanitasSalud IPS — Centro Médico & Especialidades en Bogotá",
+    description: "Consulta médica general, especialidades, inmunización y procedimientos ambulatorios con historia clínica digital por paciente.",
     type: "website",
     locale: "es_CO",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",
-    description: "Consulta, vacunación, cirugía y urgencias para tu mascota.",
+    title: "SanitasSalud IPS — Centro Médico & Especialidades en Bogotá",
+    description: "Consulta médica, inmunización, laboratorio y atención prioritaria.",
   },
 };
 

@@ -19,14 +19,14 @@ export default function ServiciosPage() {
     <MarketingLayout>
       <SplitHero
         eyebrow="Servicios"
-        title="Atención veterinaria completa, de la consulta a la cirugía"
-        lead="Consulta general, medicina preventiva, laboratorio, cirugía, odontología y más — todo con historia clínica digital por paciente."
+        title="Portafolio de servicios médicos e IPS especializada"
+        lead="Consulta médica general, especialidades, vacunación e inmunización, laboratorio clínico y procedimientos ambulatorios — con historia clínica digital por paciente."
         image="/gallery/illustrations/illustration-7.png"
-        imageAlt="Veterinario revisando la boca de un gato en consulta"
+        imageAlt="Médico en valoración clínica"
         actions={
           <>
             <CtaLink href="/agendar-cita" variant="cta">
-              Agendar cita
+              Agendar cita médica
             </CtaLink>
             <CtaLink href="#todos-los-servicios" variant="outline">
               Ver todos los servicios
@@ -38,17 +38,17 @@ export default function ServiciosPage() {
       <Section className="pt-0">
         <CircularPhotoAbout
           image="/gallery/pet-10.jpg"
-          imageAlt="Atención veterinaria de urgencia"
-          eyebrow="Urgencias"
-          title="Prioridad inmediata cuando no puede esperar"
+          imageAlt="Atención médica prioritaria"
+          eyebrow="Atención Prioritaria"
+          title="Prioridad inmediata cuando requiere valoración urgente"
         >
           <p>
-            Ante un accidente, una intoxicación o un cuadro que empeora rápido, la prioridad es estabilizar.
-            Escribinos antes de venir para que el equipo esté listo cuando llegues.
+            Ante un cuadro agudo, fiebre persistente o dolor intenso, la prioridad es estabilizar y valorar.
+            Escribinos antes de venir para que nuestro equipo asistencial esté listo a tu llegada.
           </p>
         </CircularPhotoAbout>
         <div className="mt-10">
-          <PriorityBanner label="Urgencias, escribinos ya" detail="+57 601 555 0188" />
+          <PriorityBanner label="Atención prioritaria, escribinos" detail="+57 601 555 0188" />
         </div>
       </Section>
 
@@ -63,12 +63,10 @@ export default function ServiciosPage() {
         />
       </div>
 
-      {/* "Other Services": lista de texto plano sobre foto con duotono azul --
-          patron real de Services en el pack Divi, no otro grid de icon-cards. */}
       <PhotoOverlayLinks
         title="Todos los servicios de un vistazo"
         image="/gallery/paw-procedure.jpg"
-        imageAlt="Procedimiento veterinario"
+        imageAlt="Procedimiento médico ambulatorio"
         items={services.map((s) => ({ label: s.title, href: `/servicios/${s.slug}` }))}
       />
 
@@ -87,7 +85,7 @@ export default function ServiciosPage() {
 
       <Section className="bg-section-cream">
         <Reveal>
-          <SectionHeading eyebrow="Testimonios" title="Lo que cuentan nuestros propietarios" />
+          <SectionHeading eyebrow="Testimonios" title="Lo que cuentan nuestros pacientes" />
         </Reveal>
         <div className="mt-12">
           <TestimonialGrid testimonials={testimonials} limit={2} />

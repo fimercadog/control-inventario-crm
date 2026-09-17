@@ -11,8 +11,8 @@ export default function TestimoniosPage() {
     <MarketingLayout>
       <PageHero
         eyebrow="Testimonios"
-        title="Lo que cuentan los propietarios que ya nos conocen"
-        lead="Historias reales de mascotas atendidas en consulta, vacunación, cirugía y urgencias."
+        title="Lo que cuentan los pacientes y familias que confían en nosotros"
+        lead="Experiencias reales de pacientes atendidos en consulta externa, medicina especializada, vacunación y procedimientos ambulatorios."
       />
 
       <Section className="pt-0">
