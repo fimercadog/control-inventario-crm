@@ -191,3 +191,33 @@ Después de un commit/push, incluir:
 - **Tests:** `<resultado>`
 - **Build:** `<resultado>`
 
+---
+
+## 🚀 AUTO COMMIT & PUSH PER FUNCTIONALITY
+
+Cuando una funcionalidad quede completamente terminada:
+
+1. **Verificación previa:**
+   - La funcionalidad está 100% completa.
+   - Los tests relevantes pasan (PHPUnit / Vitest).
+   - El build compila sin errores (`npm run build`).
+   - Cero archivos de otras verticales en staging.
+   - Rama activa confirmada.
+
+2. **Acción automática:**
+   - Staging contextual selectivo de archivos de la funcionalidad (NUNCA `git add .` o `git add -A`).
+   - Commit semántico con scope (`feat(scope): ...`, `fix(scope): ...`, `docs(scope): ...`).
+   - Push exclusivo a la rama activa: `git push origin <rama-activa>` (NUNCA `git push --all`).
+
+3. **Restricciones:**
+   - NO auto-commit si hay tests fallando, archivos dudosos o incompletos.
+   - NO auto-commit si el usuario indicó pausar o no commitear todavía.
+
+4. **Reporte post-commit/push:**
+   - Rama
+   - Commit (hash + mensaje)
+   - Archivos incluidos
+   - Tests
+   - Push realizado
+
+
