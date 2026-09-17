@@ -118,7 +118,7 @@ export function ModuleTablePage<T extends object & RowWithId>({
 
       <DataTable
         columns={tableColumns}
-        exportBaseUrl={exportResource ? `${process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8001/api"}/exports/${exportResource}` : undefined}
+        exportBaseUrl={exportResource ? `${process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api"}/exports/${exportResource}` : undefined}
         data={table.data}
         search={table.search}
         onSearchChange={table.setSearch}

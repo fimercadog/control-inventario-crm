@@ -6,14 +6,14 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   allowedDevOrigins: ["*.ngrok-free.dev", "*.ngrok-free.app"],
 
-  // El proxy /api -> Laravel local solo sirve en desarrollo. En produccion el
-  // frontend habla directo con NEXT_PUBLIC_API_URL; dejar el rewrite activo
-  // hacia 127.0.0.1:8001 (que no existe en el servidor) solo genera 500.
+  // El proxy /api -> Laravel local sirve en desarrollo. Por defecto apunta a
+  // http://127.0.0.1:8000 (puerto estándar de Laravel) o al BACKEND_URL configurado.
   async rewrites() {
     if (!isDev) return [];
+    const backendUrl = (process.env.BACKEND_URL ?? process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "") ?? "http://127.0.0.1:8000").replace(/\/$/, "");
     return [
-      { source: "/api/:path*", destination: "http://127.0.0.1:8001/api/:path*" },
-      { source: "/sanctum/:path*", destination: "http://127.0.0.1:8001/sanctum/:path*" },
+      { source: "/api/:path*", destination: `${backendUrl}/api/:path*` },
+      { source: "/sanctum/:path*", destination: `${backendUrl}/sanctum/:path*` },
     ];
   },
 
