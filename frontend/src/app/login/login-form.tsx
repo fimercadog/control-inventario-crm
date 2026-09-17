@@ -9,12 +9,12 @@ import { api, primeCsrfCookie } from "@/lib/api";
 import { AuthUser, storeAuthSession } from "@/lib/auth";
 
 const demoUsers = [
-  ["Super Admin", "superadmin@demoips.test"],
-  ["Admin de la clínica / IPS", "admin@demoips.test"],
-  ["Médico/a", "medico@demoips.test"],
-  ["Recepción", "recepcion@demoips.test"],
-  ["Inventario / farmacia", "inventario@demoips.test"],
-  ["Ventas", "ventas@demoips.test"],
+  ["Super Admin", "superadmin@novaips.test"],
+  ["Admin de la clínica / IPS", "admin@novaips.test"],
+  ["Médico/a", "medico@novaips.test"],
+  ["Recepción", "recepcion@novaips.test"],
+  ["Inventario / farmacia", "inventario@novaips.test"],
+  ["Ventas", "ventas@novaips.test"],
 ];
 
 const inputClass =

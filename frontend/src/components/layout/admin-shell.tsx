@@ -352,7 +352,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen items-center justify-center bg-slate-900 text-slate-100">
         <div className="text-center">
           <p className="text-sm font-semibold tracking-wide">Validando sesión asistencial...</p>
-          <p className="mt-1 text-xs text-slate-400">Demo IPS · ERP Salud</p>
+          <p className="mt-1 text-xs text-slate-400">NOVA IPS · ERP Salud</p>
         </div>
       </div>
     );
@@ -439,7 +439,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             </Button>
             <div className="min-w-0 max-w-36 sm:max-w-none">
               <p className="truncate text-sm font-bold text-slate-900 dark:text-slate-100">
-                {user?.company?.name ?? "Demo IPS"}
+                {user?.company?.name ?? "NOVA IPS"}
               </p>
               <p className="hidden truncate text-xs text-slate-500 sm:block dark:text-slate-400">
                 Gestión Asistencial, Admisiones & Cuentas Médicas

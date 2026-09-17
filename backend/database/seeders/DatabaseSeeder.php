@@ -63,10 +63,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $company = Company::firstOrCreate([
-            'name' => 'Demo IPS S.A.S.',
+            'name' => 'NOVA IPS S.A.S.',
         ], [
             'nit' => '901.245.880-3',
-            'email' => 'recepcion@demoips.test',
+            'email' => 'recepcion@novaips.test',
             'phone' => '+57 601 555 0188',
             'address' => 'Calle 93 #14-20, Bogotá',
             'timezone' => 'America/Bogota',
@@ -74,8 +74,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         [$users, $vets] = $this->seedRolesAndUsers($company);
-        $admin = $users['admin@demoips.test'];
-        $reception = $users['recepcion@demoips.test'];
+        $admin = $users['admin@novaips.test'];
+        $reception = $users['recepcion@novaips.test'];
 
         $warehouses = $this->seedWarehouses($company);
         $mainWarehouse = $warehouses['Farmacia / Vitrina'];
@@ -104,7 +104,7 @@ class DatabaseSeeder extends Seeder
         $this->seedLeads($company);
         $this->seedProductSales($company, $clients, $publicProducts, $mainWarehouse, $reception);
         $this->seedSurgeryQuotes($company, $clients, $services);
-        $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@demoips.test']);
+        $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@novaips.test']);
         $this->seedClientNotesAndTasks($company, $clients, $patients, $admin, $reception);
         $this->seedAuditLog($company, $admin, $clients, $patients);
     }
@@ -158,13 +158,13 @@ class DatabaseSeeder extends Seeder
         }
 
         $demo = [
-            ['superadmin@demoips.test', 'Sofía Mercado', 'Super Admin'],
-            ['admin@demoips.test', 'Camila Rojas', 'Administrador de empresa'],
-            ['medico@demoips.test', 'Dr. Alejandro Morales', 'Veterinario/a'],
-            ['medico2@demoips.test', 'Dra. Natalia Cárdenas', 'Veterinario/a'],
-            ['recepcion@demoips.test', 'Marcela Duarte', 'Recepción'],
-            ['inventario@demoips.test', 'Valentina Castro', 'Inventario'],
-            ['ventas@demoips.test', 'Sebastián Moreno', 'Ventas'],
+            ['superadmin@novaips.test', 'Sofía Mercado', 'Super Admin'],
+            ['admin@novaips.test', 'Camila Rojas', 'Administrador de empresa'],
+            ['medico@novaips.test', 'Dr. Alejandro Morales', 'Veterinario/a'],
+            ['medico2@novaips.test', 'Dra. Natalia Cárdenas', 'Veterinario/a'],
+            ['recepcion@novaips.test', 'Marcela Duarte', 'Recepción'],
+            ['inventario@novaips.test', 'Valentina Castro', 'Inventario'],
+            ['ventas@novaips.test', 'Sebastián Moreno', 'Ventas'],
         ];
 
         $users = [];
@@ -177,7 +177,7 @@ class DatabaseSeeder extends Seeder
             $users[$email] = $user;
         }
 
-        $vets = [$users['medico@demoips.test'], $users['medico2@demoips.test']];
+        $vets = [$users['medico@novaips.test'], $users['medico2@novaips.test']];
 
         return [$users, $vets];
     }

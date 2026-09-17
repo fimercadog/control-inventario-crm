@@ -154,7 +154,7 @@ identidad. Opciones:
   clínica desde el panel, o se copia del demo lo genérico (especies, razas,
   servicios estándar) sin los propietarios/pacientes ficticios.
 
-Usuarios demo (`@demoips.test`, contraseña `password`): **rotar o eliminar**
+Usuarios demo (`@novaips.test`, contraseña `password`): **rotar o eliminar**
 antes de entregar. `NEXT_PUBLIC_DEMO_MODE=false` los oculta del login pero
 siguen existiendo en la BD hasta que se cambien.
 

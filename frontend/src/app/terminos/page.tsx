@@ -11,7 +11,7 @@ export default function TermsPage() {
     <LegalPage
       title="Terminos y Condiciones"
       updated="30 de agosto de 2026"
-      intro="Estos términos regulan el acceso y uso de este sitio web, operado por Demo IPS, NIT [NIT]. Al navegar el sitio o enviar un formulario aceptas estos términos."
+      intro="Estos términos regulan el acceso y uso de este sitio web, operado por NOVA IPS, NIT [NIT]. Al navegar el sitio o enviar un formulario aceptas estos términos."
       sections={[
         {
           heading: "1. Objeto del sitio",

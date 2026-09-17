@@ -27,7 +27,7 @@ export default function AboutPage() {
       <SplitHero
         eyebrow="Nosotros"
         title="Un centro médico de vanguardia con atención cercana y humana"
-        lead="Demo IPS nació para que cada paciente y su familia cuenten con un equipo médico especializado que los acompañe en cada etapa de su vida."
+        lead="NOVA IPS nació para que cada paciente y su familia cuenten con un equipo médico especializado que los acompañe en cada etapa de su vida."
         image="/gallery/illustrations/illustration-2.png"
         imageAlt="Médico especialista en consulta médica"
         actions={
@@ -95,7 +95,7 @@ export default function AboutPage() {
         <Reveal>
           <div className={`${container} max-w-3xl space-y-5 text-base leading-8 text-muted-foreground`}>
             <p>
-              Demo IPS nació con el propósito de brindar una atención médica integral, oportuna y personalizada.
+              NOVA IPS nació con el propósito de brindar una atención médica integral, oportuna y personalizada.
               Más de una década después, contamos con consultorios especializados, laboratorio clínico certificado y salas
               de procedimientos ambulatorios, manteniendo nuestro compromiso con la salud y bienestar de cada paciente.
             </p>

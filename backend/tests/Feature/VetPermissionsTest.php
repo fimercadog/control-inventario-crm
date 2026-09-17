@@ -31,7 +31,7 @@ class VetPermissionsTest extends TestCase
 
     public function test_permissions_catalog_lists_the_vet_permissions(): void
     {
-        $admin = User::where('email', 'admin@demoips.test')->firstOrFail();
+        $admin = User::where('email', 'admin@novaips.test')->firstOrFail();
         Sanctum::actingAs($admin, ['*']);
 
         $data = $this->getJson('/api/permissions')->assertOk()->json('data');

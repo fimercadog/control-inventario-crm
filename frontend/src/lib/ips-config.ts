@@ -7,11 +7,11 @@
 export const IPS_CONFIG = {
   // Configuración de Marca y Estado Demo
   isDemoMode: true,
-  demoNoticeText: "Demo IPS · Demostración del Sistema ERP y Gestión Clínica (Datos Configurables)",
+  demoNoticeText: "NOVA IPS · Demostración del Sistema ERP y Gestión Clínica (Datos Configurables)",
 
   brand: {
-    name: "Demo IPS",
-    shortName: "Demo IPS",
+    name: "NOVA IPS",
+    shortName: "NOVA IPS",
     tagline: "Institución Prestadora de Servicios de Salud · Atención Integral y Humana",
     descriptor: "Prestador de Servicios de Salud",
     accreditation: "Información institucional y servicios disponibles según la configuración institucional y habilitación aplicable",
@@ -44,7 +44,7 @@ export const IPS_CONFIG = {
     emergencyPhoneRaw: "+576017459090",
     whatsappDisplay: "+57 310 890 2020",
     whatsappRaw: "573108902020",
-    email: "atencion.paciente@demoips.test",
+    email: "atencion.paciente@novaips.test",
     schedule: "Consultas Externas: Lunes a Viernes: 6:00 a 20:00 · Sábados: 7:00 a 14:00",
     scheduleEmergency: "Atención Prioritaria / Urgencias (Servicios disponibles según la configuración institucional y habilitación aplicable)",
   },
@@ -80,9 +80,9 @@ export const IPS_CONFIG = {
   ],
 
   social: {
-    linkedin: "https://linkedin.com/company/demo-ips",
-    facebook: "https://facebook.com/demoips",
-    whatsapp: "https://wa.me/573108902020?text=Hola,%20deseo%20solicitar%20una%20cita%20m%C3%A9dica%20en%20Demo%20IPS",
+    linkedin: "https://linkedin.com/company/nova-ips",
+    facebook: "https://facebook.com/novaips",
+    whatsapp: "https://wa.me/573108902020?text=Hola,%20deseo%20solicitar%20una%20cita%20m%C3%A9dica%20en%20NOVA%20IPS",
   },
 
   stats: [

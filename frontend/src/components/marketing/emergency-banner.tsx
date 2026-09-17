@@ -3,7 +3,7 @@ import { CtaLink } from "@/components/marketing/cta-link";
 import { Reveal } from "@/components/marketing/reveal";
 import { IPS_CONFIG } from "@/lib/ips-config";
 
-/** Franja de Atención Prioritaria para Demo IPS */
+/** Franja de Atención Prioritaria para NOVA IPS */
 export function EmergencyBanner() {
   return (
     <Reveal>

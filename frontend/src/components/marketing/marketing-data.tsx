@@ -175,7 +175,7 @@ export const team: TeamMember[] = [
     specialty: "Medicina Interna & Salud Pública",
     bio: "Experiencia en dirección asistencial, atención primaria y medicina preventiva.",
     longBio:
-      "El Dr. Alejandro Morales coordina el equipo médico y la calidad asistencial de Demo IPS. Su enfoque combina el rigor de la medicina interna con un trato humano y cercano hacia cada paciente.",
+      "El Dr. Alejandro Morales coordina el equipo médico y la calidad asistencial de NOVA IPS. Su enfoque combina el rigor de la medicina interna con un trato humano y cercano hacia cada paciente.",
     isDemo: true,
   },
   {
@@ -252,7 +252,7 @@ export type Faq = { question: string; answer: string };
 
 export const faqs: Faq[] = [
   {
-    question: "¿Cómo puedo agendar una cita médica en Demo IPS?",
+    question: "¿Cómo puedo agendar una cita médica en NOVA IPS?",
     answer:
       "Puedes agendar directamente a través de nuestro sitio web en 'Solicitar Cita', comunicándote a nuestro PBX +57 (601) 745-9000 o por WhatsApp al +57 310 890 2020.",
   },
@@ -314,7 +314,7 @@ export const blogPosts: BlogPost[] = [
     body: [
       "Muchas patologías crónicas no generan dolor ni síntomas evidentes en sus etapas tempranas. Realizar un chequeo médico preventivo anual es la herramienta fundamental de la salud pública moderna para identificar factores de riesgo y actuar a tiempo.",
       "Un chequeo integral incluye la evaluación clínica por medicina general, la medición rigurosa de la presión arterial, cálculo de índice de masa corporal y un panel básico de laboratorio (glicemia, perfil lipídico, función renal).",
-      "En Demo IPS priorizamos la medicina preventiva porque reducir el riesgo de eventos mayores es el pilar de una vida longeva y saludable.",
+      "En NOVA IPS priorizamos la medicina preventiva porque reducir el riesgo de eventos mayores es el pilar de una vida longeva y saludable.",
     ],
   },
   {
@@ -342,7 +342,7 @@ export const blogPosts: BlogPost[] = [
     readMinutes: 3,
     body: [
       "El uso de analizadores bioquímicos de última generación permite procesar muestras con márgenes de precisión excepcionales y tiempos de respuesta reducidos a pocas horas.",
-      "En Demo IPS nos mantenemos a la vanguardia diagnóstica para brindar soporte confiable a las decisiones clínicas de nuestro cuerpo médico.",
+      "En NOVA IPS nos mantenemos a la vanguardia diagnóstica para brindar soporte confiable a las decisiones clínicas de nuestro cuerpo médico.",
     ],
   },
 ];

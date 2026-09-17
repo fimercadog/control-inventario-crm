@@ -596,7 +596,7 @@ export default function DashboardPage() {
       <motion.div variants={item} className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Dashboard IPS · Demo IPS
+            Dashboard IPS · NOVA IPS
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Indicadores de atención médica, admisiones, historia clínica y facturación RIPS.

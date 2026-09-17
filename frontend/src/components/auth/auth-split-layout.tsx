@@ -21,7 +21,7 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
               <Hospital className="size-6" />
             </span>
             <span className="mt-4 inline-block rounded bg-sky-500/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-sky-300">
-              Demo IPS · Portal Asistencial (Demo)
+              NOVA IPS · Portal Asistencial (Demo)
             </span>
             <h2 className="mt-4 text-4xl font-extrabold leading-tight tracking-tight text-white">
               Gestión Clínica & ERP Hospitalario Unificado

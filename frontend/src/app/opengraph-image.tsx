@@ -36,7 +36,7 @@ export default function OpengraphImage() {
           IPS
         </div>
         <div style={{ display: "flex", fontSize: 60, fontWeight: 900, color: "#241f19" }}>
-          Demo IPS
+          NOVA IPS
         </div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#6b6355", maxWidth: 860 }}>
           Consulta médica general, especialidades, inmunización y atención prioritaria con historia clínica digital por paciente.

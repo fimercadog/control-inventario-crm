@@ -1,6 +1,6 @@
-# GATE DE DESPLIEGUE DEMO · VERTICAL IPS (`Demo IPS`)
+# GATE DE DESPLIEGUE DEMO · VERTICAL IPS (`NOVA IPS`)
 
-Este documento especifica los requisitos de infraestructura, variables de entorno de producción demo, arquitectura de dominios, comandos de primera instalación vs. actualización posterior, y políticas de protección de datos para el despliegue de la vertical **Demo IPS**.
+Este documento especifica los requisitos de infraestructura, variables de entorno de producción demo, arquitectura de dominios, comandos de primera instalación vs. actualización posterior, y políticas de protección de datos para el despliegue de la vertical **NOVA IPS**.
 
 ---
 
@@ -47,7 +47,7 @@ NEXT_PUBLIC_PLAN=
 ### B. Backend Laravel (`backend/.env` en Servidor)
 
 ```env
-APP_NAME="Demo IPS ERP"
+APP_NAME="NOVA IPS ERP"
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://api-demo-ips.fidelmercadotech.com

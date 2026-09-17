@@ -40,13 +40,13 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Demo IPS | Centro Médico & Servicios de Salud Humana",
-    template: "%s | Demo IPS",
+    default: "NOVA IPS | Centro Médico & Servicios de Salud Humana",
+    template: "%s | NOVA IPS",
   },
   description:
     "IPS de salud humana en Bogotá: consulta médica general, especialidades, vacunación, laboratorio clínico y atención priorizada. Agendá tu cita médica online o por WhatsApp.",
   openGraph: {
-    title: "Demo IPS — Centro Médico & Especialidades en Bogotá",
+    title: "NOVA IPS — Centro Médico & Especialidades en Bogotá",
     description: "Consulta médica general, especialidades, inmunización y procedimientos ambulatorios con historia clínica digital por paciente.",
     type: "website",
     locale: "es_CO",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Demo IPS — Centro Médico & Especialidades en Bogotá",
+    title: "NOVA IPS — Centro Médico & Especialidades en Bogotá",
     description: "Consulta médica, inmunización, laboratorio y atención prioritaria.",
   },
 };

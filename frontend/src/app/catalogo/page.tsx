@@ -75,7 +75,7 @@ export default function CatalogoPage() {
     <MarketingLayout>
       <SplitHero
         eyebrow="Catálogo"
-        title="Farmacia & Insumos Hospitalarios de Demo IPS"
+        title="Farmacia & Insumos Hospitalarios de NOVA IPS"
         lead="Explorá nuestro catálogo de medicamentos e insumos médicos, armá tu lista y solicitá cotización o disponibilidad."
         image="/gallery/illustrations/illustration-1.png"
         imageAlt="Profesional de farmacia hospitalaria"
