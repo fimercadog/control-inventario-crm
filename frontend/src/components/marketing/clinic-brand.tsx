@@ -4,7 +4,7 @@ import { IPS_CONFIG } from "@/lib/ips-config";
 import { cn } from "@/lib/utils";
 
 /**
- * Identidad pública de la IPS: SanitasSalud IPS.
+ * Identidad pública de la IPS: Demo IPS.
  */
 export const CLINIC_NAME = IPS_CONFIG.brand.name;
 export const CLINIC_SHORT_NAME = IPS_CONFIG.brand.shortName;
@@ -16,7 +16,7 @@ export function ClinicWordmark({ className }: { className?: string }) {
         <Hospital className="size-5" />
       </span>
       <span className="text-base font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
-        SanitasSalud<span className="text-sky-600">.IPS</span>
+        Demo<span className="text-sky-600">.IPS</span>
         <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
           Institución Prestadora de Salud
         </span>

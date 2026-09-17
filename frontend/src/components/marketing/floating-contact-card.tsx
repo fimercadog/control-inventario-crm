@@ -4,7 +4,7 @@ import { Reveal } from "@/components/marketing/reveal";
 import { IPS_CONFIG } from "@/lib/ips-config";
 
 /**
- * Tarjeta de contacto asistencial de SanitasSalud IPS.
+ * Tarjeta de contacto asistencial de Demo IPS.
  * Superpuesta sobre la imagen del Hero con datos directos de líneas de atención y datos demo configurables.
  */
 export function FloatingContactCard({

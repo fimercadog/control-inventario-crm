@@ -74,7 +74,7 @@ export default function ContactPage() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="strict-origin-when-cross-origin"
-              title="Ubicación de SanitasSalud IPS en Google Maps"
+              title="Ubicación de Demo IPS en Google Maps"
               className="size-full"
             />
           </div>

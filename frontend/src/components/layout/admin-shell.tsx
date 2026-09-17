@@ -352,7 +352,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen items-center justify-center bg-slate-900 text-slate-100">
         <div className="text-center">
           <p className="text-sm font-semibold tracking-wide">Validando sesión asistencial...</p>
-          <p className="mt-1 text-xs text-slate-400">SanitasSalud IPS · ERP Salud</p>
+          <p className="mt-1 text-xs text-slate-400">Demo IPS · ERP Salud</p>
         </div>
       </div>
     );
@@ -363,7 +363,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <LogoMark size="sm" />
       <div>
         <p className="flex items-center gap-1.5 text-sm font-bold tracking-tight text-white">
-          SanitasSalud<span className="text-sky-400">·</span>IPS
+          Demo<span className="text-sky-400">·</span>IPS
           <span className="rounded bg-sky-500/20 px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-sky-300">
             ERP
           </span>
@@ -439,7 +439,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             </Button>
             <div className="min-w-0 max-w-36 sm:max-w-none">
               <p className="truncate text-sm font-bold text-slate-900 dark:text-slate-100">
-                {user?.company?.name ?? "SanitasSalud IPS"}
+                {user?.company?.name ?? "Demo IPS"}
               </p>
               <p className="hidden truncate text-xs text-slate-500 sm:block dark:text-slate-400">
                 Gestión Asistencial, Admisiones & Cuentas Médicas

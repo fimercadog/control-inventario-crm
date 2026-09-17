@@ -5,7 +5,7 @@ import { Reveal } from "@/components/marketing/reveal";
 import { IPS_CONFIG } from "@/lib/ips-config";
 
 /**
- * Hero Principal de SanitasSalud IPS.
+ * Hero Principal de Demo IPS.
  * Presenta fotografía photorealista de recepción médica, llamada a la acción clara para agendamiento de citas
  * y servicios asistenciales con lenguaje regulatorio neutro.
  */
@@ -16,7 +16,7 @@ export function HomeHero() {
         <Reveal mount direction="zoom-out" duration={1.1} className="absolute inset-0">
           <Image
             src="/gallery/ips/hero_ips.jpg"
-            alt="Recepción y equipo médico de SanitasSalud IPS en instalaciones de atención integral"
+            alt="Recepción y equipo médico de Demo IPS en instalaciones de atención integral"
             fill
             priority
             sizes="100vw"
@@ -34,7 +34,7 @@ export function HomeHero() {
                 {IPS_CONFIG.brand.descriptor}
               </span>
               <h1 className="mt-4 text-5xl font-extrabold leading-[0.98] tracking-tight text-white sm:text-6xl lg:text-7xl">
-                SanitasSalud <span className="text-sky-400">IPS</span>
+                Demo <span className="text-sky-400">IPS</span>
               </h1>
             </Reveal>
 

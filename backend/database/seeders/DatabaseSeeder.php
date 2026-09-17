@@ -63,10 +63,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $company = Company::firstOrCreate([
-            'name' => 'Clínica Veterinaria Los Andes',
+            'name' => 'Demo IPS S.A.S.',
         ], [
             'nit' => '901.245.880-3',
-            'email' => 'recepcion@vetlosandes.co',
+            'email' => 'recepcion@demoips.test',
             'phone' => '+57 601 555 0188',
             'address' => 'Calle 93 #14-20, Bogotá',
             'timezone' => 'America/Bogota',
@@ -74,8 +74,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         [$users, $vets] = $this->seedRolesAndUsers($company);
-        $admin = $users['admin@vetlosandes.co'];
-        $reception = $users['recepcion@vetlosandes.co'];
+        $admin = $users['admin@demoips.test'];
+        $reception = $users['recepcion@demoips.test'];
 
         $warehouses = $this->seedWarehouses($company);
         $mainWarehouse = $warehouses['Farmacia / Vitrina'];
@@ -104,7 +104,7 @@ class DatabaseSeeder extends Seeder
         $this->seedLeads($company);
         $this->seedProductSales($company, $clients, $publicProducts, $mainWarehouse, $reception);
         $this->seedSurgeryQuotes($company, $clients, $services);
-        $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@vetlosandes.co']);
+        $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@demoips.test']);
         $this->seedClientNotesAndTasks($company, $clients, $patients, $admin, $reception);
         $this->seedAuditLog($company, $admin, $clients, $patients);
     }
@@ -158,13 +158,13 @@ class DatabaseSeeder extends Seeder
         }
 
         $demo = [
-            ['superadmin@vetlosandes.co', 'Sofía Mercado', 'Super Admin'],
-            ['admin@vetlosandes.co', 'Camila Rojas', 'Administrador de empresa'],
-            ['veterinario@vetlosandes.co', 'Dr. Carlos Medina', 'Veterinario/a'],
-            ['veterinaria@vetlosandes.co', 'Dra. Laura Peña', 'Veterinario/a'],
-            ['recepcion@vetlosandes.co', 'Marcela Duarte', 'Recepción'],
-            ['inventario@vetlosandes.co', 'Valentina Castro', 'Inventario'],
-            ['ventas@vetlosandes.co', 'Sebastián Moreno', 'Ventas'],
+            ['superadmin@demoips.test', 'Sofía Mercado', 'Super Admin'],
+            ['admin@demoips.test', 'Camila Rojas', 'Administrador de empresa'],
+            ['medico@demoips.test', 'Dr. Alejandro Morales', 'Veterinario/a'],
+            ['medico2@demoips.test', 'Dra. Natalia Cárdenas', 'Veterinario/a'],
+            ['recepcion@demoips.test', 'Marcela Duarte', 'Recepción'],
+            ['inventario@demoips.test', 'Valentina Castro', 'Inventario'],
+            ['ventas@demoips.test', 'Sebastián Moreno', 'Ventas'],
         ];
 
         $users = [];
@@ -177,7 +177,7 @@ class DatabaseSeeder extends Seeder
             $users[$email] = $user;
         }
 
-        $vets = [$users['veterinario@vetlosandes.co'], $users['veterinaria@vetlosandes.co']];
+        $vets = [$users['medico@demoips.test'], $users['medico2@demoips.test']];
 
         return [$users, $vets];
     }
@@ -386,18 +386,18 @@ class DatabaseSeeder extends Seeder
         // [clientIdx, nombre, docType, docNum, firstName, lastName, sexo, nacimiento, eps, RH, tel, email]
         $rows = [
             [0, 'Carlos Andrés Mendoza', 'CC', '1018293847', 'Carlos Andrés', 'Mendoza', 'male', '1988-03-14', 'Sura', 'O+', '+57 310 555 0101', 'carlos.mendoza@example.com'],
-            [0, 'Mariana Gómez Ortiz', 'CC', '1020394857', 'Mariana', 'Gómez Ortiz', 'female', '1992-07-02', 'Sanitas', 'A+', '+57 311 555 0102', 'mariana.gomez@example.com'],
+            [0, 'Mariana Gómez Ortiz', 'CC', '1020394857', 'Mariana', 'Gómez Ortiz', 'female', '1992-07-02', 'Coosalud', 'A+', '+57 311 555 0102', 'mariana.gomez@example.com'],
             [1, 'Lucía Fernández', 'CC', '52839201', 'Lucía', 'Fernández', 'female', '1995-11-20', 'Compensar', 'O-', '+57 312 555 0103', 'lucia.fernandez@example.com'],
             [1, 'Santiago Morales', 'CC', '1032948201', 'Santiago', 'Morales', 'male', '1985-02-10', 'Salud Total', 'B+', '+57 313 555 0104', 'santiago.morales@example.com'],
             [2, 'Valentina Torres', 'CC', '1015839201', 'Valentina', 'Torres', 'female', '1998-01-05', 'Sura', 'A-', '+57 314 555 0105', 'valentina.torres@example.com'],
-            [3, 'Mateo Benítez', 'TI', '1098293847', 'Mateo', 'Benítez', 'male', '2012-05-30', 'Sanitas', 'O+', '+57 315 555 0106', 'mateo.benitez@example.com'],
-            [3, 'Sofia Benítez', 'RC', '1192837465', 'Sofia', 'Benítez', 'female', '2018-01-18', 'Sanitas', 'O+', '+57 315 555 0107', 'sofia.benitez@example.com'],
+            [3, 'Mateo Benítez', 'TI', '1098293847', 'Mateo', 'Benítez', 'male', '2012-05-30', 'Coosalud', 'O+', '+57 315 555 0106', 'mateo.benitez@example.com'],
+            [3, 'Sofia Benítez', 'RC', '1192837465', 'Sofia', 'Benítez', 'female', '2018-01-18', 'Coosalud', 'O+', '+57 315 555 0107', 'sofia.benitez@example.com'],
             [4, 'Gabriel Silva', 'CC', '80192837', 'Gabriel', 'Silva', 'male', '1976-09-12', 'Compensar', 'AB+', '+57 316 555 0108', 'gabriel.silva@example.com'],
             [5, 'Camila Vargas', 'CC', '1028394812', 'Camila', 'Vargas', 'female', '1990-12-01', 'Sura', 'O+', '+57 317 555 0109', 'camila.vargas@example.com'],
             [6, 'Daniela Ríos', 'CC', '52938471', 'Daniela', 'Ríos', 'female', '1984-06-25', 'Salud Total', 'A+', '+57 318 555 0110', 'daniela.rios@example.com'],
             [7, 'Alejandro Castro', 'CC', '1019283746', 'Alejandro', 'Castro', 'male', '1989-08-08', 'Compensar', 'O+', '+57 319 555 0111', 'alejandro.castro@example.com'],
             [8, 'Isabela Restrepo', 'TI', '1082736451', 'Isabela', 'Restrepo', 'female', '2010-02-14', 'Sura', 'B-', '+57 320 555 0112', 'isabela.restrepo@example.com'],
-            [9, 'Felipe Osorio', 'CC', '1027384950', 'Felipe', 'Osorio', 'male', '1993-04-03', 'Sanitas', 'O+', '+57 321 555 0113', 'felipe.osorio@example.com'],
+            [9, 'Felipe Osorio', 'CC', '1027384950', 'Felipe', 'Osorio', 'male', '1993-04-03', 'Coosalud', 'O+', '+57 321 555 0113', 'felipe.osorio@example.com'],
             [10, 'Nicolás Suárez', 'CC', '1038472910', 'Nicolás', 'Suárez', 'male', '2000-06-11', 'Sura', 'A+', '+57 322 555 0114', 'nicolas.suarez@example.com'],
         ];
 

@@ -10,13 +10,13 @@ export const metadata: Metadata = { title: { absolute: "Iniciar sesión | IPS Pa
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
 
 const demoEmails: Record<string, string> = {
-  superadmin: "superadmin@vetlosandes.co",
-  admin: "admin@vetlosandes.co",
-  veterinario: "veterinario@vetlosandes.co",
-  veterinaria: "veterinaria@vetlosandes.co",
-  recepcion: "recepcion@vetlosandes.co",
-  inventario: "inventario@vetlosandes.co",
-  ventas: "ventas@vetlosandes.co",
+  superadmin: "superadmin@demoips.test",
+  admin: "admin@demoips.test",
+  veterinario: "medico@demoips.test",
+  veterinaria: "medico2@demoips.test",
+  recepcion: "recepcion@demoips.test",
+  inventario: "inventario@demoips.test",
+  ventas: "ventas@demoips.test",
 };
 
 export default async function LoginPage({

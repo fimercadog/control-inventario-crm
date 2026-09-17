@@ -50,7 +50,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* 3. Presentación de SanitasSalud IPS */}
+      {/* 3. Presentación de Demo IPS */}
       <Section className="bg-slate-50 dark:bg-slate-900/50">
         <Reveal>
           <SectionHeading
@@ -62,7 +62,7 @@ export default function Home() {
         <div className="mt-12">
           <PhotoFeatureStack
             image="/gallery/ips/consulta_medica.jpg"
-            imageAlt="Médico especialista de SanitasSalud IPS examinando a un paciente en consulta externa"
+            imageAlt="Médico especialista de Demo IPS examinando a un paciente en consulta externa"
             features={[
               { title: "Consultorios & Unidades Equipadas", text: "Laboratorio automatizado y salas de observación disponibles según la configuración institucional y habilitación aplicable." },
               { title: "Consultas con el Tiempo Adecuado", text: "Evaluaciones exhaustivas con dedicación y enfoque preventivo." },
@@ -114,7 +114,7 @@ export default function Home() {
         eyebrow="Medicina Preventiva & Chequeos"
         title="La Prevención Oportuna Salva Vidas"
         image="/gallery/ips/laboratorio_clinico.jpg"
-        imageAlt="Laboratorio clínico automatizado en SanitasSalud IPS"
+        imageAlt="Laboratorio clínico automatizado en Demo IPS"
         actions={
           <CtaLink href="/servicios" variant="outline" size="sm" className="border-sky-600 font-bold text-sky-700">
             Agendar Chequeo Preventivo
@@ -186,7 +186,7 @@ export default function Home() {
         <Reveal>
           <SectionHeading
             eyebrow="Opiniones de Pacientes (Demo)"
-            title="La Experiencia de Quienes Confían en SanitasSalud IPS"
+            title="La Experiencia de Quienes Confían en Demo IPS"
           />
         </Reveal>
         <div className="mt-14">
@@ -247,7 +247,7 @@ export default function Home() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="strict-origin-when-cross-origin"
-                title="Ubicación SanitasSalud IPS en Google Maps"
+                title="Ubicación Demo IPS en Google Maps"
                 className="size-full"
               />
             </div>

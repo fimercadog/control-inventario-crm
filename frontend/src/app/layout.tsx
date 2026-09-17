@@ -40,13 +40,13 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "SanitasSalud IPS | Centro Médico & Servicios de Salud Humana",
-    template: "%s | SanitasSalud IPS",
+    default: "Demo IPS | Centro Médico & Servicios de Salud Humana",
+    template: "%s | Demo IPS",
   },
   description:
     "IPS de salud humana en Bogotá: consulta médica general, especialidades, vacunación, laboratorio clínico y atención priorizada. Agendá tu cita médica online o por WhatsApp.",
   openGraph: {
-    title: "SanitasSalud IPS — Centro Médico & Especialidades en Bogotá",
+    title: "Demo IPS — Centro Médico & Especialidades en Bogotá",
     description: "Consulta médica general, especialidades, inmunización y procedimientos ambulatorios con historia clínica digital por paciente.",
     type: "website",
     locale: "es_CO",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SanitasSalud IPS — Centro Médico & Especialidades en Bogotá",
+    title: "Demo IPS — Centro Médico & Especialidades en Bogotá",
     description: "Consulta médica, inmunización, laboratorio y atención prioritaria.",
   },
 };
