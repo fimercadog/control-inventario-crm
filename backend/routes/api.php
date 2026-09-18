@@ -7,7 +7,9 @@ use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AudioRecordingController;
 use App\Http\Controllers\Api\AuditLogController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BotIntegrationController;
 use App\Http\Controllers\Api\BrandController;
+use App\Http\Middleware\ValidateBotSecretToken;
 use App\Http\Controllers\Api\BreedController;
 use App\Http\Controllers\Api\CareEncounterController;
 use App\Http\Controllers\Api\ClinicalNoteController;
@@ -263,4 +265,10 @@ Route::get('/audio-recordings/{id}/stream', [AudioRecordingController::class, 's
     ->name('audio.stream')
     ->whereNumber('id')
     ->middleware('signed');
+
+// --- Ingesta externa servidore-a-servidor (Bot de Telegram / n8n) ---
+Route::prefix('v1/bot')->middleware(ValidateBotSecretToken::class)->group(function (): void {
+    Route::post('/resolve-professional', [BotIntegrationController::class, 'resolveProfessional']);
+    Route::post('/care-encounters', [BotIntegrationController::class, 'ingestCareEncounter']);
+});
 

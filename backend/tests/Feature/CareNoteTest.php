@@ -310,4 +310,152 @@ class CareNoteTest extends TestCase
         $indexResponse->assertStatus(200)
             ->assertJsonPath('data.0.policy_version', 'v1.0-carenote-2026');
     }
+
+    public function test_bot_secret_token_authentication_validation(): void
+    {
+        // Sin token de secreto del bot
+        $noTokenResponse = $this->postJson('/api/v1/bot/resolve-professional', [
+            'telegram_chat_id' => 987654321,
+        ]);
+        $noTokenResponse->assertStatus(401)
+            ->assertJsonPath('error', 'UNAUTHORIZED_BOT_TOKEN');
+
+        // Con token inválido
+        $invalidTokenResponse = $this->withHeader('X-CareNote-Bot-Secret', 'secret-invalido')
+            ->postJson('/api/v1/bot/resolve-professional', [
+                'telegram_chat_id' => 987654321,
+            ]);
+        $invalidTokenResponse->assertStatus(401)
+            ->assertJsonPath('error', 'UNAUTHORIZED_BOT_TOKEN');
+
+        // Con token válido
+        $validSecret = config('services.carenote_bot.secret', 'carenote-bot-secret-dev-2026');
+        $validResponse = $this->withHeader('X-CareNote-Bot-Secret', $validSecret)
+            ->postJson('/api/v1/bot/resolve-professional', [
+                'telegram_chat_id' => 987654321,
+            ]);
+        // Aunque no esté vinculado, supera la barrera de autenticación del middleware de servicio
+        $this->assertNotEquals(401, $validResponse->status());
+    }
+
+    public function test_bot_resolution_flow_unlinked_inactive_and_privacy_checks(): void
+    {
+        $botSecret = config('services.carenote_bot.secret', 'carenote-bot-secret-dev-2026');
+        $chatId = 888777666;
+
+        // 1. Chat ID no vinculado
+        $unlinkedResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/resolve-professional', [
+                'telegram_chat_id' => $chatId,
+            ]);
+        $unlinkedResponse->assertStatus(422)
+            ->assertJsonPath('code', 'PROFESSIONAL_NOT_LINKED');
+
+        // Vincular usuario
+        $link = \App\Models\TelegramProfessionalLink::create([
+            'user_id' => $this->nurse->id,
+            'telegram_chat_id' => $chatId,
+            'is_verified' => true,
+            'linked_at' => now(),
+        ]);
+
+        // 2. Vinculado pero sin aceptar política de privacidad
+        $privacyCheckResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/resolve-professional', [
+                'telegram_chat_id' => $chatId,
+            ]);
+        $privacyCheckResponse->assertStatus(403)
+            ->assertJsonPath('code', 'PRIVACY_POLICY_NOT_ACCEPTED');
+
+        // Registrar aceptación de privacidad
+        \App\Models\PrivacyAcceptance::create([
+            'company_id' => $this->company->id,
+            'user_id' => $this->nurse->id,
+            'policy_version' => 'v1.0-carenote-2026',
+            'accepted_at' => now(),
+        ]);
+
+        // 3. Resolución exitosa
+        $successResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/resolve-professional', [
+                'telegram_chat_id' => $chatId,
+            ]);
+        $successResponse->assertStatus(200)
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('professional.id', $this->nurse->id)
+            ->assertJsonPath('company.id', $this->company->id)
+            ->assertJsonPath('privacy_accepted', true);
+
+        // 4. Usuario inactivo
+        $this->nurse->update(['status' => 'inactive']);
+        $inactiveResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/resolve-professional', [
+                'telegram_chat_id' => $chatId,
+            ]);
+        $inactiveResponse->assertStatus(422)
+            ->assertJsonPath('code', 'PROFESSIONAL_INACTIVE');
+    }
+
+    public function test_bot_care_encounter_ingestion_and_tenant_isolation(): void
+    {
+        $botSecret = config('services.carenote_bot.secret', 'carenote-bot-secret-dev-2026');
+        $chatId = 999111222;
+
+        // Crear vínculo y aceptación de privacidad
+        \App\Models\TelegramProfessionalLink::create([
+            'user_id' => $this->nurse->id,
+            'telegram_chat_id' => $chatId,
+            'is_verified' => true,
+            'linked_at' => now(),
+        ]);
+
+        \App\Models\PrivacyAcceptance::create([
+            'company_id' => $this->company->id,
+            'user_id' => $this->nurse->id,
+            'policy_version' => 'v1.0-carenote-2026',
+            'accepted_at' => now(),
+        ]);
+
+        // Intentar ingestar con paciente de otra empresa (debe rebotar por aislamiento multiempresa)
+        $otherCompany = \App\Models\Company::create(['name' => 'Otra IPS']);
+        $otherClient = \App\Models\Client::create(['company_id' => $otherCompany->id, 'name' => 'Cliente Ajeno']);
+        $otherPatient = \App\Models\Patient::create([
+            'company_id' => $otherCompany->id,
+            'client_id' => $otherClient->id,
+            'name' => 'Paciente Ajeno',
+        ]);
+
+        $isolationResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/care-encounters', [
+                'telegram_chat_id' => $chatId,
+                'patient_id' => $otherPatient->id,
+                'notes_summary' => 'Intento de ingesta cruzada',
+            ]);
+        $isolationResponse->assertStatus(422)
+            ->assertJsonPath('code', 'PATIENT_NOT_FOUND');
+
+        // Ingesta exitosa para paciente propio
+        $ingestResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/care-encounters', [
+                'telegram_chat_id' => $chatId,
+                'patient_id' => $this->patient->id,
+                'encounter_type' => 'terapia',
+                'notes_summary' => 'Atención enviada por enfermera desde Telegram bot',
+            ]);
+
+        $ingestResponse->assertStatus(201)
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('encounter.company_id', $this->company->id)
+            ->assertJsonPath('encounter.professional_id', $this->nurse->id)
+            ->assertJsonPath('encounter.patient_id', $this->patient->id)
+            ->assertJsonPath('encounter.channel', 'telegram');
+
+        $this->assertDatabaseHas('care_encounters', [
+            'company_id' => $this->company->id,
+            'professional_id' => $this->nurse->id,
+            'patient_id' => $this->patient->id,
+            'channel' => 'telegram',
+            'encounter_type' => 'terapia',
+        ]);
+    }
 }

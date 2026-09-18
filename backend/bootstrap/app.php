@@ -27,7 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // throttle por IP, no el token CSRF de una sesion que no existe.
         // /api/portal/login: mismo motivo que api/public/* -- la sesion (y su
         // token CSRF) todavia no existe para quien recien pide el enlace magico.
-        $middleware->validateCsrfTokens(except: ['api/public/*', 'api/portal/login']);
+        $middleware->validateCsrfTokens(except: ['api/public/*', 'api/portal/login', 'api/v1/bot/*']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (AuthenticationException $exception, Request $request) {

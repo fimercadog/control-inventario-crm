@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'carenote_bot' => [
+        'secret' => env('CARENOTE_BOT_SECRET', 'carenote-bot-secret-dev-2026'),
+    ],
+
 ];
