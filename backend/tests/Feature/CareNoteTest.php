@@ -287,7 +287,7 @@ class CareNoteTest extends TestCase
             ->assertJsonPath('telegram_username', 'enfermera_laura');
     }
 
-    public function test_privacy_acceptance_recording(): void
+    public function test_privacy_acceptance_recording_and_listing(): void
     {
         $response = $this->actingAs($this->nurse, 'sanctum')
             ->postJson('/api/privacy-acceptances', [
@@ -303,5 +303,11 @@ class CareNoteTest extends TestCase
             'user_id' => $this->nurse->id,
             'policy_version' => 'v1.0-carenote-2026',
         ]);
+
+        $indexResponse = $this->actingAs($this->nurse, 'sanctum')
+            ->getJson('/api/privacy-acceptances');
+
+        $indexResponse->assertStatus(200)
+            ->assertJsonPath('data.0.policy_version', 'v1.0-carenote-2026');
     }
 }

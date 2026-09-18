@@ -7,52 +7,70 @@ import { Badge } from "@/components/ui/badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Patient } from "@/lib/types";
 
-const SEX_LABEL: Record<string, string> = { male: "Macho", female: "Hembra", unknown: "Sin dato" };
+const SEX_LABEL: Record<string, string> = { male: "Masculino", female: "Femenino", unknown: "Otro / No especifica" };
 
-const columns: AppColumnDef<Patient>[] = [
+const columns: AppColumnDef<Patient & Record<string, any>>[] = [
   {
-    header: "Nombre",
-    cell: ({ row }) => (
-      <Link href={`/app/pacientes/${row.original.id}`} className="font-medium text-primary hover:underline">
-        {row.original.name}
-      </Link>
-    ),
+    header: "Nombre del Paciente",
+    cell: ({ row }) => {
+      const p = row.original;
+      const fullName = p.first_name ? `${p.first_name} ${p.last_name || ""}` : p.name;
+      return (
+        <Link href={`/app/pacientes/${p.id}`} className="font-bold text-blue-600 hover:underline">
+          {fullName}
+        </Link>
+      );
+    },
   },
-  { header: "Propietario", cell: ({ row }) => row.original.client ?? "—" },
-  { header: "Especie / raza", cell: ({ row }) => [row.original.species, row.original.breed].filter(Boolean).join(" · ") || "—" },
-  { header: "Sexo", cell: ({ row }) => SEX_LABEL[row.original.sex] ?? row.original.sex },
+  {
+    header: "Documento",
+    cell: ({ row }) => {
+      const p = row.original;
+      return p.document_number ? `${p.document_type || "CC"} ${p.document_number}` : "—";
+    },
+  },
+  { header: "Teléfono", cell: ({ row }) => row.original.phone || "—" },
+  { header: "Dirección", cell: ({ row }) => [row.original.address, row.original.city].filter(Boolean).join(", ") || "—" },
+  { header: "EPS / Aseguradora", cell: ({ row }) => row.original.health_coverage_provider || "Particular" },
   { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
 ];
 
 const fields: CrudField[] = [
-  { name: "client_id", label: "Propietario", type: "select", optionsResource: "/clients", required: true },
-  { name: "name", label: "Nombre", required: true },
-  { name: "species_id", label: "Especie", type: "select", optionsResource: "/species", required: true },
-  { name: "breed_id", label: "Raza", type: "select", optionsResource: "/breeds", omitWhenEmpty: true },
+  { name: "first_name", label: "Nombres", required: true },
+  { name: "last_name", label: "Apellidos", required: true },
+  { name: "name", label: "Nombre Completo / Identificador", required: true },
   {
-    name: "sex",
-    label: "Sexo",
+    name: "document_type",
+    label: "Tipo de Documento",
     type: "select",
     required: true,
     options: [
-      { label: "Macho", value: "male" },
-      { label: "Hembra", value: "female" },
-      { label: "Sin dato", value: "unknown" },
+      { label: "Cédula de Ciudadanía (CC)", value: "CC" },
+      { label: "Cédula de Extranjería (CE)", value: "CE" },
+      { label: "Pasaporte", value: "PASAPORTE" },
+      { label: "Tarjeta de Identidad (TI)", value: "TI" },
     ],
   },
-  { name: "birth_date", label: "Fecha de nacimiento", type: "date", omitWhenEmpty: true },
-  { name: "weight", label: "Peso (kg)", type: "number", step: 0.01, min: 0, omitWhenEmpty: true },
-  { name: "microchip", label: "Microchip", omitWhenEmpty: true },
+  { name: "document_number", label: "Número de Documento", required: true },
   {
-    name: "sterilized",
-    label: "Esterilizado",
+    name: "sex",
+    label: "Sexo / Género",
     type: "select",
+    required: true,
     options: [
-      { label: "No", value: "0" },
-      { label: "Sí", value: "1" },
+      { label: "Femenino", value: "female" },
+      { label: "Masculino", value: "male" },
+      { label: "Otro / No especifica", value: "unknown" },
     ],
-    omitWhenEmpty: true,
   },
+  { name: "birth_date", label: "Fecha de Nacimiento", type: "date", omitWhenEmpty: true },
+  { name: "phone", label: "Teléfono de Contacto", omitWhenEmpty: true },
+  { name: "address", label: "Dirección Domiciliaria", omitWhenEmpty: true },
+  { name: "city", label: "Ciudad", omitWhenEmpty: true },
+  { name: "health_coverage_provider", label: "EPS / Entidad Aseguradora", omitWhenEmpty: true },
+  { name: "emergency_contact_name", label: "Contacto de Emergencia (Nombre)", omitWhenEmpty: true },
+  { name: "emergency_contact_phone", label: "Contacto de Emergencia (Teléfono)", omitWhenEmpty: true },
+  { name: "medical_history_summary", label: "Resumen de Antecedentes Médicos", omitWhenEmpty: true },
   {
     name: "status",
     label: "Estado",
@@ -68,13 +86,13 @@ const fields: CrudField[] = [
 export default function PatientsPage() {
   return (
     <ModuleTablePage<Patient>
-      title="Pacientes"
-      description="Mascotas atendidas, cada una ligada a su propietario."
+      title="Pacientes de Atención Domiciliaria"
+      description="Directorio de pacientes asistenciales para enfermería y seguimiento clínico."
       resource="/patients"
-      columns={columns}
+      columns={columns as any}
       fields={fields}
-      actionLabel="Nuevo paciente"
-      modalDescription="El propietario es un cliente de la clínica."
+      actionLabel="Registrar Paciente"
+      modalDescription="Ingrese los datos del paciente para atención asistencial."
     />
   );
 }
