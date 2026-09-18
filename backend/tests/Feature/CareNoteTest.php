@@ -458,4 +458,175 @@ class CareNoteTest extends TestCase
             'encounter_type' => 'terapia',
         ]);
     }
+
+    public function test_bot_session_lifecycle_multi_audio_text_and_consolidation(): void
+    {
+        Storage::fake('local');
+        $botSecret = config('services.carenote_bot.secret', 'carenote-bot-secret-dev-2026');
+        $chatId = 777333111;
+
+        // Vinculación y privacidad previa
+        \App\Models\TelegramProfessionalLink::create([
+            'user_id' => $this->nurse->id,
+            'telegram_chat_id' => $chatId,
+            'is_verified' => true,
+            'linked_at' => now(),
+        ]);
+
+        \App\Models\PrivacyAcceptance::create([
+            'company_id' => $this->company->id,
+            'user_id' => $this->nurse->id,
+            'policy_version' => 'v1.0-carenote-2026',
+            'accepted_at' => now(),
+        ]);
+
+        // 1. Iniciar Sesión
+        $startResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/start', [
+                'telegram_chat_id' => $chatId,
+                'patient_id' => $this->patient->id,
+                'encounter_type' => 'atencion_domiciliaria',
+            ]);
+
+        $startResponse->assertStatus(201)
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('encounter.status', 'en_proceso');
+
+        $encounterId = $startResponse->json('encounter.id');
+
+        // 2. Intentar iniciar una segunda sesión activa (debe rebotar 409)
+        $conflictResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/start', [
+                'telegram_chat_id' => $chatId,
+                'patient_id' => $this->patient->id,
+            ]);
+
+        $conflictResponse->assertStatus(409)
+            ->assertJsonPath('code', 'ACTIVE_SESSION_EXISTS');
+
+        // 3. Consultar sesión activa
+        $activeCheckResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->getJson("/api/v1/bot/sessions/active?telegram_chat_id={$chatId}");
+
+        $activeCheckResponse->assertStatus(200)
+            ->assertJsonPath('has_active_session', true)
+            ->assertJsonPath('encounter.id', $encounterId);
+
+        // 4. Agregar Elemento 1: Audio (38 minutos)
+        $audioFile1 = UploadedFile::fake()->create('audio1.ogg', 600, 'audio/ogg');
+        $item1Response = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items', [
+                'telegram_chat_id' => $chatId,
+                'item_type' => 'audio',
+                'telegram_message_id' => 'msg_101',
+                'duration_seconds' => 2280, // 38m
+                'audio_file' => $audioFile1,
+            ]);
+
+        $item1Response->assertStatus(201)
+            ->assertJsonPath('sequence_number', 1);
+
+        $itemId1 = $item1Response->json('item.id');
+
+        // Actualizar estado de transcripción del Audio 1
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items/status', [
+                'item_id' => $itemId1,
+                'status' => 'ready',
+                'text_content' => 'Evaluación inicial de enfermería. Signos de dolor controlado.',
+            ])->assertStatus(200);
+
+        // 5. Agregar Elemento 2: Texto Libre
+        $item2Response = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items', [
+                'telegram_chat_id' => $chatId,
+                'item_type' => 'text',
+                'telegram_message_id' => 'msg_102',
+                'text_content' => 'Signos vitales: PA 120/80, FC 72, T 36.5C',
+            ]);
+
+        $item2Response->assertStatus(201)
+            ->assertJsonPath('sequence_number', 2);
+
+        // 6. Agregar Elemento 3: Audio 2 (34 minutos)
+        $audioFile2 = UploadedFile::fake()->create('audio2.ogg', 500, 'audio/ogg');
+        $item3Response = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items', [
+                'telegram_chat_id' => $chatId,
+                'item_type' => 'audio',
+                'telegram_message_id' => 'msg_103',
+                'duration_seconds' => 2040, // 34m
+                'audio_file' => $audioFile2,
+            ]);
+
+        $item3Response->assertStatus(201)
+            ->assertJsonPath('sequence_number', 3);
+
+        $itemId3 = $item3Response->json('item.id');
+
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items/status', [
+                'item_id' => $itemId3,
+                'status' => 'ready',
+                'text_content' => 'Administración de analgésicos según indicación médica.',
+            ])->assertStatus(200);
+
+        // 7. Finalizar y Consolidar Sesión
+        $closeResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/close', [
+                'telegram_chat_id' => $chatId,
+                'action' => 'confirm',
+            ]);
+
+        $closeResponse->assertStatus(200)
+            ->assertJsonPath('success', true)
+            ->assertJsonPath('summary.total_items', 3)
+            ->assertJsonPath('summary.total_audios', 2)
+            ->assertJsonPath('summary.total_texts', 1);
+
+        $consolidatedText = $closeResponse->json('summary.consolidated_text');
+        $this->assertStringContainsString('Evaluación inicial de enfermería', $consolidatedText);
+        $this->assertStringContainsString('Signos vitales: PA 120/80', $consolidatedText);
+        $this->assertStringContainsString('Administración de analgésicos', $consolidatedText);
+
+        $this->assertDatabaseHas('care_encounters', [
+            'id' => $encounterId,
+            'status' => 'borrador_pendiente',
+        ]);
+    }
+
+    public function test_bot_session_cancellation(): void
+    {
+        $botSecret = config('services.carenote_bot.secret', 'carenote-bot-secret-dev-2026');
+        $chatId = 555666777;
+
+        \App\Models\TelegramProfessionalLink::create([
+            'user_id' => $this->nurse->id,
+            'telegram_chat_id' => $chatId,
+            'is_verified' => true,
+            'linked_at' => now(),
+        ]);
+
+        \App\Models\PrivacyAcceptance::create([
+            'company_id' => $this->company->id,
+            'user_id' => $this->nurse->id,
+            'policy_version' => 'v1.0-carenote-2026',
+            'accepted_at' => now(),
+        ]);
+
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/start', [
+                'telegram_chat_id' => $chatId,
+                'patient_id' => $this->patient->id,
+            ])->assertStatus(201);
+
+        $cancelResponse = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/close', [
+                'telegram_chat_id' => $chatId,
+                'action' => 'cancel',
+            ]);
+
+        $cancelResponse->assertStatus(200)
+            ->assertJsonPath('action', 'cancelled');
+    }
 }

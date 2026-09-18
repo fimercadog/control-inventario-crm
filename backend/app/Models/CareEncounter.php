@@ -63,4 +63,9 @@ class CareEncounter extends Model
     {
         return $this->hasOne(ClinicalNote::class);
     }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(CareEncounterItem::class)->orderBy('sequence_number', 'asc');
+    }
 }

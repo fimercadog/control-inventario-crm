@@ -270,5 +270,12 @@ Route::get('/audio-recordings/{id}/stream', [AudioRecordingController::class, 's
 Route::prefix('v1/bot')->middleware(ValidateBotSecretToken::class)->group(function (): void {
     Route::post('/resolve-professional', [BotIntegrationController::class, 'resolveProfessional']);
     Route::post('/care-encounters', [BotIntegrationController::class, 'ingestCareEncounter']);
+
+    // Gestión de Sesiones y Elementos (Fase 3B V1)
+    Route::get('/sessions/active', [BotIntegrationController::class, 'activeSession']);
+    Route::post('/sessions/start', [BotIntegrationController::class, 'startSession']);
+    Route::post('/sessions/items', [BotIntegrationController::class, 'addSessionItem']);
+    Route::post('/sessions/items/status', [BotIntegrationController::class, 'updateItemStatus']);
+    Route::post('/sessions/close', [BotIntegrationController::class, 'closeSession']);
 });
 
