@@ -9,51 +9,46 @@ import { SplitHero } from "@/components/marketing/split-hero";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 const signs = [
-  "Dificultad para respirar o encías muy pálidas o azuladas",
-  "Vómito o diarrea persistente, sobre todo con sangre",
-  "Convulsiones, desmayo o incapacidad de pararse",
-  "Traumatismo: atropello, caída o golpe fuerte",
-  "Sospecha de intoxicación (comió algo tóxico)",
-  "Sangrado que no se detiene o herida abierta profunda",
-  "Distensión o dolor abdominal severo",
-  "Trabajo de parto complicado",
+  "Dificultad respiratoria aguda o alteración hemodinámica",
+  "Descompensación de signos vitales o dolor agudo severo",
+  "Caída severa con pérdida de movilidad o sospecha de trauma",
+  "Complicación inmediata en accesos vasculares, catéteres o sondas",
+  "Sangrado activo descompensado o herida desbordada",
+  "Reacción adversa grave a medicamentos o insumos",
+  "Crisis hipertensiva o alteración de estado de conciencia",
+  "Complicación posoperatoria en atención domiciliaria",
 ];
 
 const steps = [
-  { icon: PhoneCall, title: "Avisanos antes de venir", text: "Escribinos por WhatsApp o llamá a la clínica con el caso. El equipo se prepara mientras estás en camino." },
-  { icon: Stethoscope, title: "Estabilización inmediata", text: "Al llegar, la prioridad es estabilizar: dolor, sangrado, respiración. El diagnóstico completo viene después." },
-  { icon: Clock, title: "Seguimiento hasta el alta", text: "Si el paciente necesita quedar en observación, te mantenemos informado de su evolución." },
+  { icon: PhoneCall, title: "Aviso y triage inmediato", text: "Comunícate por WhatsApp o llamada. El profesional asignado evalúa la prioridad y se desplaza inmediatamente." },
+  { icon: Stethoscope, title: "Atención y estabilización", text: "Al llegar, la enfermera o terapeuta realiza la estabilización, toma de signos vitales y maniobras asistenciales." },
+  { icon: Clock, title: "Registro y reporte automático", text: "El informe de la atención prioritaria se envía automáticamente al médico tratante y al familiar responsable." },
 ];
 
 export default function UrgenciasPage() {
   return (
     <MarketingLayout>
-      {/* Hero: misma familia visual que Servicios/Productos/Equipo/Nosotros/Blog
-          -- ilustracion protagonista (veterinario aplicando una inyeccion, sobre
-          fondo rojo/salmon, tono de alerta) en vez del full-bleed anterior. */}
       <SplitHero
-        eyebrow="Urgencias"
-        title="Cuando no puede esperar, actuamos rápido"
-        lead="Ante un accidente, una intoxicación o un cuadro que empeora rápido, escribinos o llamá antes de venir para que el equipo esté listo."
-        image="/gallery/illustrations/illustration-8.png"
-        imageAlt="Veterinaria aplicando una inyección a un gato"
+        eyebrow="Atención Prioritaria"
+        title="Respuesta rápida cuando el paciente lo requiere"
+        lead="Ante una descompensación, dolor agudo o complicación en domicilio, nuestro equipo de enfermería y terapeutas está listo para intervenir."
+        image="/carenote/procedure-care.jpg"
+        imageAlt="Enfermera realizando atención domiciliaria prioritaria"
         actions={
           <CtaLink href={WHATSAPP_URL} variant="cta">
             <PhoneCall className="size-4" />
-            Urgencias por WhatsApp
+            Atención prioritaria por WhatsApp
           </CtaLink>
         }
       />
       <div className="relative z-10 mx-auto -mt-8 max-w-5xl px-4 sm:px-6 lg:px-8">
-        <PriorityBanner label="Línea directa 24/7" detail="+57 601 555 0188" />
+        <PriorityBanner label="Línea prioritaria 24/7" detail="+57 601 555 0188" />
       </div>
 
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="¿Cuándo es una urgencia?" title="Señales que no hay que esperar a que pasen solas" center={false} />
+          <SectionHeading eyebrow="¿Cuándo solicitar atención prioritaria?" title="Señales clínicas de alerta en domicilio" center={false} />
         </Reveal>
-        {/* Una sola tarjeta flotante sin bordes por item -- mismo patron que
-            IconFeatureFloatCard, no un grid de cards individuales. */}
         <div className="mt-10 rounded-[2rem] bg-card p-6 shadow-elevation-4 sm:p-10">
           <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
             {signs.map((sign, i) => (
@@ -67,18 +62,18 @@ export default function UrgenciasPage() {
           </div>
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Ante la duda, escribinos: es mejor una consulta de más que llegar tarde a una urgencia real.
+          Ante cualquier duda clínica, comunícate con la central de atención domiciliaria CareNote.
         </p>
       </Section>
 
       <Section className="bg-section-cream">
         <PhotoFeatureStack
-          image="/gallery/paw-procedure.jpg"
-          imageAlt="Procedimiento veterinario de urgencia"
+          image="/carenote/procedure-care.jpg"
+          imageAlt="Procedimiento clínico domiciliario de urgencia"
           reverse
           features={[
-            { title: "Prioridad inmediata", text: "Una urgencia no espera turno ni agenda. El equipo se prepara mientras estás en camino." },
-            { title: "Sin trámite previo", text: "Escribinos o llamá directo — no hace falta formulario ni cita para que te atendamos." },
+            { title: "Prioridad asistencial", text: "El profesional asignado recibe la alerta en tiempo real con la ubicación del paciente." },
+            { title: "Reporte directo al especialista", text: "Cada evento priorizado genera una nota de voz y un reporte estructurado instantáneo con n8n e IA." },
           ]}
         />
       </Section>

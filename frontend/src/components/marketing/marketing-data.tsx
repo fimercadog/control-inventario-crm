@@ -255,7 +255,7 @@ export const blogPosts: BlogPost[] = [
     title: "Menos tiempo escribiendo. Más tiempo cuidando: La revolución del dictado por Telegram",
     category: "Automatización",
     excerpt: "Cómo el dictado por voz y la IA liberan a los profesionales de salud domiciliaria del trabajo administrativo nocturno.",
-    image: "/gallery/pet-7.jpg",
+    image: "/carenote/voice-telegram.jpg",
     authorSlug: "maria-elena-gomez",
     date: "2026-09-10",
     readMinutes: 4,

@@ -18,18 +18,15 @@ export function HomeHero() {
             arranca primero, todo lo demas entra encima despues. */}
         <Reveal mount direction="zoom-out" duration={1.1} className="absolute inset-0">
           <Image
-            src="/gallery/hero-bulldog-exam.jpg"
-            alt="Veterinario examinando a un bulldog en la camilla de consulta"
+            src="/carenote/hero-homecare.jpg"
+            alt="Enfermera y terapeuta realizando atención domiciliaria al paciente"
             fill
             priority
             sizes="100vw"
             className="object-cover"
           />
         </Reveal>
-        {/* Overlay calido (no navy/frio): el hero real usa un duotono tostado/beige
-            sobre la foto, no un scrim oscuro -- getComputedStyle confirmo texto
-            blanco encima de ese tono calido, no de negro. */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#241a13]/80 via-[#3d2f26]/40 to-[#3d2f26]/5" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/70 to-slate-950/30" />
 
         <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl">

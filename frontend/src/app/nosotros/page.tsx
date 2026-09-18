@@ -54,7 +54,7 @@ export default function AboutPage() {
 
       <Section>
         <PhotoFeatureStack
-          image="/gallery/pet-7.jpg"
+          image="/carenote/nursing-care.jpg"
           imageAlt="Enfermera domiciliaria realizando valoración clínica"
           features={[
             { title: "Pensado para el desplazamiento", text: "Diseñado para profesionales que atienden pacientes en casa y necesitan registrar datos rápidamente." },
@@ -66,7 +66,7 @@ export default function AboutPage() {
 
       <OffsetBlobBlock
         title="Misión y principios"
-        image="/gallery/pet-8.jpg"
+        image="/carenote/patient-history.jpg"
         imageAlt="Registro de evolución clínica en pantalla"
         actions={
           <CtaLink href="/servicios" variant="cta">

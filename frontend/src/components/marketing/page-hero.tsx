@@ -15,8 +15,8 @@ function HeroArt() {
   return (
     <div className="relative flex aspect-4/5 w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-secondary shadow-elevation-4 sm:aspect-5/4.6 lg:aspect-4/4.6">
       <Image
-        src="/gallery/hero-bulldog-exam.jpg"
-        alt="Veterinario revisando a un bulldog en la camilla de consulta"
+        src="/carenote/hero-homecare.jpg"
+        alt="Enfermera y terapeuta realizando atención domiciliaria al paciente"
         fill
         priority
         sizes="(min-width: 1024px) 40vw, 90vw"

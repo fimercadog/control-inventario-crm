@@ -13,13 +13,12 @@ import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 const SERVICE_PHOTO: Record<string, string> = {
-  "consulta-veterinaria": "/gallery/hero-bulldog-exam.jpg",
-  vacunacion: "/gallery/pet-4.jpg",
-  cirugia: "/gallery/pet-13.jpg",
-  "laboratorio-clinico": "/gallery/pet-12.jpg",
-  "peluqueria-grooming": "/gallery/pet-8.jpg",
-  nutricion: "/gallery/pet-4.jpg",
-  urgencias: "/gallery/pet-10.jpg",
+  "atencion-domiciliaria-enfermeria": "/carenote/nursing-care.jpg",
+  "terapias-domiciliarias": "/carenote/therapist-session.jpg",
+  "registro-voz-telegram": "/carenote/voice-telegram.jpg",
+  "informes-clinicos-ia": "/carenote/ai-clinical-report.jpg",
+  "historia-clinica-pacientes": "/carenote/patient-history.jpg",
+  "consentimientos-privacidad": "/carenote/privacy-consent.jpg",
 };
 
 export function generateStaticParams() {
@@ -32,7 +31,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   if (!service) notFound();
 
   const iconSrc = SERVICE_ICON[service.slug];
-  const photo = SERVICE_PHOTO[service.slug] ?? "/gallery/paw-procedure.jpg";
+  const photo = SERVICE_PHOTO[service.slug] ?? "/carenote/nursing-care.jpg";
   const related = services.filter((s) => s.slug !== service.slug).slice(0, 3);
 
   return (
@@ -49,14 +48,12 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
               {service.title}
             </h1>
             <p className="mt-5 max-w-md text-lg leading-8 text-muted-foreground">{service.description}</p>
-            {/* Dos botones apilados + link a FAQ -- mismo patron del hero de
-                Service Detail en el pack (Make an Appointment / Chat with a Doctor). */}
             <div className="mt-8 flex flex-col items-start gap-3">
               <CtaLink href="/agendar-cita" variant="cta">
                 Agendar este servicio
               </CtaLink>
               <CtaLink href={WHATSAPP_URL} variant="default" size="sm">
-                Hablar con un veterinario
+                Hablar con un profesional
               </CtaLink>
             </div>
             <CtaLink href="/preguntas-frecuentes" variant="ghost" size="sm" className="mt-3 px-0">
@@ -95,7 +92,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
       <Section className="pt-0">
         <Reveal>
-          <SectionHeading eyebrow="Testimonios" title="Lo que dicen nuestros visitantes" />
+          <SectionHeading eyebrow="Testimonios" title="Lo que dicen nuestros profesionales y pacientes" />
         </Reveal>
         <div className="mt-12">
           <TestimonialGrid testimonials={testimonials} limit={2} />
@@ -104,7 +101,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
       <Section className="bg-section-cream pt-0">
         <Reveal>
-          <SectionHeading eyebrow="También te puede interesar" title="Otros servicios de la clínica" />
+          <SectionHeading eyebrow="También te puede interesar" title="Otros servicios de CareNote" />
         </Reveal>
         <div className="mt-12">
           <ServiceGrid services={related} />
@@ -112,8 +109,8 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       </Section>
 
       <AppointmentCta
-        title={`¿Agendamos ${service.title.toLowerCase()} para tu mascota?`}
-        lead="Contanos el caso y te confirmamos disponibilidad. Para urgencias, escribinos directo por WhatsApp."
+        title={`¿Agendamos ${service.title.toLowerCase()} para la atención en domicilio?`}
+        lead="Contanos el caso y te confirmamos disponibilidad del profesional. Para urgencias o atención prioritaria, escribinos directo por WhatsApp."
       />
     </MarketingLayout>
   );
