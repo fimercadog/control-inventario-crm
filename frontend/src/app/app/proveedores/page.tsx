@@ -36,7 +36,8 @@ export default function SuppliersPage() {
   return (
     <ModuleTablePage<Supplier>
       title="Proveedores"
-      description="Proveedores para reposicion de inventario."
+      description="Proveedores de insumos, materiales y equipos de atención domiciliaria."
+
       resource="/suppliers"
       exportResource="suppliers"
       columns={columns}

@@ -81,15 +81,16 @@ const fields: CrudField[] = [
 export default function ProductsPage() {
   return (
     <ModuleTablePage<Product>
-      title="Productos"
-      description="Catalogo de productos con precio y existencia actual."
+      title="Inventario e Insumos"
+      description="Control de inventario, existencia y reorden de insumos médicos de atención domiciliaria (gasas, guantes, jeringas, sondas, material de curación)."
       resource="/products"
       exportResource="products"
       columns={columns}
       fields={fields}
-      actionLabel="Nuevo producto"
-      modalDescription="Producto del catalogo de inventario."
+      actionLabel="Nuevo insumo"
+      modalDescription="Insumo o material médico de atención domiciliaria."
       extraRowActions={(row, refresh) => <ProductImageAction product={row} onDone={refresh} />}
     />
   );
 }
+

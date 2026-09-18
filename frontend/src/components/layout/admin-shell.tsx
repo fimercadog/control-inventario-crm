@@ -108,7 +108,16 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/app/agenda", label: "Agenda / Citas", icon: CalendarDays, permissions: ["appointments.manage"] },
       { href: "/app/usuarios", label: "Profesionales", icon: Contact2, permissions: ["users.manage"] },
-      { href: "/app/roles", label: "Configuración", icon: Settings, permissions: ["roles.manage"] },
+      { href: "/app/productos", label: "Inventario e Insumos", icon: Package, permissions: ["products.manage"] },
+      { href: "/app/proveedores", label: "Proveedores", icon: Truck, permissions: ["suppliers.manage"] },
+      { href: "/app/configuracion", label: "Configuración", icon: Settings, permissions: ["settings.manage"] },
+    ],
+  },
+  {
+    label: "ADMINISTRACIÓN",
+    items: [
+      { href: "/app/roles", label: "Usuarios y Roles", icon: Shield, permissions: ["roles.manage"] },
+      { href: "/app/auditoria", label: "Auditoría de Acciones", icon: ClipboardList, permissions: ["audit.view"] },
     ],
   },
   {
@@ -116,6 +125,16 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/app/reportes", label: "Reportes", icon: BarChart3, permissions: ["reports.view"] },
       { href: "/app/reportes-comerciales", label: "Métricas y Gráficos", icon: TrendingUp, permissions: ["reports.view"] },
+    ],
+  },
+  {
+    label: "PREMIUM",
+    items: [
+      { href: "/app/facturas", label: "Facturación", icon: FileText, premium: true },
+      { href: "/app/cotizaciones", label: "Cotizaciones", icon: FileText, premium: true },
+      { href: "/app/pagos", label: "Cobros", icon: Receipt, premium: true },
+      { href: "/app/bodegas", label: "Inventario Avanzado", icon: Warehouse, premium: true },
+      { href: "/app/ia", label: "Integraciones IA", icon: Bot, premium: true },
     ],
   },
 ];
@@ -130,59 +149,75 @@ function PremiumBadge() {
   );
 }
 
-// Contenido del modal "Premium" segun el modulo. Sin entrada => cae al de IA.
+// Contenido del modal "Premium" según el módulo.
 const PREMIUM_INFO: Record<string, { title: string; body: React.ReactNode }> = {
-  "/app/contingencia": {
-    title: "Modo contingencia (continuidad sin conexion)",
+  "/app/facturas": {
+    title: "Módulo Premium: Facturación Electrónica",
     body: (
       <>
         <p>
-          El modo contingencia permite{" "}
-          <strong className="font-semibold text-foreground">seguir atendiendo cuando se cae internet</strong>: las
-          consultas, ventas de mostrador y movimientos de inventario se registran localmente y quedan en una cola.
-        </p>
-        <p>
-          Al volver la conexion, todo lo encolado se{" "}
-          <strong className="font-semibold text-foreground">sincroniza con el sistema</strong> y se resuelven los
-          conflictos (por ejemplo, stock que cambio mientras estabas sin senal).
+          El módulo de <strong className="font-semibold text-foreground">Facturación Electrónica y Recibos</strong> permite emitir facturas legales para aseguradoras y pacientes particulares directamente desde la plataforma.
         </p>
         <p className="font-medium text-foreground">
-          Esta funcionalidad esta disponible en el plan Premium. Para activarla o conocer las opciones, comunicate
-          con el administrador de tu sistema.
+          Esta es una funcionalidad Premium adicional. Comunicáte con el equipo de CareNote para activarla en tu plan.
+        </p>
+      </>
+    ),
+  },
+  "/app/cotizaciones": {
+    title: "Módulo Premium: Cotizaciones y Presupuestos",
+    body: (
+      <>
+        <p>
+          Permite generar <strong className="font-semibold text-foreground">presupuestos de planes terapéuticos e insumos</strong> para aprobación previa por parte de los familiares o la entidad responsable.
+        </p>
+        <p className="font-medium text-foreground">
+          Esta es una funcionalidad Premium adicional. Comunicáte con el equipo de CareNote para activarla en tu plan.
+        </p>
+      </>
+    ),
+  },
+  "/app/pagos": {
+    title: "Módulo Premium: Cobros y Cartera",
+    body: (
+      <>
+        <p>
+          Permite gestionar el <strong className="font-semibold text-foreground">recaudo de copagos, cartera vencida de convenios y saldos pendientes</strong> por sesión realizada.
+        </p>
+        <p className="font-medium text-foreground">
+          Esta es una funcionalidad Premium adicional. Comunicáte con el equipo de CareNote para activarla en tu plan.
+        </p>
+      </>
+    ),
+  },
+  "/app/bodegas": {
+    title: "Módulo Premium: Inventario Avanzado & Multibodega",
+    body: (
+      <>
+        <p>
+          Permite gestionar <strong className="font-semibold text-foreground">múltiples bodegas centrales, kits de traslado para enfermeros y transferencias entre sedes</strong>.
+        </p>
+        <p className="font-medium text-foreground">
+          Esta es una funcionalidad Premium adicional. Comunicáte con el equipo de CareNote para activarla en tu plan.
         </p>
       </>
     ),
   },
   "/app/ia": {
-    title: "Inteligencia Artificial para la clínica",
+    title: "Módulo Premium: Integraciones Avanzadas e Inteligencia Artificial",
     body: (
       <>
         <p>
-          Potenciá la gestión clínica con una herramienta de inteligencia artificial diseñada para{" "}
-          <strong className="font-semibold text-foreground">
-            apoyar la atención, facilitar el análisis de información y ayudarte en la toma de decisiones
-          </strong>
-          .
-        </p>
-        <p>
-          Podés utilizarla para consultar la historia de un paciente, identificar vacunas por vencer, revisar la
-          ocupación de la agenda, resumir datos relevantes y obtener apoyo para interpretar indicadores como
-          rotación de inventario de medicamentos y desempeño de la clínica.
-        </p>
-        <p>
-          La inteligencia artificial funciona como un{" "}
-          <strong className="font-semibold text-foreground">asistente para el equipo de la clínica</strong>,
-          permitiendo trabajar de forma más ágil y obtener información útil a partir de los datos disponibles
-          en el sistema.
+          Modelos de <strong className="font-semibold text-foreground">análisis automatizado de tendencias de evolución clínica</strong> e integración directa con sistemas hospitalarios (HIS/EMR).
         </p>
         <p className="font-medium text-foreground">
-          Esta funcionalidad está disponible en el plan Premium. Para activarla o conocer las opciones
-          disponibles, comunicate con el administrador de tu sistema.
+          Esta es una funcionalidad Premium adicional. Comunicáte con el equipo de CareNote para activarla en tu plan.
         </p>
       </>
     ),
   },
 };
+
 
 function NavLink({ item }: { item: NavItem }) {
   const pathname = usePathname();

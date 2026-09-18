@@ -14,5 +14,14 @@ const columns: AppColumnDef<Audit>[] = [
 ];
 
 export default function AuditPage() {
-  return <ModuleTablePage title="Auditoria" description="Bitacora de acciones relevantes del sistema." resource="/audit-logs" exportResource="audit-logs" columns={columns} />;
+  return (
+    <ModuleTablePage
+      title="Auditoría de Acciones y Trazabilidad"
+      description="Bitácora de seguridad del sistema: registro de quién consultó, creó o modificó acciones, fecha/hora y usuario (distinto e independiente del Historial del Paciente)."
+      resource="/audit-logs"
+      exportResource="audit-logs"
+      columns={columns}
+    />
+  );
 }
+
