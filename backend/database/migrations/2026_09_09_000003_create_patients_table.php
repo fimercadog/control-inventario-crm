@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->foreignId('client_id')->constrained()->restrictOnDelete(); // propietario
-            $table->foreignId('species_id')->constrained('species')->restrictOnDelete();
+            $table->foreignId('species_id')->nullable()->constrained('species')->restrictOnDelete();
             $table->foreignId('breed_id')->nullable()->constrained('breeds')->nullOnDelete();
             $table->string('name');
             $table->string('sex')->default('unknown'); // male | female | unknown

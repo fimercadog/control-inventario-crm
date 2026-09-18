@@ -4,10 +4,15 @@ use App\Http\Controllers\Api\ActivityController;
 use App\Http\Controllers\Api\AccountPayableController;
 use App\Http\Controllers\Api\AccountReceivableController;
 use App\Http\Controllers\Api\AppointmentController;
+use App\Http\Controllers\Api\AudioRecordingController;
 use App\Http\Controllers\Api\AuditLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\BreedController;
+use App\Http\Controllers\Api\CareEncounterController;
+use App\Http\Controllers\Api\ClinicalNoteController;
+use App\Http\Controllers\Api\PrivacyAcceptanceController;
+use App\Http\Controllers\Api\TelegramLinkController;
 use App\Http\Controllers\Api\CashMovementController;
 use App\Http\Controllers\Api\CashRegisterController;
 use App\Http\Controllers\Api\CashSessionController;
@@ -231,8 +236,31 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('roles', RoleController::class)->only(['index', 'show', 'store', 'update'])->middleware('can:roles.manage');
     Route::apiResource('users', UserController::class)->only(['index', 'store', 'update'])->middleware('can:users.manage');
 
+    // --- Vertical CareNote ---
+    Route::apiResource('care-encounters', CareEncounterController::class)->middleware('can:care_encounters.view');
+    Route::patch('/care-encounters/{id}/status', [CareEncounterController::class, 'updateStatus'])->middleware('can:care_encounters.manage')->whereNumber('id');
+
+    Route::apiResource('clinical-notes', ClinicalNoteController::class)->only(['index', 'show', 'store'])->middleware('can:clinical_notes.view');
+    Route::post('/clinical-notes/{id}/confirm', [ClinicalNoteController::class, 'confirm'])->middleware('can:clinical_notes.manage')->whereNumber('id');
+    Route::post('/clinical-notes/{id}/addendum', [ClinicalNoteController::class, 'addendum'])->middleware('can:clinical_notes.manage')->whereNumber('id');
+
+    Route::apiResource('audio-recordings', AudioRecordingController::class)->only(['index', 'show', 'store'])->middleware('can:audio_recordings.manage');
+    Route::get('/audio-recordings/{id}/signed-url', [AudioRecordingController::class, 'signedUrl'])->middleware('can:audio_recordings.manage')->whereNumber('id');
+
+    Route::get('/telegram-link/pin', [TelegramLinkController::class, 'generatePin']);
+    Route::post('/telegram-link/verify', [TelegramLinkController::class, 'verifyPin']);
+    Route::get('/telegram-link/status', [TelegramLinkController::class, 'status']);
+
+    Route::apiResource('privacy-acceptances', PrivacyAcceptanceController::class)->only(['index', 'store'])->middleware('can:privacy_acceptances.view');
+
     // El permiso por recurso se valida dentro del controlador.
     Route::get('/exports/{resource}.{format}', ExportController::class)
         ->whereIn('resource', ['clients', 'deals', 'products', 'suppliers', 'stock-movements', 'purchase-orders', 'orders', 'invoices', 'accounts-receivable', 'accounts-payable', 'payments', 'cash-movements', 'audit-logs'])
         ->whereIn('format', ['csv', 'pdf']);
 });
+
+Route::get('/audio-recordings/{id}/stream', [AudioRecordingController::class, 'stream'])
+    ->name('audio.stream')
+    ->whereNumber('id')
+    ->middleware('signed');
+
