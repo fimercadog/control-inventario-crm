@@ -97,6 +97,15 @@ const navGroups: NavGroup[] = [
     items: [{ href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
   },
   {
+    label: "CareNote",
+    items: [
+      { href: "/app/atenciones", label: "Atenciones Domiciliarias", icon: Stethoscope, permissions: ["care_encounters.view"] },
+      { href: "/app/pacientes", label: "Pacientes", icon: Users, permissions: ["patients.manage"] },
+      { href: "/app/telegram", label: "Vinculación Telegram", icon: Bot, permissions: ["dashboard.view"] },
+      { href: "/app/privacidad", label: "Consentimientos & Privacidad", icon: Shield, permissions: ["privacy_acceptances.view"] },
+    ],
+  },
+  {
     label: "Clínica",
     items: [
       { href: "/app/agenda", label: "Citas del día", icon: CalendarDays, permissions: ["appointments.manage"] },
