@@ -381,42 +381,47 @@ class DatabaseSeeder extends Seeder
     /** @return Collection<int,Patient> */
     private function seedPatients(Company $company, Collection $clients, array $species): Collection
     {
-        $breedId = fn (string $sp, string $br) => Breed::query()
-            ->where(['company_id' => $company->id, 'species_id' => $species[$sp]->id, 'name' => $br])->value('id');
+        $defaultSpeciesId = Species::query()->where('company_id', $company->id)->value('id');
+        $defaultBreedId = Breed::query()->where('company_id', $company->id)->value('id');
 
-        // [ownerIdx, nombre, especie, raza, sexo, nacimiento, peso, esterilizado, microchip]
+        // [ownerIdx, nombres, apellidos, docType, docNum, sexo, nacimiento, eps, ciudad, teléfono, contacto_emergencia, tel_emergencia, resumen_clínico]
         $rows = [
-            [0, 'Luna', 'Perro', 'Golden Retriever', 'female', '2021-03-14', 28.4, true, '900215001234567'],
-            [0, 'Max', 'Perro', 'Labrador Retriever', 'male', '2019-07-02', 33.1, false, '900215001234568'],
-            [1, 'Michi', 'Gato', 'Criollo / Mestizo', 'female', '2022-11-20', 4.2, true, null],
-            [1, 'Simón', 'Gato', 'Siamés', 'male', '2020-02-10', 5.1, true, '900215001234569'],
-            [2, 'Kiara', 'Perro', 'Criollo / Mestizo', 'female', '2020-01-05', 15.8, true, null],
-            [3, 'Toby', 'Perro', 'Poodle', 'male', '2023-05-30', 6.7, false, '900215001234570'],
-            [3, 'Rocco', 'Perro', 'Bulldog Francés', 'male', '2022-01-18', 11.2, false, '900215001234571'],
-            [4, 'Nina', 'Perro', 'Schnauzer', 'female', '2018-09-12', 8.9, true, '900215001234572'],
-            [4, 'Pipo', 'Ave', 'Periquito', 'unknown', null, 0.04, false, null],
-            [5, 'Zeus', 'Perro', 'Pastor Alemán', 'male', '2021-12-01', 34.7, false, '900215001234573'],
-            [6, 'Coco', 'Gato', 'Persa', 'female', '2019-06-25', 3.8, true, '900215001234574'],
-            [7, 'Bruno', 'Perro', 'Beagle', 'male', '2020-08-08', 13.4, true, '900215001234575'],
-            [8, 'Manchas', 'Conejo', 'Mini Lop', 'female', '2023-02-14', 1.6, false, null],
-            [9, 'Estrella', 'Perro', 'Criollo / Mestizo', 'female', '2022-04-03', 17.2, true, null],
-            [9, 'Canela', 'Perro', 'Criollo / Mestizo', 'female', '2021-10-19', 19.0, false, null],
-            [10, 'Duque', 'Perro', 'Golden Retriever', 'male', '2023-06-11', 24.5, false, '900215001234576'],
+            [0, 'Carlos', 'Mendoza', 'CC', '1018420101', 'male', '1985-03-14', 'EPS Sanitas', 'Bogotá', '+57 310 555 0101', 'Elena Mendoza', '+57 310 555 9901', 'Hipertensión arterial en tratamiento con enalapril.'],
+            [0, 'María Elena', 'Gómez', 'CC', '1018420102', 'female', '1990-07-02', 'Sura EPS', 'Bogotá', '+57 311 555 0102', 'Roberto Gómez', '+57 311 555 9902', 'Paciente asmática, uso eventual de salbutamol.'],
+            [1, 'Juan Pablo', 'Rodríguez', 'CC', '1018420103', 'male', '1982-11-20', 'Compensar EPS', 'Bogotá', '+57 312 555 0103', 'Patricia Rodríguez', '+57 312 555 9903', 'Antecedente de lumbalgia crónica.'],
+            [1, 'Sofía', 'López', 'CC', '1018420104', 'female', '1995-02-10', 'Salud Total', 'Bogotá', '+57 313 555 0104', 'Jorge López', '+57 313 555 9904', 'Alergia a la penicilina.'],
+            [2, 'Carmen', 'Ramírez', 'CC', '1018420105', 'female', '1978-01-05', 'Coosalud', 'Bogotá', '+57 314 555 0105', 'Esteban Ramírez', '+57 314 555 9905', 'Diabetes Mellitus tipo 2 controlada.'],
+            [3, 'Fernando', 'Álvarez', 'CC', '1018420106', 'male', '1988-05-30', 'EPS Sanitas', 'Bogotá', '+57 315 555 0106', 'Gloria Álvarez', '+57 315 555 9906', 'Sin antecedentes de importancia.'],
+            [3, 'Mateo', 'Gutiérrez', 'TI', '1098200107', 'male', '2012-01-18', 'Sura EPS', 'Bogotá', '+57 316 555 0107', 'Laura Gutiérrez', '+57 316 555 9907', 'Controles pediátricos de crecimiento al día.'],
+            [4, 'Camila', 'Torres', 'CC', '1018420108', 'female', '1993-09-12', 'Compensar EPS', 'Bogotá', '+57 317 555 0108', 'Andrés Torres', '+57 317 555 9908', 'Gastropatía crónica leve.'],
+            [5, 'Alejandro', 'Morales', 'CC', '1018420109', 'male', '1980-12-01', 'Nueva EPS', 'Bogotá', '+57 318 555 0109', 'Marta Morales', '+57 318 555 9909', 'Evaluación post-quirúrgica de rodilla.'],
+            [6, 'Lucía', 'Vargas', 'CC', '1018420110', 'female', '1998-06-25', 'FAMISANAR', 'Bogotá', '+57 319 555 0110', 'Felipe Vargas', '+57 319 555 9910', 'Sin antecedentes de trascendencia.'],
+            [7, 'Diego', 'Fernández', 'CC', '1018420111', 'male', '1986-08-08', 'EPS Sanitas', 'Bogotá', '+57 320 555 0111', 'Sandra Fernández', '+57 320 555 9911', 'Chequeos ejecutivos periódicos.'],
         ];
 
-        return collect($rows)->map(fn ($d) => Patient::firstOrCreate(
-            ['company_id' => $company->id, 'client_id' => $clients[$d[0]]->id, 'name' => $d[1]],
-            [
-                'species_id' => $species[$d[2]]->id,
-                'breed_id' => $breedId($d[2], $d[3]),
-                'sex' => $d[4],
-                'birth_date' => $d[5],
-                'weight' => $d[6],
-                'sterilized' => $d[7],
-                'microchip' => $d[8],
-                'status' => 'active',
-            ],
-        ));
+        return collect($rows)->map(function ($d) use ($company, $clients, $defaultSpeciesId, $defaultBreedId) {
+            $fullName = trim($d[1] . ' ' . $d[2]);
+            return Patient::firstOrCreate(
+                ['company_id' => $company->id, 'client_id' => $clients[$d[0]]->id, 'name' => $fullName],
+                [
+                    'first_name' => $d[1],
+                    'last_name' => $d[2],
+                    'document_type' => $d[3],
+                    'document_number' => $d[4],
+                    'sex' => $d[5],
+                    'birth_date' => $d[6],
+                    'health_coverage_provider' => $d[7],
+                    'city' => $d[8],
+                    'phone' => $d[9],
+                    'emergency_contact_name' => $d[10],
+                    'emergency_contact_phone' => $d[11],
+                    'medical_history_summary' => $d[12],
+                    'species_id' => $defaultSpeciesId,
+                    'breed_id' => $defaultBreedId,
+                    'status' => 'active',
+                ],
+            );
+        });
     }
 
     // ------------------------------------------------------------------ stock
