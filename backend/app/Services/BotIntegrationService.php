@@ -203,6 +203,79 @@ class BotIntegrationService
         ];
     }
 
+    public function startAudioSegment(array $validated, Request $request, AuditService $audit): array
+    {
+        $telegramChatId = (int) $validated['telegram_chat_id'];
+        $resolution = $this->resolveProfessional($telegramChatId);
+
+        if (! $resolution['success']) {
+            return $resolution;
+        }
+
+        $companyId = $resolution['company']['id'];
+        $professionalId = $resolution['professional']['id'];
+
+        $encounter = CareEncounter::where('company_id', $companyId)
+            ->where('professional_id', $professionalId)
+            ->where('status', 'en_proceso')
+            ->first();
+
+        if (! $encounter) {
+            return [
+                'success' => false,
+                'status' => 422,
+                'code' => 'NO_ACTIVE_SESSION',
+                'message' => 'No hay ninguna sesión clínica activa para iniciar la grabación.',
+            ];
+        }
+
+        // Verificar si ya existe un segmento activo pendiente de audio
+        $pendingSegment = CareEncounterItem::where('care_encounter_id', $encounter->id)
+            ->where('item_type', 'audio')
+            ->whereNull('received_at')
+            ->where('status', 'preparing')
+            ->first();
+
+        if ($pendingSegment) {
+            return [
+                'success' => false,
+                'status' => 409,
+                'code' => 'ACTIVE_SEGMENT_EXISTS',
+                'message' => 'Ya tienes una grabación de audio en curso para esta sesión.',
+                'pending_segment' => [
+                    'segment_id' => $pendingSegment->segment_id,
+                    'sequence_number' => $pendingSegment->sequence_number,
+                    'started_at' => $pendingSegment->started_at?->toIso8601String(),
+                ],
+            ];
+        }
+
+        $nextSeq = (int) CareEncounterItem::where('care_encounter_id', $encounter->id)->max('sequence_number') + 1;
+        $segmentId = 'seg_' . strtolower(Str::random(12));
+
+        $item = CareEncounterItem::create([
+            'company_id' => $companyId,
+            'care_encounter_id' => $encounter->id,
+            'sequence_number' => $nextSeq,
+            'item_type' => 'audio',
+            'segment_id' => $segmentId,
+            'status' => 'preparing',
+            'started_at' => now(),
+            'received_at' => null,
+        ]);
+
+        $audit->record('audio_segment_started', $item, $request);
+
+        return [
+            'success' => true,
+            'status' => 201,
+            'segment_id' => $segmentId,
+            'sequence_number' => $nextSeq,
+            'encounter_id' => $encounter->id,
+            'started_at' => $item->started_at->toIso8601String(),
+        ];
+    }
+
     public function addSessionItem(array $validated, Request $request, AuditService $audit): array
     {
         $telegramChatId = (int) $validated['telegram_chat_id'];
@@ -229,58 +302,155 @@ class BotIntegrationService
             ];
         }
 
-        $nextSeq = (int) CareEncounterItem::where('care_encounter_id', $encounter->id)->max('sequence_number') + 1;
         $itemType = $validated['item_type'] ?? 'audio';
 
-        $audioRecordingId = null;
+        if ($itemType === 'audio') {
+            // Buscar si existe un segmento pendiente previamente iniciado mediante "▶️ Iniciar audio"
+            $pendingSegment = null;
+            if (! empty($validated['segment_id'])) {
+                $pendingSegment = CareEncounterItem::where('care_encounter_id', $encounter->id)
+                    ->where('segment_id', $validated['segment_id'])
+                    ->whereNull('received_at')
+                    ->first();
+            }
 
-        if ($itemType === 'audio' && $request->hasFile('audio_file')) {
-            $file = $request->file('audio_file');
-            $hash = hash_file('sha256', $file->getRealPath());
-            $filename = time() . '_seq' . $nextSeq . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $file->getClientOriginalName());
-            $relativePath = 'audios/' . $encounter->id . '/' . $filename;
+            if (! $pendingSegment) {
+                $pendingSegment = CareEncounterItem::where('care_encounter_id', $encounter->id)
+                    ->where('item_type', 'audio')
+                    ->whereNull('received_at')
+                    ->first();
+            }
 
-            Storage::disk('local')->putFileAs('audios/' . $encounter->id, $file, $filename);
+            if ($pendingSegment) {
+                // Usar el segmento existente e incorporar el audio entregado
+                $item = $pendingSegment;
+                $audioRecordingId = null;
 
-            $recording = AudioRecording::create([
+                if ($request->hasFile('audio_file')) {
+                    $file = $request->file('audio_file');
+                    $hash = hash_file('sha256', $file->getRealPath());
+                    $filename = time() . '_seq' . $item->sequence_number . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $file->getClientOriginalName());
+                    $relativePath = 'audios/' . $encounter->id . '/' . $filename;
+
+                    Storage::disk('local')->putFileAs('audios/' . $encounter->id, $file, $filename);
+
+                    $recording = AudioRecording::create([
+                        'company_id' => $companyId,
+                        'care_encounter_id' => $encounter->id,
+                        'telegram_file_id' => $validated['telegram_message_id'] ?? null,
+                        'original_filename' => $file->getClientOriginalName(),
+                        'file_path' => $relativePath,
+                        'file_size_bytes' => $file->getSize(),
+                        'mime_type' => $file->getMimeType() ?: 'audio/ogg',
+                        'duration_seconds' => $validated['duration_seconds'] ?? null,
+                        'sha256_hash' => $hash,
+                        'status' => 'recibido',
+                    ]);
+
+                    $audioRecordingId = $recording->id;
+                }
+
+                $item->update([
+                    'telegram_message_id' => $validated['telegram_message_id'] ?? $item->telegram_message_id,
+                    'audio_recording_id' => $audioRecordingId,
+                    'duration_seconds' => $validated['duration_seconds'] ?? $item->duration_seconds,
+                    'file_size_bytes' => $validated['file_size_bytes'] ?? $item->file_size_bytes,
+                    'status' => $validated['status'] ?? 'received',
+                    'received_at' => now(),
+                ]);
+
+                $audit->record('session_item_delivered', $item, $request);
+
+                return [
+                    'success' => true,
+                    'status' => 200,
+                    'item' => $item->fresh('audioRecording'),
+                    'encounter_id' => $encounter->id,
+                    'sequence_number' => $item->sequence_number,
+                    'auto_created' => false,
+                ];
+            }
+
+            // Si NO había un segmento pendiente (Enfermera envió audio directo sin pulsar "▶️ Iniciar audio")
+            // Se crea un segmento automático sin rechazar la información clínica
+            $nextSeq = (int) CareEncounterItem::where('care_encounter_id', $encounter->id)->max('sequence_number') + 1;
+            $autoSegmentId = ! empty($validated['segment_id']) ? $validated['segment_id'] : ('seg_auto_' . strtolower(Str::random(10)));
+
+            $audioRecordingId = null;
+            if ($request->hasFile('audio_file')) {
+                $file = $request->file('audio_file');
+                $hash = hash_file('sha256', $file->getRealPath());
+                $filename = time() . '_seq' . $nextSeq . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '_', $file->getClientOriginalName());
+                $relativePath = 'audios/' . $encounter->id . '/' . $filename;
+
+                Storage::disk('local')->putFileAs('audios/' . $encounter->id, $file, $filename);
+
+                $recording = AudioRecording::create([
+                    'company_id' => $companyId,
+                    'care_encounter_id' => $encounter->id,
+                    'telegram_file_id' => $validated['telegram_message_id'] ?? null,
+                    'original_filename' => $file->getClientOriginalName(),
+                    'file_path' => $relativePath,
+                    'file_size_bytes' => $file->getSize(),
+                    'mime_type' => $file->getMimeType() ?: 'audio/ogg',
+                    'duration_seconds' => $validated['duration_seconds'] ?? null,
+                    'sha256_hash' => $hash,
+                    'status' => 'recibido',
+                ]);
+
+                $audioRecordingId = $recording->id;
+            }
+
+            $item = CareEncounterItem::create([
                 'company_id' => $companyId,
                 'care_encounter_id' => $encounter->id,
-                'telegram_file_id' => $validated['telegram_message_id'] ?? null,
-                'original_filename' => $file->getClientOriginalName(),
-                'file_path' => $relativePath,
-                'file_size_bytes' => $file->getSize(),
-                'mime_type' => $file->getMimeType() ?: 'audio/ogg',
+                'sequence_number' => $nextSeq,
+                'item_type' => 'audio',
+                'segment_id' => $autoSegmentId,
+                'telegram_message_id' => $validated['telegram_message_id'] ?? null,
+                'audio_recording_id' => $audioRecordingId,
                 'duration_seconds' => $validated['duration_seconds'] ?? null,
-                'sha256_hash' => $hash,
-                'status' => 'recibido',
+                'file_size_bytes' => $validated['file_size_bytes'] ?? null,
+                'status' => $validated['status'] ?? 'received',
+                'auto_created' => true,
+                'started_at' => now(),
+                'received_at' => now(),
             ]);
 
-            $audioRecordingId = $recording->id;
+            $audit->record('session_item_auto_created', $item, $request);
+
+            return [
+                'success' => true,
+                'status' => 201,
+                'item' => $item->load('audioRecording'),
+                'encounter_id' => $encounter->id,
+                'sequence_number' => $nextSeq,
+                'auto_created' => true,
+            ];
         }
+
+        // Si es texto
+        $nextSeq = (int) CareEncounterItem::where('care_encounter_id', $encounter->id)->max('sequence_number') + 1;
 
         $item = CareEncounterItem::create([
             'company_id' => $companyId,
             'care_encounter_id' => $encounter->id,
             'sequence_number' => $nextSeq,
-            'item_type' => $itemType,
-            'segment_id' => $validated['segment_id'] ?? null,
+            'item_type' => 'text',
             'telegram_message_id' => $validated['telegram_message_id'] ?? null,
-            'text_content' => $itemType === 'text' ? ($validated['text_content'] ?? null) : null,
-            'audio_recording_id' => $audioRecordingId,
-            'duration_seconds' => $validated['duration_seconds'] ?? null,
-            'file_size_bytes' => $validated['file_size_bytes'] ?? null,
-            'status' => $itemType === 'text' ? 'ready' : ($validated['status'] ?? 'received'),
-            'started_at' => $validated['started_at'] ?? now(),
+            'text_content' => $validated['text_content'] ?? null,
+            'status' => 'ready',
+            'started_at' => now(),
             'received_at' => now(),
-            'processed_at' => $itemType === 'text' ? now() : null,
+            'processed_at' => now(),
         ]);
 
-        $audit->record('session_item_added', $item, $request);
+        $audit->record('session_text_item_added', $item, $request);
 
         return [
             'success' => true,
             'status' => 201,
-            'item' => $item->load('audioRecording'),
+            'item' => $item,
             'encounter_id' => $encounter->id,
             'sequence_number' => $nextSeq,
         ];
@@ -514,7 +684,7 @@ class BotIntegrationService
             ];
         }
 
-        $isDelivered = $item->received_at !== null || in_array($item->status, ['received', 'downloading', 'preparing', 'transcribing', 'ready', 'failed']);
+        $isDelivered = $item->received_at !== null || in_array($item->status, ['received', 'downloading', 'transcribing', 'ready', 'failed']);
 
         return [
             'success' => true,

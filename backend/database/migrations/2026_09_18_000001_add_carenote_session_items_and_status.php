@@ -22,6 +22,7 @@ return new class extends Migration
             $table->bigInteger('file_size_bytes')->nullable();
             $table->string('status')->default('received'); // received | downloading | preparing | transcribing | ready | failed
             $table->text('error_message')->nullable();
+            $table->boolean('auto_created')->default(false);
             $table->timestamp('started_at')->nullable();
             $table->timestamp('received_at')->nullable();
             $table->timestamp('processed_at')->nullable();

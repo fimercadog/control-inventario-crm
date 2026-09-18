@@ -274,6 +274,7 @@ Route::prefix('v1/bot')->middleware(ValidateBotSecretToken::class)->group(functi
     // Gestión de Sesiones y Elementos (Fase 3B V1)
     Route::get('/sessions/active', [BotIntegrationController::class, 'activeSession']);
     Route::post('/sessions/start', [BotIntegrationController::class, 'startSession']);
+    Route::post('/sessions/audio-segment/start', [BotIntegrationController::class, 'startAudioSegment']);
     Route::post('/sessions/items', [BotIntegrationController::class, 'addSessionItem']);
     Route::get('/sessions/items/segment-status', [BotIntegrationController::class, 'segmentStatus']);
     Route::post('/sessions/items/status', [BotIntegrationController::class, 'updateItemStatus']);

@@ -62,6 +62,20 @@ class BotIntegrationController extends Controller
         return response()->json($result, $statusCode);
     }
 
+    public function startAudioSegment(Request $request, AuditService $audit)
+    {
+        $validated = $request->validate([
+            'telegram_chat_id' => 'required|numeric',
+        ]);
+
+        $result = $this->botService->startAudioSegment($validated, $request, $audit);
+
+        $statusCode = $result['status'] ?? 201;
+        unset($result['status']);
+
+        return response()->json($result, $statusCode);
+    }
+
     public function addSessionItem(Request $request, AuditService $audit)
     {
         $validated = $request->validate([

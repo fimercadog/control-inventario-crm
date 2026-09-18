@@ -778,4 +778,85 @@ class CareNoteTest extends TestCase
         $this->assertStringContainsString('Transcripción exitosa del Audio 1', $text);
         $this->assertStringContainsString('Transcripción exitosa del Audio 2 tras reintento', $text);
     }
+
+    public function test_bot_audio_segment_start_and_direct_voice_auto_creation(): void
+    {
+        Storage::fake('local');
+        $botSecret = config('services.carenote_bot.secret', 'carenote-bot-secret-dev-2026');
+        $chatId = 888999111;
+
+        \App\Models\TelegramProfessionalLink::create([
+            'user_id' => $this->nurse->id,
+            'telegram_chat_id' => $chatId,
+            'is_verified' => true,
+            'linked_at' => now(),
+        ]);
+
+        \App\Models\PrivacyAcceptance::create([
+            'company_id' => $this->company->id,
+            'user_id' => $this->nurse->id,
+            'policy_version' => 'v1.0-carenote-2026',
+            'accepted_at' => now(),
+        ]);
+
+        // 1. Iniciar Sesión
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/start', [
+                'telegram_chat_id' => $chatId,
+                'patient_id' => $this->patient->id,
+            ])->assertStatus(201);
+
+        // 2. Enfermera pulsa ▶️ Iniciar Audio
+        $startSegmentRes = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/audio-segment/start', [
+                'telegram_chat_id' => $chatId,
+            ]);
+
+        $startSegmentRes->assertStatus(201)
+            ->assertJsonPath('success', true);
+
+        $segmentId = $startSegmentRes->json('segment_id');
+        $this->assertNotNull($segmentId);
+
+        // 3. Si intenta pulsar ▶️ Iniciar Audio otra vez mientras hay segmento pendiente -> 409 ACTIVE_SEGMENT_EXISTS
+        $conflictRes = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/audio-segment/start', [
+                'telegram_chat_id' => $chatId,
+            ]);
+
+        $conflictRes->assertStatus(409)
+            ->assertJsonPath('code', 'ACTIVE_SEGMENT_EXISTS')
+            ->assertJsonPath('pending_segment.segment_id', $segmentId);
+
+        // 4. Telegram envía el audio correspondiente al segmento pendiente
+        $audioFile1 = UploadedFile::fake()->create('manual_segment.ogg', 300, 'audio/ogg');
+        $item1Res = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items', [
+                'telegram_chat_id' => $chatId,
+                'item_type' => 'audio',
+                'audio_file' => $audioFile1,
+            ]);
+
+        $item1Res->assertStatus(200)
+            ->assertJsonPath('item.segment_id', $segmentId)
+            ->assertJsonPath('auto_created', false);
+
+        // 5. Envío de audio directo sin pulsar ▶️ Iniciar Audio (Auto-creación de segmento)
+        $audioFile2 = UploadedFile::fake()->create('direct_voice.ogg', 400, 'audio/ogg');
+        $item2Res = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items', [
+                'telegram_chat_id' => $chatId,
+                'item_type' => 'audio',
+                'audio_file' => $audioFile2,
+            ]);
+
+        $item2Res->assertStatus(201)
+            ->assertJsonPath('auto_created', true);
+
+        $this->assertDatabaseHas('care_encounter_items', [
+            'id' => $item2Res->json('item.id'),
+            'auto_created' => true,
+            'item_type' => 'audio',
+        ]);
+    }
 }
