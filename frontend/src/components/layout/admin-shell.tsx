@@ -97,19 +97,21 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] },
       { href: "/app/pacientes", label: "Pacientes", icon: Users, permissions: ["patients.manage"] },
+      { href: "/app/agenda", label: "Agenda / Citas", icon: CalendarDays, permissions: ["appointments.manage"] },
       { href: "/app/atenciones", label: "Atenciones Domiciliarias", icon: Stethoscope, permissions: ["care_encounters.view"] },
+      { href: "/app/notas", label: "Notas", icon: StickyNote, permissions: ["clients.manage"] },
+      { href: "/app/consultas", label: "Historial del Paciente", icon: ClipboardList, permissions: ["medical_records.manage"] },
       { href: "/app/telegram", label: "Vinculación Telegram", icon: Bot, permissions: ["dashboard.view"] },
       { href: "/app/reportes-clinicos", label: "Informes Clínicos", icon: FileText, permissions: ["clinical_reports.view"] },
-      { href: "/app/privacidad", label: "Consentimientos & Privacidad", icon: Shield, permissions: ["privacy_acceptances.view"] },
     ],
   },
   {
     label: "GESTIÓN",
     items: [
-      { href: "/app/agenda", label: "Agenda / Citas", icon: CalendarDays, permissions: ["appointments.manage"] },
       { href: "/app/usuarios", label: "Profesionales", icon: Contact2, permissions: ["users.manage"] },
       { href: "/app/productos", label: "Inventario e Insumos", icon: Package, permissions: ["products.manage"] },
       { href: "/app/proveedores", label: "Proveedores", icon: Truck, permissions: ["suppliers.manage"] },
+      { href: "/app/privacidad", label: "Consentimientos & Privacidad", icon: Shield, permissions: ["privacy_acceptances.view"] },
       { href: "/app/configuracion", label: "Configuración", icon: Settings, permissions: ["settings.manage"] },
     ],
   },
@@ -123,8 +125,7 @@ const navGroups: NavGroup[] = [
   {
     label: "ANALÍTICA",
     items: [
-      { href: "/app/reportes", label: "Reportes", icon: BarChart3, permissions: ["reports.view"] },
-      { href: "/app/reportes-comerciales", label: "Métricas y Gráficos", icon: TrendingUp, permissions: ["reports.view"] },
+      { href: "/app/reportes", label: "Reportes Operativos", icon: BarChart3, permissions: ["reports.view"] },
     ],
   },
   {
@@ -134,7 +135,7 @@ const navGroups: NavGroup[] = [
       { href: "/app/cotizaciones", label: "Cotizaciones", icon: FileText, premium: true },
       { href: "/app/pagos", label: "Cobros", icon: Receipt, premium: true },
       { href: "/app/bodegas", label: "Inventario Avanzado", icon: Warehouse, premium: true },
-      { href: "/app/ia", label: "Integraciones IA", icon: Bot, premium: true },
+      { href: "/app/ia", label: "Integraciones Avanzadas", icon: Bot, premium: true },
     ],
   },
 ];
@@ -204,19 +205,25 @@ const PREMIUM_INFO: Record<string, { title: string; body: React.ReactNode }> = {
     ),
   },
   "/app/ia": {
-    title: "Módulo Premium: Integraciones Avanzadas e Inteligencia Artificial",
+    title: "Módulo Premium: Integraciones Avanzadas",
     body: (
       <>
         <p>
-          Modelos de <strong className="font-semibold text-foreground">análisis automatizado de tendencias de evolución clínica</strong> e integración directa con sistemas hospitalarios (HIS/EMR).
+          Conexiones adicionales, automatizaciones especiales y proveedores externos para integrarse con sistemas hospitalarios (HIS/EMR) o plataformas externas de salud.
+        </p>
+        <p>
+          <strong className="font-semibold text-foreground">
+            Nota: La captura de voz por Telegram y la generación automática de borradores de notas pertenecen al núcleo de CareNote.
+          </strong>
         </p>
         <p className="font-medium text-foreground">
-          Esta es una funcionalidad Premium adicional. Comunicáte con el equipo de CareNote para activarla en tu plan.
+          Este módulo está reservado para integraciones especiales y conectores de grado empresarial.
         </p>
       </>
     ),
   },
 };
+
 
 
 function NavLink({ item }: { item: NavItem }) {
