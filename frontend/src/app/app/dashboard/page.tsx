@@ -5,8 +5,10 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
   ArrowDownRight,
   ArrowUpRight,
+  Bot,
   Boxes,
   CalendarClock,
+
   ChartPie,
   FileText,
   Filter,
@@ -614,8 +616,8 @@ export default function DashboardPage() {
       {/* Header */}
       <motion.div variants={item} className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">Vista general de la clínica: agenda, pacientes e inventario.</p>
+          <h1 className="text-2xl font-semibold tracking-tight">Dashboard CareNote</h1>
+          <p className="text-sm text-muted-foreground">Vista general de atención domiciliaria: pacientes, atenciones e informes clínicos.</p>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -628,18 +630,17 @@ export default function DashboardPage() {
         </div>
       </motion.div>
 
-      {/* Clínica */}
-      {data.clinical ? (
-        <motion.div variants={item}>
-          <SectionLabel>Clínica</SectionLabel>
-          <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
-            <MiniStat label="Citas hoy" value={data.clinical.appointments_today} icon={CalendarClock} tone={TONE.indigo} />
-            <MiniStat label="Pacientes activos" value={data.clinical.active_patients} icon={PawPrint} tone={TONE.green} />
-            <MiniStat label="Vacunas por vencer" value={data.clinical.vaccinations_due} icon={Syringe} tone={TONE.amber} />
-            <MiniStat label="Consultas del mes" value={data.clinical.consultations_month} icon={Stethoscope} tone={TONE.violet} />
-          </div>
-        </motion.div>
-      ) : null}
+      {/* CareNote Domiciliario */}
+      <motion.div variants={item}>
+        <SectionLabel>CareNote Atención Domiciliaria</SectionLabel>
+        <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
+          <MiniStat label="Pacientes activos" value={data.clinical?.active_patients ?? 0} icon={Users} tone={TONE.indigo} />
+          <MiniStat label="Atenciones del mes" value={data.clinical?.consultations_month ?? 0} icon={Stethoscope} tone={TONE.green} />
+          <MiniStat label="Sesiones Telegram" value={data.clinical?.appointments_today ?? 0} icon={Bot} tone={TONE.sky} />
+          <MiniStat label="Informes clínicos" value={data.clinical?.vaccinations_due ?? 0} icon={FileText} tone={TONE.violet} />
+        </div>
+      </motion.div>
+
 
       {/* ERP Pyme V1: Finanzas, Ventas y Compras */}
       <motion.div variants={item}>

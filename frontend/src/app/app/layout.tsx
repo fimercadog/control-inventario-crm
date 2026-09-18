@@ -7,8 +7,9 @@ import { Toaster } from "sonner";
 // Panel privado: sobreescribe el titulo por defecto del layout raiz (que
 // sigue describiendo el sitio publico de marketing, sin tocar).
 export const metadata: Metadata = {
-  title: { absolute: "Panel | VetPanel" },
+  title: { absolute: "Panel | CareNote" },
 };
+
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (

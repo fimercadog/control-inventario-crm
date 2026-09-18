@@ -14,22 +14,20 @@ import { TeamProfileList } from "@/components/marketing/team-profile-row";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 const values = [
-  { icon: "/gallery/icons/icon-9.png", title: "Medicina preventiva real", text: "No esperamos a que algo duela: vacunación y chequeos programados desde la primera visita." },
-  { icon: "/gallery/icons/icon-14.png", title: "Quirófano propio", text: "Cirugías de rutina y de tejidos blandos sin derivar el caso a otra clínica." },
-  { icon: "/gallery/icons/icon-13.png", title: "Diagnóstico el mismo día", text: "Laboratorio propio para no hacerte esperar un resultado externo." },
+  { icon: "/gallery/icons/icon-9.png", title: "Dictado por Telegram", text: "Dictá audios naturales al terminar o durante cada atención domiciliaria." },
+  { icon: "/gallery/icons/icon-14.png", title: "Estructuración con IA", text: "Procesamiento automático de voz a informe clínico organizado." },
+  { icon: "/gallery/icons/icon-13.png", title: "Expediente unificado", text: "Historial completo de atenciones y consentimientos por paciente." },
 ];
 
 export default function AboutPage() {
   return (
     <MarketingLayout>
-      {/* Hero: misma familia visual que Servicios -- eyebrow, titulo grande,
-          texto, CTAs, ilustracion protagonista a la derecha sobre blob organico. */}
       <SplitHero
-        eyebrow="Nosotros"
-        title="Una clínica de barrio, con el equipamiento de una grande"
-        lead="Clínica Veterinaria Los Andes nació para que cada mascota tenga un equipo veterinario que la conozca de verdad, visita tras visita — no una cara distinta cada vez."
+        eyebrow="Sobre CareNote"
+        title="Tecnología de atención domiciliaria pensada para profesionales de la salud"
+        lead="CareNote nació para liberar a enfermeros y terapeutas de horas de redacción manual nocturna, permitiendo capturar atenciones por voz en Telegram y generar informes clínicos estructurados al instante."
         image="/gallery/illustrations/illustration-2.png"
-        imageAlt="Veterinario con estetoscopio examinando a un gato"
+        imageAlt="Profesional de atención domiciliaria registrando datos de salud"
         actions={
           <>
             <CtaLink href="/equipo" variant="cta">
@@ -42,8 +40,6 @@ export default function AboutPage() {
         }
       />
 
-      {/* Tira de 3 iconos plana, sin tarjeta flotante -- a diferencia del grid de
-          "All Vet Services" de Services, el de About va directo sobre blanco. */}
       <Section className="pb-0">
         <div className="grid gap-x-10 gap-y-10 sm:grid-cols-3">
           {values.map((item, i) => (
@@ -59,66 +55,54 @@ export default function AboutPage() {
       <Section>
         <PhotoFeatureStack
           image="/gallery/pet-7.jpg"
-          imageAlt="Veterinario del equipo revisando a un bulldog en consulta"
+          imageAlt="Enfermera domiciliaria realizando valoración clínica"
           features={[
-            { title: "Más de una década", text: "Empezamos como una consulta pequeña de barrio; hoy tenemos consultorios equipados, laboratorio propio y quirófano." },
-            { title: "Pocas mascotas, no muchas apuradas", text: "Cada consulta tiene el tiempo que necesita, y cada historia clínica queda registrada." },
-            { title: "El mismo equipo siempre", text: "Conocemos a cada paciente por su nombre y a cada propietario por el suyo." },
+            { title: "Pensado para el desplazamiento", text: "Diseñado para profesionales que atienden pacientes en casa y necesitan registrar datos rápidamente." },
+            { title: "Múltiples audios por sesión", text: "El límite es por audio individual, no por sesión. Mantené el contexto durante visitas largas." },
+            { title: "Control administrativo completo", text: "Revisá informes, gestioná pacientes y exportá datos desde el panel web de CareNote." },
           ]}
         />
       </Section>
 
       <OffsetBlobBlock
-        title="Nuestra misión y valores"
+        title="Misión y principios"
         image="/gallery/pet-8.jpg"
-        imageAlt="Procedimiento veterinario con instrumental de precisión"
+        imageAlt="Registro de evolución clínica en pantalla"
         actions={
           <CtaLink href="/servicios" variant="cta">
-            Ver servicios
+            Ver soluciones
           </CtaLink>
         }
       >
         <ul className="mt-2 space-y-3 text-sm leading-6">
           <li>
-            <strong className="font-bold">Trato cercano.</strong> Explicamos cada diagnóstico con tiempo, no de
-            pasada.
+            <strong className="font-bold">Menos tiempo administrativo.</strong> Liberá tu tiempo para enfocarlo en el cuidado del paciente.
           </li>
           <li>
-            <strong className="font-bold">Medicina responsable.</strong> Ningún procedimiento sin explicar el
-            porqué ni presupuesto previo.
+            <strong className="font-bold">Registros precisos.</strong> Transcripciones estructuradas de constante vital y evolución clínica.
           </li>
           <li>
-            <strong className="font-bold">Mejora continua.</strong> Historia clínica digital y laboratorio propio.
+            <strong className="font-bold">Privacidad y seguridad.</strong> Datos protegidos bajo estándares de seguridad y consentimiento informado.
           </li>
         </ul>
       </OffsetBlobBlock>
 
-      {/* Parrafo ancho de storytelling -- patron "quienes somos" de About en el
-          pack (bloque de texto grande, no una lista de bullets). */}
       <Section className="pt-0">
         <Reveal>
           <div className={`${container} max-w-3xl space-y-5 text-base leading-8 text-muted-foreground`}>
             <p>
-              Clínica Veterinaria Los Andes empezó como un consultorio pequeño de barrio, con un solo veterinario
-              y una sala de espera compartida con la recepción. Más de una década después, seguimos en el mismo
-              barrio — pero con consultorios equipados, laboratorio propio y quirófano, sin haber perdido de vista
-              lo que nos trajo hasta acá: conocer a cada mascota por su nombre.
+              CareNote fue creado como la respuesta a la sobrecarga administrativa que enfrentan los profesionales de atención domiciliaria en enfermería, fisioterapia, terapia respiratoria y ocupacional.
             </p>
             <p>
-              Esa cercanía es una decisión, no un accidente de tamaño. Trabajamos con veterinarios de planta, no
-              rotativos, y con historia clínica digital por paciente, para que cada visita — sea un control de
-              rutina o una urgencia — parta de lo que ya sabemos de tu mascota, no de cero.
+              Integrando el bot de Telegram con flujos avanzados de n8n e Inteligencia Artificial, CareNote transforma audios de voz en notas de atención profesionales, listas para ser radicadas o revisadas.
             </p>
           </div>
         </Reveal>
       </Section>
 
-      {/* Equipo -- mismo patron "Highly Trained Veterinarians" de About: fila
-          apilada foto+card, no un grid de tarjetas parejas (ver Equipo para el
-          listado completo con bios). */}
       <Section className="bg-section-cream">
         <Reveal>
-          <SectionHeading eyebrow="Profesionales" title="El equipo detrás de cada consulta" center={false} />
+          <SectionHeading eyebrow="Liderazgo" title="El equipo detrás de CareNote" center={false} />
         </Reveal>
         <div className="mt-14">
           <TeamProfileList team={team} />

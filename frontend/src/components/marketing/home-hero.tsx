@@ -34,36 +34,35 @@ export function HomeHero() {
         <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <div className="max-w-xl">
             <Reveal mount delay={0.25}>
-              <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/75">Clínica veterinaria</p>
-              <h1 className="mt-4 text-6xl font-extrabold leading-[0.95] tracking-tight text-white sm:text-7xl lg:text-8xl">
-                Los Andes
+              <p className="text-xs font-bold uppercase tracking-[0.28em] text-white/75">CareNote · Atención Domiciliaria</p>
+              <h1 className="mt-4 text-4xl font-extrabold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
+                Menos tiempo escribiendo. <br />
+                <span className="text-primary">Más tiempo cuidando.</span>
               </h1>
             </Reveal>
             <Reveal mount delay={0.38}>
-              <p className="mt-6 max-w-md text-lg leading-8 text-white/85">
-                Cuidado veterinario cercano, de la consulta a la urgencia — un mismo equipo que conoce a tu mascota
-                desde la primera visita.
+              <p className="mt-6 max-w-lg text-lg leading-8 text-white/85">
+                Plataforma de atención domiciliaria para enfermeras y terapeutas. Captura notas clínicas por Telegram con voz o texto, automatiza reportes e informes y gestiona a tus pacientes sin esfuerzo.
               </p>
             </Reveal>
             {/* Botones con stagger -- entran despues del texto, uno tras otro. */}
             <div className="mt-9 flex flex-wrap gap-3">
               <Reveal mount delay={0.52}>
-                <CtaLink href="/agendar-cita" variant="cta">
-                  Agendar cita
+                <CtaLink href="/login" variant="cta">
+                  Probar CareNote
                 </CtaLink>
               </Reveal>
-              {/* Pastilla navy solida -- estilo real de "View All Services" del hero del
-                  live-demo (modulo de texto con fondo navy, no el naranja de .et_pb_button). */}
               <Reveal mount delay={0.62}>
                 <CtaLink
                   href="/servicios"
                   variant="default"
                   className="shadow-[0_12px_30px_-6px_rgb(0_0_0/0.45)]"
                 >
-                  Ver todos los servicios
+                  Ver cómo funciona
                 </CtaLink>
               </Reveal>
             </div>
+
           </div>
         </div>
       </div>

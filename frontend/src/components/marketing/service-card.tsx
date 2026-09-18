@@ -6,19 +6,14 @@ import type { Service } from "@/components/marketing/marketing-data";
 
 /** Ícono ilustrado del pack Divi "Veterinarian" por servicio (ver docs/referencia-visual-veterinaria.md). */
 export const SERVICE_ICON: Record<string, string> = {
-  "consulta-veterinaria": "/gallery/icons/icon-16.png",
-  vacunacion: "/gallery/icons/icon-9.png",
-  desparasitacion: "/gallery/icons/icon-10.png",
-  "medicina-preventiva": "/gallery/icons/icon-1.png",
-  "laboratorio-clinico": "/gallery/icons/icon-13.png",
-  cirugia: "/gallery/icons/icon-14.png",
-  "odontologia-veterinaria": "/gallery/icons/icon-15.png",
-  hospitalizacion: "/gallery/icons/icon-12.png",
-  urgencias: "/gallery/icons/icon-2.png",
-  nutricion: "/gallery/icons/icon-4.png",
-  "diagnostico-por-imagen": "/gallery/icons/icon-14.png",
-  "peluqueria-grooming": "/gallery/icons/icon-8.png",
+  "registro-voz-telegram": "/gallery/icons/icon-16.png",
+  "informes-clinicos-ia": "/gallery/icons/icon-15.png",
+  "atencion-domiciliaria-enfermeria": "/gallery/icons/icon-9.png",
+  "terapias-domiciliarias": "/gallery/icons/icon-1.png",
+  "historia-clinica-pacientes": "/gallery/icons/icon-13.png",
+  "consentimientos-privacidad": "/gallery/icons/icon-14.png",
 };
+
 
 export function ServiceCard({ service, delay = 0 }: { service: Service; delay?: number }) {
   const iconSrc = SERVICE_ICON[service.slug];

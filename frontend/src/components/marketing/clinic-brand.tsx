@@ -1,28 +1,24 @@
 import Link from "next/link";
-import { PawPrint } from "lucide-react";
+import { Stethoscope } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/**
- * Identidad del sitio publico: la CLINICA ("Los Andes"), no el software.
- * Distinta a proposito de `components/brand/logo.tsx` (marca "VetPanel" que
- * usa el panel admin) — evita que el sitio publico y el panel se vean como la
- * misma marca.
- */
-export const CLINIC_NAME = "Clínica Veterinaria Los Andes";
-export const CLINIC_SHORT_NAME = "Los Andes";
+/** Identidad del sitio público: CareNote - Atención Domiciliaria. */
+export const CLINIC_NAME = "CareNote - Atención Domiciliaria";
+export const CLINIC_SHORT_NAME = "CareNote";
 
 export function ClinicWordmark({ className }: { className?: string }) {
   return (
     <Link href="/" className={cn("flex items-center gap-2.5", className)} aria-label={`${CLINIC_NAME} — inicio`}>
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
-        <PawPrint className="size-4.5" />
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+        <Stethoscope className="size-4.5" />
       </span>
       <span className="text-base font-extrabold leading-tight tracking-tight">
-        Los Andes
-        <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-          Veterinaria
+        CareNote
+        <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          Atención Domiciliaria
         </span>
       </span>
     </Link>
   );
 }
+

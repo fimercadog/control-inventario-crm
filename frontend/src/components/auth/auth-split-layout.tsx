@@ -1,13 +1,13 @@
-import { Check, PawPrint } from "lucide-react";
+import { Check, Stethoscope } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClinicWordmark } from "@/components/marketing/clinic-brand";
 import { HeroBackdrop } from "@/components/marketing/hero-backdrop";
 
 const points = [
-  "Propietarios, pacientes e historia clínica",
-  "Agenda por profesional y consultorio",
-  "Vacunas y desparasitación con recordatorios",
-  "Inventario de farmacia y reportes clínicos",
+  "Expediente unificado de pacientes y atenciones",
+  "Captura de notas clínicas por Telegram con voz o texto",
+  "Informes estructurados automáticamente con n8n e IA",
+  "Consentimientos informados y firmas de privacidad",
 ];
 
 export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
@@ -18,13 +18,13 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
           <HeroBackdrop variant="navy" />
           <div className="relative max-w-lg">
             <span className="flex size-11 items-center justify-center rounded-xl bg-white/10 text-primary">
-              <PawPrint className="size-6" />
+              <Stethoscope className="size-6" />
             </span>
             <h2 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight">
-              Toda la clínica en una sola plataforma
+              Toda tu atención domiciliaria en una sola plataforma
             </h2>
             <p className="mt-4 text-lg leading-8 text-white/70">
-              Propietarios, pacientes, agenda, historia clínica, vacunas, inventario de farmacia y reportes en un solo lugar.
+              Captura notas por voz en Telegram, automatiza informes clínicos con n8n e IA y gestiona el expediente de tus pacientes sin esfuerzo.
             </p>
             <ul className="mt-10 space-y-3">
               {points.map((p) => (
@@ -35,6 +35,7 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
             </ul>
           </div>
         </section>
+
         <section className="flex items-center justify-center bg-background px-4 py-12 sm:px-6">
           <div className="w-full max-w-md">
             {/* Misma identidad que el sitio publico (Los Andes), no la marca

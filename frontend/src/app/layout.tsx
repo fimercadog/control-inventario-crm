@@ -40,18 +40,19 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Clínica Veterinaria Los Andes | Veterinaria en Bogotá",
-    template: "%s | Clínica Veterinaria Los Andes",
+    default: "CareNote - Atención Domiciliaria | Enfermería y Terapias",
+    template: "%s | CareNote - Atención Domiciliaria",
   },
   description:
-    "Clínica veterinaria en Bogotá: consulta general, vacunación, cirugía, laboratorio clínico y urgencias para perros, gatos y otras mascotas. Agendá tu cita online o por WhatsApp.",
+    "Plataforma de atención domiciliaria para enfermeros y terapeutas. Captura por voz en Telegram, automatización de informes clínicos con n8n e IA y gestión de pacientes.",
   openGraph: {
-    title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",
-    description: "Consulta, vacunación, cirugía y urgencias para tu mascota, con historia clínica digital por paciente.",
+    title: "CareNote — Atención Domiciliaria para Enfermería y Terapeutas",
+    description: "Captura de notas por voz en Telegram, informes clínicos automatizados y expediente unificado de pacientes.",
     type: "website",
     locale: "es_CO",
     url: "/",
   },
+
   twitter: {
     card: "summary_large_image",
     title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",

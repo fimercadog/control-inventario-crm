@@ -9,13 +9,12 @@ import { api, primeCsrfCookie } from "@/lib/api";
 import { AuthUser, storeAuthSession } from "@/lib/auth";
 
 const demoUsers = [
-  ["Super Admin", "superadmin@vetlosandes.co"],
-  ["Admin de la clínica", "admin@vetlosandes.co"],
-  ["Veterinario/a", "veterinario@vetlosandes.co"],
-  ["Recepción", "recepcion@vetlosandes.co"],
-  ["Inventario / farmacia", "inventario@vetlosandes.co"],
-  ["Ventas", "ventas@vetlosandes.co"],
+  ["Super Admin", "superadmin@carenote.co"],
+  ["Coordinador Domiciliario", "admin@carenote.co"],
+  ["Enfermero/a Domiciliario/a", "enfermera@carenote.co"],
+  ["Fisioterapeuta", "terapeuta@carenote.co"],
 ];
+
 
 const inputClass =
   "h-12 w-full rounded-lg border border-border bg-card px-4 text-sm shadow-elevation-1 outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20";

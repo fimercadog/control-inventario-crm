@@ -1,24 +1,16 @@
 import {
   Activity,
-  Bone,
-  Cross,
-  FlaskConical,
+  Bot,
+  Brain,
+  FileCheck,
+  FileText,
+  Headphones,
   HeartPulse,
-  Scissors,
-  Scan,
-  Siren,
-  Smile,
-  Sparkles,
+  Shield,
   Stethoscope,
-  Syringe,
+  Users,
   type LucideIcon,
 } from "lucide-react";
-
-// Contenido demo de la vertical veterinaria. Nombres y roles coinciden con el
-// dataset sembrado en el backend (`DatabaseSeeder.php`: "Clínica Veterinaria
-// Los Andes", Dr. Carlos Medina, Dra. Laura Peña, Marcela Duarte) para que el
-// sitio público y el panel cuenten la misma historia. Listo para reemplazar
-// por la información real de la clínica antes de vender/desplegar.
 
 export type Service = {
   slug: string;
@@ -32,127 +24,92 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    slug: "consulta-veterinaria",
+    slug: "registro-voz-telegram",
+    icon: Headphones,
+    title: "Registro Clínico por Telegram",
+    short: "Dictá audios o enviá textos desde tu bot de Telegram durante o al finalizar cada atención.",
+    description:
+      "Diseñado para enfermeros y terapeutas en desplazamiento: abrí sesión con tu paciente en Telegram y enviá audios o mensajes de texto. CareNote captura, organiza y procesa cada segmento dentro del mismo contexto clínico.",
+    bullets: [
+      "Múltiples audios y mensajes por sesión",
+      "Procesamiento inteligente sin límite de sesión",
+      "Correlación automática por paciente y profesional",
+      "Sincronización instantánea con el panel web",
+    ],
+    featured: true,
+  },
+  {
+    slug: "informes-clinicos-ia",
+    icon: Brain,
+    title: "Informes Clínicos Automatizados",
+    short: "Conversión automática de notas de voz en informes de atención estructurados.",
+    description:
+      "Utilizamos n8n e Inteligencia Artificial especializada para transcribir y estructurar los hallazgos clínicos, signos vitales, procedimientos aplicados y plan de cuidados de forma clara y profesional.",
+    bullets: [
+      "Transcripción de voz a texto con alta precisión",
+      "Estructuración de nota SOAP / resumen de atención",
+      "Detección de constantes vitales y alertas",
+      "Exportación y revisión antes de radicar",
+    ],
+    featured: true,
+  },
+  {
+    slug: "atencion-domiciliaria-enfermeria",
     icon: Stethoscope,
-    title: "Consulta veterinaria",
-    short: "Revisión general, diagnóstico y seguimiento con un veterinario de planta.",
+    title: "Gestión de Enfermería Domiciliaria",
+    short: "Control de curaciones, administración de medicamentos y registro de signos vitales.",
     description:
-      "La consulta general es la puerta de entrada a la atención de tu mascota: examen físico completo, revisión de peso y signos vitales, y una conversación honesta sobre lo que necesita. Queda registrada en su historia clínica para que cada visita siguiente parta de donde quedó la anterior.",
+      "Plataforma optimizada para el seguimiento continuo de pacientes en casa. Registrá la evolución de heridas, curaciones, catéteres, administración de fármacos y evolución de signos vitales.",
     bullets: [
-      "Examen físico completo y control de peso",
-      "Historia clínica digital por paciente",
-      "Orientación sobre alimentación y cuidados",
-      "Derivación a especialista si el caso lo requiere",
+      "Ficha de evolución y constantes vitales",
+      "Registro de curaciones y procedimientos",
+      "Alertas de seguimiento y notas de enfermería",
+      "Historial comparativo por paciente",
     ],
     featured: true,
   },
   {
-    slug: "vacunacion",
-    icon: Syringe,
-    title: "Vacunación",
-    short: "Esquemas de vacunación al día, con recordatorio de la próxima dosis.",
-    description:
-      "Aplicamos los esquemas de vacunación recomendados para perros y gatos según edad y estilo de vida, y dejamos registrado el lote y la fecha exacta para avisarte cuándo toca la próxima dosis, sin que se te pase.",
-    bullets: [
-      "Polivalente, antirrábica y triple felina",
-      "Lote y vencimiento registrados por aplicación",
-      "Recordatorio de la próxima dosis",
-      "Carné de vacunación disponible en cada visita",
-    ],
-    featured: true,
-  },
-  {
-    slug: "desparasitacion",
-    icon: Bone,
-    title: "Desparasitación",
-    short: "Control interno y externo, con calendario según peso y edad.",
-    description:
-      "La desparasitación interna y externa es preventiva: protege a tu mascota y a tu familia. Definimos el producto y la frecuencia según peso, edad y estilo de vida, y lo dejamos anotado en su historia para el próximo control.",
-    bullets: ["Desparasitación interna y externa", "Dosis según peso y edad", "Calendario de refuerzos", "Seguro para cachorros y gatitos"],
-  },
-  {
-    slug: "medicina-preventiva",
-    icon: HeartPulse,
-    title: "Medicina preventiva",
-    short: "Chequeos periódicos para detectar a tiempo lo que todavía no duele.",
-    description:
-      "Un chequeo preventivo anual (o semestral en pacientes senior) detecta cambios antes de que se conviertan en un problema serio: peso, dentadura, piel, corazón y un panel básico de laboratorio si hace falta.",
-    bullets: ["Chequeo anual o semestral", "Panel de laboratorio preventivo", "Plan de salud por etapa de vida", "Seguimiento de pacientes senior"],
-    featured: true,
-  },
-  {
-    slug: "laboratorio-clinico",
-    icon: FlaskConical,
-    title: "Laboratorio clínico",
-    short: "Análisis de sangre, orina y heces con resultados el mismo día.",
-    description:
-      "Contamos con laboratorio propio para los análisis más frecuentes, lo que agiliza el diagnóstico en consultas de urgencia y en el seguimiento de tratamientos en curso.",
-    bullets: ["Hemograma y química sanguínea", "Uroanálisis y coproanálisis", "Resultados el mismo día en la mayoría de los casos", "Interpretación con tu veterinario tratante"],
-  },
-  {
-    slug: "cirugia",
-    icon: Scissors,
-    title: "Cirugía",
-    short: "Cirugías de tejidos blandos y esterilización con protocolo anestésico seguro.",
-    description:
-      "Desde esterilizaciones de rutina hasta cirugías de tejidos blandos, trabajamos con protocolo anestésico monitoreado y control post-operatorio hasta el alta.",
-    bullets: ["Esterilización canina y felina", "Cirugía de tejidos blandos", "Monitoreo anestésico", "Control post-operatorio incluido"],
-    featured: true,
-  },
-  {
-    slug: "odontologia-veterinaria",
-    icon: Smile,
-    title: "Odontología veterinaria",
-    short: "Profilaxis dental bajo anestesia para frenar la enfermedad periodontal.",
-    description:
-      "La enfermedad periodontal es una de las causas más comunes de dolor crónico no diagnosticado en mascotas adultas. La profilaxis dental bajo anestesia controlada, con limpieza y pulido, la previene y trata.",
-    bullets: ["Profilaxis y limpieza bajo anestesia", "Extracciones cuando son necesarias", "Evaluación del estado dental en cada consulta", "Recomendaciones de higiene en casa"],
-  },
-  {
-    slug: "hospitalizacion",
-    icon: Cross,
-    title: "Hospitalización",
-    short: "Internación con monitoreo para pacientes que necesitan observación.",
-    description:
-      "Para pacientes que requieren fluidoterapia, medicación continua u observación post-quirúrgica, contamos con área de hospitalización con seguimiento por el equipo veterinario.",
-    bullets: ["Fluidoterapia y medicación continua", "Observación post-quirúrgica", "Reportes de evolución al propietario", "Alta coordinada con tu veterinario"],
-  },
-  {
-    slug: "urgencias",
-    icon: Siren,
-    title: "Urgencias",
-    short: "Atención prioritaria para las situaciones que no pueden esperar.",
-    description:
-      "Ante un accidente, una intoxicación o un cuadro que empeora rápido, la prioridad es estabilizar. Llamanos antes de venir para que el equipo esté listo cuando llegues.",
-    bullets: ["Atención prioritaria sin cita previa", "Estabilización y manejo del dolor", "Línea directa para casos urgentes", "Derivación si el caso supera nuestra capacidad"],
-    featured: true,
-  },
-  {
-    slug: "nutricion",
+    slug: "terapias-domiciliarias",
     icon: Activity,
-    title: "Nutrición",
-    short: "Planes de alimentación por etapa de vida o condición clínica.",
+    title: "Terapias Domiciliarias",
+    short: "Seguimiento para Fisioterapia, Terapia Respiratoria, Ocupacional y Fonoaudiología.",
     description:
-      "La nutrición es parte del tratamiento, no un accesorio: acompañamos con planes de alimentación para cachorros, adultos, pacientes senior o con condiciones específicas como renal, digestiva o de control de peso.",
-    bullets: ["Plan nutricional por etapa de vida", "Dietas terapéuticas (renal, digestiva, peso)", "Seguimiento de peso en cada visita", "Recomendación de marca y porción"],
+      "Formatos flexibles adaptados a planes de rehabilitación física, manejo de vía aérea, terapia ocupacional y fonoaudiología domiciliaria con evaluación de logros sesión a sesión.",
+    bullets: [
+      "Planes de rehabilitación física y motora",
+      "Evaluación y terapia respiratoria domiciliaria",
+      "Evolución funcional y fonoaudiológica",
+      "Indicadores de avance del tratamiento",
+    ],
+    featured: true,
   },
   {
-    slug: "diagnostico-por-imagen",
-    icon: Scan,
-    title: "Diagnóstico por imagen",
-    short: "Radiografía y ecografía para ver lo que el examen físico no alcanza.",
+    slug: "historia-clinica-pacientes",
+    icon: Users,
+    title: "Directorio & Expediente de Pacientes",
+    short: "Ficha unificada del paciente con datos personales, cobertura y resumen de atenciones.",
     description:
-      "Cuando el examen físico y el laboratorio no bastan, la imagenología ayuda a confirmar un diagnóstico: fracturas, cuerpos extraños, patologías abdominales o cardíacas.",
-    bullets: ["Radiografía digital", "Ecografía abdominal", "Informe interpretado por el veterinario tratante", "Coordinación con cirugía si el caso lo requiere"],
+      "Administrá el expediente completo del paciente domiciliario: documento de identidad, aseguradora/EPS, contacto de emergencia, antecedentes relevantes y registro de todas las sesiones realizadas.",
+    bullets: [
+      "Identificación clara de paciente humano",
+      "Contacto de emergencia y dirección de atención",
+      "Aseguradora, EPS y tipo de cobertura",
+      "Acceso rápido a todas las sesiones de Telegram",
+    ],
   },
   {
-    slug: "peluqueria-grooming",
-    icon: Sparkles,
-    title: "Peluquería / grooming",
-    short: "Baño y corte de higiene, ideal para combinar con la consulta.",
+    slug: "consentimientos-privacidad",
+    icon: Shield,
+    title: "Consentimientos & Privacidad",
+    short: "Manejo seguro de datos clínicos bajo regulación y aceptación de términos.",
     description:
-      "Baño medicado o de rutina, corte de higiene y limpieza de oídos, a cargo de personal capacitado. Se puede combinar con la consulta para aprovechar la misma visita.",
-    bullets: ["Baño de rutina o medicado", "Corte de higiene", "Limpieza de oídos", "Ideal para combinar con la consulta"],
+      "Protección estricta de la información médica. Gestión de avisos de privacidad, consentimientos informados y firma de aceptación digital antes del inicio de tratamientos.",
+    bullets: [
+      "Aceptación digital de aviso de privacidad",
+      "Consentimiento para atención y voz por Telegram",
+      "Trazabilidad de auditoría de accesos",
+      "Encriptación de notas y audios clínicos",
+    ],
   },
 ];
 
@@ -173,31 +130,31 @@ export type TeamMember = {
 
 export const team: TeamMember[] = [
   {
-    slug: "carlos-medina",
-    name: "Dr. Carlos Medina",
-    role: "Médico veterinario",
-    specialty: "Medicina general y cirugía de tejidos blandos",
-    bio: "Más de 10 años atendiendo perros y gatos, con especial interés en medicina preventiva y cirugía.",
+    slug: "maria-elena-gomez",
+    name: "Lic. María Elena Gómez",
+    role: "Coordinadora de Enfermería Domiciliaria",
+    specialty: "Cuidado de paciente crónico y manejo de heridas",
+    bio: "Más de 12 años liderando equipos de enfermería domiciliaria y optimización de notas clínicas.",
     longBio:
-      "El Dr. Carlos Medina lidera la consulta general y el área quirúrgica de la clínica. Cree que la mejor cirugía es la que se evita con un buen chequeo preventivo a tiempo, y dedica parte de cada consulta a explicarle al propietario qué está viendo y por qué.",
+      "La Lic. María Elena Gómez coordina la atención domiciliaria de enfermería. Ha impulsado el uso de CareNote para que cada enfermera optimice su tiempo de reporte y mantenga el expediente clínico al día.",
   },
   {
-    slug: "laura-pena",
-    name: "Dra. Laura Peña",
-    role: "Médica veterinaria",
-    specialty: "Medicina interna y diagnóstico por imagen",
-    bio: "Se enfoca en casos de medicina interna, laboratorio y diagnóstico por imagen.",
+    slug: "juan-pablo-rodriguez",
+    name: "Lic. Juan Pablo Rodríguez",
+    role: "Líder de Fisioterapia Domiciliaria",
+    specialty: "Rehabilitación física y neuro-motora",
+    bio: "Especialista en programas de terapia física a domicilio y seguimiento de evolución funcional.",
     longBio:
-      "La Dra. Laura Peña se especializa en medicina interna: los casos que necesitan laboratorio, ecografía y seguimiento cercano. Trabaja de la mano con el propietario para que el plan de tratamiento sea claro y sostenible en casa.",
+      "El Lic. Juan Pablo lidera el área de rehabilitación en casa. Dicta sus informes de evolución al finalizar cada sesión mediante audios de Telegram, asegurando registros inmediatos y precisos.",
   },
   {
-    slug: "marcela-duarte",
-    name: "Marcela Duarte",
-    role: "Coordinadora de recepción",
-    specialty: "Agenda, urgencias y atención al propietario",
-    bio: "El primer contacto de la clínica: agenda tu cita, resuelve dudas y coordina las urgencias.",
+    slug: "andres-morales",
+    name: "Ing. Andrés Morales",
+    role: "Especialista en Automatizaciones CareNote",
+    specialty: "Integración Telegram + n8n + Modelos de IA Clínicos",
+    bio: "Responsable de la infraestructura de captura por voz y generación automatizada de informes.",
     longBio:
-      "Marcela coordina la recepción y la agenda de la clínica. Es quien contesta el WhatsApp, confirma tu cita y prioriza una urgencia en cuanto entra. Si no sabés por dónde empezar, empezá por ella.",
+      "Andrés diseña los flujos de automatización que conectan el bot de Telegram con los modelos de inteligencia artificial para entregar informes clínicos limpios y listos para revisión.",
   },
 ];
 
@@ -214,39 +171,27 @@ export type Testimonial = {
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Camila Herrera",
-    pet: "dueña de Luna (golden retriever)",
-    text: "Llevamos a Luna desde cachorra. Siempre nos explican todo antes de hacer cualquier procedimiento, y el seguimiento de las vacunas nos salvó más de un olvido.",
+    name: "Lic. Beatriz Morales",
+    pet: "Enfermera Domiciliaria",
+    text: "Antes gastaba 2 horas cada noche redactando notas de enfermería. Ahora envío audios en Telegram entre paciente y paciente, y CareNote me entrega los informes listos para revisión.",
     rating: 5,
   },
   {
-    name: "Andrés Vargas",
-    pet: "dueño de Michi (gata)",
-    text: "Michi es súper arisca en el veterinario y acá tienen una paciencia increíble. La cirugía de esterilización fue impecable, con controles post-operatorios muy claros.",
+    name: "Lic. Carlos Restrepo",
+    pet: "Fisioterapeuta Domiciliario",
+    text: "Dictar la evolución de mis pacientes en audios cortitos y tener todo el historial organizado por paciente y fecha cambió por completo mi ritmo de trabajo.",
     rating: 5,
   },
   {
-    name: "Marcela Ríos",
-    pet: "dueña de Kiara",
-    text: "Un fin de semana Kiara se lastimó una pata y nos atendieron de urgencia sin drama. Desde entonces no la llevamos a otro lado.",
+    name: "Dra. Sandra Patiño",
+    pet: "Directora IPS Domiciliaria",
+    text: "CareNote nos permitió reducir el tiempo de generación e impresión de informes para las aseguradoras de 48 horas a minutos. Es la herramienta perfecta para nuestros profesionales.",
     rating: 5,
   },
   {
-    name: "Felipe Castaño",
-    pet: "dueño de Toby y Rocco",
-    text: "Tengo dos perros con esquemas de vacunación distintos y nunca se me confunden las fechas: siempre me avisan a tiempo.",
-    rating: 5,
-  },
-  {
-    name: "Diana Torres",
-    pet: "dueña de Nina",
-    text: "Nina es una perrita senior y el chequeo preventivo semestral nos ha permitido llegar a tiempo a un par de cosas que ni notábamos.",
-    rating: 4,
-  },
-  {
-    name: "Juan David Peláez",
-    pet: "dueño de Zeus",
-    text: "La profilaxis dental de Zeus le cambió el aliento y, según el veterinario, le evitó un dolor que ni sabíamos que tenía.",
+    name: "Lic. Claudia Mendoza",
+    pet: "Terapeuta Respiratoria",
+    text: "Me encanta poder enviar varios audios en la misma sesión si la atención fue larga. CareNote los junta y arma un informe coherente sin que yo tenga que redactar nada a mano.",
     rating: 5,
   },
 ];
@@ -255,53 +200,39 @@ export type Faq = { question: string; answer: string };
 
 export const faqs: Faq[] = [
   {
-    question: "¿Necesito pedir cita o puedo llegar directamente?",
+    question: "¿Cómo funciona la captura de notas por Telegram?",
     answer:
-      "Para consultas de rutina recomendamos agendar cita (por el sitio, WhatsApp o teléfono) para no hacerte esperar. Las urgencias se atienden siempre, con o sin cita previa.",
+      "El profesional abre el bot de Telegram, selecciona 'Nueva sesión', escoge a su paciente e inicia la atención. A partir de allí, envía audios o textos. CareNote procesa los audios vía n8n e IA y los convierte en un informe clínico listo.",
   },
   {
-    question: "¿Qué hago si es una urgencia fuera de horario?",
+    question: "¿Puedo enviar múltiples audios en una misma sesión?",
     answer:
-      "Escribinos por WhatsApp o llamá a la línea de la clínica. Te vamos a indicar si podemos recibirte de inmediato o coordinar la atención más cercana.",
+      "Sí. El límite es por archivo de audio individual, no por sesión. Podés enviar varios audios y mensajes de texto durante una sesión de 1, 2 o más horas, y todos quedarán asociados al mismo encuentro.",
   },
   {
-    question: "¿Cómo es la primera consulta de mi mascota?",
+    question: "¿A qué profesionales está dirigido CareNote?",
     answer:
-      "Empezamos con una historia clínica completa: antecedentes, alimentación y estilo de vida, seguido de un examen físico general. Si trae vacunas previas, llevá el carné.",
+      "Está optimizado para atención domiciliaria: Enfermería, Fisioterapia, Terapia Respiratoria, Terapia Ocupacional, Fonoaudiología y médicos a domicilio.",
   },
   {
-    question: "¿Con qué frecuencia hay que vacunar?",
+    question: "¿Cómo se accede al área administrativa?",
     answer:
-      "Depende de la vacuna y la edad: los cachorros y gatitos llevan un esquema inicial de varias dosis, y luego refuerzos anuales. Nosotros llevamos el registro y te avisamos cuándo toca.",
+      "Haciendo clic en 'Iniciar sesión' en el menú superior o ingresando a /login con tus credenciales de usuario autorizadas.",
   },
   {
-    question: "¿Atienden otras especies además de perros y gatos?",
+    question: "¿Los datos de los pacientes están protegidos?",
     answer:
-      "Sí, también atendemos aves, conejos y algunos exóticos. Si no estás seguro, escribinos antes con el caso puntual.",
-  },
-  {
-    question: "¿Qué medios de pago aceptan?",
-    answer: "Efectivo, tarjeta débito/crédito y transferencia. Para procedimientos mayores entregamos presupuesto por escrito antes de proceder.",
-  },
-  {
-    question: "¿Necesito ayuno antes de una cirugía?",
-    answer:
-      "Sí. Para cualquier procedimiento con anestesia te vamos a indicar el ayuno de sólidos y líquidos requerido según el caso, con al menos un día de anticipación.",
-  },
-  {
-    question: "¿Puedo pedir mi cita por WhatsApp?",
-    answer:
-      "Sí, es la vía más rápida. También podés usar el formulario de \"Agendar cita\" del sitio: recepción confirma disponibilidad y te contacta.",
+      "Sí. Cumplimos con estándares de confidencialidad de datos médicos, consentimiento informado digital y almacenamiento seguro.",
   },
 ];
 
 export type Stat = { value: string; label: string };
 
 export const stats: Stat[] = [
-  { value: "12+", label: "años de trayectoria" },
-  { value: "3.500+", label: "mascotas atendidas" },
-  { value: "2", label: "veterinarios de planta" },
-  { value: "4.9/5", label: "satisfacción de propietarios" },
+  { value: "15.000+", label: "audios procesados" },
+  { value: "98%", label: "ahorro en redacción" },
+  { value: "< 3 min", label: "tiempo por informe" },
+  { value: "4.9/5", label: "satisfacción de profesionales" },
 ];
 
 export type BlogPost = {
@@ -316,103 +247,22 @@ export type BlogPost = {
   body: string[];
 };
 
-export const blogCategories = ["Prevención", "Vacunas", "Nutrición", "Cirugía", "Cachorros", "Urgencias"];
+export const blogCategories = ["Automatización", "Enfermería", "Terapias", "Telegram", "Informes Clínicos"];
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "cuando-llevar-a-tu-mascota-al-veterinario",
-    title: "Señales que indican que tu mascota necesita una consulta ya",
-    category: "Urgencias",
-    excerpt: "Decaimiento, vómito persistente, dificultad para respirar: una guía rápida para saber cuándo esperar y cuándo no.",
+    slug: "menos-tiempo-escribiendo-mas-tiempo-cuidando",
+    title: "Menos tiempo escribiendo. Más tiempo cuidando: La revolución del dictado por Telegram",
+    category: "Automatización",
+    excerpt: "Cómo el dictado por voz y la IA liberan a los profesionales de salud domiciliaria del trabajo administrativo nocturno.",
     image: "/gallery/pet-7.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-08-12",
+    authorSlug: "maria-elena-gomez",
+    date: "2026-09-10",
     readMinutes: 4,
     body: [
-      "No toda molestia es una urgencia, pero algunas señales sí ameritan atención inmediata y no un \"vamos viendo cómo sigue\". La regla general que usamos en consulta: si el síntoma es súbito, si compromete la respiración, o si tu mascota deja de responder como siempre, es momento de venir.",
-      "Decaimiento marcado — que no se levante a comer, que no reaccione a estímulos que normalmente la entusiasman — es de las señales más subestimadas. Un perro o gato que \"está raro\" desde hace más de unas horas ya justifica una consulta, no una espera de \"a ver si mejora solo\".",
-      "El vómito persistente (más de dos o tres episodios en pocas horas, o con sangre) y la dificultad para respirar son motivo de consulta prioritaria siempre. En el segundo caso, cada minuto cuenta: llamanos antes de salir para que el equipo esté listo cuando llegues.",
-      "Otras señales que no deberían esperar: distensión abdominal repentina, convulsiones, imposibilidad de orinar, sangrado que no cede, o un golpe/caída con cojera inmediata. Ante la duda, la llamada no cuesta nada — preferimos revisar de más que de menos.",
-    ],
-  },
-  {
-    slug: "calendario-de-vacunacion-cachorros",
-    title: "El calendario de vacunación de un cachorro, mes a mes",
-    category: "Vacunas",
-    excerpt: "Qué vacuna toca en cada etapa y por qué saltarse una dosis puede dejar una ventana de riesgo.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-07-28",
-    readMinutes: 5,
-    body: [
-      "Un cachorro nace con cierta protección de la madre, pero esa inmunidad baja gradualmente entre las 6 y las 16 semanas de vida — justo la ventana en la que hay que vacunar, y por eso el esquema se aplica en varias dosis, no en una sola.",
-      "El esquema típico arranca alrededor de las 6-8 semanas con la primera dosis de la polivalente (moquillo, parvovirus, hepatitis, entre otras según el laboratorio), se refuerza cada 3-4 semanas hasta las 16 semanas, y la antirrábica se suma desde los 3 meses.",
-      "Saltarse una dosis del esquema inicial no es \"recuperable\" con solo aplicar la siguiente: cada refuerzo depende de que el anterior haya generado la respuesta esperada. Por eso llevamos el registro exacto de lote y fecha, y te avisamos con anticipación cuándo toca la próxima.",
-      "Después del primer año, la mayoría de las vacunas pasan a un esquema de refuerzo anual. Traé siempre el carné de vacunación a cada visita, aunque sea de rutina — es el historial que evita que se repita o se salte una dosis.",
-    ],
-  },
-  {
-    slug: "como-elegir-el-alimento-correcto",
-    title: "Cómo elegir el alimento correcto según la edad y tamaño de tu mascota",
-    category: "Nutrición",
-    excerpt: "No todos los alimentos \"premium\" son iguales. Qué mirar en la etiqueta antes de decidir.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-07-10",
-    readMinutes: 4,
-    body: [
-      "La palabra \"premium\" en el empaque no está regulada — no garantiza nada por sí sola. Lo que sí importa es la lista de ingredientes (una fuente de proteína animal identificada, no genérica como \"subproductos\") y que el alimento esté formulado para la etapa de vida correcta.",
-      "Un cachorro necesita más proteína y calorías por su crecimiento; un adulto sedentario necesita menos de lo que dice la tabla genérica de la bolsa; un senior suele beneficiarse de fórmulas más livianas para las articulaciones y el riñón. Alimentar con la fórmula de otra etapa no es un ahorro, es un desajuste silencioso.",
-      "El tamaño también importa: las razas grandes necesitan un control más estricto de calcio y fósforo en el crecimiento para evitar problemas articulares a futuro, y las razas pequeñas gastan más energía por kilo de lo que parece.",
-      "Si tu mascota tiene una condición clínica (renal, digestiva, sobrepeso), el alimento pasa a ser parte del tratamiento, no una elección de supermercado — ahí sí conviene una dieta terapéutica indicada en consulta, no una decisión por cuenta propia.",
-    ],
-  },
-  {
-    slug: "preparar-a-tu-mascota-para-una-cirugia",
-    title: "Cómo preparar a tu mascota (y a vos) para una cirugía programada",
-    category: "Cirugía",
-    excerpt: "Ayuno, traslado y qué esperar el día de la cirugía y en el post-operatorio.",
-    image: "/gallery/pet-13.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-06-22",
-    readMinutes: 5,
-    body: [
-      "Toda cirugía con anestesia requiere ayuno previo — típicamente de sólidos desde la noche anterior y de agua unas horas antes, aunque el esquema exacto varía según el paciente y te lo confirmamos al agendar. Un estómago lleno durante la anestesia es un riesgo real de aspiración, así que esta indicación no es opcional.",
-      "El día de la cirugía, traé a tu mascota temprano y con tiempo: hacemos una revisión pre-anestésica antes de proceder. Es normal sentir ansiedad — la mayoría de los propietarios la sienten más que sus mascotas — y preferimos que preguntes todo lo que necesites antes, no durante la espera.",
-      "Durante el procedimiento trabajamos con monitoreo anestésico continuo (frecuencia cardíaca, oxigenación, temperatura) y te llamamos apenas termina para contarte cómo salió y coordinar el retiro.",
-      "El post-operatorio es donde más se juega la recuperación: reposo estricto los primeros días, collar isabelino si aplica para que no se lastime el punto, y los controles que te indiquemos sin saltarte ninguno, aunque la herida se vea bien.",
-    ],
-  },
-  {
-    slug: "chequeos-preventivos-mascotas-senior",
-    title: "Por qué los chequeos preventivos importan más después de los 7 años",
-    category: "Prevención",
-    excerpt: "Los cambios en una mascota senior son graduales — el chequeo semestral detecta lo que el día a día no muestra.",
-    image: "/gallery/pet-3.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-30",
-    readMinutes: 4,
-    body: [
-      "A partir de los 7 años (antes en razas grandes), el metabolismo, las articulaciones, los riñones y el corazón empiezan a cambiar de forma gradual — tan gradual que en casa es difícil notarlo, porque lo ves todos los días.",
-      "Por eso pasamos de un chequeo anual a uno semestral en pacientes senior: duplicar la frecuencia de control multiplica las chances de detectar algo a tiempo, cuando todavía es manejable con un ajuste de dieta o tratamiento, y no cuando ya se volvió una urgencia.",
-      "Un chequeo senior típico incluye examen físico completo, control de peso y masa muscular, revisión dental, y un panel básico de laboratorio (función renal, hepática, hemograma) al menos una vez al año, más seguido si el caso lo amerita.",
-      "No es alarmismo: es la misma lógica que un chequeo médico humano después de cierta edad. La mascota no te va a decir que algo le duele distinto — el chequeo periódico es la forma de enterarte antes de que sea evidente.",
-    ],
-  },
-  {
-    slug: "primeros-dias-de-un-cachorro-en-casa",
-    title: "Los primeros días de un cachorro en casa: checklist veterinario",
-    category: "Cachorros",
-    excerpt: "Primera visita, desparasitación, socialización y los errores más comunes de los primeros dueños.",
-    image: "/gallery/pet-1.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-08",
-    readMinutes: 5,
-    body: [
-      "La primera visita veterinaria debería pasar en la primera semana en casa, aunque el cachorro se vea perfectamente sano: revisamos peso, examen físico general, y armamos el esquema de vacunación y desparasitación desde cero con fechas concretas.",
-      "La desparasitación interna en cachorros empieza más temprano y con más frecuencia de lo que la mayoría espera — cada 2-3 semanas hasta los 3 meses, después mensual hasta el año. No es opcional ni algo que se resuelve \"cuando se vea algo raro\".",
-      "La socialización tiene una ventana crítica entre las 3 y las 14 semanas: es cuando el cachorro aprende qué es normal (otras personas, otros animales, ruidos, superficies) sin miedo. Perderse esa ventana no es irreversible, pero cuesta mucho más trabajo después.",
-      "El error más común de los primeros dueños: esperar a que \"se vea algo mal\" para consultar. La medicina preventiva en un cachorro no es un gasto extra, es la base de toda la salud que va a tener de adulto — y sale más barata que resolver lo que se pudo prevenir.",
+      "Uno de los mayores dolores de cabeza para los profesionales de salud domiciliaria es el tiempo dedicado a la redacción manual de notas clínicas al final de una larga jornada.",
+      "Con CareNote, el profesional simplemente abre Telegram, inicia la sesión con el paciente y dicta audios naturales mientras realiza la atención o durante sus traslados.",
+      "La plataforma procesa el audio, transcribe el contenido y genera un informe estructurado con signos vitales, intervenciones y evolución del paciente.",
     ],
   },
 ];
@@ -435,3 +285,4 @@ export function adjacentPosts(post: BlogPost): { prev: BlogPost | null; next: Bl
     next: i < blogPosts.length - 1 ? blogPosts[i + 1] : null,
   };
 }
+

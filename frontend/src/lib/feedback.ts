@@ -4,7 +4,8 @@ const FORM_URL =
 
 // Nombre de este desarrollo, se prellena en el form para saber de donde viene
 // el comentario.
-const NOMBRE_DESARROLLO = "VetPanel";
+const NOMBRE_DESARROLLO = "CareNote";
+
 
 // entry.NNNN de la pregunta "Desarrollo de origen" en el form.
 const ENTRY_DESARROLLO = "entry.1663960621";

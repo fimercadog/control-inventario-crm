@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { AuthSplitLayout } from "@/components/auth/auth-split-layout";
 import { LoginForm } from "./login-form";
 
-export const metadata: Metadata = { title: { absolute: "Iniciar sesion | VetPanel" } };
+export const metadata: Metadata = { title: { absolute: "Iniciar sesión | CareNote" } };
 
 // Este dominio es un showcase: los atajos de usuarios demo se muestran por
 // defecto para que cualquiera entre y pruebe roles. Para un despliegue con
@@ -10,14 +10,12 @@ export const metadata: Metadata = { title: { absolute: "Iniciar sesion | VetPane
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
 
 const demoEmails: Record<string, string> = {
-  superadmin: "superadmin@vetlosandes.co",
-  admin: "admin@vetlosandes.co",
-  veterinario: "veterinario@vetlosandes.co",
-  veterinaria: "veterinaria@vetlosandes.co",
-  recepcion: "recepcion@vetlosandes.co",
-  inventario: "inventario@vetlosandes.co",
-  ventas: "ventas@vetlosandes.co",
+  superadmin: "superadmin@carenote.co",
+  admin: "admin@carenote.co",
+  enfermera: "enfermera@carenote.co",
+  terapeuta: "terapeuta@carenote.co",
 };
+
 
 export default async function LoginPage({
   searchParams,

@@ -11,9 +11,10 @@ export default function TestimoniosPage() {
     <MarketingLayout>
       <PageHero
         eyebrow="Testimonios"
-        title="Lo que cuentan los propietarios que ya nos conocen"
-        lead="Historias reales de mascotas atendidas en consulta, vacunación, cirugía y urgencias."
+        title="Lo que cuentan los profesionales que confían en CareNote"
+        lead="Experiencias reales de enfermeros y terapeutas domiciliarios que optimizaron su registro clínico."
       />
+
 
       <Section className="pt-0">
         <StatsSection stats={stats} />

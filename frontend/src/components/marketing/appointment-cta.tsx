@@ -10,8 +10,8 @@ import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
  * Agendar cita y WhatsApp. Reutilizada en home, servicios, equipo y contacto.
  */
 export function AppointmentCta({
-  title = "¿Tu mascota necesita una visita?",
-  lead = "Contanos qué necesita y te confirmamos disponibilidad. Para urgencias, escribinos directo por WhatsApp.",
+  title = "¿Listo para optimizar tus atenciones domiciliarias?",
+  lead = "Ingresá al panel administrativo de CareNote o ponete en contacto con nuestro equipo de soporte.",
 }: {
   title?: string;
   lead?: string;
@@ -29,8 +29,8 @@ export function AppointmentCta({
             <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{title}</h2>
             <p className="mt-4 text-lg leading-8 text-white/70">{lead}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <CtaLink href="/agendar-cita" variant="cta">
-                Agendar cita
+              <CtaLink href="/login" variant="cta">
+                Probar CareNote
               </CtaLink>
               <CtaLink
                 href={WHATSAPP_URL}
@@ -46,3 +46,4 @@ export function AppointmentCta({
     </section>
   );
 }
+

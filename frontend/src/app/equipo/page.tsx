@@ -10,16 +10,15 @@ import { TeamProfileList } from "@/components/marketing/team-profile-row";
 export default function EquipoPage() {
   return (
     <MarketingLayout>
-      {/* Hero: misma familia visual que Servicios/Nosotros. */}
       <SplitHero
         eyebrow="Equipo"
-        title="El equipo que va a conocer a tu mascota"
-        lead="Veterinarios de planta y un equipo de recepción que coordina tu agenda, tus urgencias y el seguimiento de cada tratamiento."
+        title="Líderes y coordinadores de CareNote"
+        lead="Profesionales de enfermería domiciliaria, fisioterapeutas e ingenieros de automatizaciones impulsando la excelencia asistencial."
         image="/gallery/illustrations/illustration-4.png"
-        imageAlt="Veterinario sosteniendo en brazos a un cachorro"
+        imageAlt="Coordinador de atención domiciliaria CareNote"
         actions={
-          <CtaLink href="/agendar-cita" variant="cta">
-            Agendar cita
+          <CtaLink href="/login" variant="cta">
+            Probar CareNote
           </CtaLink>
         }
       />
@@ -27,17 +26,15 @@ export default function EquipoPage() {
       <Section className="pt-0">
         <PhotoFeatureStack
           image="/gallery/pet-13.jpg"
-          imageAlt="Veterinario examinando la pata de un bulldog con instrumental clínico"
+          imageAlt="Profesional realizando valoración domiciliaria"
           reverse
           features={[
-            { title: "Continuidad, no rotación", text: "Cada mascota tiene un veterinario que la conoce visita tras visita, no un turno con quien esté disponible." },
-            { title: "Seguimiento real", text: "Un cambio sutil se nota antes cuando es el mismo equipo el que compara con la visita anterior." },
+            { title: "Soporte asistencial continuo", text: "Coordinadores y supervisores acompañando la práctica diaria en terreno." },
+            { title: "Optimización de tiempo", text: "Reducción drástica de horas de oficina dedicadas a la transcripción manual." },
           ]}
         />
       </Section>
 
-      {/* Fila apilada foto+card -- patron "Highly Trained Veterinarians" de
-          About, en vez de un grid de tarjetas parejas. */}
       <Section className="bg-section-cream">
         <TeamProfileList team={team} />
       </Section>

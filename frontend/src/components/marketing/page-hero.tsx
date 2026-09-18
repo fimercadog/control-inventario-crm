@@ -34,8 +34,9 @@ function HeroArt() {
       <div className="absolute bottom-8 right-6 flex items-center gap-2 rounded-2xl bg-card/90 px-4 py-3 shadow-elevation-2 backdrop-blur sm:bottom-12 sm:right-10">
         <HeartPulse className="size-4.5 shrink-0 text-chart-3" />
         <div className="leading-tight">
-          <p className="text-sm font-extrabold">3.500+</p>
-          <p className="text-[11px] text-muted-foreground">mascotas atendidas</p>
+          <p className="text-sm font-extrabold">15.000+</p>
+          <p className="text-[11px] text-muted-foreground">audios procesados</p>
+
         </div>
       </div>
     </div>

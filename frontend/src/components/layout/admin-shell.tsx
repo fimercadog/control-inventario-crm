@@ -93,112 +93,29 @@ type NavGroup = { label: string; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
   {
-    label: "",
-    items: [{ href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
-  },
-  {
-    label: "CareNote",
+    label: "CARENOTE",
     items: [
-      { href: "/app/atenciones", label: "Atenciones Domiciliarias", icon: Stethoscope, permissions: ["care_encounters.view"] },
+      { href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] },
       { href: "/app/pacientes", label: "Pacientes", icon: Users, permissions: ["patients.manage"] },
+      { href: "/app/atenciones", label: "Atenciones Domiciliarias", icon: Stethoscope, permissions: ["care_encounters.view"] },
       { href: "/app/telegram", label: "Vinculación Telegram", icon: Bot, permissions: ["dashboard.view"] },
+      { href: "/app/reportes-clinicos", label: "Informes Clínicos", icon: FileText, permissions: ["clinical_reports.view"] },
       { href: "/app/privacidad", label: "Consentimientos & Privacidad", icon: Shield, permissions: ["privacy_acceptances.view"] },
     ],
   },
   {
-    label: "Clínica",
+    label: "GESTIÓN",
     items: [
-      { href: "/app/agenda", label: "Citas del día", icon: CalendarDays, permissions: ["appointments.manage"] },
-      { href: "/app/citas", label: "Citas", icon: CalendarClock, permissions: ["appointments.manage"] },
-      { href: "/app/pacientes", label: "Pacientes", icon: PawPrint, permissions: ["patients.manage"] },
-      { href: "/app/consultas", label: "Historia clínica", icon: Stethoscope, permissions: ["medical_records.manage"] },
-      { href: "/app/vacunas", label: "Vacunas", icon: Syringe, permissions: ["vaccinations.manage"] },
-      { href: "/app/vacunas-pendientes", label: "Vacunas por vencer", icon: AlertTriangle, permissions: ["vaccinations.manage"] },
-      { href: "/app/recetas", label: "Recetas", icon: FileText, permissions: ["prescriptions.manage"] },
-      { href: "/app/procedimientos", label: "Procedimientos", icon: ClipboardList, permissions: ["procedures.manage"] },
-      { href: "/app/diagnosticos", label: "Diagnósticos", icon: ListChecks, permissions: ["medical_records.manage"] },
-      { href: "/app/reportes-clinicos", label: "Reportes clínicos", icon: BarChart3, permissions: ["clinical_reports.view"] },
-      { href: "/app/servicios", label: "Servicios", icon: Tag, permissions: ["services.manage"] },
-      { href: "/app/especies", label: "Especies", icon: Rabbit, permissions: ["patients.manage"] },
-      { href: "/app/razas", label: "Razas", icon: Dna, permissions: ["patients.manage"] },
+      { href: "/app/agenda", label: "Agenda / Citas", icon: CalendarDays, permissions: ["appointments.manage"] },
+      { href: "/app/usuarios", label: "Profesionales", icon: Contact2, permissions: ["users.manage"] },
+      { href: "/app/roles", label: "Configuración", icon: Settings, permissions: ["roles.manage"] },
     ],
   },
   {
-    label: "CRM",
-    items: [
-      { href: "/app/leads", label: "Solicitudes (Leads)", icon: Inbox, permissions: ["leads.view"] },
-      { href: "/app/clientes", label: "Clientes / Propietarios", icon: Users, permissions: ["clients.manage"] },
-      { href: "/app/contactos", label: "Contactos", icon: Contact2, permissions: ["clients.manage"] },
-      { href: "/app/segmentos", label: "Segmentos", icon: Tags, permissions: ["clients.manage"] },
-      { href: "/app/notas", label: "Notas", icon: StickyNote, permissions: ["clients.manage"] },
-      { href: "/app/deals", label: "Planes y oportunidades", icon: Handshake, permissions: ["deals.manage"] },
-      { href: "/app/cotizaciones", label: "Cotizaciones / Presupuestos", icon: FileText, permissions: ["deals.manage"] },
-      { href: "/app/actividades", label: "Actividades", icon: ListChecks, permissions: ["activities.manage"] },
-      { href: "/app/tareas", label: "Tareas", icon: ListTodo, permissions: ["activities.manage"] },
-      { href: "/app/seguimientos", label: "Seguimientos", icon: CalendarClock, permissions: ["activities.manage"] },
-      { href: "/app/calendario", label: "Calendario", icon: CalendarDays, permissions: ["activities.manage"] },
-      { href: "/app/pedidos", label: "Pedidos", icon: Receipt, permissions: ["orders.manage"] },
-    ],
-  },
-  {
-    label: "Ventas",
-    items: [
-      { href: "/app/facturas", label: "Facturas", icon: FileText, permissions: ["invoices.manage"] },
-      { href: "/app/pagos", label: "Pagos y abonos", icon: Receipt, permissions: ["payments.manage"] },
-    ],
-  },
-  {
-    label: "Inventario",
-    items: [
-      { href: "/app/productos", label: "Productos", icon: Package, permissions: ["products.manage"] },
-      { href: "/app/categorias", label: "Categorias", icon: Tags, permissions: ["products.manage"] },
-      { href: "/app/marcas", label: "Marcas", icon: Tag, permissions: ["products.manage"] },
-      { href: "/app/unidades", label: "Unidades", icon: Ruler, permissions: ["products.manage"] },
-      { href: "/app/bodegas", label: "Bodegas", icon: Warehouse, permissions: ["warehouses.manage"] },
-      { href: "/app/movimientos-inventario", label: "Movimientos", icon: ArrowLeftRight, permissions: ["stock.manage"] },
-      { href: "/app/transferencias", label: "Transferencias", icon: Repeat, permissions: ["stock.manage"] },
-      { href: "/app/alertas-stock", label: "Alertas de stock", icon: AlertTriangle, permissions: ["products.manage"] },
-    ],
-  },
-  {
-    label: "Compras",
-    items: [
-      { href: "/app/proveedores", label: "Proveedores", icon: Truck, permissions: ["suppliers.manage"] },
-      { href: "/app/ordenes-compra", label: "Ordenes de compra", icon: ShoppingCart, permissions: ["purchase_orders.manage"] },
-      { href: "/app/recepciones-compra", label: "Recepciones", icon: ClipboardList, permissions: ["purchase_receipts.manage"] },
-    ],
-  },
-  {
-    label: "Finanzas",
-    items: [
-      { href: "/app/cuentas-por-cobrar", label: "Cuentas por cobrar", icon: Receipt, permissions: ["accounts_receivable.view"] },
-      { href: "/app/cuentas-por-pagar", label: "Cuentas por pagar", icon: FileText, permissions: ["accounts_payable.view"] },
-      { href: "/app/cajas", label: "Cajas", icon: Warehouse, permissions: ["cash.manage"] },
-      { href: "/app/sesiones-caja", label: "Sesiones de caja", icon: ClipboardList, permissions: ["cash.manage"] },
-      { href: "/app/movimientos-caja", label: "Movimientos de caja", icon: ArrowLeftRight, permissions: ["cash.manage"] },
-    ],
-  },
-  {
-    label: "Analitica",
+    label: "ANALÍTICA",
     items: [
       { href: "/app/reportes", label: "Reportes", icon: BarChart3, permissions: ["reports.view"] },
-      { href: "/app/reportes-comerciales", label: "Reportes comerciales", icon: TrendingUp, permissions: ["reports.view"] },
-    ],
-  },
-  {
-    label: "Herramientas",
-    items: [
-      { href: "/app/contingencia", label: "Modo contingencia", icon: WifiOff, alert: true },
-      { href: "/app/ia", label: "Asistente IA", icon: Bot, premium: true },
-    ],
-  },
-  {
-    label: "Administracion",
-    items: [
-      { href: "/app/auditoria", label: "Auditoria", icon: ClipboardList, permissions: ["audit.view"] },
-      { href: "/app/usuarios", label: "Usuarios", icon: UserCircle, permissions: ["users.manage"] },
-      { href: "/app/roles", label: "Roles", icon: Shield, permissions: ["roles.manage"] },
-      { href: "/app/configuracion", label: "Configuracion", icon: Settings, permissions: ["settings.manage"] },
+      { href: "/app/reportes-comerciales", label: "Métricas y Gráficos", icon: TrendingUp, permissions: ["reports.view"] },
     ],
   },
 ];
@@ -434,11 +351,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <LogoMark size="sm" />
       <div>
         <p className="flex items-center gap-1.5 text-sm font-black tracking-tight text-foreground">
-          Vet<span className="text-primary">·</span>Panel
-          <span className="rounded bg-warning/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning">
-            Beta
+          CareNote<span className="text-primary">·</span>Domiciliario
+          <span className="rounded bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+            v1.0
           </span>
         </p>
+
         <p className="text-xs text-muted-foreground">Panel privado</p>
       </div>
     </div>
@@ -509,10 +427,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <Menu className="h-4 w-4" />
             </Button>
             <div className="min-w-0 max-w-32 sm:max-w-none">
-              <p className="truncate text-sm font-medium">{user?.company?.name ?? "VetPanel"}</p>
+              <p className="truncate text-sm font-medium">{user?.company?.name ?? "CareNote"}</p>
               <p className="hidden truncate text-xs text-muted-foreground sm:block">
-                Panel de gestión veterinaria
+                Panel de atención domiciliaria
               </p>
+
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
