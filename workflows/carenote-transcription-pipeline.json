@@ -1,0 +1,121 @@
+{
+  "name": "CareNote Workflow 3: Decoupled Audio Transcription Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "carenote-transcription-process",
+        "responseMode": "onReceived"
+      },
+      "name": "Transcription Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.CARENOTE_API_URL }}/api/v1/bot/sessions/items/status",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-CareNote-Bot-Secret", "value": "={{ $env.CARENOTE_BOT_SECRET }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"item_id\": {{ $json.body.item_id }}, \"status\": \"transcribing\" }"
+      },
+      "name": "Update Status: Transcribing",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $env.TRANSCRIPTION_PROVIDER || 'mock' }}",
+              "value2": "mock"
+            }
+          ]
+        }
+      },
+      "name": "Is Provider Mock?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [540, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "raw_text",
+              "value": "Transcripción completada por el proveedor desacoplado (Whisper/Mock). El paciente se encuentra en buen estado general y respondió adecuadamente al tratamiento."
+            }
+          ]
+        }
+      },
+      "name": "Mock Transcription Text",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [760, 200]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.openai.com/v1/audio/transcriptions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.OPENAI_API_KEY }}" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data"
+      },
+      "name": "OpenAI Whisper API Call",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [760, 400]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.CARENOTE_API_URL }}/api/v1/bot/sessions/items/status",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-CareNote-Bot-Secret", "value": "={{ $env.CARENOTE_BOT_SECRET }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"item_id\": {{ $node[\"Transcription Webhook Trigger\"].json.body.item_id }}, \"status\": \"ready\", \"text_content\": \"{{ $json.raw_text || $json.text }}\", \"provider\": \"{{ $env.TRANSCRIPTION_PROVIDER || 'mock' }}\" }"
+      },
+      "name": "Update Status: Ready (Completed)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [980, 300]
+    }
+  ],
+  "connections": {
+    "Transcription Webhook Trigger": {
+      "main": [[{ "node": "Update Status: Transcribing", "type": "main", "index": 0 }]]
+    },
+    "Update Status: Transcribing": {
+      "main": [[{ "node": "Is Provider Mock?", "type": "main", "index": 0 }]]
+    },
+    "Is Provider Mock?": {
+      "main": [
+        [{ "node": "Mock Transcription Text", "type": "main", "index": 0 }],
+        [{ "node": "OpenAI Whisper API Call", "type": "main", "index": 0 }]
+      ]
+    },
+    "Mock Transcription Text": {
+      "main": [[{ "node": "Update Status: Ready (Completed)", "type": "main", "index": 0 }]]
+    },
+    "OpenAI Whisper API Call": {
+      "main": [[{ "node": "Update Status: Ready (Completed)", "type": "main", "index": 0 }]]
+    }
+  }
+}

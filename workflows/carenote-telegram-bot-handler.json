@@ -1,0 +1,126 @@
+{
+  "name": "CareNote Workflow 1: Telegram Bot Handler & Session Manager",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message", "callback_query"]
+      },
+      "name": "Telegram Webhook Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.CARENOTE_API_URL }}/api/v1/bot/resolve-professional",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-CareNote-Bot-Secret", "value": "={{ $env.CARENOTE_BOT_SECRET }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"telegram_chat_id\": {{ $json.message.chat.id || $json.callback_query.message.chat.id }} }"
+      },
+      "name": "Resolve Professional in CareNote",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.message.text }}",
+              "operation": "startsWith",
+              "value2": "/start"
+            }
+          ]
+        }
+      },
+      "name": "Is /start Command?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [540, 200]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $node[\"Telegram Webhook Trigger\"].json.message.chat.id }}",
+        "text": "=👩‍⚕️ Bienvenido a CareNote, {{ $node[\"Resolve Professional in CareNote\"].json.professional.name }}.\n\nEmpresa: {{ $node[\"Resolve Professional in CareNote\"].json.company.name }}\n\nSelecciona una opción para comenzar tu atención clínica:",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            [
+              { "text": "🆕 Nueva Sesión", "callbackData": "action=new_session" },
+              { "text": "📌 Sesión Activa", "callbackData": "action=check_session" }
+            ]
+          ]
+        }
+      },
+      "name": "Send Main Menu",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [760, 150]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.CARENOTE_API_URL }}/api/v1/bot/sessions/start",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-CareNote-Bot-Secret", "value": "={{ $env.CARENOTE_BOT_SECRET }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"telegram_chat_id\": {{ $node[\"Telegram Webhook Trigger\"].json.callback_query.message.chat.id }}, \"patient_id\": 1 }"
+      },
+      "name": "API Start Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [760, 350]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $node[\"Telegram Webhook Trigger\"].json.callback_query.message.chat.id }}",
+        "text": "=✅ Sesión clínica iniciada con paciente.\n\nControles disponibles durante la atención:",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            [
+              { "text": "▶️ Iniciar Audio", "callbackData": "action=start_audio" },
+              { "text": "✍️ Agregar Texto", "callbackData": "action=add_text" }
+            ],
+            [
+              { "text": "✅ Finalizar Sesión", "callbackData": "action=close_session" },
+              { "text": "❌ Cancelar Sesión", "callbackData": "action=cancel_session" }
+            ]
+          ]
+        }
+      },
+      "name": "Send Active Session Controls",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [980, 350]
+    }
+  ],
+  "connections": {
+    "Telegram Webhook Trigger": {
+      "main": [[{ "node": "Resolve Professional in CareNote", "type": "main", "index": 0 }]]
+    },
+    "Resolve Professional in CareNote": {
+      "main": [[{ "node": "Is /start Command?", "type": "main", "index": 0 }]]
+    },
+    "Is /start Command?": {
+      "main": [
+        [{ "node": "Send Main Menu", "type": "main", "index": 0 }],
+        [{ "node": "API Start Session", "type": "main", "index": 0 }]
+      ]
+    },
+    "API Start Session": {
+      "main": [[{ "node": "Send Active Session Controls", "type": "main", "index": 0 }]]
+    }
+  }
+}

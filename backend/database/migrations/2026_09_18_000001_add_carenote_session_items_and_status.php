@@ -14,6 +14,7 @@ return new class extends Migration
             $table->foreignId('care_encounter_id')->constrained()->cascadeOnDelete();
             $table->integer('sequence_number');
             $table->string('item_type')->default('audio'); // audio | text
+            $table->string('segment_id')->nullable()->index();
             $table->string('telegram_message_id')->nullable();
             $table->text('text_content')->nullable();
             $table->foreignId('audio_recording_id')->nullable()->constrained('audio_recordings')->nullOnDelete();

@@ -67,6 +67,7 @@ class BotIntegrationController extends Controller
         $validated = $request->validate([
             'telegram_chat_id' => 'required|numeric',
             'item_type' => 'required|string|in:audio,text',
+            'segment_id' => 'nullable|string',
             'telegram_message_id' => 'nullable|string',
             'text_content' => 'nullable|string',
             'duration_seconds' => 'nullable|integer',
@@ -96,6 +97,20 @@ class BotIntegrationController extends Controller
         ]);
 
         $result = $this->botService->updateItemStatus($validated);
+
+        $statusCode = $result['status'] ?? 200;
+        unset($result['status']);
+
+        return response()->json($result, $statusCode);
+    }
+
+    public function segmentStatus(Request $request)
+    {
+        $validated = $request->validate([
+            'segment_id' => 'required|string',
+        ]);
+
+        $result = $this->botService->getSegmentStatus($validated['segment_id']);
 
         $statusCode = $result['status'] ?? 200;
         unset($result['status']);

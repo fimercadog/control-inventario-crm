@@ -1,0 +1,84 @@
+{
+  "name": "CareNote Workflow 2: Audio Segment Timer (Anti-Ghost Warnings)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "carenote-segment-timer-start",
+        "responseMode": "onReceived"
+      },
+      "name": "Timer Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "amount": "={{ $env.TIMER_WARN_1_SEC || 2100 }}",
+        "unit": "seconds"
+      },
+      "name": "Wait 35 Min (Warn 1)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.CARENOTE_API_URL }}/api/v1/bot/sessions/items/segment-status?segment_id={{ $node[\"Timer Webhook Trigger\"].json.body.segment_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "X-CareNote-Bot-Secret", "value": "={{ $env.CARENOTE_BOT_SECRET }}" }
+          ]
+        }
+      },
+      "name": "Check Segment Status (Warn 1)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [540, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.is_delivered }}",
+              "value2": false
+            }
+          ]
+        }
+      },
+      "name": "Is Audio Still Pending?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $node[\"Timer Webhook Trigger\"].json.body.telegram_chat_id }}",
+        "text": "⏱️ Audio en curso: aproximadamente 35 minutos.\n\nTe quedan unos 5 minutos del tiempo recomendado por archivo."
+      },
+      "name": "Send Warning 35 Min",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [980, 200]
+    }
+  ],
+  "connections": {
+    "Timer Webhook Trigger": {
+      "main": [[{ "node": "Wait 35 Min (Warn 1)", "type": "main", "index": 0 }]]
+    },
+    "Wait 35 Min (Warn 1)": {
+      "main": [[{ "node": "Check Segment Status (Warn 1)", "type": "main", "index": 0 }]]
+    },
+    "Check Segment Status (Warn 1)": {
+      "main": [[{ "node": "Is Audio Still Pending?", "type": "main", "index": 0 }]]
+    },
+    "Is Audio Still Pending?": {
+      "main": [
+        [{ "node": "Send Warning 35 Min", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  }
+}

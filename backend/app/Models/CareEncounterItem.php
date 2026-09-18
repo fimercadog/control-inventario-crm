@@ -12,6 +12,7 @@ class CareEncounterItem extends Model
         'care_encounter_id',
         'sequence_number',
         'item_type',
+        'segment_id',
         'telegram_message_id',
         'text_content',
         'audio_recording_id',

@@ -629,4 +629,153 @@ class CareNoteTest extends TestCase
         $cancelResponse->assertStatus(200)
             ->assertJsonPath('action', 'cancelled');
     }
+
+    public function test_bot_segment_timer_anti_ghost_warning_status_check(): void
+    {
+        Storage::fake('local');
+        $botSecret = config('services.carenote_bot.secret', 'carenote-bot-secret-dev-2026');
+        $chatId = 444333222;
+        $segmentId = 'seg_timer_test_99';
+
+        \App\Models\TelegramProfessionalLink::create([
+            'user_id' => $this->nurse->id,
+            'telegram_chat_id' => $chatId,
+            'is_verified' => true,
+            'linked_at' => now(),
+        ]);
+
+        \App\Models\PrivacyAcceptance::create([
+            'company_id' => $this->company->id,
+            'user_id' => $this->nurse->id,
+            'policy_version' => 'v1.0-carenote-2026',
+            'accepted_at' => now(),
+        ]);
+
+        // 1. Antes de enviar audio: consulta de estado de segmento indica `is_delivered = false`
+        $pendingCheck = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->getJson("/api/v1/bot/sessions/items/segment-status?segment_id={$segmentId}");
+        
+        $pendingCheck->assertStatus(200)
+            ->assertJsonPath('is_delivered', false)
+            ->assertJsonPath('state', 'pending');
+
+        // 2. Iniciar sesión
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/start', [
+                'telegram_chat_id' => $chatId,
+                'patient_id' => $this->patient->id,
+            ])->assertStatus(201);
+
+        // 3. Telegram entrega el audio para ese segment_id
+        $audioFile = UploadedFile::fake()->create('segment_audio.ogg', 400, 'audio/ogg');
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items', [
+                'telegram_chat_id' => $chatId,
+                'item_type' => 'audio',
+                'segment_id' => $segmentId,
+                'duration_seconds' => 1200, // 20m
+                'audio_file' => $audioFile,
+            ])->assertStatus(201);
+
+        // 4. El temporizador de n8n consulta el estado del segmento antes de enviar una alerta de 35 min
+        $deliveredCheck = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->getJson("/api/v1/bot/sessions/items/segment-status?segment_id={$segmentId}");
+
+        $deliveredCheck->assertStatus(200)
+            ->assertJsonPath('is_delivered', true)
+            ->assertJsonPath('state', 'received');
+        // n8n detecta `is_delivered = true` y cancela el aviso fantasma silenciosamente
+    }
+
+    public function test_bot_session_partial_failure_and_item_retry_resilience(): void
+    {
+        Storage::fake('local');
+        $botSecret = config('services.carenote_bot.secret', 'carenote-bot-secret-dev-2026');
+        $chatId = 111222333;
+
+        \App\Models\TelegramProfessionalLink::create([
+            'user_id' => $this->nurse->id,
+            'telegram_chat_id' => $chatId,
+            'is_verified' => true,
+            'linked_at' => now(),
+        ]);
+
+        \App\Models\PrivacyAcceptance::create([
+            'company_id' => $this->company->id,
+            'user_id' => $this->nurse->id,
+            'policy_version' => 'v1.0-carenote-2026',
+            'accepted_at' => now(),
+        ]);
+
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/start', [
+                'telegram_chat_id' => $chatId,
+                'patient_id' => $this->patient->id,
+            ])->assertStatus(201);
+
+        // Elemento 1: Audio 1 (completado)
+        $audio1 = UploadedFile::fake()->create('a1.ogg', 200, 'audio/ogg');
+        $item1Res = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items', [
+                'telegram_chat_id' => $chatId,
+                'item_type' => 'audio',
+                'audio_file' => $audio1,
+            ]);
+        $itemId1 = $item1Res->json('item.id');
+
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items/status', [
+                'item_id' => $itemId1,
+                'status' => 'ready',
+                'text_content' => 'Transcripción exitosa del Audio 1.',
+            ]);
+
+        // Elemento 2: Audio 2 (falla por timeout de red)
+        $audio2 = UploadedFile::fake()->create('a2.ogg', 300, 'audio/ogg');
+        $item2Res = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items', [
+                'telegram_chat_id' => $chatId,
+                'item_type' => 'audio',
+                'audio_file' => $audio2,
+            ]);
+        $itemId2 = $item2Res->json('item.id');
+
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items/status', [
+                'item_id' => $itemId2,
+                'status' => 'failed',
+                'error_message' => 'Timeout de red en el proveedor de transcripción.',
+            ]);
+
+        // Intentar cerrar la sesión mientras Audio 2 esté fallido (debe rebotar 422 ITEMS_NOT_READY)
+        $failedClose = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/close', [
+                'telegram_chat_id' => $chatId,
+                'action' => 'confirm',
+            ]);
+        $failedClose->assertStatus(422)
+            ->assertJsonPath('code', 'ITEMS_NOT_READY');
+
+        // Reintentar ÚNICAMENTE el Audio 2 (sin volver a procesar Audio 1)
+        $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/items/status', [
+                'item_id' => $itemId2,
+                'status' => 'ready',
+                'text_content' => 'Transcripción exitosa del Audio 2 tras reintento.',
+            ])->assertStatus(200);
+
+        // Ahora cerrar sesión exitosamente
+        $successClose = $this->withHeader('X-CareNote-Bot-Secret', $botSecret)
+            ->postJson('/api/v1/bot/sessions/close', [
+                'telegram_chat_id' => $chatId,
+                'action' => 'confirm',
+            ]);
+
+        $successClose->assertStatus(200)
+            ->assertJsonPath('success', true);
+
+        $text = $successClose->json('summary.consolidated_text');
+        $this->assertStringContainsString('Transcripción exitosa del Audio 1', $text);
+        $this->assertStringContainsString('Transcripción exitosa del Audio 2 tras reintento', $text);
+    }
 }

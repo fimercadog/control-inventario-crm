@@ -263,6 +263,7 @@ class BotIntegrationService
             'care_encounter_id' => $encounter->id,
             'sequence_number' => $nextSeq,
             'item_type' => $itemType,
+            'segment_id' => $validated['segment_id'] ?? null,
             'telegram_message_id' => $validated['telegram_message_id'] ?? null,
             'text_content' => $itemType === 'text' ? ($validated['text_content'] ?? null) : null,
             'audio_recording_id' => $audioRecordingId,
@@ -496,6 +497,33 @@ class BotIntegrationService
             'encounter' => $encounter->load(['patient', 'professional', 'company']),
             'professional' => $resolution['professional'],
             'company' => $resolution['company'],
+        ];
+    }
+
+    public function getSegmentStatus(string $segmentId): array
+    {
+        $item = CareEncounterItem::where('segment_id', $segmentId)->first();
+
+        if (! $item) {
+            return [
+                'success' => true,
+                'status' => 200,
+                'segment_id' => $segmentId,
+                'is_delivered' => false,
+                'state' => 'pending',
+            ];
+        }
+
+        $isDelivered = $item->received_at !== null || in_array($item->status, ['received', 'downloading', 'preparing', 'transcribing', 'ready', 'failed']);
+
+        return [
+            'success' => true,
+            'status' => 200,
+            'segment_id' => $segmentId,
+            'is_delivered' => $isDelivered,
+            'state' => $item->status,
+            'item_id' => $item->id,
+            'received_at' => $item->received_at?->toIso8601String(),
         ];
     }
 }
