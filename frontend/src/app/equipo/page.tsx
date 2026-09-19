@@ -25,7 +25,7 @@ export default function EquipoPage() {
 
       <Section className="pt-0">
         <PhotoFeatureStack
-          image="/gallery/clinic-4.jpg"
+          image="/gallery/aesthetic/cabina_clinica.jpg"
           imageAlt="Médico realizando procedimiento de medicina estética"
           reverse
           features={[

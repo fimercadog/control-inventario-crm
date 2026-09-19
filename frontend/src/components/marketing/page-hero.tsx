@@ -15,8 +15,8 @@ function HeroArt() {
   return (
     <div className="relative flex aspect-4/5 w-full items-center justify-center overflow-hidden rounded-4xl border border-border bg-secondary shadow-elevation-4 sm:aspect-5/4.6 lg:aspect-4/4.6">
       <Image
-        src="/gallery/hero-bulldog-exam.jpg"
-        alt="Veterinario revisando a un bulldog en la camilla de consulta"
+        src="/gallery/aesthetic/hero_aesthetic.jpg"
+        alt="Médica especialista en valoración estética facial"
         fill
         priority
         sizes="(min-width: 1024px) 40vw, 90vw"
@@ -27,15 +27,15 @@ function HeroArt() {
         <ShieldCheck className="size-4.5 shrink-0 text-primary" />
         <div className="leading-tight">
           <p className="text-sm font-extrabold">12+ años</p>
-          <p className="text-[11px] text-muted-foreground">de trayectoria</p>
+          <p className="text-[11px] text-muted-foreground">de trayectoria médica</p>
         </div>
       </div>
 
       <div className="absolute bottom-8 right-6 flex items-center gap-2 rounded-2xl bg-card/90 px-4 py-3 shadow-elevation-2 backdrop-blur sm:bottom-12 sm:right-10">
         <HeartPulse className="size-4.5 shrink-0 text-chart-3" />
         <div className="leading-tight">
-          <p className="text-sm font-extrabold">3.500+</p>
-          <p className="text-[11px] text-muted-foreground">mascotas atendidas</p>
+          <p className="text-sm font-extrabold">5.000+</p>
+          <p className="text-[11px] text-muted-foreground">pacientes satisfechos</p>
         </div>
       </div>
     </div>

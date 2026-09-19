@@ -37,7 +37,7 @@ export default function ServiciosPage() {
 
       <Section className="pt-0">
         <CircularPhotoAbout
-          image="/gallery/clinic-2.jpg"
+          image="/gallery/aesthetic/armonizacion_perfilado.jpg"
           imageAlt="Asesoría y valoración estética en consultorio"
           eyebrow="Valoración Médica"
           title="Diagnóstico facial y corporal bioseguro"
@@ -64,7 +64,7 @@ export default function ServiciosPage() {
 
       <PhotoOverlayLinks
         title="Catálogo de Procedimientos Estéticos"
-        image="/gallery/clinic-3.jpg"
+        image="/gallery/aesthetic/tratamiento_corporal.jpg"
         imageAlt="Procedimiento de medicina estética"
         items={services.map((s) => ({ label: s.title, href: `/servicios/${s.slug}` }))}
       />

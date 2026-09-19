@@ -54,8 +54,8 @@ export default function AboutPage() {
 
       <Section>
         <PhotoFeatureStack
-          image="/gallery/clinic-1.jpg"
-          imageAlt="Médica realizando valoración facial estética"
+          image="/gallery/aesthetic/cabina_clinica.jpg"
+          imageAlt="Cabina médica de valoración estética"
           features={[
             { title: "Más de una década de trayectoria", text: "Evolucionamos de un consultorio estético boutique a un centro médico de rejuvenecimiento avanzado." },
             { title: "Consultas sin afanes", text: "Cada valoración tiene el tiempo necesario para diagnosticar y planificar minuciosamente tu tratamiento." },
@@ -66,7 +66,7 @@ export default function AboutPage() {
 
       <OffsetBlobBlock
         title="Nuestra misión y valores médicos"
-        image="/gallery/clinic-3.jpg"
+        image="/gallery/aesthetic/rejuvenecimiento_facial.jpg"
         imageAlt="Sesión de rejuvenecimiento dérmico con tecnología médica"
         actions={
           <CtaLink href="/servicios" variant="cta">

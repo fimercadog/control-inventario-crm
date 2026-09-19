@@ -62,12 +62,12 @@ export default function Home() {
         </Reveal>
         <div className="mt-12">
           <PhotoFeatureStack
-            image="/gallery/clinic-1.jpg"
-            imageAlt="Médica especialista aplicando tratamiento facial estético en consultorio de última generación"
+            image="/gallery/aesthetic/cabina_clinica.jpg"
+            imageAlt="Cabina clínica biosegura y consultorio de medicina estética"
             features={[
               { title: "Instalaciones médicas premium", text: "Consultorios privados bioseguros y equipamiento médico avanzado." },
               { title: "Atención personalizada y sin afanes", text: "Cada valoración médica dispone del tiempo necesario para planificar tus objetivos." },
-              { title: "Ubicación privilegiada en Bogotá", text: "Calle 93 #14-20, Chico. Lunes a sábado de 8:00 a 19:00." },
+              { title: "Ubicación privilegiada en Bogotá", text: "Calle 93 #14-20, Chicó. Lunes a sábado de 8:00 a 19:00." },
             ]}
           />
         </div>
@@ -114,8 +114,8 @@ export default function Home() {
       <OffsetBlobBlock
         eyebrow="Enfoque Antiaging"
         title="La mejor versión de ti misma, año tras año"
-        image="/gallery/clinic-3.jpg"
-        imageAlt="Paciente sonriente en sesión de hidratación y rejuvenecimiento facial"
+        image="/gallery/aesthetic/rejuvenecimiento_facial.jpg"
+        imageAlt="Paciente en sesión de hidratación y rejuvenecimiento facial"
         actions={
           <CtaLink href="/servicios/bioestimuladores-colageno" variant="outline" size="sm">
             Ver bioestimuladores de colágeno

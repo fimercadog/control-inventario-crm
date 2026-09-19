@@ -13,13 +13,16 @@ import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 const SERVICE_PHOTO: Record<string, string> = {
-  "consulta-veterinaria": "/gallery/hero-bulldog-exam.jpg",
-  vacunacion: "/gallery/pet-4.jpg",
-  cirugia: "/gallery/pet-13.jpg",
-  "laboratorio-clinico": "/gallery/pet-12.jpg",
-  "peluqueria-grooming": "/gallery/pet-8.jpg",
-  nutricion: "/gallery/pet-4.jpg",
-  urgencias: "/gallery/pet-10.jpg",
+  "toxina-botulinica": "/gallery/aesthetic/rejuvenecimiento_facial.jpg",
+  "acido-hialuronico": "/gallery/aesthetic/armonizacion_perfilado.jpg",
+  "limpieza-facial-profunda": "/gallery/aesthetic/limpieza_dermocosmiatria.jpg",
+  "bioestimuladores-colageno": "/gallery/aesthetic/rejuvenecimiento_facial.jpg",
+  "contorno-corporal": "/gallery/aesthetic/tratamiento_corporal.jpg",
+  "peeling-medico": "/gallery/aesthetic/limpieza_dermocosmiatria.jpg",
+  "sueroterapia-antiaging": "/gallery/aesthetic/cabina_clinica.jpg",
+  "valoracion-medica-estetica": "/gallery/aesthetic/cabina_clinica.jpg",
+  "depilacion-laser-medica": "/gallery/aesthetic/fototratamientos_laser.jpg",
+  "rejuvenecimiento-laser": "/gallery/aesthetic/fototratamientos_laser.jpg",
 };
 
 export function generateStaticParams() {
@@ -32,7 +35,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   if (!service) notFound();
 
   const iconSrc = SERVICE_ICON[service.slug];
-  const photo = SERVICE_PHOTO[service.slug] ?? "/gallery/paw-procedure.jpg";
+  const photo = SERVICE_PHOTO[service.slug] ?? "/gallery/aesthetic/hero_aesthetic.jpg";
   const related = services.filter((s) => s.slug !== service.slug).slice(0, 3);
 
   return (

@@ -5,19 +5,19 @@ import { ImageTextSection } from "./image-text-section";
 describe("ImageTextSection", () => {
   it("renders the eyebrow, title, image alt text, and children", () => {
     render(
-      <ImageTextSection image="/gallery/pet-1.jpg" imageAlt="Un gato" eyebrow="Sección" title="Título de prueba">
+      <ImageTextSection image="/gallery/aesthetic/cabina_clinica.jpg" imageAlt="Cabina de tratamiento" eyebrow="Sección" title="Título de prueba">
         <p>Contenido hijo</p>
       </ImageTextSection>,
     );
     expect(screen.getByText("Sección")).toBeInTheDocument();
     expect(screen.getByText("Título de prueba")).toBeInTheDocument();
     expect(screen.getByText("Contenido hijo")).toBeInTheDocument();
-    expect(screen.getByAltText("Un gato")).toBeInTheDocument();
+    expect(screen.getByAltText("Cabina de tratamiento")).toBeInTheDocument();
   });
 
   it("puts the image second in the DOM when reverse is set", () => {
     const { container } = render(
-      <ImageTextSection image="/gallery/pet-1.jpg" imageAlt="Un gato" title="T" reverse>
+      <ImageTextSection image="/gallery/aesthetic/cabina_clinica.jpg" imageAlt="Cabina de tratamiento" title="T" reverse>
         <p>hijo</p>
       </ImageTextSection>,
     );
