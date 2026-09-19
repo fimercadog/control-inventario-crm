@@ -26,6 +26,11 @@ class AuthController extends Controller
             ->first();
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            app(\App\Services\ObservabilityService::class)->logSecurityEvent('login_failed', $request, [
+                'email_masked' => (new \App\Services\LogSanitizer)->maskEmail($credentials['email'] ?? null),
+                'reason' => ! $user ? 'Usuario no encontrado o inactivo' : 'Contraseña incorrecta',
+            ]);
+
             throw ValidationException::withMessages([
                 'email' => ['Las credenciales no son validas.'],
             ]);
