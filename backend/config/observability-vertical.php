@@ -4,19 +4,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Extensiones por Vertical (Personalización Local)
+    | Extensiones por Vertical - Clínica Veterinaria
     |--------------------------------------------------------------------------
-    |
-    | Este archivo es el único lugar permitido para personalizaciones por vertical.
-    | Permite agregar campos sensibles, eventos personalizados y definir el
-    | nombre del módulo sin tocar el núcleo inmutable config/observability.php.
-    |
     */
 
-    'additional_sensitive_fields' => [],
+    'additional_sensitive_fields' => [
+        'pet_medical_history',
+        'clinical_notes',
+        'vet_prescriptions',
+        'owner_national_id',
+        'owner_contact_details',
+    ],
 
-    'custom_events' => [],
+    'custom_events' => [
+        'patient_registered' => true,
+        'prescription_issued' => true,
+    ],
 
-    'module_name' => env('OBSERVABILITY_MODULE_NAME', 'core_erp'),
+    'module_name' => 'clinica_veterinaria',
 
 ];

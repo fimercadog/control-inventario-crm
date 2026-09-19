@@ -151,7 +151,7 @@ class TechnicalLoggingTest extends TestCase
         $this->assertEquals('req-support-test-999', $payload['request_id']);
         $this->assertEquals($user->id, $payload['user_id']);
         $this->assertEquals($company->id, $payload['company_id']);
-        $this->assertEquals('core_erp', $payload['module']);
+        $this->assertEquals(config('observability.vertical_extensions.module_name', 'core_erp'), $payload['module']);
         $this->assertEquals('Problema al cargar reporte', $payload['feedback_message']);
         $this->assertEquals('finance', $payload['meta']['section']);
         $this->assertArrayHasKey('app_version', $payload);
@@ -201,7 +201,6 @@ class TechnicalLoggingTest extends TestCase
     {
         $filesToCheck = [
             base_path('config/observability.php'),
-            base_path('config/observability-vertical.php'),
             base_path('app/Contracts/SupportContextInterface.php'),
             base_path('app/Services/ObservabilityService.php'),
             base_path('app/Services/LogSanitizer.php'),
