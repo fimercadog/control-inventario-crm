@@ -94,8 +94,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </Section>
 
       <AppointmentCta
-        title="¿Tenés dudas sobre el caso puntual de tu mascota?"
-        lead="Un artículo orienta, pero no reemplaza una consulta. Agendá y lo vemos en persona."
+        title="¿Deseas consultar sobre tu caso particular?"
+        lead="Un artículo informa, pero no sustituye una valoración médica experta. Agenda tu cita y evaluamos tu piel en persona."
       />
     </MarketingLayout>
   );

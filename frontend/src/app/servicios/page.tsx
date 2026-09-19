@@ -18,18 +18,18 @@ export default function ServiciosPage() {
   return (
     <MarketingLayout>
       <SplitHero
-        eyebrow="Servicios"
-        title="Atención veterinaria completa, de la consulta a la cirugía"
-        lead="Consulta general, medicina preventiva, laboratorio, cirugía, odontología y más — todo con historia clínica digital por paciente."
+        eyebrow="Tratamientos & Catálogo Médica"
+        title="Medicina Estética & Antiaging integral"
+        lead="Toxina Botulínica, Ácido Hialurónico, Bioestimuladores de Colágeno, Peeling Médico, Hydrafacial y Sueroterapia — procedimientos bioseguros diseñados por médicos especialistas."
         image="/gallery/illustrations/illustration-7.png"
-        imageAlt="Veterinario revisando la boca de un gato en consulta"
+        imageAlt="Valoración estética facial personalizada"
         actions={
           <>
             <CtaLink href="/agendar-cita" variant="cta">
-              Agendar cita
+              Agendar Valoración
             </CtaLink>
             <CtaLink href="#todos-los-servicios" variant="outline">
-              Ver todos los servicios
+              Ver catálogo completo
             </CtaLink>
           </>
         }
@@ -37,18 +37,17 @@ export default function ServiciosPage() {
 
       <Section className="pt-0">
         <CircularPhotoAbout
-          image="/gallery/pet-10.jpg"
-          imageAlt="Atención veterinaria de urgencia"
-          eyebrow="Urgencias"
-          title="Prioridad inmediata cuando no puede esperar"
+          image="/gallery/clinic-2.jpg"
+          imageAlt="Asesoría y valoración estética en consultorio"
+          eyebrow="Valoración Médica"
+          title="Diagnóstico facial y corporal bioseguro"
         >
           <p>
-            Ante un accidente, una intoxicación o un cuadro que empeora rápido, la prioridad es estabilizar.
-            Escribinos antes de venir para que el equipo esté listo cuando llegues.
+            Cada rostro requiere una planificación anatómica única. Evaluamos tu piel con diagnóstico computarizado para diseñar la combinación ideal de tratamientos sin sobrecargar tus expresiones.
           </p>
         </CircularPhotoAbout>
         <div className="mt-10">
-          <PriorityBanner label="Urgencias, escribinos ya" detail="+57 601 555 0188" />
+          <PriorityBanner label="Atención Médica Directa por WhatsApp" detail="+57 300 912 8472" />
         </div>
       </Section>
 
@@ -63,22 +62,20 @@ export default function ServiciosPage() {
         />
       </div>
 
-      {/* "Other Services": lista de texto plano sobre foto con duotono azul --
-          patron real de Services en el pack Divi, no otro grid de icon-cards. */}
       <PhotoOverlayLinks
-        title="Todos los servicios de un vistazo"
-        image="/gallery/paw-procedure.jpg"
-        imageAlt="Procedimiento veterinario"
+        title="Catálogo de Procedimientos Estéticos"
+        image="/gallery/clinic-3.jpg"
+        imageAlt="Procedimiento de medicina estética"
         items={services.map((s) => ({ label: s.title, href: `/servicios/${s.slug}` }))}
       />
 
       <div className="relative z-10 mx-auto -mt-16 max-w-5xl px-4 sm:px-6 lg:px-8">
-        <FloatingContactCard title="Escribinos cuando quieras" />
+        <FloatingContactCard title="Resuelve tus dudas directamente con nuestro equipo" />
       </div>
 
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="FAQ" title="Preguntas frecuentes" center={false} />
+          <SectionHeading eyebrow="FAQ" title="Preguntas Frecuentes sobre nuestros procedimientos" center={false} />
         </Reveal>
         <div className="mt-12">
           <FaqColumns faqs={faqs.slice(0, 6)} />
@@ -87,7 +84,7 @@ export default function ServiciosPage() {
 
       <Section className="bg-section-cream">
         <Reveal>
-          <SectionHeading eyebrow="Testimonios" title="Lo que cuentan nuestros propietarios" />
+          <SectionHeading eyebrow="Testimonios" title="Opiniones de nuestros pacientes" />
         </Reveal>
         <div className="mt-12">
           <TestimonialGrid testimonials={testimonials} limit={2} />

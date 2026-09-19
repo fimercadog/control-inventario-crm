@@ -1,24 +1,23 @@
 import {
   Activity,
-  Bone,
-  Cross,
-  FlaskConical,
+  Award,
+  Clock,
+  Droplet,
+  Feather,
+  Flame,
   HeartPulse,
-  Scissors,
-  Scan,
-  Siren,
+  Shield,
   Smile,
   Sparkles,
   Stethoscope,
   Syringe,
+  UserCheck,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
-// Contenido demo de la vertical veterinaria. Nombres y roles coinciden con el
-// dataset sembrado en el backend (`DatabaseSeeder.php`: "Clínica Veterinaria
-// Los Andes", Dr. Carlos Medina, Dra. Laura Peña, Marcela Duarte) para que el
-// sitio público y el panel cuenten la misma historia. Listo para reemplazar
-// por la información real de la clínica antes de vender/desplegar.
+// Contenido demo de la vertical Clínica Estética & Medicina Antiaging Élite.
+// Alineado con la visión de la clínica y el dataset sembrado en el backend (`DatabaseSeeder.php`).
 
 export type Service = {
   slug: string;
@@ -32,127 +31,150 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    slug: "consulta-veterinaria",
-    icon: Stethoscope,
-    title: "Consulta veterinaria",
-    short: "Revisión general, diagnóstico y seguimiento con un veterinario de planta.",
-    description:
-      "La consulta general es la puerta de entrada a la atención de tu mascota: examen físico completo, revisión de peso y signos vitales, y una conversación honesta sobre lo que necesita. Queda registrada en su historia clínica para que cada visita siguiente parta de donde quedó la anterior.",
-    bullets: [
-      "Examen físico completo y control de peso",
-      "Historia clínica digital por paciente",
-      "Orientación sobre alimentación y cuidados",
-      "Derivación a especialista si el caso lo requiere",
-    ],
-    featured: true,
-  },
-  {
-    slug: "vacunacion",
+    slug: "toxina-botulinica",
     icon: Syringe,
-    title: "Vacunación",
-    short: "Esquemas de vacunación al día, con recordatorio de la próxima dosis.",
+    title: "Toxina Botulínica (Botox®)",
+    short: "Atenuación de arrugas dinámicas y prevención del envejecimiento facial.",
     description:
-      "Aplicamos los esquemas de vacunación recomendados para perros y gatos según edad y estilo de vida, y dejamos registrado el lote y la fecha exacta para avisarte cuándo toca la próxima dosis, sin que se te pase.",
+      "Tratamiento médico no invasivo diseñado para relajar sutilmente los músculos faciales responsables de las líneas de expresión en frente, entrecejo y patas de gallo, logrando un aspecto fresco y descansado sin perder la naturalidad de la gesticulación.",
     bullets: [
-      "Polivalente, antirrábica y triple felina",
-      "Lote y vencimiento registrados por aplicación",
-      "Recordatorio de la próxima dosis",
-      "Carné de vacunación disponible en cada visita",
+      "Aplicación por médicos especialistas en estética",
+      "Resultados visibles en 3 a 7 días y duración de 4 a 6 meses",
+      "Prevención activa de arrugas profundas y surcos",
+      "Protocolo personalizado con productos certificados",
     ],
     featured: true,
   },
   {
-    slug: "desparasitacion",
-    icon: Bone,
-    title: "Desparasitación",
-    short: "Control interno y externo, con calendario según peso y edad.",
-    description:
-      "La desparasitación interna y externa es preventiva: protege a tu mascota y a tu familia. Definimos el producto y la frecuencia según peso, edad y estilo de vida, y lo dejamos anotado en su historia para el próximo control.",
-    bullets: ["Desparasitación interna y externa", "Dosis según peso y edad", "Calendario de refuerzos", "Seguro para cachorros y gatitos"],
-  },
-  {
-    slug: "medicina-preventiva",
-    icon: HeartPulse,
-    title: "Medicina preventiva",
-    short: "Chequeos periódicos para detectar a tiempo lo que todavía no duele.",
-    description:
-      "Un chequeo preventivo anual (o semestral en pacientes senior) detecta cambios antes de que se conviertan en un problema serio: peso, dentadura, piel, corazón y un panel básico de laboratorio si hace falta.",
-    bullets: ["Chequeo anual o semestral", "Panel de laboratorio preventivo", "Plan de salud por etapa de vida", "Seguimiento de pacientes senior"],
-    featured: true,
-  },
-  {
-    slug: "laboratorio-clinico",
-    icon: FlaskConical,
-    title: "Laboratorio clínico",
-    short: "Análisis de sangre, orina y heces con resultados el mismo día.",
-    description:
-      "Contamos con laboratorio propio para los análisis más frecuentes, lo que agiliza el diagnóstico en consultas de urgencia y en el seguimiento de tratamientos en curso.",
-    bullets: ["Hemograma y química sanguínea", "Uroanálisis y coproanálisis", "Resultados el mismo día en la mayoría de los casos", "Interpretación con tu veterinario tratante"],
-  },
-  {
-    slug: "cirugia",
-    icon: Scissors,
-    title: "Cirugía",
-    short: "Cirugías de tejidos blandos y esterilización con protocolo anestésico seguro.",
-    description:
-      "Desde esterilizaciones de rutina hasta cirugías de tejidos blandos, trabajamos con protocolo anestésico monitoreado y control post-operatorio hasta el alta.",
-    bullets: ["Esterilización canina y felina", "Cirugía de tejidos blandos", "Monitoreo anestésico", "Control post-operatorio incluido"],
-    featured: true,
-  },
-  {
-    slug: "odontologia-veterinaria",
-    icon: Smile,
-    title: "Odontología veterinaria",
-    short: "Profilaxis dental bajo anestesia para frenar la enfermedad periodontal.",
-    description:
-      "La enfermedad periodontal es una de las causas más comunes de dolor crónico no diagnosticado en mascotas adultas. La profilaxis dental bajo anestesia controlada, con limpieza y pulido, la previene y trata.",
-    bullets: ["Profilaxis y limpieza bajo anestesia", "Extracciones cuando son necesarias", "Evaluación del estado dental en cada consulta", "Recomendaciones de higiene en casa"],
-  },
-  {
-    slug: "hospitalizacion",
-    icon: Cross,
-    title: "Hospitalización",
-    short: "Internación con monitoreo para pacientes que necesitan observación.",
-    description:
-      "Para pacientes que requieren fluidoterapia, medicación continua u observación post-quirúrgica, contamos con área de hospitalización con seguimiento por el equipo veterinario.",
-    bullets: ["Fluidoterapia y medicación continua", "Observación post-quirúrgica", "Reportes de evolución al propietario", "Alta coordinada con tu veterinario"],
-  },
-  {
-    slug: "urgencias",
-    icon: Siren,
-    title: "Urgencias",
-    short: "Atención prioritaria para las situaciones que no pueden esperar.",
-    description:
-      "Ante un accidente, una intoxicación o un cuadro que empeora rápido, la prioridad es estabilizar. Llamanos antes de venir para que el equipo esté listo cuando llegues.",
-    bullets: ["Atención prioritaria sin cita previa", "Estabilización y manejo del dolor", "Línea directa para casos urgentes", "Derivación si el caso supera nuestra capacidad"],
-    featured: true,
-  },
-  {
-    slug: "nutricion",
-    icon: Activity,
-    title: "Nutrición",
-    short: "Planes de alimentación por etapa de vida o condición clínica.",
-    description:
-      "La nutrición es parte del tratamiento, no un accesorio: acompañamos con planes de alimentación para cachorros, adultos, pacientes senior o con condiciones específicas como renal, digestiva o de control de peso.",
-    bullets: ["Plan nutricional por etapa de vida", "Dietas terapéuticas (renal, digestiva, peso)", "Seguimiento de peso en cada visita", "Recomendación de marca y porción"],
-  },
-  {
-    slug: "diagnostico-por-imagen",
-    icon: Scan,
-    title: "Diagnóstico por imagen",
-    short: "Radiografía y ecografía para ver lo que el examen físico no alcanza.",
-    description:
-      "Cuando el examen físico y el laboratorio no bastan, la imagenología ayuda a confirmar un diagnóstico: fracturas, cuerpos extraños, patologías abdominales o cardíacas.",
-    bullets: ["Radiografía digital", "Ecografía abdominal", "Informe interpretado por el veterinario tratante", "Coordinación con cirugía si el caso lo requiere"],
-  },
-  {
-    slug: "peluqueria-grooming",
+    slug: "acido-hialuronico",
     icon: Sparkles,
-    title: "Peluquería / grooming",
-    short: "Baño y corte de higiene, ideal para combinar con la consulta.",
+    title: "Ácido Hialurónico & Rellenos Faciales",
+    short: "Restauración de volumen, perfilado labial y definición del contorno facial.",
     description:
-      "Baño medicado o de rutina, corte de higiene y limpieza de oídos, a cargo de personal capacitado. Se puede combinar con la consulta para aprovechar la misma visita.",
-    bullets: ["Baño de rutina o medicado", "Corte de higiene", "Limpieza de oídos", "Ideal para combinar con la consulta"],
+      "Rellenos de gel de ácido hialurónico reticulado de altísima pureza para armonizar pómulos, mentón, surcos nasogenianos y labios. Aporta hidratación profunda e impulsa la estructura natural del rostro con un perfilamiento anatómico sofisticado.",
+    bullets: [
+      "Perfilado e hidratación avanzada de labios",
+      "Marcaje mandibular y proyección de mentón / pómulos",
+      "Biocompatible y reversible con hialuronidasa médica",
+      "Efecto inmediato con mínima inflamación post-procedimiento",
+    ],
+    featured: true,
+  },
+  {
+    slug: "limpieza-facial-profunda",
+    icon: Droplet,
+    title: "Higiene Facial Profunda & Hydrafacial",
+    short: "Desintoxicación cutánea, exfoliación médica e hidratación con aparatología.",
+    description:
+      "Tratamiento integral de limpieza cutánea que combina peeling ultrasónico, extracción de impurezas y microdermoabrasión con puntas de diamante. Finaliza con infusiones de sueros antioxidantes y mascarilla LED fototerapéutica.",
+    bullets: [
+      "Eliminación de puntos negros y células muertas",
+      "Oxigenación y nutrición celular profunda",
+      "Apto para todo tipo de pieles (acnéica, sensible, mixta)",
+      "Luminosidad y tersura visible desde la primera sesión",
+    ],
+    featured: true,
+  },
+  {
+    slug: "bioestimuladores-colageno",
+    icon: Activity,
+    title: "Bioestimuladores de Colágeno",
+    short: "Inducción natural de colágeno para firmeza y densidad dérmica duradera.",
+    description:
+      "Aplicación de hidroxiapatita cálcica o ácido poli-L-láctico (Radiesse / Sculptra) que estimula progresivamente la producción de colágeno propio. Combate la flacidez facial, de cuello y escote ofreciendo un efecto tensor progresivo y natural.",
+    bullets: [
+      "Combate la flacidez y la pérdida de elasticidad",
+      "Efecto tensor sostenido hasta por 18 a 24 meses",
+      "Mejora visible en la calidad y textura de la piel",
+      "Aplicación rápida con microcánula médica",
+    ],
+    featured: true,
+  },
+  {
+    slug: "contorno-corporal",
+    icon: Zap,
+    title: "Moldeo & Contorno Corporal",
+    short: "Reducción de grasa localizada, enzimas médicas y firmeza corporal.",
+    description:
+      "Tratamientos médicos corporales no quirúrgicos que combinan enzimas recombinantes (lipasa, hialuronidasa, liasa), radiofrecuencia y cavitación para moldear abdomen, flancos y muslos, combatiendo la celulitis y la flacidez.",
+    bullets: [
+      "Enzimas biológicas para grasa localizada y celulitis",
+      "Radiofrecuencia para tonificación dérmica corporal",
+      "Protocolo reductivo no invasivo sin incapacidad",
+      "Acompañamiento nutricional y medición antropométrica",
+    ],
+    featured: true,
+  },
+  {
+    slug: "peeling-medico",
+    icon: Feather,
+    title: "Peeling Químico Médico",
+    short: "Renovación celular para manchas, cicatrices de acné y textura irregular.",
+    description:
+      "Aplicación de ácidos médicos de concentración controlada (glicólico, mandélico, salicílico, TCA) que exfolian capas dañadas de la epidermis para atenuar hiperpigmentaciones, cicatrices superficiales y líneas finas.",
+    bullets: [
+      "Tratamiento eficaz de melasma y manchas solares",
+      "Atenuación de marcas de acné y poros dilatados",
+      "Estimulación de la renovación celular uniforme",
+      "Protocolos según fototipo de piel y época del año",
+    ],
+  },
+  {
+    slug: "sueroterapia-antiaging",
+    icon: HeartPulse,
+    title: "Sueroterapia antiaging & detox",
+    short: "Infusiones intravenosas de vitaminas, oligoelementos y antioxidantes de alto impacto.",
+    description:
+      "Protocolos intravenosos diseñados para revitalizar el organismo desde el interior. Combinan vitamina C megadosis, glutatión, zinc, magnesio y complejo B para reforzar el sistema inmune, desintoxicar el hígado y potenciar el brillo de la piel.",
+    bullets: [
+      "Absorción del 100% de nutrientes a nivel celular",
+      "Acción antioxidante potente contra el estrés oxidativo",
+      "Aumento inmediato de vitalidad y claridad mental",
+      "Formulación adaptada tras valoración de salud",
+    ],
+    featured: true,
+  },
+  {
+    slug: "valoracion-medica-estetica",
+    icon: Stethoscope,
+    title: "Valoración Facial & Corporal Computarizada",
+    short: "Diagnóstico médico minucioso y diseño de plan de tratamiento personalizado.",
+    description:
+      "Consulta inicial integral donde el médico especialista analiza la estructura ósea, muscular y dérmica mediante escáner de piel y fotografía clínica. Diseñamos una hoja de ruta equilibrada, honesta y enfocada en tus objetivos.",
+    bullets: [
+      "Diagnóstico computarizado de arrugas, manchas y poros",
+      "Plan médico personalizado con presupuesto transparente",
+      "Revisión de historial de salud y contraindicaciones",
+      "Seguimiento fotográfico de evolución en cada cita",
+    ],
+  },
+  {
+    slug: "depilacion-laser-medica",
+    icon: Flame,
+    title: "Depilación Láser Diodo Médica",
+    short: "Eliminación permanente del vello con tecnología de enfriamiento constante.",
+    description:
+      "Láser de diodo médico con sistema de refrigeración por contacto que destruye el folículo piloso de manera rápida, indolora y segura en cualquier fototipo de piel, reduciendo el vello no deseado de forma definitiva.",
+    bullets: [
+      "Tecnología de última generación con cabezal ultra-frío",
+      "Sesiones rápidas y confortables en zonas faciales y corporales",
+      "Apto para fototipos oscuros y pieles bronceadas",
+      "Resultados notarás desde la primera aplicación",
+    ],
+  },
+  {
+    slug: "rejuvenecimiento-laser",
+    icon: Smile,
+    title: "Rejuvenecimiento Láser & Radiofrecuencia",
+    short: "Láser CO2 fraccionado y radiofrecuencia fraccionada con microagujas.",
+    description:
+      "Procedimientos de alta precisión para tensar el tejido dérmico, alisar arrugas profundas y tratar la flacidez periocular y peribucal. Inducen una rápida regeneración celular con tiempos de recuperación optimizados.",
+    bullets: [
+      "Tratamiento de arrugas peribucales y párpados",
+      "Estimulación profunda de fibras de elastina y colágeno",
+      "Disminución drástica de cicatrices y secuelas de acné",
+      "Resultados de impacto y rejuvenecimiento global",
+    ],
   },
 ];
 
@@ -173,31 +195,31 @@ export type TeamMember = {
 
 export const team: TeamMember[] = [
   {
-    slug: "carlos-medina",
-    name: "Dr. Carlos Medina",
-    role: "Médico veterinario",
-    specialty: "Medicina general y cirugía de tejidos blandos",
-    bio: "Más de 10 años atendiendo perros y gatos, con especial interés en medicina preventiva y cirugía.",
+    slug: "sofia-valenzuela",
+    name: "Dra. Sofía Valenzuela",
+    role: "Médica Directora & Especialista Estética",
+    specialty: "Armonización facial, inyectables y medicina antiaging",
+    bio: "Más de 12 años transformando rostros con técnicas inyectables de alta precisión y enfoque natural.",
     longBio:
-      "El Dr. Carlos Medina lidera la consulta general y el área quirúrgica de la clínica. Cree que la mejor cirugía es la que se evita con un buen chequeo preventivo a tiempo, y dedica parte de cada consulta a explicarle al propietario qué está viendo y por qué.",
+      "La Dra. Sofía Valenzuela lidera el equipo médico de Clínica Estética & Antiaging Élite. Formada en medicina estética avanzada y envejecimiento saludable en Europa y Latinoamérica, defiende que el verdadero arte estético reside en resaltar los rasgos propios de cada paciente sin alterar su identidad ni expresión.",
   },
   {
-    slug: "laura-pena",
-    name: "Dra. Laura Peña",
-    role: "Médica veterinaria",
-    specialty: "Medicina interna y diagnóstico por imagen",
-    bio: "Se enfoca en casos de medicina interna, laboratorio y diagnóstico por imagen.",
+    slug: "alejandro-restrepo",
+    name: "Dr. Alejandro Restrepo",
+    role: "Médico Dermatólogo",
+    specialty: "Dermatología láser, bioestimulación y renovación cutánea",
+    bio: "Experto en aparatología médica láser, manchas, cicatrices y regeneración celular profunda.",
     longBio:
-      "La Dra. Laura Peña se especializa en medicina interna: los casos que necesitan laboratorio, ecografía y seguimiento cercano. Trabaja de la mano con el propietario para que el plan de tratamiento sea claro y sostenible en casa.",
+      "El Dr. Alejandro Restrepo se especializa en dermatología estética y aparatología de alta tecnología. Su enfoque riguroso y científico garantiza tratamientos seguros para hiperqueratosis, melasma, cicatrices y flacidez avanzada.",
   },
   {
-    slug: "marcela-duarte",
-    name: "Marcela Duarte",
-    role: "Coordinadora de recepción",
-    specialty: "Agenda, urgencias y atención al propietario",
-    bio: "El primer contacto de la clínica: agenda tu cita, resuelve dudas y coordina las urgencias.",
+    slug: "valentina-morales",
+    name: "Valentina Morales",
+    role: "Coordinadora de Experiencia al Paciente",
+    specialty: "Agenda médica, atención personalizada y seguimiento post-procedimiento",
+    bio: "Tu primer punto de contacto: coordina agendas, resuelve inquietudes y vela por tu bienestar.",
     longBio:
-      "Marcela coordina la recepción y la agenda de la clínica. Es quien contesta el WhatsApp, confirma tu cita y prioriza una urgencia en cuanto entra. Si no sabés por dónde empezar, empezá por ella.",
+      "Valentina coordina la recepción y la logística médica de la clínica. Encargada del canal prioritario por WhatsApp, asegura que cada paciente reciba atención cálida, información clara sobre cuidados post-tratamiento y recordatorios oportunos para sus sesiones.",
   },
 ];
 
@@ -214,39 +236,39 @@ export type Testimonial = {
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Camila Herrera",
-    pet: "dueña de Luna (golden retriever)",
-    text: "Llevamos a Luna desde cachorra. Siempre nos explican todo antes de hacer cualquier procedimiento, y el seguimiento de las vacunas nos salvó más de un olvido.",
+    name: "Carolina Méndez",
+    pet: "Paciente de Botox & Armonización",
+    text: "Tenía mucho temor de quedar inexpresiva con el Botox. La Dra. Sofía me explicó todo el protocolo y el resultado fue súper natural: luzco descansada y mi piel está divina.",
     rating: 5,
   },
   {
-    name: "Andrés Vargas",
-    pet: "dueño de Michi (gata)",
-    text: "Michi es súper arisca en el veterinario y acá tienen una paciencia increíble. La cirugía de esterilización fue impecable, con controles post-operatorios muy claros.",
+    name: "Mariana Giraldo",
+    pet: "Paciente de Ácido Hialurónico en Labios",
+    text: "El perfilado de labios que me realizó la doctora quedó perfecto. Respetó la forma de mi boca y me dio el volumen sutil que buscaba sin exageraciones.",
     rating: 5,
   },
   {
-    name: "Marcela Ríos",
-    pet: "dueña de Kiara",
-    text: "Un fin de semana Kiara se lastimó una pata y nos atendieron de urgencia sin drama. Desde entonces no la llevamos a otro lado.",
+    name: "Valeria Jaramillo",
+    pet: "Paciente de Sueroterapia & Hydrafacial",
+    text: "Los sueros de vitamina C más la limpieza facial antes de mi boda me dejaron la piel luminosa como nunca. La atención del equipo es 10/10.",
     rating: 5,
   },
   {
-    name: "Felipe Castaño",
-    pet: "dueño de Toby y Rocco",
-    text: "Tengo dos perros con esquemas de vacunación distintos y nunca se me confunden las fechas: siempre me avisan a tiempo.",
+    name: "Fernando Aristizábal",
+    pet: "Paciente de Bioestimulador Radiesse",
+    text: "A mis 48 años notaba mucha flacidez en el contorno mandibular. Con la bioestimulación de colágeno recuperé la firmeza sin necesidad de cirugía.",
     rating: 5,
   },
   {
-    name: "Diana Torres",
-    pet: "dueña de Nina",
-    text: "Nina es una perrita senior y el chequeo preventivo semestral nos ha permitido llegar a tiempo a un par de cosas que ni notábamos.",
-    rating: 4,
+    name: "Isabel Cristina Gómez",
+    pet: "Paciente de Peeling para Manchas",
+    text: "Logré atenuar manchas solares que llevaba años intentando borrar. La asesoría del Dr. Restrepo fue impecable y muy profesional.",
+    rating: 5,
   },
   {
-    name: "Juan David Peláez",
-    pet: "dueño de Zeus",
-    text: "La profilaxis dental de Zeus le cambió el aliento y, según el veterinario, le evitó un dolor que ni sabíamos que tenía.",
+    name: "Daniela Osorio",
+    pet: "Paciente de Depilación Láser Médica",
+    text: "El sistema de enfriamiento del láser hace que la sesión sea súper tolerante y cómoda. Los resultados son evidentes desde las primeras aplicaciones.",
     rating: 5,
   },
 ];
@@ -255,53 +277,53 @@ export type Faq = { question: string; answer: string };
 
 export const faqs: Faq[] = [
   {
-    question: "¿Necesito pedir cita o puedo llegar directamente?",
+    question: "¿Los procedimientos estéticos duelen o requieren anestesia?",
     answer:
-      "Para consultas de rutina recomendamos agendar cita (por el sitio, WhatsApp o teléfono) para no hacerte esperar. Las urgencias se atienden siempre, con o sin cita previa.",
+      "La mayoría de nuestros tratamientos son indoloros o mínimamente molestos. Para aplicaciones inyectables (Botox, ácido hialurónico) utilizamos crema anestésica tópica de alta eficacia y microagujas/cánulas ultra-finas.",
   },
   {
-    question: "¿Qué hago si es una urgencia fuera de horario?",
+    question: "¿Cuánto dura el efecto de la toxina botulínica (Botox)?",
     answer:
-      "Escribinos por WhatsApp o llamá a la línea de la clínica. Te vamos a indicar si podemos recibirte de inmediato o coordinar la atención más cercana.",
+      "El efecto habitualmente dura entre 4 y 6 meses, dependiendo del metabolismo de cada paciente y de las zonas tratadas. Se recomienda un retoque o mantenimiento semestral.",
   },
   {
-    question: "¿Cómo es la primera consulta de mi mascota?",
+    question: "¿Cuál es la diferencia entre el Botox y el Ácido Hialurónico?",
     answer:
-      "Empezamos con una historia clínica completa: antecedentes, alimentación y estilo de vida, seguido de un examen físico general. Si trae vacunas previas, llevá el carné.",
+      "El Botox relaja los músculos causantes de las arrugas de expresión (frente, entrecejo, patas de gallo). El ácido hialurónico aporta volumen, hidrata y rellena surcos o estructuras caídas (labios, pómulos, mentón).",
   },
   {
-    question: "¿Con qué frecuencia hay que vacunar?",
+    question: "¿Puedo realizarme tratamientos antes de un evento importante?",
     answer:
-      "Depende de la vacuna y la edad: los cachorros y gatitos llevan un esquema inicial de varias dosis, y luego refuerzos anuales. Nosotros llevamos el registro y te avisamos cuándo toca.",
+      "Tratamientos como Hydrafacial o sueroterapia pueden realizarse 24-48 horas antes. Inyectables o peelings médicos requieren al menos 2 semanas de anticipación para garantizar la perfecta estabilización del producto y cero inflamación.",
   },
   {
-    question: "¿Atienden otras especies además de perros y gatos?",
+    question: "¿Requiere incapacidad o reposo tras una sesión de inyectables?",
     answer:
-      "Sí, también atendemos aves, conejos y algunos exóticos. Si no estás seguro, escribinos antes con el caso puntual.",
+      "No. La mayoría de los tratamientos son ambulatorios y te permiten reincorporarte de inmediato a tu jornada laboral y cotidiana, siguiendo breves recomendaciones (evitar ejercicio intenso y sauna por 24h).",
   },
   {
-    question: "¿Qué medios de pago aceptan?",
-    answer: "Efectivo, tarjeta débito/crédito y transferencia. Para procedimientos mayores entregamos presupuesto por escrito antes de proceder.",
+    question: "¿Qué métodos de pago tienen disponibles?",
+    answer: "Aceptamos efectivo, tarjetas de débito/crédito, transferencias bancarias y planes de financiamiento o paquetes de sesiones con tarifas especiales.",
   },
   {
-    question: "¿Necesito ayuno antes de una cirugía?",
+    question: "¿Los productos utilizados tienen registro sanitario y certificación médica?",
     answer:
-      "Sí. Para cualquier procedimiento con anestesia te vamos a indicar el ayuno de sólidos y líquidos requerido según el caso, con al menos un día de anticipación.",
+      "Absolutamente. En Clínica Estética Élite trabajamos de forma exclusiva con laboratorios líderes a nivel mundial aprobados por INVIMA y FDA.",
   },
   {
-    question: "¿Puedo pedir mi cita por WhatsApp?",
+    question: "¿Cómo agendo mi cita de valoración médica inicial?",
     answer:
-      "Sí, es la vía más rápida. También podés usar el formulario de \"Agendar cita\" del sitio: recepción confirma disponibilidad y te contacta.",
+      "Puedes agendar directamente desde esta web en el botón 'Agendar Cita', o escribirnos por WhatsApp. Nuestro equipo coordinará el día y hora que mejor se adapte a tu agenda.",
   },
 ];
 
 export type Stat = { value: string; label: string };
 
 export const stats: Stat[] = [
-  { value: "12+", label: "años de trayectoria" },
-  { value: "3.500+", label: "mascotas atendidas" },
-  { value: "2", label: "veterinarios de planta" },
-  { value: "4.9/5", label: "satisfacción de propietarios" },
+  { value: "12+", label: "años de trayectoria médica" },
+  { value: "5.200+", label: "pacientes satisfechos" },
+  { value: "3", label: "médicos especialistas de planta" },
+  { value: "4.9/5", label: "valoración promedio de satisfacción" },
 ];
 
 export type BlogPost = {
@@ -316,103 +338,71 @@ export type BlogPost = {
   body: string[];
 };
 
-export const blogCategories = ["Prevención", "Vacunas", "Nutrición", "Cirugía", "Cachorros", "Urgencias"];
+export const blogCategories = ["Inyectables", "Cuidado Facial", "Antiaging", "Aparatología", "Corporal", "Casos de Éxito"];
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "cuando-llevar-a-tu-mascota-al-veterinario",
-    title: "Señales que indican que tu mascota necesita una consulta ya",
-    category: "Urgencias",
-    excerpt: "Decaimiento, vómito persistente, dificultad para respirar: una guía rápida para saber cuándo esperar y cuándo no.",
-    image: "/gallery/pet-7.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-08-12",
+    slug: "mitos-y-verdades-sobre-el-botox",
+    title: "Mitos y realidades sobre la Toxina Botulínica: ¿Quedaré inexpresiva?",
+    category: "Inyectables",
+    excerpt: "Desmintiendo las falsas ideas sobre el Botox. Cómo lograr un rostro joven, fresco y expresivo con dosis precisas.",
+    image: "/gallery/clinic-1.jpg",
+    authorSlug: "sofia-valenzuela",
+    date: "2026-08-15",
     readMinutes: 4,
     body: [
-      "No toda molestia es una urgencia, pero algunas señales sí ameritan atención inmediata y no un \"vamos viendo cómo sigue\". La regla general que usamos en consulta: si el síntoma es súbito, si compromete la respiración, o si tu mascota deja de responder como siempre, es momento de venir.",
-      "Decaimiento marcado — que no se levante a comer, que no reaccione a estímulos que normalmente la entusiasman — es de las señales más subestimadas. Un perro o gato que \"está raro\" desde hace más de unas horas ya justifica una consulta, no una espera de \"a ver si mejora solo\".",
-      "El vómito persistente (más de dos o tres episodios en pocas horas, o con sangre) y la dificultad para respirar son motivo de consulta prioritaria siempre. En el segundo caso, cada minuto cuenta: llamanos antes de salir para que el equipo esté listo cuando llegues.",
-      "Otras señales que no deberían esperar: distensión abdominal repentina, convulsiones, imposibilidad de orinar, sangrado que no cede, o un golpe/caída con cojera inmediata. Ante la duda, la llamada no cuesta nada — preferimos revisar de más que de menos.",
+      "Existe la creencia popular de que aplicarse Botox congelará tu rostro o destruirá tus gestos naturales. La realidad médica es muy distinta: en manos de un profesional calificado, la toxina botulínica relaja de forma sutil y controlada solo los músculos hiperactivos.",
+      "El objetivo de la medicina estética moderna no es borrar cada línea de expresión hasta dejar una máscara inerte, sino prevenir la fractura dérmica profunda y aportar un aspecto descansado, como después de unas excelentes vacaciones.",
+      "La aplicación dura apenas 15 minutos y no requiere tiempo de recuperación. Los primeros cambios se aprecian a los 3 días, alcanzando su pico de armonía entre el día 10 y 14 post-aplicación.",
+      "Comenzar de forma preventiva alrededor de los 28 a 35 años evita que las arrugas finas de expresión se conviertan en marcas permanentes e imborrables sobre la piel.",
     ],
   },
   {
-    slug: "calendario-de-vacunacion-cachorros",
-    title: "El calendario de vacunación de un cachorro, mes a mes",
-    category: "Vacunas",
-    excerpt: "Qué vacuna toca en cada etapa y por qué saltarse una dosis puede dejar una ventana de riesgo.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-07-28",
+    slug: "bioestimuladores-el-secreto-del-colageno",
+    title: "Bioestimuladores de colágeno: El tratamiento definitivo contra la flacidez",
+    category: "Antiaging",
+    excerpt: "Descubre cómo Radiesse y Sculptra obligan a tu propia piel a producir colágeno joven y firme.",
+    image: "/gallery/clinic-2.jpg",
+    authorSlug: "alejandro-restrepo",
+    date: "2026-07-20",
     readMinutes: 5,
     body: [
-      "Un cachorro nace con cierta protección de la madre, pero esa inmunidad baja gradualmente entre las 6 y las 16 semanas de vida — justo la ventana en la que hay que vacunar, y por eso el esquema se aplica en varias dosis, no en una sola.",
-      "El esquema típico arranca alrededor de las 6-8 semanas con la primera dosis de la polivalente (moquillo, parvovirus, hepatitis, entre otras según el laboratorio), se refuerza cada 3-4 semanas hasta las 16 semanas, y la antirrábica se suma desde los 3 meses.",
-      "Saltarse una dosis del esquema inicial no es \"recuperable\" con solo aplicar la siguiente: cada refuerzo depende de que el anterior haya generado la respuesta esperada. Por eso llevamos el registro exacto de lote y fecha, y te avisamos con anticipación cuándo toca la próxima.",
-      "Después del primer año, la mayoría de las vacunas pasan a un esquema de refuerzo anual. Traé siempre el carné de vacunación a cada visita, aunque sea de rutina — es el historial que evita que se repita o se salte una dosis.",
+      "A partir de los 25 años, el cuerpo pierde aproximadamente 1% de colágeno al año. Esta pérdida se traduce en piel más delgada, menor elasticidad y aparición de flacidez en mejillas, cuello y contorno facial.",
+      "A diferencia de los rellenos de volumen tradicional, los bioestimuladores de colágeno no hinchan la cara. Su función es activar los fibroblastos en la dermis profunda para que generen una nueva malla de colágeno propio.",
+      "Los resultados no son inmediatos sino progresivos: durante los meses 1 al 3 la piel recupera densidad, firmeza y estructura, con una durabilidad superior a los 18 meses.",
+      "Es el tratamiento de elección para quienes buscan combatir la descolgación del tercio inferior del rostro sin alterar sus volumenes anatómicos.",
     ],
   },
   {
-    slug: "como-elegir-el-alimento-correcto",
-    title: "Cómo elegir el alimento correcto según la edad y tamaño de tu mascota",
-    category: "Nutrición",
-    excerpt: "No todos los alimentos \"premium\" son iguales. Qué mirar en la etiqueta antes de decidir.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-07-10",
+    slug: "guia-para-cuidar-tu-piel-despues-de-un-peeling",
+    title: "Guía médica para cuidar tu piel después de un peeling o láser",
+    category: "Cuidado Facial",
+    excerpt: "Fotoprotección estricta, hidratación biocompatible y hábitos clave para maximizar los resultados.",
+    image: "/gallery/clinic-3.jpg",
+    authorSlug: "alejandro-restrepo",
+    date: "2026-07-02",
     readMinutes: 4,
     body: [
-      "La palabra \"premium\" en el empaque no está regulada — no garantiza nada por sí sola. Lo que sí importa es la lista de ingredientes (una fuente de proteína animal identificada, no genérica como \"subproductos\") y que el alimento esté formulado para la etapa de vida correcta.",
-      "Un cachorro necesita más proteína y calorías por su crecimiento; un adulto sedentario necesita menos de lo que dice la tabla genérica de la bolsa; un senior suele beneficiarse de fórmulas más livianas para las articulaciones y el riñón. Alimentar con la fórmula de otra etapa no es un ahorro, es un desajuste silencioso.",
-      "El tamaño también importa: las razas grandes necesitan un control más estricto de calcio y fósforo en el crecimiento para evitar problemas articulares a futuro, y las razas pequeñas gastan más energía por kilo de lo que parece.",
-      "Si tu mascota tiene una condición clínica (renal, digestiva, sobrepeso), el alimento pasa a ser parte del tratamiento, no una elección de supermercado — ahí sí conviene una dieta terapéutica indicada en consulta, no una decisión por cuenta propia.",
+      "Tras someterse a un peeling médico o sesión de rejuvenecimiento láser, la barrera cutánea se encuentra en proceso de renovación acelerada. El éxito del tratamiento depende en un 50% de los cuidados en casa.",
+      "La regla de oro innegable es el uso continuo de protector solar de amplio espectro (FPS 50+) reaplicado cada 3 horas, incluso si estás en espacios cerrados con luz de pantallas o bombillas.",
+      "Evita rascar, halar o desprender las pequeñas descamaciones que puedan surgir. Permite que la piel renovada caiga de forma natural para evitar manchas por hiperpigmentación post-inflamatoria.",
+      "Mantén una rutina minimalista de limpieza suave y crema regeneradora con ceramidas o ácido hialurónico recomendada por tu dermatólogo tratante.",
     ],
   },
   {
-    slug: "preparar-a-tu-mascota-para-una-cirugia",
-    title: "Cómo preparar a tu mascota (y a vos) para una cirugía programada",
-    category: "Cirugía",
-    excerpt: "Ayuno, traslado y qué esperar el día de la cirugía y en el post-operatorio.",
-    image: "/gallery/pet-13.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-06-22",
-    readMinutes: 5,
-    body: [
-      "Toda cirugía con anestesia requiere ayuno previo — típicamente de sólidos desde la noche anterior y de agua unas horas antes, aunque el esquema exacto varía según el paciente y te lo confirmamos al agendar. Un estómago lleno durante la anestesia es un riesgo real de aspiración, así que esta indicación no es opcional.",
-      "El día de la cirugía, traé a tu mascota temprano y con tiempo: hacemos una revisión pre-anestésica antes de proceder. Es normal sentir ansiedad — la mayoría de los propietarios la sienten más que sus mascotas — y preferimos que preguntes todo lo que necesites antes, no durante la espera.",
-      "Durante el procedimiento trabajamos con monitoreo anestésico continuo (frecuencia cardíaca, oxigenación, temperatura) y te llamamos apenas termina para contarte cómo salió y coordinar el retiro.",
-      "El post-operatorio es donde más se juega la recuperación: reposo estricto los primeros días, collar isabelino si aplica para que no se lastime el punto, y los controles que te indiquemos sin saltarte ninguno, aunque la herida se vea bien.",
-    ],
-  },
-  {
-    slug: "chequeos-preventivos-mascotas-senior",
-    title: "Por qué los chequeos preventivos importan más después de los 7 años",
-    category: "Prevención",
-    excerpt: "Los cambios en una mascota senior son graduales — el chequeo semestral detecta lo que el día a día no muestra.",
-    image: "/gallery/pet-3.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-30",
+    slug: "beneficios-de-la-sueroterapia-intravenosa",
+    title: "Por qué la sueroterapia intravenosa es el aliado perfecto en la estética",
+    category: "Antiaging",
+    excerpt: "Vitaminas en megadosis y antioxidantes directos al torrente sanguíneo para potenciar el brillo cutáneo.",
+    image: "/gallery/clinic-4.jpg",
+    authorSlug: "sofia-valenzuela",
+    date: "2026-06-18",
     readMinutes: 4,
     body: [
-      "A partir de los 7 años (antes en razas grandes), el metabolismo, las articulaciones, los riñones y el corazón empiezan a cambiar de forma gradual — tan gradual que en casa es difícil notarlo, porque lo ves todos los días.",
-      "Por eso pasamos de un chequeo anual a uno semestral en pacientes senior: duplicar la frecuencia de control multiplica las chances de detectar algo a tiempo, cuando todavía es manejable con un ajuste de dieta o tratamiento, y no cuando ya se volvió una urgencia.",
-      "Un chequeo senior típico incluye examen físico completo, control de peso y masa muscular, revisión dental, y un panel básico de laboratorio (función renal, hepática, hemograma) al menos una vez al año, más seguido si el caso lo amerita.",
-      "No es alarmismo: es la misma lógica que un chequeo médico humano después de cierta edad. La mascota no te va a decir que algo le duele distinto — el chequeo periódico es la forma de enterarte antes de que sea evidente.",
-    ],
-  },
-  {
-    slug: "primeros-dias-de-un-cachorro-en-casa",
-    title: "Los primeros días de un cachorro en casa: checklist veterinario",
-    category: "Cachorros",
-    excerpt: "Primera visita, desparasitación, socialización y los errores más comunes de los primeros dueños.",
-    image: "/gallery/pet-1.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-08",
-    readMinutes: 5,
-    body: [
-      "La primera visita veterinaria debería pasar en la primera semana en casa, aunque el cachorro se vea perfectamente sano: revisamos peso, examen físico general, y armamos el esquema de vacunación y desparasitación desde cero con fechas concretas.",
-      "La desparasitación interna en cachorros empieza más temprano y con más frecuencia de lo que la mayoría espera — cada 2-3 semanas hasta los 3 meses, después mensual hasta el año. No es opcional ni algo que se resuelve \"cuando se vea algo raro\".",
-      "La socialización tiene una ventana crítica entre las 3 y las 14 semanas: es cuando el cachorro aprende qué es normal (otras personas, otros animales, ruidos, superficies) sin miedo. Perderse esa ventana no es irreversible, pero cuesta mucho más trabajo después.",
-      "El error más común de los primeros dueños: esperar a que \"se vea algo mal\" para consultar. La medicina preventiva en un cachorro no es un gasto extra, es la base de toda la salud que va a tener de adulto — y sale más barata que resolver lo que se pudo prevenir.",
+      "La belleza exterior es el reflejo directo de la salud celular interna. Los suplementos orales a menudo pierden gran parte de su efectividad al pasar por el sistema digestivo.",
+      "La sueroterapia logra una biodisponibilidad del 100%, entregando megadosis de Vitamina C, Glutatión y oligoelementos directo a las células para neutralizar radicales libres y reducir la inflamación sistémica.",
+      "Los pacientes reportan una mayor energía diaria, mejor calidad de sueño, fortalecimiento capilar y un brillo 'glow' inconfundible en la piel tras una serie de 3 a 5 sesiones.",
+      "Es el complemento idóneo para potenciar los resultados de cualquier tratamiento facial o corporal inyectable.",
     ],
   },
 ];

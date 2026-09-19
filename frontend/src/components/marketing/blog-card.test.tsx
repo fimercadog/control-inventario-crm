@@ -23,6 +23,6 @@ describe("FeaturedPost", () => {
   it("renders the author name and links to the post", () => {
     render(<FeaturedPost post={post} />);
     expect(screen.getByRole("link")).toHaveAttribute("href", `/blog/${post.slug}`);
-    expect(screen.getByText("Dr. Carlos Medina")).toBeInTheDocument();
+    expect(screen.getByText("Dra. Sofía Valenzuela")).toBeInTheDocument();
   });
 });

@@ -53,8 +53,8 @@ export default function SolicitarCitaPage() {
     <MarketingLayout>
       <PageHero
         eyebrow="Solicitá tu cita"
-        title="Pedí un turno para tu mascota"
-        lead="Dejanos tus datos y la clínica confirmará disponibilidad y te contactará para agendar."
+        title="Reserva tu valoración médica estética"
+        lead="Déjanos tus datos y la clínica médica confirmará disponibilidad para contactarte a la brevedad."
       />
 
       <section className="mx-auto max-w-2xl px-4 pb-24 sm:px-6">
@@ -62,7 +62,7 @@ export default function SolicitarCitaPage() {
           <div className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
             <div className="flex items-center gap-2 rounded-lg bg-success/10 px-3 py-2 text-sm text-success">
               <CheckCircle2 className="size-4" />
-              Recibimos tu solicitud. La clínica confirmará disponibilidad y te contactará.
+              Recibimos tu solicitud. La clínica médica confirmará disponibilidad y te contactará.
             </div>
           </div>
         ) : (
@@ -83,12 +83,12 @@ export default function SolicitarCitaPage() {
                 <input name="phone" className={inputClass} />
               </label>
               <label className="block text-sm">
-                <span>Nombre de la mascota</span>
-                <input name="pet_name" className={inputClass} />
+                <span>Tratamiento o zona de interés</span>
+                <input name="pet_name" placeholder="Botox, ácido hialurónico, facial…" className={inputClass} />
               </label>
               <label className="block text-sm">
                 <span>Motivo</span>
-                <input name="reason" placeholder="Consulta, vacuna, control…" className={inputClass} />
+                <input name="reason" placeholder="Valoración médica, rejuvenecimiento, contorno…" className={inputClass} />
               </label>
               <label className="block text-sm">
                 <span>Fecha / franja preferida</span>

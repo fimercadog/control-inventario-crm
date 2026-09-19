@@ -74,7 +74,7 @@ describe("serviceBySlug / teamBySlug", () => {
   });
 
   it("finds an existing team member", () => {
-    expect(teamBySlug("carlos-medina")?.name).toBe("Dr. Carlos Medina");
+    expect(teamBySlug("sofia-valenzuela")?.name).toBe("Dra. Sofía Valenzuela");
   });
 });
 

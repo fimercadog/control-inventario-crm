@@ -14,36 +14,32 @@ import { TeamProfileList } from "@/components/marketing/team-profile-row";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 const values = [
-  { icon: "/gallery/icons/icon-9.png", title: "Medicina preventiva real", text: "No esperamos a que algo duela: vacunación y chequeos programados desde la primera visita." },
-  { icon: "/gallery/icons/icon-14.png", title: "Quirófano propio", text: "Cirugías de rutina y de tejidos blandos sin derivar el caso a otra clínica." },
-  { icon: "/gallery/icons/icon-13.png", title: "Diagnóstico el mismo día", text: "Laboratorio propio para no hacerte esperar un resultado externo." },
+  { icon: "/gallery/icons/icon-9.png", title: "Enfoque Antiaging Real", text: "Estimulación celular y prevención activa desde los primeros signos de envejecimiento cutáneo." },
+  { icon: "/gallery/icons/icon-14.png", title: "Tecnología Avanzada", text: "Aparatología médica de vanguardia y microagujamiento de alta precisión." },
+  { icon: "/gallery/icons/icon-13.png", title: "Insumos Certificados", text: "Laboratorios internacionales de primer nivel con registro de seguridad INVIMA y FDA." },
 ];
 
 export default function AboutPage() {
   return (
     <MarketingLayout>
-      {/* Hero: misma familia visual que Servicios -- eyebrow, titulo grande,
-          texto, CTAs, ilustracion protagonista a la derecha sobre blob organico. */}
       <SplitHero
         eyebrow="Nosotros"
-        title="Una clínica de barrio, con el equipamiento de una grande"
-        lead="Clínica Veterinaria Los Andes nació para que cada mascota tenga un equipo veterinario que la conozca de verdad, visita tras visita — no una cara distinta cada vez."
+        title="Medicina Estética de precisión en una clínica médica exclusiva"
+        lead="Clínica Estética & Medicina Antiaging Élite nació para brindar tratamientos médicos estéticos de máxima calidad con un enfoque natural, seguro y personalizado."
         image="/gallery/illustrations/illustration-2.png"
-        imageAlt="Veterinario con estetoscopio examinando a un gato"
+        imageAlt="Médica especialista en medicina estética"
         actions={
           <>
             <CtaLink href="/equipo" variant="cta">
-              Conocer al equipo
+              Conocer al equipo médico
             </CtaLink>
             <CtaLink href={WHATSAPP_URL} variant="outline">
-              Escribinos por WhatsApp
+              Escribir por WhatsApp
             </CtaLink>
           </>
         }
       />
 
-      {/* Tira de 3 iconos plana, sin tarjeta flotante -- a diferencia del grid de
-          "All Vet Services" de Services, el de About va directo sobre blanco. */}
       <Section className="pb-0">
         <div className="grid gap-x-10 gap-y-10 sm:grid-cols-3">
           {values.map((item, i) => (
@@ -58,69 +54,57 @@ export default function AboutPage() {
 
       <Section>
         <PhotoFeatureStack
-          image="/gallery/pet-7.jpg"
-          imageAlt="Veterinario del equipo revisando a un bulldog en consulta"
+          image="/gallery/clinic-1.jpg"
+          imageAlt="Médica realizando valoración facial estética"
           features={[
-            { title: "Más de una década", text: "Empezamos como una consulta pequeña de barrio; hoy tenemos consultorios equipados, laboratorio propio y quirófano." },
-            { title: "Pocas mascotas, no muchas apuradas", text: "Cada consulta tiene el tiempo que necesita, y cada historia clínica queda registrada." },
-            { title: "El mismo equipo siempre", text: "Conocemos a cada paciente por su nombre y a cada propietario por el suyo." },
+            { title: "Más de una década de trayectoria", text: "Evolucionamos de un consultorio estético boutique a un centro médico de rejuvenecimiento avanzado." },
+            { title: "Consultas sin afanes", text: "Cada valoración tiene el tiempo necesario para diagnosticar y planificar minuciosamente tu tratamiento." },
+            { title: "Atención continuada", text: "Seguimiento médico personalizado y control fotográfico post-procedimiento en cada sesión." },
           ]}
         />
       </Section>
 
       <OffsetBlobBlock
-        title="Nuestra misión y valores"
-        image="/gallery/pet-8.jpg"
-        imageAlt="Procedimiento veterinario con instrumental de precisión"
+        title="Nuestra misión y valores médicos"
+        image="/gallery/clinic-3.jpg"
+        imageAlt="Sesión de rejuvenecimiento dérmico con tecnología médica"
         actions={
           <CtaLink href="/servicios" variant="cta">
-            Ver servicios
+            Ver catálogo de tratamientos
           </CtaLink>
         }
       >
         <ul className="mt-2 space-y-3 text-sm leading-6">
           <li>
-            <strong className="font-bold">Trato cercano.</strong> Explicamos cada diagnóstico con tiempo, no de
-            pasada.
+            <strong className="font-bold">Naturalidad ante todo.</strong> Potenciamos tus rasgos propios sin alterar tu expresión ni crear volúmenes excesivos.
           </li>
           <li>
-            <strong className="font-bold">Medicina responsable.</strong> Ningún procedimiento sin explicar el
-            porqué ni presupuesto previo.
+            <strong className="font-bold">Práctica médica ética.</strong> Transparencia total en presupuestos, marcas de insumos y consentimiento informado.
           </li>
           <li>
-            <strong className="font-bold">Mejora continua.</strong> Historia clínica digital y laboratorio propio.
+            <strong className="font-bold">Bioseguridad & Calidad.</strong> Protocolos médicos quirúrgicos estrictos y ficha digital de cada procedimiento.
           </li>
         </ul>
       </OffsetBlobBlock>
 
-      {/* Parrafo ancho de storytelling -- patron "quienes somos" de About en el
-          pack (bloque de texto grande, no una lista de bullets). */}
       <Section className="pt-0">
         <Reveal>
           <div className={`${container} max-w-3xl space-y-5 text-base leading-8 text-muted-foreground`}>
             <p>
-              Clínica Veterinaria Los Andes empezó como un consultorio pequeño de barrio, con un solo veterinario
-              y una sala de espera compartida con la recepción. Más de una década después, seguimos en el mismo
-              barrio — pero con consultorios equipados, laboratorio propio y quirófano, sin haber perdido de vista
-              lo que nos trajo hasta acá: conocer a cada mascota por su nombre.
+              Clínica Estética & Medicina Antiaging Élite nació con una premisa clara: devolverle a la medicina estética su rigor científico y su sensibilidad artística. Entendemos que cada rostro cuenta una historia única y que el rejuvenecimiento efectivo respeta la anatomía individual.
             </p>
             <p>
-              Esa cercanía es una decisión, no un accidente de tamaño. Trabajamos con veterinarios de planta, no
-              rotativos, y con historia clínica digital por paciente, para que cada visita — sea un control de
-              rutina o una urgencia — parta de lo que ya sabemos de tu mascota, no de cero.
+              A lo largo de más de 12 años, hemos consolidado un equipo de médicos especialistas en armonización facial, dermatología estética y nutrición cellular antiaging, garantizando que cada paciente reciba una atención privada, ética y respaldada por productos de prestigio internacional.
             </p>
           </div>
         </Reveal>
       </Section>
 
-      {/* Equipo -- mismo patron "Highly Trained Veterinarians" de About: fila
-          apilada foto+card, no un grid de tarjetas parejas (ver Equipo para el
-          listado completo con bios). */}
       <Section className="bg-section-cream">
         <Reveal>
-          <SectionHeading eyebrow="Profesionales" title="El equipo detrás de cada consulta" center={false} />
+          <SectionHeading eyebrow="Equipo Médico" title="Nuestros Especialistas" center={false} />
         </Reveal>
-        <div className="mt-14">
+        <div className="mt-12">
           <TeamProfileList team={team} />
         </div>
       </Section>

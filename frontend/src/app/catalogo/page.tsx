@@ -74,18 +74,18 @@ export default function CatalogoPage() {
   return (
     <MarketingLayout>
       <SplitHero
-        eyebrow="Catálogo"
-        title="Todo lo que tu mascota necesita, en un solo lugar"
-        lead="Explorá el catálogo, armá tu lista y solicitá una cotización — te respondemos con precios y disponibilidad."
+        eyebrow="Catálogo de Productos & Insumos"
+        title="Productos médicos estéticos, dermocosmética y cuidado antiaging"
+        lead="Explora nuestro catálogo de cuidado facial, sueroterapia e insumos estéticos para cotizar o agendar tu tratamiento."
         image="/gallery/illustrations/illustration-1.png"
-        imageAlt="Veterinario levantando en brazos a un cachorro"
+        imageAlt="Productos dermocosméticos y cuidado facial médico"
         actions={
           <>
             <CtaLink href="/catalogo/cotizacion" variant="cta">
               Solicitar cotización
             </CtaLink>
             <CtaLink href={WHATSAPP_URL} variant="outline">
-              Escribinos por WhatsApp
+              Escribir por WhatsApp
             </CtaLink>
           </>
         }

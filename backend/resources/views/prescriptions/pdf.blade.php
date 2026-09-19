@@ -9,26 +9,26 @@
   table { width: 100%; border-collapse: collapse; margin-top: 12px; }
   th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid #ddd; }
   th { background: #f3f3f3; }
-  .header { border-bottom: 2px solid #15803d; padding-bottom: 8px; margin-bottom: 12px; }
+  .header { border-bottom: 2px solid #059669; padding-bottom: 8px; margin-bottom: 12px; }
   .notes { margin-top: 16px; white-space: pre-wrap; }
   .sign { margin-top: 48px; }
 </style>
 </head>
 <body>
   <div class="header">
-    <h1>{{ $p->company->name ?? 'Clínica veterinaria' }}</h1>
-    <div class="muted">Receta médica veterinaria</div>
+    <h1>{{ $p->company->name ?? 'Clínica Estética & Antiaging Élite' }}</h1>
+    <div class="muted">Prescripción & Indicaciones Médicas Estéticas</div>
   </div>
 
   <p>
     <strong>Paciente:</strong> {{ $p->patient->name ?? '—' }}<br>
     <strong>Fecha:</strong> {{ optional($p->created_at)->format('d/m/Y') }}<br>
-    <strong>Veterinario/a:</strong> {{ $p->vet->name ?? '—' }}
+    <strong>Especialista / Médico:</strong> {{ $p->vet->name ?? '—' }}
   </p>
 
   <table>
     <thead>
-      <tr><th>Medicamento</th><th>Dosis</th><th>Frecuencia</th><th>Duración</th></tr>
+      <tr><th>Tratamiento / Insumo</th><th>Dosis / Parámetro</th><th>Frecuencia</th><th>Duración</th></tr>
     </thead>
     <tbody>
       @foreach ($p->items as $item)
@@ -43,9 +43,9 @@
   </table>
 
   @if ($p->notes)
-    <div class="notes"><strong>Indicaciones:</strong><br>{{ $p->notes }}</div>
+    <div class="notes"><strong>Indicaciones Médicas & Cuidados Post-Procedimiento:</strong><br>{{ $p->notes }}</div>
   @endif
 
-  <div class="sign">_______________________________<br>Firma y sello</div>
+  <div class="sign">_______________________________<br>Firma y Registro Médico</div>
 </body>
 </html>

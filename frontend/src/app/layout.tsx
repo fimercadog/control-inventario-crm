@@ -40,22 +40,22 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Clínica Veterinaria Los Andes | Veterinaria en Bogotá",
-    template: "%s | Clínica Veterinaria Los Andes",
+    default: "Clínica Estética & Medicina Antiaging Élite",
+    template: "%s | Clínica Estética Élite",
   },
   description:
-    "Clínica veterinaria en Bogotá: consulta general, vacunación, cirugía, laboratorio clínico y urgencias para perros, gatos y otras mascotas. Agendá tu cita online o por WhatsApp.",
+    "Clínica de Medicina Estética & Antiaging Élite: Toxina Botulínica (Botox), Ácido Hialurónico, Bioestimuladores de Colágeno, Peeling Médico, Hydrafacial y Contorno Corporal. Reserva tu valoración médica.",
   openGraph: {
-    title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",
-    description: "Consulta, vacunación, cirugía y urgencias para tu mascota, con historia clínica digital por paciente.",
+    title: "Clínica Estética & Medicina Antiaging Élite",
+    description: "Medicina estética avanzada, armonización facial, rejuvenecimiento y salud cutánea con médicos especialistas.",
     type: "website",
     locale: "es_CO",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",
-    description: "Consulta, vacunación, cirugía y urgencias para tu mascota.",
+    title: "Clínica Estética & Medicina Antiaging Élite",
+    description: "Medicina estética avanzada, armonización facial y salud cutánea.",
   },
 };
 

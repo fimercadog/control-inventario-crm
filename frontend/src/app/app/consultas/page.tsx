@@ -18,12 +18,12 @@ const columns: AppColumnDef<Consultation>[] = [
     ),
   },
   { header: "Motivo", cell: ({ row }) => row.original.reason },
-  { header: "Veterinario", cell: ({ row }) => row.original.vet ?? "—" },
+  { header: "Especialista / Médico", cell: ({ row }) => row.original.vet ?? "—" },
   {
     header: "",
     cell: ({ row }) => (
       <Link href={`/app/consultas/${row.original.id}`} className="text-xs text-primary hover:underline">
-        Ver SOAP
+        Ver Detalle
       </Link>
     ),
   },
@@ -44,13 +44,13 @@ const fields: CrudField[] = [
 export default function ConsultationsPage() {
   return (
     <ModuleTablePage<Consultation>
-      title="Historia clínica"
-      description="Consultas SOAP de todos los pacientes."
+      title="Ficha Estética & Valoraciones"
+      description="Registros de valoración y sesiones médicas de todos los pacientes."
       resource="/consultations"
       columns={columns}
       fields={fields}
-      actionLabel="Nueva consulta"
-      modalDescription="Esquema SOAP: Subjetivo · Objetivo · Análisis · Plan."
+      actionLabel="Nueva consulta / valoración"
+      modalDescription="Esquema de valoración médica: Subjetivo · Objetivo · Análisis · Plan de Tratamiento."
     />
   );
 }

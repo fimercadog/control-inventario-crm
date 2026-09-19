@@ -10,8 +10,8 @@ import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
  * Agendar cita y WhatsApp. Reutilizada en home, servicios, equipo y contacto.
  */
 export function AppointmentCta({
-  title = "¿Tu mascota necesita una visita?",
-  lead = "Contanos qué necesita y te confirmamos disponibilidad. Para urgencias, escribinos directo por WhatsApp.",
+  title = "¿List@ para renovar la frescura y juventud de tu piel?",
+  lead = "Reserva tu valoración médica estética personalizada. Te guiamos hacia el protocolo ideal con resultados naturales y bioseguros.",
 }: {
   title?: string;
   lead?: string;

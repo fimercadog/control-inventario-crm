@@ -111,8 +111,8 @@ export default function AgendarCitaPage() {
     <MarketingLayout>
       <PageHero
         eyebrow="Agendá tu cita"
-        title="Elegí día y hora para tu mascota"
-        lead="Disponibilidad real de la clínica: elegí el horario que te sirva y tu cita queda confirmada al instante."
+        title="Elige día y hora para tu valoración o tratamiento"
+        lead="Disponibilidad en tiempo real: selecciona el horario de tu preferencia y confirma tu reserva al instante."
       />
 
       <section className="mx-auto max-w-2xl px-4 pb-24 sm:px-6">
@@ -226,7 +226,7 @@ export default function AgendarCitaPage() {
                     </select>
                   </label>
                   <label className="block text-sm">
-                    <span>Nombre de tu mascota *</span>
+                    <span>Nombre del Paciente / Registro *</span>
                     <input name="pet_name" required className={`mt-1 ${inputClass}`} />
                   </label>
                   <label className="block text-sm">

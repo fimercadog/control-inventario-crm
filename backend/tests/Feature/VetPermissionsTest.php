@@ -31,7 +31,7 @@ class VetPermissionsTest extends TestCase
 
     public function test_permissions_catalog_lists_the_vet_permissions(): void
     {
-        $admin = User::where('email', 'admin@vetlosandes.co')->firstOrFail();
+        $admin = User::where('email', 'like', 'admin@%')->firstOrFail();
         Sanctum::actingAs($admin, ['*']);
 
         $data = $this->getJson('/api/permissions')->assertOk()->json('data');
@@ -43,11 +43,11 @@ class VetPermissionsTest extends TestCase
 
     public function test_vet_role_has_the_clinical_permissions(): void
     {
-        $vet = Role::where('name', 'Veterinario/a')->where('guard_name', 'web')->first();
+        $vet = Role::whereIn('name', ['Veterinario/a', 'Médico/a Especialista'])->where('guard_name', 'web')->first();
 
-        $this->assertNotNull($vet, 'El rol Veterinario/a no existe');
+        $this->assertNotNull($vet, 'El rol de especialista clínico no existe');
         foreach (self::VET_PERMISSIONS as $permission) {
-            $this->assertTrue($vet->hasPermissionTo($permission), "Veterinario/a debería tener {$permission}");
+            $this->assertTrue($vet->hasPermissionTo($permission), "El rol especialista debería tener {$permission}");
         }
     }
 

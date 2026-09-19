@@ -20,11 +20,11 @@ export default function BlogPage() {
       {/* Hero: misma familia visual que Servicios -- para que el blog se sienta
           parte del mismo sitio, no una seccion aparte. */}
       <SplitHero
-        eyebrow="Blog"
-        title="Cuidado animal, explicado por el equipo que te atiende"
-        lead="Prevención, vacunas, nutrición y qué hacer ante una urgencia — notas prácticas para dueños de mascota, escritas por nuestros veterinarios."
+        eyebrow="Blog & Artículos Médicos"
+        title="Medicina Estética & Antiaging explicada por nuestros especialistas"
+        lead="Consejos médicos, mitos sobre el Botox, bioestimulación de colágeno y recomendaciones para mantener tu piel radiante."
         image="/gallery/illustrations/illustration-10.png"
-        imageAlt="Gato sobre una laptop junto a un botiquín de primeros auxilios"
+        imageAlt="Ilustración médica estética y cuidado facial"
       />
 
       <Section className="pt-0">

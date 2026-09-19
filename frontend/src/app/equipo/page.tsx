@@ -10,34 +10,31 @@ import { TeamProfileList } from "@/components/marketing/team-profile-row";
 export default function EquipoPage() {
   return (
     <MarketingLayout>
-      {/* Hero: misma familia visual que Servicios/Nosotros. */}
       <SplitHero
-        eyebrow="Equipo"
-        title="El equipo que va a conocer a tu mascota"
-        lead="Veterinarios de planta y un equipo de recepción que coordina tu agenda, tus urgencias y el seguimiento de cada tratamiento."
+        eyebrow="Equipo Médico"
+        title="Especialistas dedicados a resaltar tu belleza natural"
+        lead="Médicos cirujanos, dermatólogos y coordinadores de experiencia médica enfocados en brindar un seguimiento bioseguro y personalizado."
         image="/gallery/illustrations/illustration-4.png"
-        imageAlt="Veterinario sosteniendo en brazos a un cachorro"
+        imageAlt="Médico especialista en consultorio de medicina estética"
         actions={
           <CtaLink href="/agendar-cita" variant="cta">
-            Agendar cita
+            Agendar Valoración
           </CtaLink>
         }
       />
 
       <Section className="pt-0">
         <PhotoFeatureStack
-          image="/gallery/pet-13.jpg"
-          imageAlt="Veterinario examinando la pata de un bulldog con instrumental clínico"
+          image="/gallery/clinic-4.jpg"
+          imageAlt="Médico realizando procedimiento de medicina estética"
           reverse
           features={[
-            { title: "Continuidad, no rotación", text: "Cada mascota tiene un veterinario que la conoce visita tras visita, no un turno con quien esté disponible." },
-            { title: "Seguimiento real", text: "Un cambio sutil se nota antes cuando es el mismo equipo el que compara con la visita anterior." },
+            { title: "Atención por Médicos Especialistas", text: "Cada inyectable o procedimiento láser es realizado de forma exclusiva por médicos profesionales graduados." },
+            { title: "Seguimiento Fotográfico & Clínico", text: "Registramos cada avance y resultado para asegurar la máxima satisfacción y naturalidad." },
           ]}
         />
       </Section>
 
-      {/* Fila apilada foto+card -- patron "Highly Trained Veterinarians" de
-          About, en vez de un grid de tarjetas parejas. */}
       <Section className="bg-section-cream">
         <TeamProfileList team={team} />
       </Section>

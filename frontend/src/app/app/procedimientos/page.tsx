@@ -17,24 +17,24 @@ const columns: AppColumnDef<Procedure>[] = [
       </Link>
     ),
   },
-  { accessorKey: "type", header: "Procedimiento" },
-  { header: "Veterinario", cell: ({ row }) => row.original.vet ?? "—" },
+  { accessorKey: "type", header: "Procedimiento / Tratamiento" },
+  { header: "Especialista / Médico", cell: ({ row }) => row.original.vet ?? "—" },
   { header: "Consentimiento", cell: ({ row }) => (row.original.consent_document_url ? "Adjunto" : "—") },
 ];
 
 const fields: CrudField[] = [
   { name: "patient_id", label: "Paciente", type: "select", optionsResource: "/patients", required: true },
   { name: "service_id", label: "Servicio asociado", type: "select", optionsResource: "/services", omitWhenEmpty: true },
-  { name: "type", label: "Procedimiento", required: true },
+  { name: "type", label: "Procedimiento / Tratamiento", required: true },
   { name: "performed_at", label: "Fecha", type: "date", required: true },
-  { name: "notes", label: "Notas", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
+  { name: "notes", label: "Notas / Parámetros", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
 ];
 
 export default function ProceduresPage() {
   return (
     <ModuleTablePage<Procedure>
-      title="Procedimientos"
-      description="Cirugías, curaciones y otros procedimientos realizados."
+      title="Tratamientos & Protocolos Estéticos"
+      description="Inyectables, aparatología médica, peelings y procedimientos corporales realizados."
       resource="/procedures"
       columns={columns}
       fields={fields}

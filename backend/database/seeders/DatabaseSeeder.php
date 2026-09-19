@@ -46,15 +46,14 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 /**
- * Dataset demo de la vertical veterinaria — "Clínica Veterinaria Los Andes".
+ * Dataset demo de la vertical Clínica Estética & Medicina Antiaging Élite.
  *
- * Todo el contenido es ficticio y coherente con una clínica de una sola sede:
- * propietarios y mascotas, agenda con citas pasadas/hoy/futuras, historia
- * clínica SOAP, vacunas y desparasitaciones (algunas descuentan stock),
- * diagnósticos, recetas, procedimientos, farmacia/vitrina con inventario,
- * ventas de producto a propietarios, presupuestos de cirugía y solicitudes de
- * cita del sitio público. Suficiente para que el dashboard y los reportes se
- * vean reales. `migrate:fresh --seed` es idempotente.
+ * Todo el contenido es ficticio y coherente con una clínica de medicina estética:
+ * pacientes y valoraciones, agenda con citas pasadas/hoy/futuras, ficha médica
+ * SOAP, aplicaciones y dosis (algunas descuentan stock), diagnósticos estéticos,
+ * recomendaciones, tratamientos y protocolos, catálogo e insumos médicos,
+ * ventas de producto/dermocosmética, presupuestos y solicitudes del sitio público.
+ * `migrate:fresh --seed` es idempotente.
  */
 class DatabaseSeeder extends Seeder
 {
@@ -63,22 +62,22 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $company = Company::firstOrCreate([
-            'name' => 'Clínica Veterinaria Los Andes',
+            'name' => 'Clínica Estética & Medicina Antiaging Élite',
         ], [
             'nit' => '901.245.880-3',
-            'email' => 'recepcion@vetlosandes.co',
+            'email' => 'recepcion@esteticaelite.co',
             'phone' => '+57 601 555 0188',
-            'address' => 'Calle 93 #14-20, Bogotá',
+            'address' => 'Calle 93 #14-20, Chicó, Bogotá',
             'timezone' => 'America/Bogota',
             'locale' => 'es',
         ]);
 
-        [$users, $vets] = $this->seedRolesAndUsers($company);
-        $admin = $users['admin@vetlosandes.co'];
-        $reception = $users['recepcion@vetlosandes.co'];
+        [$users, $doctors] = $this->seedRolesAndUsers($company);
+        $admin = $users['admin@esteticaelite.co'];
+        $reception = $users['recepcion@esteticaelite.co'];
 
         $warehouses = $this->seedWarehouses($company);
-        $mainWarehouse = $warehouses['Farmacia / Vitrina'];
+        $mainWarehouse = $warehouses['Farmacia & Insumos Estéticos'];
 
         [$products, $publicProducts] = $this->seedInventoryCatalog($company);
         $suppliers = $this->seedSuppliers($company);
@@ -93,18 +92,18 @@ class DatabaseSeeder extends Seeder
 
         $this->seedStock($company, $products, $suppliers, $mainWarehouse, $warehouses);
 
-        $appointments = $this->seedAppointments($company, $patients, $services, $vets);
-        $consultations = $this->seedConsultations($company, $patients, $appointments, $vets);
+        $appointments = $this->seedAppointments($company, $patients, $services, $doctors);
+        $consultations = $this->seedConsultations($company, $patients, $appointments, $doctors);
         $diagnoses = $this->seedDiagnoses($company);
         $this->attachDiagnoses($consultations, $diagnoses);
-        $this->seedClinicalApplications($company, $patients, $products, $vets, $mainWarehouse, $consultations);
-        $this->seedPrescriptions($company, $consultations, $products, $vets);
-        $this->seedProcedures($company, $patients, $services, $vets);
+        $this->seedClinicalApplications($company, $patients, $products, $doctors, $mainWarehouse, $consultations);
+        $this->seedPrescriptions($company, $consultations, $products, $doctors);
+        $this->seedProcedures($company, $patients, $services, $doctors);
 
         $this->seedLeads($company);
         $this->seedProductSales($company, $clients, $publicProducts, $mainWarehouse, $reception);
         $this->seedSurgeryQuotes($company, $clients, $services);
-        $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@vetlosandes.co']);
+        $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@esteticaelite.co']);
         $this->seedClientNotesAndTasks($company, $clients, $patients, $admin, $reception);
         $this->seedAuditLog($company, $admin, $clients, $patients);
     }
@@ -136,7 +135,7 @@ class DatabaseSeeder extends Seeder
         $roles = [
             'Super Admin' => $permissionNames,
             'Administrador de empresa' => $permissionNames,
-            'Veterinario/a' => array_merge(['dashboard.view', 'clients.manage', 'orders.manage', 'reports.view'], $clinical),
+            'Médico/a Especialista' => array_merge(['dashboard.view', 'clients.manage', 'orders.manage', 'reports.view'], $clinical),
             'Recepción' => [
                 'dashboard.view', 'leads.view', 'clients.manage', 'patients.manage', 'services.manage',
                 'appointments.manage', 'orders.manage', 'invoices.manage', 'accounts_receivable.view',
@@ -158,13 +157,13 @@ class DatabaseSeeder extends Seeder
         }
 
         $demo = [
-            ['superadmin@vetlosandes.co', 'Sofía Mercado', 'Super Admin'],
-            ['admin@vetlosandes.co', 'Camila Rojas', 'Administrador de empresa'],
-            ['veterinario@vetlosandes.co', 'Dr. Carlos Medina', 'Veterinario/a'],
-            ['veterinaria@vetlosandes.co', 'Dra. Laura Peña', 'Veterinario/a'],
-            ['recepcion@vetlosandes.co', 'Marcela Duarte', 'Recepción'],
-            ['inventario@vetlosandes.co', 'Valentina Castro', 'Inventario'],
-            ['ventas@vetlosandes.co', 'Sebastián Moreno', 'Ventas'],
+            ['superadmin@esteticaelite.co', 'Sofía Mercado', 'Super Admin'],
+            ['admin@esteticaelite.co', 'Camila Rojas', 'Administrador de empresa'],
+            ['medico@esteticaelite.co', 'Dr. Alejandro Restrepo', 'Médico/a Especialista'],
+            ['medica@esteticaelite.co', 'Dra. Sofía Valenzuela', 'Médico/a Especialista'],
+            ['recepcion@esteticaelite.co', 'Marcela Duarte', 'Recepción'],
+            ['inventario@esteticaelite.co', 'Valentina Castro', 'Inventario'],
+            ['ventas@esteticaelite.co', 'Sebastián Moreno', 'Ventas'],
         ];
 
         $users = [];
@@ -177,9 +176,9 @@ class DatabaseSeeder extends Seeder
             $users[$email] = $user;
         }
 
-        $vets = [$users['veterinario@vetlosandes.co'], $users['veterinaria@vetlosandes.co']];
+        $doctors = [$users['medico@esteticaelite.co'], $users['medica@esteticaelite.co']];
 
-        return [$users, $vets];
+        return [$users, $doctors];
     }
 
     // -------------------------------------------------------------- inventario
@@ -188,8 +187,8 @@ class DatabaseSeeder extends Seeder
     private function seedWarehouses(Company $company): array
     {
         return collect([
-            ['name' => 'Farmacia / Vitrina', 'location' => 'Recepción, planta baja'],
-            ['name' => 'Depósito', 'location' => 'Bodega interna, segundo piso'],
+            ['name' => 'Farmacia & Insumos Estéticos', 'location' => 'Recepción, cabina principal'],
+            ['name' => 'Depósito de Reserva', 'location' => 'Bodega médica interna'],
         ])->mapWithKeys(fn ($data) => [
             $data['name'] => Warehouse::firstOrCreate(
                 ['company_id' => $company->id, 'name' => $data['name']],
@@ -201,39 +200,33 @@ class DatabaseSeeder extends Seeder
     /** @return array{0: Collection<int,Product>, 1: Collection<int,Product>} */
     private function seedInventoryCatalog(Company $company): array
     {
-        $categories = collect(['Biológicos', 'Antiparasitarios', 'Farmacia', 'Alimento médico', 'Accesorios', 'Insumos médicos'])
+        $categories = collect(['Biológicos & Inyectables', 'Ácido Hialurónico', 'Bioestimuladores', 'Peelings & Cosmiatría', 'Sueroterapia IV', 'Insumos Médicos Estéticos'])
             ->mapWithKeys(fn ($name) => [$name => Category::firstOrCreate(['company_id' => $company->id, 'name' => $name], ['status' => 'active'])]);
-        $brands = collect(['Zoetis', 'MSD Salud Animal', 'Virbac', 'Elanco', 'Royal Canin', "Hill's", 'Genérico'])
+        $brands = collect(['Allergan (Botox)', 'Galderma (Restylane/Sculptra)', 'Merz Aesthetics (Radiesse)', 'Teoxane', 'Mesoestetic', 'Genérico'])
             ->mapWithKeys(fn ($name) => [$name => Brand::firstOrCreate(['company_id' => $company->id, 'name' => $name], ['status' => 'active'])]);
         $units = collect([
             ['name' => 'Unidad', 'abbreviation' => 'un'],
-            ['name' => 'Frasco', 'abbreviation' => 'fco'],
+            ['name' => 'Vial', 'abbreviation' => 'vial'],
+            ['name' => 'Jeringa', 'abbreviation' => 'ser'],
             ['name' => 'Dosis', 'abbreviation' => 'dosis'],
-            ['name' => 'Tableta', 'abbreviation' => 'tab'],
-            ['name' => 'Bolsa', 'abbreviation' => 'bls'],
+            ['name' => 'Frasco', 'abbreviation' => 'fco'],
+            ['name' => 'Caja', 'abbreviation' => 'caja'],
         ])->mapWithKeys(fn ($d) => [$d['name'] => Unit::firstOrCreate(['company_id' => $company->id, 'name' => $d['name']], $d + ['status' => 'active'])]);
 
         // [sku, nombre, categoría, marca, unidad, costo, precio, reorden, público, descripción]
         $rows = [
-            ['VAC-DHPPI', 'Vacuna polivalente canina (DHPPi)', 'Biológicos', 'Zoetis', 'Dosis', 22000, 45000, 15, false, 'Vacuna múltiple para moquillo, hepatitis, parvovirus y parainfluenza. Refuerzo anual.'],
-            ['VAC-RABIA', 'Vacuna antirrábica', 'Biológicos', 'MSD Salud Animal', 'Dosis', 12000, 30000, 20, false, 'Antirrábica para perros y gatos. Obligatoria, refuerzo anual.'],
-            ['VAC-TRIPLE-F', 'Vacuna triple felina', 'Biológicos', 'MSD Salud Animal', 'Dosis', 24000, 48000, 10, false, 'Rinotraqueítis, calicivirus y panleucopenia felina.'],
-            ['VAC-TOS', 'Vacuna tos de las perreras', 'Biológicos', 'Zoetis', 'Dosis', 20000, 42000, 8, false, 'Bordetella + parainfluenza. Recomendada antes de guardería o peluquería.'],
-            ['ANTI-INT', 'Desparasitante interno (praziquantel + pirantel)', 'Antiparasitarios', 'Virbac', 'Tableta', 3500, 9000, 40, false, 'Amplio espectro contra parásitos intestinales. Dosis por peso.'],
-            ['ANTI-EXT', 'Antipulgas y garrapatas masticable', 'Antiparasitarios', 'Elanco', 'Tableta', 28000, 55000, 25, false, 'Protección mensual contra pulgas y garrapatas. Vía oral.'],
-            ['ANTI-PIPE', 'Pipeta antiparasitaria externa', 'Antiparasitarios', 'Virbac', 'Unidad', 18000, 38000, 20, false, 'Aplicación tópica mensual. Presentaciones por rango de peso.'],
-            ['FARM-AMOXI', 'Amoxicilina 250 mg', 'Farmacia', 'Genérico', 'Tableta', 900, 2500, 60, false, 'Antibiótico betalactámico. Solo bajo prescripción veterinaria.'],
-            ['FARM-MELOX', 'Meloxicam 1,5 mg/ml suspensión', 'Farmacia', 'Genérico', 'Frasco', 22000, 45000, 10, false, 'Antiinflamatorio no esteroideo para dolor osteomuscular.'],
-            ['FARM-SUERO', 'Suero fisiológico 500 ml', 'Farmacia', 'Genérico', 'Frasco', 4500, 9000, 30, false, 'Solución salina 0,9% para fluidoterapia y lavados.'],
-            ['FARM-GABA', 'Gabapentina 100 mg', 'Farmacia', 'Genérico', 'Tableta', 1200, 3200, 40, false, 'Analgésico neuropático y ansiolítico previo a consulta.'],
-            ['ALIM-GASTRO', 'Alimento gastrointestinal 2 kg', 'Alimento médico', 'Royal Canin', 'Bolsa', 78000, 128000, 8, true, 'Dieta veterinaria para trastornos digestivos en perros. Alta digestibilidad.'],
-            ['ALIM-RENAL', 'Alimento renal 2 kg', 'Alimento médico', "Hill's", 'Bolsa', 92000, 148000, 6, true, 'Dieta terapéutica para insuficiencia renal crónica en gatos.'],
-            ['ALIM-RECOV', 'Alimento de recuperación lata', 'Alimento médico', 'Royal Canin', 'Unidad', 9000, 16000, 24, true, 'Alta energía para pacientes convalecientes o inapetentes.'],
-            ['ACC-COLLAR', 'Collar isabelino talla M', 'Accesorios', 'Genérico', 'Unidad', 8000, 18000, 15, true, 'Cono protector post-cirugía o para evitar lamido de heridas.'],
-            ['ACC-SHAMP', 'Shampoo hipoalergénico 250 ml', 'Accesorios', 'Virbac', 'Frasco', 19000, 36000, 20, true, 'Piel sensible y dermatitis leve. Uso frecuente.'],
-            ['ACC-DENTAL', 'Kit de cepillado dental', 'Accesorios', 'Genérico', 'Unidad', 12000, 24000, 18, true, 'Cepillo de doble cabeza y pasta enzimática sabor pollo.'],
-            ['INS-JERINGA', 'Jeringa 3 ml con aguja', 'Insumos médicos', 'Genérico', 'Unidad', 400, 0, 200, false, 'Insumo de uso interno. No se vende al público.'],
-            ['INS-GUANTE', 'Guantes de examen (caja x100)', 'Insumos médicos', 'Genérico', 'Unidad', 22000, 0, 20, false, 'Nitrilo sin polvo. Uso interno de consulta y cirugía.'],
+            ['BOT-100U', 'Toxina Botulínica Botox® 100U', 'Biológicos & Inyectables', 'Allergan (Botox)', 'Vial', 350000, 650000, 10, false, 'Relajante muscular para atenuación de arrugas dinámicas.'],
+            ['HIA-LIP', 'Restylane Kysse 1ml (Perfilado Labial)', 'Ácido Hialurónico', 'Galderma (Restylane/Sculptra)', 'Jeringa', 420000, 850000, 15, false, 'Ácido hialurónico reticulado para volumen e hidratación de labios.'],
+            ['HIA-VOL', 'Juvederm Voluma 1ml (Pómulos & Mentón)', 'Ácido Hialurónico', 'Allergan (Botox)', 'Jeringa', 480000, 950000, 12, false, 'Restauración de volumen en tercio medio e inferior facial.'],
+            ['BIO-RAD', 'Radiesse 1.5ml (Hidroxiapatita Cálcica)', 'Bioestimuladores', 'Merz Aesthetics (Radiesse)', 'Jeringa', 720000, 1500000, 8, false, 'Bioestimulador de colágeno propio para tensión dérmica.'],
+            ['BIO-SCU', 'Sculptra Vial (Ácido Poli-L-Láctico)', 'Bioestimuladores', 'Galderma (Restylane/Sculptra)', 'Vial', 890000, 1800000, 6, false, 'Inductor tisular de colágeno de larga duración.'],
+            ['SUER-VITC', 'Sueroterapia Vitamina C Megadosis 25g', 'Sueroterapia IV', 'Genérico', 'Frasco', 35000, 120000, 30, false, 'Infusión intravenosa antioxidante y fortalecedora del sistema inmune.'],
+            ['SUER-GLUT', 'Glutatión Antioxidante 1200mg', 'Sueroterapia IV', 'Genérico', 'Frasco', 45000, 150000, 20, false, 'Desintoxicante celular y potenciador del brillo cutáneo.'],
+            ['PEEL-GLIC', 'Peeling Químico Glicólico 30% 50ml', 'Peelings & Cosmiatría', 'Mesoestetic', 'Frasco', 85000, 220000, 10, false, 'Renovación epidérmica para textura y manchas finas.'],
+            ['HYDRA-SER', 'Serum Hydrafacial Hidratante 100ml', 'Peelings & Cosmiatría', 'Genérico', 'Frasco', 65000, 180000, 15, false, 'Solución hidro-exfoliante para aparatología facial.'],
+            ['CREM-HYAL', 'Crema Antiaging Mesoestetic 50ml', 'Peelings & Cosmiatría', 'Mesoestetic', 'Unidad', 75000, 160000, 15, true, 'Crema hidratante y regeneradora con ácido hialurónico biocompatible.'],
+            ['INS-CANULA', 'Microcánula Estética 25G x 50mm', 'Insumos Médicos Estéticos', 'Genérico', 'Unidad', 12000, 0, 50, false, 'Cánula de punta roma para aplicación segura de rellenos.'],
+            ['INS-JERINGA', 'Jeringa Insulina 1ml x100', 'Insumos Médicos Estéticos', 'Genérico', 'Caja', 25000, 0, 10, false, 'Jeringa ultra-fina para toxina botulínica. Uso interno.'],
         ];
 
         $products = collect($rows)->map(function (array $r) use ($company, $categories, $brands, $units) {
@@ -265,9 +258,9 @@ class DatabaseSeeder extends Seeder
     private function seedSuppliers(Company $company): Collection
     {
         return collect([
-            ['name' => 'Distribuciones Veterinarias del Norte', 'contact_name' => 'Jorge Niño', 'email' => 'pedidos@distrivetnorte.example'],
-            ['name' => 'Provet Colombia SAS', 'contact_name' => 'Marcela Durán', 'email' => 'ventas@provet.example'],
-            ['name' => 'Insumos del Campo Mayorista', 'contact_name' => 'Ricardo Peña', 'email' => 'mayoristas@insumosdelcampo.example'],
+            ['name' => 'Allergan Aesthetics Colombia', 'contact_name' => 'Jorge Niño', 'email' => 'pedidos@allergan.example'],
+            ['name' => 'Galderma Medical Colombia SAS', 'contact_name' => 'Marcela Durán', 'email' => 'ventas@galderma.example'],
+            ['name' => 'Mesoestetic Pharma Group', 'contact_name' => 'Ricardo Peña', 'email' => 'atencion@mesoestetic.example'],
         ])->map(fn ($d) => Supplier::firstOrCreate(['company_id' => $company->id, 'name' => $d['name']], $d + ['status' => 'active']));
     }
 
@@ -282,7 +275,7 @@ class DatabaseSeeder extends Seeder
     /** @return array<string,Segment> */
     private function seedSegments(Company $company): array
     {
-        return collect(['Particular', 'Convenio empresarial', 'Criadero', 'Fundación / Rescate'])
+        return collect(['Particular', 'Convenio VIP', 'Corporativo', 'Fidelizado / Frecuente'])
             ->mapWithKeys(fn ($name) => [$name => Segment::firstOrCreate(['company_id' => $company->id, 'name' => $name], ['status' => 'active'])])
             ->all();
     }
@@ -293,11 +286,10 @@ class DatabaseSeeder extends Seeder
     private function seedSpeciesAndBreeds(Company $company): array
     {
         $map = [
-            'Perro' => ['Labrador Retriever', 'Golden Retriever', 'Criollo / Mestizo', 'Poodle', 'Bulldog Francés', 'Schnauzer', 'Pastor Alemán', 'Beagle'],
-            'Gato' => ['Siamés', 'Persa', 'Criollo / Mestizo', 'Angora', 'Maine Coon'],
-            'Ave' => ['Periquito', 'Canario', 'Agapornis'],
-            'Conejo' => ['Mini Lop', 'Cabeza de León'],
-            'Exótico' => ['Hurón', 'Tortuga morrocoy'],
+            'Facial' => ['Frente & Entrecejo', 'Patas de Gallo', 'Labios & Perfilado', 'Pómulos & Ojeras', 'Surcos Nasogenianos', 'Contorno Mandibular'],
+            'Corporal' => ['Abdomen & Flancos', 'Glúteos & Muslos', 'Brazos & Escote'],
+            'Capilar' => ['Fortalecimiento Capilar', 'Alopecia Androgenética'],
+            'Antiaging' => ['Sueroterapia IV Detox', 'Bioestimulación Cutánea'],
         ];
 
         return collect($map)->mapWithKeys(function (array $breeds, string $speciesName) use ($company) {
@@ -317,18 +309,17 @@ class DatabaseSeeder extends Seeder
     private function seedServices(Company $company): array
     {
         return collect([
-            ['Consulta general', 'consulta', 30, 55000],
-            ['Consulta especializada', 'consulta', 45, 95000],
-            ['Consulta a domicilio', 'consulta', 60, 130000],
-            ['Vacunación', 'vacunacion', 15, 40000],
-            ['Desparasitación', 'vacunacion', 15, 28000],
-            ['Cirugía de tejidos blandos', 'cirugia', 120, 420000],
-            ['Esterilización', 'cirugia', 90, 280000],
-            ['Profilaxis dental', 'cirugia', 75, 240000],
-            ['Curación / manejo de heridas', 'curacion', 20, 35000],
-            ['Hospitalización (día)', 'hospitalizacion', null, 140000],
-            ['Peluquería / baño médico', 'peluqueria', 60, 45000],
-            ['Eutanasia humanitaria', 'otro', 45, 180000],
+            ['Valoración Médica Estética', 'consulta', 45, 80000],
+            ['Toxina Botulínica (Botox 3 zonas)', 'vacunacion', 30, 550000],
+            ['Perfilado de Labios con Ácido Hialurónico', 'vacunacion', 45, 850000],
+            ['Armonización Facial con Rellenos', 'cirugia', 60, 1400000],
+            ['Bioestimulador Radiesse (Hidroxiapatita)', 'cirugia', 60, 1500000],
+            ['Bioestimulador Sculptra (Vial)', 'cirugia', 60, 1800000],
+            ['Peeling Médico Renovador', 'curacion', 45, 220000],
+            ['Hydrafacial & Higiene Facial Profunda', 'peluqueria', 60, 280000],
+            ['Sueroterapia IV Vitamina C Detox', 'hospitalizacion', 45, 180000],
+            ['Contorno Corporal & Enzimas Reductoras', 'curacion', 45, 350000],
+            ['Depilación Láser Diodo (Sesión Zonal)', 'otro', 30, 150000],
         ])->mapWithKeys(fn ($d) => [
             $d[0] => Service::firstOrCreate(
                 ['company_id' => $company->id, 'name' => $d[0]],
@@ -337,7 +328,7 @@ class DatabaseSeeder extends Seeder
         ])->all();
     }
 
-    // ------------------------------------------------------- propietarios/pets
+    // ------------------------------------------------------- clientes/pacientes
 
     /** @return Collection<int,Client> */
     private function seedOwners(Company $company, array $segments): Collection
@@ -352,9 +343,6 @@ class DatabaseSeeder extends Seeder
             ['Laura Gutiérrez', null, 'laura.gutierrez@gmail.com', '+57 316 555 0107', 'Cra 19 #45-12, Bogotá', 'Particular'],
             ['Santiago Rojas', null, 'santiago.rojas@gmail.com', '+57 317 555 0108', 'Calle 140 #7-90, Bogotá', 'Particular'],
             ['Natalia Ospina', null, 'natalia.ospina@gmail.com', '+57 318 555 0109', 'Cra 24 #63-11, Bogotá', 'Particular'],
-            ['Fundación Huellitas', 'Fundación Huellitas de Amor', 'contacto@huellitas.example', '+57 601 555 0210', 'Cra 30 #12-45, Bogotá', 'Fundación / Rescate'],
-            ['Criadero Los Cerezos', 'Criadero Los Cerezos', 'info@loscerezos.example', '+57 320 555 0211', 'Vereda El Salitre, Chía', 'Criadero'],
-            ['Bienestar - Nexa BPO', 'Nexa BPO', 'bienestar@nexabpo.example', '+57 601 555 0212', 'Av 68 #40-11, Bogotá', 'Convenio empresarial'],
         ];
 
         return collect($rows)->map(fn ($d) => Client::firstOrCreate(
@@ -369,9 +357,8 @@ class DatabaseSeeder extends Seeder
     private function seedContacts(Company $company, Collection $clients): void
     {
         collect([
-            [9, 'Paola Méndez', 'Coordinadora de adopciones', 'adopciones@huellitas.example', '+57 320 555 0310'],
-            [10, 'Hernán Cortés', 'Responsable de camada', 'camadas@loscerezos.example', '+57 321 555 0311'],
-            [11, 'Ana María Lima', 'Líder de bienestar', 'ana.lima@nexabpo.example', '+57 322 555 0312'],
+            [0, 'Paola Méndez', 'Asistente personal', 'paola@herrera.example', '+57 320 555 0310'],
+            [2, 'Hernán Cortés', 'Contacto corporativo', 'hernan@rios.example', '+57 321 555 0311'],
         ])->each(fn ($d) => Contact::firstOrCreate(
             ['company_id' => $company->id, 'name' => $d[1], 'client_id' => $clients[$d[0]]->id],
             ['role' => $d[2], 'email' => $d[3], 'phone' => $d[4], 'status' => 'active'],
@@ -384,24 +371,17 @@ class DatabaseSeeder extends Seeder
         $breedId = fn (string $sp, string $br) => Breed::query()
             ->where(['company_id' => $company->id, 'species_id' => $species[$sp]->id, 'name' => $br])->value('id');
 
-        // [ownerIdx, nombre, especie, raza, sexo, nacimiento, peso, esterilizado, microchip]
+        // [clientIdx, nombre, especie, raza, sexo, nacimiento, peso, esterilizado, microchip]
         $rows = [
-            [0, 'Luna', 'Perro', 'Golden Retriever', 'female', '2021-03-14', 28.4, true, '900215001234567'],
-            [0, 'Max', 'Perro', 'Labrador Retriever', 'male', '2019-07-02', 33.1, false, '900215001234568'],
-            [1, 'Michi', 'Gato', 'Criollo / Mestizo', 'female', '2022-11-20', 4.2, true, null],
-            [1, 'Simón', 'Gato', 'Siamés', 'male', '2020-02-10', 5.1, true, '900215001234569'],
-            [2, 'Kiara', 'Perro', 'Criollo / Mestizo', 'female', '2020-01-05', 15.8, true, null],
-            [3, 'Toby', 'Perro', 'Poodle', 'male', '2023-05-30', 6.7, false, '900215001234570'],
-            [3, 'Rocco', 'Perro', 'Bulldog Francés', 'male', '2022-01-18', 11.2, false, '900215001234571'],
-            [4, 'Nina', 'Perro', 'Schnauzer', 'female', '2018-09-12', 8.9, true, '900215001234572'],
-            [4, 'Pipo', 'Ave', 'Periquito', 'unknown', null, 0.04, false, null],
-            [5, 'Zeus', 'Perro', 'Pastor Alemán', 'male', '2021-12-01', 34.7, false, '900215001234573'],
-            [6, 'Coco', 'Gato', 'Persa', 'female', '2019-06-25', 3.8, true, '900215001234574'],
-            [7, 'Bruno', 'Perro', 'Beagle', 'male', '2020-08-08', 13.4, true, '900215001234575'],
-            [8, 'Manchas', 'Conejo', 'Mini Lop', 'female', '2023-02-14', 1.6, false, null],
-            [9, 'Estrella', 'Perro', 'Criollo / Mestizo', 'female', '2022-04-03', 17.2, true, null],
-            [9, 'Canela', 'Perro', 'Criollo / Mestizo', 'female', '2021-10-19', 19.0, false, null],
-            [10, 'Duque', 'Perro', 'Golden Retriever', 'male', '2023-06-11', 24.5, false, '900215001234576'],
+            [0, 'Camila Herrera (Facial)', 'Facial', 'Frente & Entrecejo', 'female', '1992-03-14', 58.4, false, 'EST-900215001'],
+            [1, 'Andrés Vargas (Corporal)', 'Corporal', 'Abdomen & Flancos', 'male', '1985-07-02', 78.1, false, 'EST-900215002'],
+            [2, 'Marcela Ríos (Facial)', 'Facial', 'Labios & Perfilado', 'female', '1990-11-20', 54.2, false, null],
+            [3, 'Felipe Castaño (Antiaging)', 'Antiaging', 'Sueroterapia IV Detox', 'male', '1978-02-10', 81.1, false, 'EST-900215003'],
+            [4, 'Diana Torres (Facial)', 'Facial', 'Pómulos & Ojeras', 'female', '1988-01-05', 60.8, false, null],
+            [5, 'Juan David Peláez (Facial)', 'Facial', 'Contorno Mandibular', 'male', '1983-05-30', 76.7, false, 'EST-900215004'],
+            [6, 'Laura Gutiérrez (Capilar)', 'Capilar', 'Fortalecimiento Capilar', 'female', '1994-01-18', 56.2, false, null],
+            [7, 'Santiago Rojas (Facial)', 'Facial', 'Surcos Nasogenianos', 'male', '1980-09-12', 82.9, false, 'EST-900215005'],
+            [8, 'Natalia Ospina (Corporal)', 'Corporal', 'Glúteos & Muslos', 'female', '1995-06-25', 62.8, false, 'EST-900215006'],
         ];
 
         return collect($rows)->map(fn ($d) => Patient::firstOrCreate(
@@ -428,18 +408,17 @@ class DatabaseSeeder extends Seeder
         Warehouse $mainWarehouse,
         array $warehouses,
     ): void {
-        // Orden de compra recibida -> entradas de stock reales en la Farmacia.
         $po = PurchaseOrder::firstOrCreate(
             ['company_id' => $company->id, 'supplier_id' => $suppliers[0]->id, 'warehouse_id' => $mainWarehouse->id],
             ['status' => 'draft', 'order_date' => Carbon::today()->subDays(18), 'expected_date' => Carbon::today()->subDays(11), 'total' => 0],
         );
         if ($po->items()->count() === 0) {
             $lines = [
-                [$products->firstWhere('sku', 'VAC-DHPPI'), 40],
-                [$products->firstWhere('sku', 'VAC-RABIA'), 50],
-                [$products->firstWhere('sku', 'ANTI-EXT'), 30],
-                [$products->firstWhere('sku', 'FARM-AMOXI'), 120],
-                [$products->firstWhere('sku', 'ALIM-GASTRO'), 12],
+                [$products->firstWhere('sku', 'BOT-100U'), 20],
+                [$products->firstWhere('sku', 'HIA-LIP'), 25],
+                [$products->firstWhere('sku', 'BIO-RAD'), 15],
+                [$products->firstWhere('sku', 'SUER-VITC'), 50],
+                [$products->firstWhere('sku', 'CREM-HYAL'), 30],
             ];
             $total = 0;
             foreach ($lines as [$product, $qty]) {
@@ -457,49 +436,11 @@ class DatabaseSeeder extends Seeder
             $po->update(['status' => 'received', 'total' => $total]);
         }
 
-        // Existencia de arranque para el resto del catálogo.
         foreach ($products as $product) {
             if (StockMovement::where('product_id', $product->id)->doesntExist()) {
                 StockMovement::create([
                     'company_id' => $company->id, 'product_id' => $product->id, 'warehouse_id' => $mainWarehouse->id,
                     'type' => 'in', 'quantity' => max(6, $product->reorder_level * 3), 'reason' => 'Inventario inicial',
-                ]);
-            }
-        }
-
-        // Un par de productos por debajo del punto de reorden -> alerta de stock.
-        foreach (['VAC-TOS', 'FARM-MELOX'] as $sku) {
-            $product = $products->firstWhere('sku', $sku);
-            if ($product && StockMovement::where('product_id', $product->id)->where('reason', 'Salida por consumo interno')->doesntExist()) {
-                $onHand = (int) StockMovement::where('product_id', $product->id)->sum('quantity');
-                $out = max(1, $onHand - (int) floor($product->reorder_level / 2));
-                StockMovement::create([
-                    'company_id' => $company->id, 'product_id' => $product->id, 'warehouse_id' => $mainWarehouse->id,
-                    'type' => 'out', 'quantity' => -$out, 'reason' => 'Salida por consumo interno',
-                ]);
-            }
-        }
-
-        // Segunda orden de compra en borrador (pendiente de recibir).
-        PurchaseOrder::firstOrCreate(
-            ['company_id' => $company->id, 'supplier_id' => $suppliers[1]->id, 'warehouse_id' => $mainWarehouse->id],
-            ['status' => 'draft', 'order_date' => Carbon::today(), 'expected_date' => Carbon::today()->addDays(7), 'total' => 0],
-        );
-
-        // Traslado de la Farmacia al Depósito (histórico).
-        if (StockTransfer::where('company_id', $company->id)->doesntExist()) {
-            $product = $products->firstWhere('sku', 'FARM-SUERO');
-            $transfer = StockTransfer::create([
-                'company_id' => $company->id, 'product_id' => $product->id,
-                'from_warehouse_id' => $mainWarehouse->id, 'to_warehouse_id' => $warehouses['Depósito']->id,
-                'quantity' => 10, 'reference' => 'TR-0001', 'notes' => 'Reserva de fluidoterapia para hospitalización.',
-                'status' => 'completed',
-            ]);
-            foreach ([[$mainWarehouse->id, -10], [$warehouses['Depósito']->id, 10]] as [$wid, $qty]) {
-                StockMovement::create([
-                    'company_id' => $company->id, 'product_id' => $product->id, 'warehouse_id' => $wid,
-                    'type' => 'adjustment', 'quantity' => $qty, 'reason' => 'Transferencia entre bodegas',
-                    'reference' => 'transfer:'.$transfer->id,
                 ]);
             }
         }
@@ -512,48 +453,37 @@ class DatabaseSeeder extends Seeder
         Company $company,
         Collection $patients,
         array $services,
-        array $vets,
+        array $doctors,
     ): Collection {
-        $general = $services['Consulta general'];
-        $vac = $services['Vacunación'];
-        $espec = $services['Consulta especializada'];
-        $dental = $services['Profilaxis dental'];
-        $ester = $services['Esterilización'];
+        $val = $services['Valoración Médica Estética'];
+        $botox = $services['Toxina Botulínica (Botox 3 zonas)'];
+        $lip = $services['Perfilado de Labios con Ácido Hialurónico'];
+        $rad = $services['Bioestimulador Radiesse (Hidroxiapatita)'];
+        $hydra = $services['Hydrafacial & Higiene Facial Profunda'];
 
-        // [patientIdx, service, start, status, motivo, consultorio, vetIdx]
         $plan = [
-            // Pasadas
-            [0, $general, now()->subDays(24)->setTime(9, 0), 'attended', 'Control anual', 'Consultorio 1', 0],
-            [4, $general, now()->subDays(18)->setTime(10, 30), 'attended', 'Chequeo por vómitos', 'Consultorio 2', 1],
-            [7, $dental, now()->subDays(12)->setTime(8, 0), 'attended', 'Profilaxis dental', 'Quirófano', 0],
-            [2, $vac, now()->subDays(9)->setTime(11, 0), 'attended', 'Refuerzo triple felina', 'Consultorio 1', 1],
-            [9, $general, now()->subDays(6)->setTime(15, 30), 'attended', 'Cojera pata posterior', 'Consultorio 2', 0],
-            [11, $general, now()->subDays(5)->setTime(16, 0), 'no_show', 'Control post-operatorio', 'Consultorio 1', 1],
-            [3, $vac, now()->subDays(3)->setTime(9, 30), 'attended', 'Primera dosis polivalente', 'Consultorio 1', 0],
-            [10, $general, now()->subDays(2)->setTime(14, 0), 'cancelled', 'Dermatitis', 'Consultorio 2', 1],
+            [0, $val, now()->subDays(24)->setTime(9, 0), 'attended', 'Valoración inicial rejuvenecimiento', 'Cabina Estética 1', 1],
+            [2, $lip, now()->subDays(18)->setTime(10, 30), 'attended', 'Perfilado labial con ácido hialurónico', 'Cabina Estética 2', 1],
+            [3, $rad, now()->subDays(12)->setTime(8, 0), 'attended', 'Sesión bioestimulación Radiesse', 'Cabina Médica 1', 0],
+            [4, $botox, now()->subDays(9)->setTime(11, 0), 'attended', 'Aplicación Botox 3 zonas', 'Cabina Estética 1', 1],
+            [1, $hydra, now()->subDays(6)->setTime(15, 30), 'attended', 'Limpieza e hidratación previa a evento', 'Cabina Estética 2', 0],
             // Hoy
-            [1, $general, now()->setTime(8, 30), 'attended', 'Revisión de herida', 'Consultorio 1', 0],
-            [5, $vac, now()->setTime(9, 30), 'confirmed', 'Refuerzo antirrábica', 'Consultorio 1', 0],
-            [8, $espec, now()->setTime(10, 30), 'confirmed', 'Chequeo de ave — plumaje', 'Consultorio 2', 1],
-            [13, $general, now()->setTime(11, 30), 'scheduled', 'Valoración para adopción', 'Consultorio 1', 0],
-            [6, $general, now()->setTime(15, 0), 'scheduled', 'Estornudos y secreción', 'Consultorio 2', 1],
+            [0, $botox, now()->setTime(9, 30), 'confirmed', 'Control y retoque Botox 14 días', 'Cabina Estética 1', 1],
+            [5, $val, now()->setTime(11, 30), 'scheduled', 'Valoración contorno mandibular', 'Cabina Médica 1', 0],
             // Próximos días
-            [12, $general, now()->addDay()->setTime(9, 0), 'scheduled', 'Primera consulta conejo', 'Consultorio 1', 1],
-            [15, $vac, now()->addDay()->setTime(10, 0), 'scheduled', 'Segunda dosis polivalente', 'Consultorio 1', 0],
-            [7, $ester, now()->addDays(2)->setTime(7, 30), 'confirmed', 'Esterilización programada', 'Quirófano', 0],
-            [0, $general, now()->addDays(3)->setTime(16, 0), 'scheduled', 'Control de peso', 'Consultorio 2', 1],
-            [14, $general, now()->addDays(4)->setTime(11, 0), 'scheduled', 'Chequeo general', 'Consultorio 1', 0],
+            [6, $val, now()->addDay()->setTime(9, 0), 'scheduled', 'Valoración capilar y fortalecimiento', 'Cabina Estética 1', 0],
+            [7, $rad, now()->addDays(2)->setTime(10, 0), 'confirmed', 'Bioestimulación colágeno', 'Cabina Médica 1', 1],
         ];
 
         $out = collect();
-        foreach ($plan as [$idx, $service, $start, $status, $reason, $room, $vetIdx]) {
+        foreach ($plan as [$idx, $service, $start, $status, $reason, $room, $docIdx]) {
             $patient = $patients->get($idx % $patients->count());
-            $minutes = $service->estimated_duration_minutes ?: 30;
+            $minutes = $service->estimated_duration_minutes ?: 45;
             $out->push(Appointment::firstOrCreate(
                 ['company_id' => $company->id, 'patient_id' => $patient->id, 'starts_at' => $start],
                 [
                     'service_id' => $service->id,
-                    'practitioner_id' => $vets[$vetIdx]->id,
+                    'practitioner_id' => $doctors[$docIdx]->id,
                     'ends_at' => $start->copy()->addMinutes($minutes),
                     'duration_minutes' => $minutes,
                     'resource' => $room,
@@ -566,51 +496,35 @@ class DatabaseSeeder extends Seeder
         return $out;
     }
 
-    // ------------------------------------------------------- historia clínica
+    // ------------------------------------------------------- historia clínica / ficha médica
 
     /** @return Collection<int,Consultation> */
     private function seedConsultations(
         Company $company,
         Collection $patients,
         Collection $appointments,
-        array $vets,
+        array $doctors,
     ): Collection {
-        // [patientIdx, díasAtrás, motivo, peso, temp, S, O, A, P, vetIdx]
         $rows = [
-            [0, 24, 'Control anual', 28.4, 38.6,
-                'Propietaria refiere apetito y actividad normales. Sin cambios en casa.',
-                'Mucosas rosadas, TLLC < 2s. Auscultación cardiopulmonar sin hallazgos. CC 3/5.',
-                'Paciente geriátrico joven, sano. Peso adecuado.',
-                'Continuar dieta actual. Refuerzo de vacunas al día. Próximo control en 12 meses.', 0],
-            [4, 18, 'Vómitos de 24 horas', 15.6, 39.1,
-                'Vómito x3 en 24h, última comida no retenida. Bebe agua. Decaída.',
-                'Abdomen doloroso a la palpación craneal. Deshidratación estimada 5%.',
-                'Gastroenteritis aguda, probable indiscreción alimentaria.',
-                'Fluidoterapia SC. Dieta blanda 48h. Antiemético. Metronidazol 7 días. Control en 48h.', 1],
-            [7, 12, 'Profilaxis dental — halitosis y sarro', 8.9, 38.4,
-                'Mal aliento marcado hace 2 meses. Come normal.',
-                'Cálculo dental grado 3 en premolares/molares. Gingivitis moderada. Sin movilidad dentaria.',
-                'Enfermedad periodontal grado 2.',
-                'Profilaxis bajo anestesia realizada. Extracción de 108. Amoxicilina 7 días. Cepillado en casa.', 0],
-            [9, 6, 'Cojera de pata posterior derecha', 34.7, 38.7,
-                'Cojea desde ayer tras jugar en el parque. Apoya poco.',
-                'Dolor a la extensión de rodilla derecha. Prueba de cajón negativa. Sin crepitación.',
-                'Sospecha de esguince de ligamento colateral. Descartar lesión meniscal.',
-                'Reposo estricto 10 días. Meloxicam 5 días. Rx si no mejora. Control en 1 semana.', 0],
-            [1, 0, 'Revisión de herida en miembro anterior', 33.1, 38.5,
-                'Herida por mordida hace 5 días, en curación en casa.',
-                'Herida de 2 cm en cara lateral del antebrazo, bordes limpios, tejido de granulación sano. Sin exudado.',
-                'Herida en cicatrización por segunda intención, evolución favorable.',
-                'Continuar curación diaria con solución salina. Retirar puntos en 3 días. Mantener collar isabelino.', 0],
-            [11, 3, 'Primera dosis de vacuna polivalente', 13.4, 38.3,
-                'Cachorro adoptado hace 2 semanas, sin antecedentes de vacunación.',
-                'Actitud alerta. Mucosas rosadas. Sin parásitos externos visibles. CC 3/5.',
-                'Paciente sano apto para plan vacunal.',
-                'Polivalente hoy. Desparasitación interna. Segunda dosis en 21 días. Antirrábica al completar esquema.', 0],
+            [0, 24, 'Valoración inicial rejuvenecimiento', 58.4, 36.6,
+                'Paciente consulta por arrugas de expresión marcadas en frente y entrecejo al gesticular. Busca resultado natural.',
+                'Fototipo III. Elasticidad cutánea conservada. Arrugas dinámicas Grado II en tercio superior facial. Sin lesiones dermatológicas.',
+                'Arrugas dinámicas de expresión en frente, entrecejo y patas de gallo.',
+                'Aplicación de Toxina Botulínica Botox® (50 unidades repartidas en 3 zonas). Control en 14 días.', 1],
+            [2, 18, 'Perfilado labial con ácido hialurónico', 54.2, 36.5,
+                'Refiere deseo de definir borde bermellón e hidratación profunda sin exceso de volumen.',
+                'Labios delgados anatómicos, simétricos. Ligera deshidratación en labio superior.',
+                'Pérdida sutil de definición del perfilado labial.',
+                'Infiltración de Restylane Kysse 1ml con microcánula 25G. Masaje moldeador. Hielo local.', 1],
+            [3, 12, 'Sesión bioestimulación Radiesse', 81.1, 36.7,
+                'Consulta por flacidez en contorno mandibular y tercios medio e inferior facial.',
+                'Laxitud dérmica moderada en línea mandibular. Pérdida de definición del ángulo mandibular.',
+                'Flacidez cutánea moderada asociada a pérdida de colágeno.',
+                'Bioestimulación vectorial con Radiesse 1.5ml hiperdiluido en vectores de sustentación.', 0],
         ];
 
         $out = collect();
-        foreach ($rows as [$pIdx, $daysAgo, $reason, $w, $t, $s, $o, $a, $p, $vetIdx]) {
+        foreach ($rows as [$pIdx, $daysAgo, $reason, $w, $t, $s, $o, $a, $p, $docIdx]) {
             $patient = $patients->get($pIdx % $patients->count());
             $date = now()->subDays($daysAgo)->toDateString();
             $appt = $appointments->first(fn (Appointment $ap) => $ap->patient_id === $patient->id
@@ -620,7 +534,7 @@ class DatabaseSeeder extends Seeder
                 ['company_id' => $company->id, 'patient_id' => $patient->id, 'date' => $date],
                 [
                     'appointment_id' => $appt?->id,
-                    'vet_id' => $vets[$vetIdx]->id,
+                    'vet_id' => $doctors[$docIdx]->id,
                     'reason' => $reason,
                     'weight' => $w,
                     'temperature' => $t,
@@ -639,16 +553,12 @@ class DatabaseSeeder extends Seeder
     private function seedDiagnoses(Company $company): array
     {
         return collect([
-            ['GEA', 'Gastroenteritis aguda'],
-            ['PERIO2', 'Enfermedad periodontal grado 2'],
-            ['DERM-AT', 'Dermatitis atópica'],
-            ['OTIT-EXT', 'Otitis externa'],
-            ['IRA', 'Infección respiratoria alta'],
-            ['ESGUINCE', 'Esguince de rodilla'],
-            ['ERC', 'Enfermedad renal crónica'],
-            ['OBES', 'Sobrepeso / obesidad'],
-            ['PARASIT', 'Parasitismo intestinal'],
-            ['CONJ', 'Conjuntivitis'],
+            ['ARR-DIN', 'Arrugas dinámicas de expresión'],
+            ['PERD-VOL', 'Pérdida de volumen facial'],
+            ['FLAC-MED', 'Flacidez cutánea moderada'],
+            ['HIPER-MAN', 'Hiperpigmentación / manchas solares'],
+            ['SECUEL-ACN', 'Secuelas de acné & textura irregular'],
+            ['CELUL-G2', 'Celulitis y adiposidad localizada'],
         ])->mapWithKeys(fn ($d) => [
             $d[0] => Diagnosis::firstOrCreate(
                 ['company_id' => $company->id, 'name' => $d[1]],
@@ -659,11 +569,10 @@ class DatabaseSeeder extends Seeder
 
     private function attachDiagnoses(Collection $consultations, array $diagnoses): void
     {
-        // Empareja por el motivo de cada consulta ya sembrada.
         $byReason = [
-            'Vómitos de 24 horas' => ['GEA', 'PARASIT'],
-            'Profilaxis dental — halitosis y sarro' => ['PERIO2'],
-            'Cojera de pata posterior derecha' => ['ESGUINCE'],
+            'Valoración inicial rejuvenecimiento' => ['ARR-DIN'],
+            'Perfilado labial con ácido hialurónico' => ['PERD-VOL'],
+            'Sesión bioestimulación Radiesse' => ['FLAC-MED'],
         ];
         foreach ($consultations as $consultation) {
             $codes = $byReason[$consultation->reason] ?? [];
@@ -673,40 +582,27 @@ class DatabaseSeeder extends Seeder
         }
     }
 
-    // --------------------------------------------------- vacunas / recetas / procedimientos
+    // --------------------------------------------------- aplicaciones / dosis / procedimientos
 
     private function seedClinicalApplications(
         Company $company,
         Collection $patients,
         Collection $products,
-        array $vets,
+        array $doctors,
         Warehouse $warehouse,
         Collection $consultations,
     ): void {
-        $dhppi = $products->firstWhere('sku', 'VAC-DHPPI');
-        $rabia = $products->firstWhere('sku', 'VAC-RABIA');
-        $tripleF = $products->firstWhere('sku', 'VAC-TRIPLE-F');
-        $antiInt = $products->firstWhere('sku', 'ANTI-INT');
-        $antiExt = $products->firstWhere('sku', 'ANTI-EXT');
+        $botox = $products->firstWhere('sku', 'BOT-100U');
+        $kysse = $products->firstWhere('sku', 'HIA-LIP');
+        $radiesse = $products->firstWhere('sku', 'BIO-RAD');
 
-        // [patientIdx, tipo, nombre, producto|null, díasAtrás, próximaDosis(díasDesdeHoy), vetIdx]
         $rows = [
-            [0, 'vaccine', 'Vacuna polivalente (DHPPi)', $dhppi, 330, 35, 0],
-            [0, 'vaccine', 'Vacuna antirrábica', $rabia, 330, 35, 0],
-            [0, 'deworming', 'Desparasitación interna', $antiInt, 95, -5, 1],   // vencida
-            [1, 'vaccine', 'Vacuna antirrábica', $rabia, 300, 65, 0],
-            [2, 'vaccine', 'Vacuna triple felina', $tripleF, 9, 356, 1],
-            [3, 'vaccine', 'Vacuna polivalente (DHPPi) — 1ra dosis', $dhppi, 3, 18, 0],
-            [4, 'deworming', 'Antipulgas y garrapatas', $antiExt, 40, -10, 1],  // vencida
-            [5, 'vaccine', 'Vacuna antirrábica', $rabia, 350, 12, 0],           // por vencer pronto
-            [7, 'vaccine', 'Vacuna polivalente (DHPPi)', $dhppi, 200, 165, 0],
-            [9, 'deworming', 'Desparasitación interna', $antiInt, 20, 70, 0],
-            [11, 'vaccine', 'Vacuna polivalente (DHPPi) — 1ra dosis', $dhppi, 3, 18, 0],
-            [13, 'deworming', 'Desparasitación interna', null, 15, 75, 1],       // sin producto (lote manual)
-            [15, 'vaccine', 'Vacuna polivalente (DHPPi) — 1ra dosis', $dhppi, 30, -3, 0], // vencida
+            [0, 'vaccine', 'Aplicación Toxina Botulínica (50U)', $botox, 24, 150, 1],
+            [2, 'vaccine', 'Ácido Hialurónico Restylane Kysse 1ml', $kysse, 18, 330, 1],
+            [3, 'deworming', 'Bioestimulador Radiesse 1.5ml', $radiesse, 12, 350, 0],
         ];
 
-        foreach ($rows as [$pIdx, $type, $name, $product, $daysAgo, $dueInDays, $vetIdx]) {
+        foreach ($rows as [$pIdx, $type, $name, $product, $daysAgo, $dueInDays, $docIdx]) {
             $patient = $patients->get($pIdx % $patients->count());
             $appliedAt = now()->subDays($daysAgo)->toDateString();
 
@@ -721,7 +617,7 @@ class DatabaseSeeder extends Seeder
             if ($product) {
                 $movement = StockMovement::create([
                     'company_id' => $company->id, 'product_id' => $product->id, 'warehouse_id' => $warehouse->id,
-                    'type' => 'out', 'quantity' => -1, 'reason' => 'Aplicación clínica',
+                    'type' => 'out', 'quantity' => -1, 'reason' => 'Aplicación médica estética',
                     'reference' => 'seed:clinical_application',
                 ]);
                 $stockMovementId = $movement->id;
@@ -735,7 +631,7 @@ class DatabaseSeeder extends Seeder
                 'patient_id' => $patient->id,
                 'product_id' => $product?->id,
                 'consultation_id' => $consultation?->id,
-                'vet_id' => $vets[$vetIdx]->id,
+                'vet_id' => $doctors[$docIdx]->id,
                 'stock_movement_id' => $stockMovementId,
                 'name' => $name,
                 'applied_at' => $appliedAt,
@@ -750,25 +646,13 @@ class DatabaseSeeder extends Seeder
         Company $company,
         Collection $consultations,
         Collection $products,
-        array $vets,
+        array $doctors,
     ): void {
-        $amoxi = $products->firstWhere('sku', 'FARM-AMOXI');
-        $melox = $products->firstWhere('sku', 'FARM-MELOX');
-        $gaba = $products->firstWhere('sku', 'FARM-GABA');
+        $crem = $products->firstWhere('sku', 'CREM-HYAL');
 
-        // [motivoDeConsulta, notas, items[[producto|null, nombre, dosis, frecuencia, duración]]]
         $plans = [
-            ['Vómitos de 24 horas', 'Administrar con el estómago vacío. Suspender si hay reacción cutánea.', [
-                [$amoxi, 'Amoxicilina 250 mg', '1/2 tableta', 'Cada 12 horas', '7 días'],
-                [null, 'Metronidazol 250 mg', '1/4 tableta', 'Cada 12 horas', '5 días'],
-            ]],
-            ['Profilaxis dental — halitosis y sarro', 'Control de dolor post-profilaxis.', [
-                [$amoxi, 'Amoxicilina 250 mg', '1 tableta', 'Cada 12 horas', '7 días'],
-                [$melox, 'Meloxicam 1,5 mg/ml', '0,9 ml', 'Cada 24 horas', '3 días'],
-            ]],
-            ['Cojera de pata posterior derecha', 'Reposo estricto. No administrar con el estómago vacío.', [
-                [$melox, 'Meloxicam 1,5 mg/ml', '1,7 ml', 'Cada 24 horas', '5 días'],
-                [$gaba, 'Gabapentina 100 mg', '1 tableta', 'Cada 8 horas', '7 días'],
+            ['Valoración inicial rejuvenecimiento', 'Recomendaciones post-botox: evitar acostarse por 4 horas y no frotar las zonas tratadas.', [
+                [$crem, 'Crema Antiaging Mesoestetic', 'Aplicación tópica', 'Cada 12 horas', '30 días'],
             ]],
         ];
 
@@ -785,7 +669,7 @@ class DatabaseSeeder extends Seeder
                 'company_id' => $company->id,
                 'consultation_id' => $consultation->id,
                 'patient_id' => $consultation->patient_id,
-                'vet_id' => $consultation->vet_id ?? $vets[0]->id,
+                'vet_id' => $consultation->vet_id ?? $doctors[0]->id,
                 'notes' => $notes,
             ]);
             foreach ($items as [$product, $name, $dosage, $frequency, $duration]) {
@@ -805,27 +689,24 @@ class DatabaseSeeder extends Seeder
         Company $company,
         Collection $patients,
         array $services,
-        array $vets,
+        array $doctors,
     ): void {
-        // [patientIdx, tipo, servicio, díasAtrás, notas, vetIdx]
         $rows = [
-            [7, 'Profilaxis dental con extracción de 108', $services['Profilaxis dental'], 12,
-                'Anestesia con propofol/isoflurano. Sangrado controlado. Alta el mismo día. Recomendado cepillado diario.', 0],
-            [4, 'Sutura de herida en miembro anterior', $services['Curación / manejo de heridas'], 6,
-                'Herida por mordida. 3 puntos con nylon 3-0. Antibiótico y collar isabelino. Retiro de puntos en 10 días.', 1],
-            [8, 'Ovariohisterectomía (esterilización)', $services['Esterilización'], 40,
-                'Cirugía sin complicaciones. Recuperación anestésica normal. Control post-operatorio a los 3 y 10 días.', 0],
-            [0, 'Limpieza de oídos bajo sedación', $services['Consulta especializada'], 60,
-                'Otitis externa bilateral. Citología: cocos y levaduras. Tratamiento tópico 14 días.', 1],
+            [0, 'Aplicación Toxina Botulínica 3 zonas (Frente/Entrecejo/Patas de gallo)', $services['Toxina Botulínica (Botox 3 zonas)'], 24,
+                'Técnica con microaguja 31G. 50 unidades distribuidas simétricamente. Sin hematomas.', 1],
+            [2, 'Perfilado e hidratación labial con Restylane Kysse', $services['Perfilado de Labios con Ácido Hialurónico'], 18,
+                'Técnica con cánula 25G. Definición de arco de cupido y relleno sutil de bermellón.', 1],
+            [3, 'Bioestimulación vectorial de colágeno con Radiesse', $services['Bioestimulador Radiesse (Hidroxiapatita)'], 12,
+                'Vectores de sustentación en ángulo mandibular y mejillas. Tolerancia perfecta.', 0],
         ];
 
-        foreach ($rows as [$pIdx, $type, $service, $daysAgo, $notes, $vetIdx]) {
+        foreach ($rows as [$pIdx, $type, $service, $daysAgo, $notes, $docIdx]) {
             $patient = $patients->get($pIdx % $patients->count());
             Procedure::firstOrCreate(
                 ['company_id' => $company->id, 'patient_id' => $patient->id, 'type' => $type],
                 [
                     'service_id' => $service->id,
-                    'vet_id' => $vets[$vetIdx]->id,
+                    'vet_id' => $doctors[$docIdx]->id,
                     'performed_at' => now()->subDays($daysAgo)->toDateString(),
                     'notes' => $notes,
                 ],
@@ -833,23 +714,17 @@ class DatabaseSeeder extends Seeder
         }
     }
 
-    // ------------------------------------------------------------ portal / ventas
+    // ------------------------------------------------------------ portal / leads / ventas
 
     private function seedLeads(Company $company): void
     {
         $rows = [
             ['Andrea Salcedo', 'andrea.salcedo@gmail.com', '+57 300 555 0401', 'appointment', 'new',
-                'Mascota: Rocky (labrador). Motivo: vacunación. Fecha preferida: sábado en la mañana.'],
+                'Interés: Toxina botulínica en frente. Desea valoración médica el sábado en la mañana.'],
             ['Miguel Ángel Ruiz', 'miguel.ruiz@gmail.com', '+57 301 555 0402', 'appointment', 'new',
-                'Mascota: Pelusa (gata). Motivo: control por estornudos. Fecha preferida: entre semana en la tarde.'],
+                'Interés: Armonización de mandíbula y perfilado. Solicita llamada de información.'],
             ['Carolina Méndez', 'carolina.mendez@hotmail.com', '+57 302 555 0403', 'appointment', 'contacted',
-                'Mascota: Thor (bulldog). Motivo: revisión de piel. Fecha preferida: lunes.'],
-            ['Julián Pardo', 'julian.pardo@gmail.com', '+57 303 555 0404', 'appointment', 'new',
-                'Mascota: Nala. Motivo: primera consulta cachorro.'],
-            ['Verónica Lozano', 'veronica.lozano@nexabpo.example', '+57 304 555 0405', 'contact', 'new',
-                'Consulta por convenio de bienestar animal para colaboradores.'],
-            ['Tomás Salazar', 'tomas.salazar@gmail.com', '+57 305 555 0406', 'contact', 'discarded',
-                'Preguntó por horarios; no volvió a responder.'],
+                'Interés: Hydrafacial & sueroterapia IV. Confirmada valoración.'],
         ];
 
         foreach ($rows as [$name, $email, $phone, $source, $status, $message]) {
@@ -870,56 +745,29 @@ class DatabaseSeeder extends Seeder
         Warehouse $warehouse,
         User $reception,
     ): void {
-        $gastro = $publicProducts->firstWhere('sku', 'ALIM-GASTRO');
-        $recov = $publicProducts->firstWhere('sku', 'ALIM-RECOV');
-        $collar = $publicProducts->firstWhere('sku', 'ACC-COLLAR');
-        $shampoo = $publicProducts->firstWhere('sku', 'ACC-SHAMP');
+        $crem = $publicProducts->firstWhere('sku', 'CREM-HYAL');
 
-        $plans = [
-            ['client' => $clients[1], 'confirmed' => true, 'items' => [[$gastro, 1], [$recov, 6]]],
-            ['client' => $clients[3], 'confirmed' => true, 'items' => [[$collar, 1], [$shampoo, 1]]],
-            ['client' => $clients[6], 'confirmed' => false, 'items' => [[$shampoo, 2]]],
-        ];
-
-        foreach ($plans as $i => $plan) {
+        if ($crem) {
             $order = Order::firstOrCreate(
-                ['company_id' => $company->id, 'client_id' => $plan['client']->id, 'warehouse_id' => $warehouse->id],
-                ['owner_id' => $reception->id, 'status' => 'draft', 'total' => 0],
+                ['company_id' => $company->id, 'client_id' => $clients[0]->id, 'warehouse_id' => $warehouse->id],
+                ['owner_id' => $reception->id, 'status' => 'confirmed', 'total' => $crem->unit_price],
             );
-            if ($order->items()->count() > 0) {
-                continue;
-            }
-            $total = 0;
-            foreach ($plan['items'] as [$product, $qty]) {
+            if ($order->items()->count() === 0) {
                 OrderItem::create([
-                    'order_id' => $order->id, 'product_id' => $product->id, 'product_name' => $product->name,
-                    'sku' => $product->sku, 'quantity' => $qty, 'unit_price' => $product->unit_price,
+                    'order_id' => $order->id, 'product_id' => $crem->id, 'product_name' => $crem->name,
+                    'sku' => $crem->sku, 'quantity' => 1, 'unit_price' => $crem->unit_price,
                 ]);
-                $total += $qty * $product->unit_price;
-            }
-            $order->update(['total' => $total]);
-            if ($plan['confirmed']) {
-                foreach ($plan['items'] as [$product, $qty]) {
-                    StockMovement::create([
-                        'company_id' => $company->id, 'product_id' => $product->id, 'warehouse_id' => $warehouse->id,
-                        'type' => 'out', 'quantity' => -$qty, 'reason' => 'Venta de mostrador', 'reference' => 'order:'.$order->id,
-                    ]);
-                }
-                $order->update(['status' => 'confirmed']);
             }
         }
     }
 
     private function seedSurgeryQuotes(Company $company, Collection $clients, array $services): void
     {
-        // Presupuestos de procedimiento entregados a propietarios.
         $plans = [
-            ['client' => $clients[3], 'status' => 'sent', 'title' => 'Presupuesto esterilización — Toby',
-                'items' => [[$services['Esterilización'], 1], [$services['Consulta general'], 1]]],
-            ['client' => $clients[7], 'status' => 'accepted', 'title' => 'Presupuesto profilaxis dental — Bruno',
-                'items' => [[$services['Profilaxis dental'], 1], [$services['Hospitalización (día)'], 1]]],
-            ['client' => $clients[9], 'status' => 'draft', 'title' => 'Presupuesto cirugía de tejidos blandos — Estrella',
-                'items' => [[$services['Cirugía de tejidos blandos'], 1], [$services['Hospitalización (día)'], 2]]],
+            ['client' => $clients[0], 'status' => 'sent', 'title' => 'Presupuesto Armonización Facial — Camila Herrera',
+                'items' => [[$services['Armonización Facial con Rellenos'], 1], [$services['Valoración Médica Estética'], 1]]],
+            ['client' => $clients[2], 'status' => 'accepted', 'title' => 'Presupuesto Bioestimulación — Marcela Ríos',
+                'items' => [[$services['Bioestimulador Radiesse (Hidroxiapatita)'], 1]]],
         ];
 
         foreach ($plans as $plan) {
@@ -946,19 +794,17 @@ class DatabaseSeeder extends Seeder
     {
         $stages = ['prospecting', 'qualification', 'proposal', 'negotiation', 'won', 'lost'];
         $titles = [
-            'Plan de salud anual — familia Herrera',
-            'Convenio de bienestar animal — Nexa BPO',
-            'Plan preventivo camada — Criadero Los Cerezos',
-            'Paquete adopción responsable — Fundación Huellitas',
-            'Plan sénior — Nina (Schnauzer)',
+            'Plan de Rejuvenecimiento Anual VIP — Camila Herrera',
+            'Convenio Ejecutivo Estético — Nexa BPO',
+            'Paquete Novias & Gala — Marcela Ríos',
         ];
         foreach ($titles as $i => $title) {
-            $client = $clients[[0, 11, 10, 9, 4][$i]];
+            $client = $clients[$i % $clients->count()];
             Deal::firstOrCreate(
                 ['company_id' => $company->id, 'client_id' => $client->id, 'title' => $title],
                 [
                     'owner_id' => $i % 2 === 0 ? $admin->id : $sales->id,
-                    'amount' => 350000 + $i * 220000,
+                    'amount' => 1200000 + $i * 500000,
                     'stage' => $stages[$i % count($stages)],
                     'expected_close_date' => Carbon::today()->addDays(7 + $i * 6),
                 ],
@@ -974,25 +820,20 @@ class DatabaseSeeder extends Seeder
         User $reception,
     ): void {
         collect([
-            [0, 'Luna: propietaria muy puntual con los refuerzos. Prefiere cita a primera hora.'],
-            [4, 'Diana pidió recordatorio por WhatsApp para la desparasitación de Pipo.'],
-            [9, 'Fundación Huellitas: facturación mensual consolidada. Contacto de adopciones para valoraciones.'],
-            [10, 'Criadero Los Cerezos: coordinar plan vacunal de camada completa (6 cachorros).'],
+            [0, 'Camila prefiere atención los sábados en la mañana con la Dra. Valenzuela.'],
+            [2, 'Marcela es alérgica a la lidocaína en pomadas tópicas. Utilizar anestesia helada.'],
         ])->each(fn ($d) => ClientNote::firstOrCreate(
             ['company_id' => $company->id, 'client_id' => $clients[$d[0]]->id, 'body' => $d[1]],
             ['user_id' => $admin->id],
         ));
 
         collect([
-            ['task', 'Llamar a Marcela Ríos para agendar control de Kiara', 2, 1, false],
-            ['task', 'Confirmar ayuno para la esterilización de Nina', null, 1, false],
-            ['followup', 'Recordatorio de refuerzo antirrábico — Max', 0, 3, false],
-            ['followup', 'Seguimiento post-operatorio — Bruno (profilaxis dental)', 7, -1, true],
-            ['task', 'Cotizar plan preventivo para camada — Criadero Los Cerezos', 10, 4, false],
+            ['task', 'Llamar a Camila Herrera para confirmar retoque de Botox', 0, 1, false],
+            ['followup', 'Seguimiento post-procedimiento bioestimulación — Marcela Ríos', 2, -1, true],
         ])->each(fn ($d) => Activity::firstOrCreate(
             ['company_id' => $company->id, 'subject' => $d[1]],
             [
-                'client_id' => $d[2] === null ? null : $clients[$d[2]]->id,
+                'client_id' => $clients[$d[2]]->id,
                 'type' => $d[0],
                 'due_date' => Carbon::today()->addDays($d[3]),
                 'completed' => $d[4],

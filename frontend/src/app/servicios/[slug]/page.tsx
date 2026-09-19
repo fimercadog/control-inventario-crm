@@ -53,10 +53,10 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
                 Service Detail en el pack (Make an Appointment / Chat with a Doctor). */}
             <div className="mt-8 flex flex-col items-start gap-3">
               <CtaLink href="/agendar-cita" variant="cta">
-                Agendar este servicio
+                Agendar este tratamiento
               </CtaLink>
               <CtaLink href={WHATSAPP_URL} variant="default" size="sm">
-                Hablar con un veterinario
+                Hablar con un especialista
               </CtaLink>
             </div>
             <CtaLink href="/preguntas-frecuentes" variant="ghost" size="sm" className="mt-3 px-0">
@@ -95,7 +95,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
       <Section className="pt-0">
         <Reveal>
-          <SectionHeading eyebrow="Testimonios" title="Lo que dicen nuestros visitantes" />
+          <SectionHeading eyebrow="Testimonios" title="Lo que dicen nuestros pacientes" />
         </Reveal>
         <div className="mt-12">
           <TestimonialGrid testimonials={testimonials} limit={2} />
@@ -104,7 +104,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
       <Section className="bg-section-cream pt-0">
         <Reveal>
-          <SectionHeading eyebrow="También te puede interesar" title="Otros servicios de la clínica" />
+          <SectionHeading eyebrow="También te puede interesar" title="Otros tratamientos destacados" />
         </Reveal>
         <div className="mt-12">
           <ServiceGrid services={related} />
@@ -112,8 +112,8 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       </Section>
 
       <AppointmentCta
-        title={`¿Agendamos ${service.title.toLowerCase()} para tu mascota?`}
-        lead="Contanos el caso y te confirmamos disponibilidad. Para urgencias, escribinos directo por WhatsApp."
+        title={`¿Deseas agendar tu valoración para ${service.title.toLowerCase()}?`}
+        lead="Reserva tu cita médica y aclara todas tus inquietudes directamente con nuestro equipo de especialistas."
       />
     </MarketingLayout>
   );
