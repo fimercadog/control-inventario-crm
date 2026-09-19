@@ -23,15 +23,8 @@ class SupportPayloadService
             'timestamp' => now()->toIso8601String(),
             'app_version' => config('app.version', '1.0.0'),
             'environment' => config('app.env', 'production'),
-            'user' => [
-                'id' => $staffUser?->id,
-                'email' => (new LogSanitizer)->maskEmail($staffUser?->email),
-                'role' => $staffUser?->roles?->first()?->name,
-            ],
-            'company' => [
-                'id' => $staffUser?->company_id,
-                'name' => $staffUser?->company?->name,
-            ],
+            'user_id' => $staffUser?->id,
+            'company_id' => $staffUser?->company_id,
             'context' => [
                 'url' => $request->fullUrl(),
                 'method' => $request->method(),

@@ -161,8 +161,8 @@ class TechnicalLoggingTest extends TestCase
         $payload = $service->buildPayload($request, 'Problema al cargar reporte', ['section' => 'finance']);
 
         $this->assertEquals('req-support-test-999', $payload['request_id']);
-        $this->assertEquals('a***@esteticaelite.co', $payload['user']['email']);
-        $this->assertEquals($company->id, $payload['company']['id']);
+        $this->assertEquals($user->id, $payload['user_id']);
+        $this->assertEquals($company->id, $payload['company_id']);
         $this->assertEquals('Problema al cargar reporte', $payload['feedback_message']);
         $this->assertEquals('finance', $payload['meta']['section']);
     }
