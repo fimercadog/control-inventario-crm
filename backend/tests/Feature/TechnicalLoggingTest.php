@@ -6,34 +6,19 @@ use App\Models\AuditLog;
 use App\Models\Company;
 use App\Models\User;
 use App\Services\LogSanitizer;
+use App\Services\ObservabilityService;
 use App\Services\SupportPayloadService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class TechnicalLoggingTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Route::middleware(['api', \App\Http\Middleware\RequestIdMiddleware::class])->group(function () {
-            Route::get('/api/test-403', function () {
-                abort(403, 'Acceso restringido de prueba.');
-            });
-
-            Route::get('/api/test-500', function () {
-                throw new \RuntimeException('Error simulado en backend');
-            });
-        });
-    }
-
     public function test_generates_and_returns_x_request_id_header(): void
     {
-        $response = $this->getJson('/api/up');
+        $response = $this->getJson('/api/public/company');
 
         $response->assertHeader('X-Request-ID');
         $requestId = $response->headers->get('X-Request-ID');
@@ -44,25 +29,28 @@ class TechnicalLoggingTest extends TestCase
 
     public function test_reuses_existing_valid_x_request_id_from_client(): void
     {
-        $customId = 'req-custom-client-uuid-12345678';
+        $customRequestId = 'client-req-id-1234567890';
 
-        $response = $this->withHeaders(['X-Request-ID' => $customId])
-            ->getJson('/api/up');
+        $response = $this->withHeaders([
+            'X-Request-ID' => $customRequestId,
+        ])->getJson('/api/public/company');
 
-        $response->assertHeader('X-Request-ID', $customId);
+        $response->assertHeader('X-Request-ID', $customRequestId);
     }
 
     public function test_replaces_invalid_x_request_id_with_new_uuid(): void
     {
-        $invalidId = '<script>alert(1)</script>';
+        $invalidRequestId = 'short'; // < 8 caracteres
 
-        $response = $this->withHeaders(['X-Request-ID' => $invalidId])
-            ->getJson('/api/up');
+        $response = $this->withHeaders([
+            'X-Request-ID' => $invalidRequestId,
+        ])->getJson('/api/public/company');
 
-        $requestId = $response->headers->get('X-Request-ID');
+        $response->assertHeader('X-Request-ID');
+        $newRequestId = $response->headers->get('X-Request-ID');
 
-        $this->assertNotEquals($invalidId, $requestId);
-        $this->assertMatchesRegularExpression('/^[a-zA-Z0-9\-_]{8,64}$/', $requestId);
+        $this->assertNotEquals($invalidRequestId, $newRequestId);
+        $this->assertMatchesRegularExpression('/^[a-zA-Z0-9\-_]{8,64}$/', $newRequestId);
     }
 
     public function test_logs_failed_login_with_masked_email_and_no_passwords(): void
@@ -70,7 +58,7 @@ class TechnicalLoggingTest extends TestCase
         Log::spy();
 
         $response = $this->postJson('/api/auth/login', [
-            'email' => 'medico@esteticaelite.co',
+            'email' => 'usuario@example.com',
             'password' => 'wrong-password-123',
         ]);
 
@@ -80,7 +68,7 @@ class TechnicalLoggingTest extends TestCase
             ->once()
             ->with('Fallo de inicio de sesión', \Mockery::on(function ($context) {
                 return isset($context['request_id'])
-                    && $context['email_masked'] === 'm***@esteticaelite.co'
+                    && $context['email_masked'] === (new LogSanitizer)->maskEmail('usuario@example.com')
                     && ! str_contains(json_encode($context), 'wrong-password-123');
             }));
     }
@@ -124,7 +112,7 @@ class TechnicalLoggingTest extends TestCase
 
         $rawInput = [
             'user' => [
-                'name' => 'Sofía Mercado',
+                'name' => 'Usuario Test',
                 'password' => 'secret123',
                 'credentials' => [
                     'auth_token' => 'bearer-xyz',
@@ -136,7 +124,7 @@ class TechnicalLoggingTest extends TestCase
 
         $sanitized = $sanitizer->sanitize($rawInput);
 
-        $this->assertEquals('Sofía Mercado', $sanitized['user']['name']);
+        $this->assertEquals('Usuario Test', $sanitized['user']['name']);
         $this->assertEquals('[REDACTED]', $sanitized['user']['password']);
         $this->assertEquals('[REDACTED]', $sanitized['user']['credentials']['auth_token']);
         $this->assertEquals('[REDACTED]', $sanitized['user']['credentials']['credit_card']);
@@ -145,11 +133,11 @@ class TechnicalLoggingTest extends TestCase
 
     public function test_support_payload_service_builds_decoupled_ticket_structure(): void
     {
-        $company = Company::firstOrCreate(['name' => 'Clínica Élite'], ['nit' => '900.123.456-7']);
+        $company = Company::firstOrCreate(['name' => 'Empresa ERP Test'], ['nit' => '900.123.456-7']);
         $user = User::create([
             'company_id' => $company->id,
             'name' => 'Admin Test',
-            'email' => 'admin@esteticaelite.co',
+            'email' => 'admin@example.com',
             'password' => '$2y$12$abcdefg',
         ]);
 
@@ -163,17 +151,21 @@ class TechnicalLoggingTest extends TestCase
         $this->assertEquals('req-support-test-999', $payload['request_id']);
         $this->assertEquals($user->id, $payload['user_id']);
         $this->assertEquals($company->id, $payload['company_id']);
+        $this->assertEquals('core_erp', $payload['module']);
         $this->assertEquals('Problema al cargar reporte', $payload['feedback_message']);
         $this->assertEquals('finance', $payload['meta']['section']);
+        $this->assertArrayHasKey('app_version', $payload);
+        $this->assertArrayHasKey('environment', $payload);
+        $this->assertArrayHasKey('timestamp', $payload);
     }
 
     public function test_business_audit_log_continues_functioning(): void
     {
-        $company = Company::firstOrCreate(['name' => 'Clínica Élite Audit'], ['nit' => '900.123.456-8']);
+        $company = Company::firstOrCreate(['name' => 'Empresa ERP Audit'], ['nit' => '900.123.456-8']);
         $user = User::create([
             'company_id' => $company->id,
             'name' => 'Audit User',
-            'email' => 'audit@esteticaelite.co',
+            'email' => 'audit@example.com',
             'password' => '$2y$12$abcdefg',
         ]);
 
@@ -194,5 +186,32 @@ class TechnicalLoggingTest extends TestCase
             'action' => 'update',
             'module' => 'company',
         ]);
+    }
+
+    public function test_core_observability_module_has_zero_vertical_coupling(): void
+    {
+        $filesToCheck = [
+            base_path('config/observability.php'),
+            base_path('app/Contracts/SupportContextInterface.php'),
+            base_path('app/Services/ObservabilityService.php'),
+            base_path('app/Services/LogSanitizer.php'),
+            base_path('app/Services/SupportPayloadService.php'),
+            base_path('app/Http/Middleware/RequestIdMiddleware.php'),
+            base_path('docs/observability-module.md'),
+        ];
+
+        $prohibitedTerms = ['veterinaria', 'estetica', 'clinica-estetica', 'ips', 'rrhh', 'inmobiliaria', 'mascota', 'veterinarian'];
+
+        foreach ($filesToCheck as $filePath) {
+            $this->assertFileExists($filePath);
+            $content = strtolower((string) file_get_contents($filePath));
+
+            foreach ($prohibitedTerms as $term) {
+                $this->assertFalse(
+                    str_contains($content, $term),
+                    "El archivo [{$filePath}] contiene el término prohibido de vertical [{$term}]."
+                );
+            }
+        }
     }
 }

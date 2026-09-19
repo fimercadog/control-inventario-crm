@@ -11,17 +11,19 @@ use Symfony\Component\HttpFoundation\Response;
 class RequestIdMiddleware
 {
     /**
-     * Procesa la petición asignando o reutilizando un X-Request-ID válido y configurándolo en Monolog.
+     * Procesa la petición asignando o reutilizando un Request-ID válido y configurándolo en Monolog.
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $incomingRequestId = $request->header('X-Request-ID');
+        $headerName = config('observability.request_header', 'X-Request-ID');
+        $incomingRequestId = $request->header($headerName);
+
         $requestId = $this->isValidRequestId($incomingRequestId)
             ? (string) $incomingRequestId
             : (string) Str::uuid();
 
         // Inyectar en el contenedor de peticiones de Laravel
-        $request->headers->set('X-Request-ID', $requestId);
+        $request->headers->set($headerName, $requestId);
 
         // Inyectar automáticamente en el contexto de Monolog para todas las llamadas a Log durante esta petición
         Log::withContext([
@@ -30,13 +32,13 @@ class RequestIdMiddleware
 
         /** @var Response $response */
         $response = $next($request);
-        $response->headers->set('X-Request-ID', $requestId);
+        $response->headers->set($headerName, $requestId);
 
         return $response;
     }
 
     /**
-     * Valida que el X-Request-ID sea seguro, alfanumérico/guiones y con longitud controlada (8 a 64 caracteres).
+     * Valida que el Request-ID sea seguro, alfanumérico/guiones y con longitud controlada.
      */
     public function isValidRequestId(?string $requestId): bool
     {
@@ -44,6 +46,9 @@ class RequestIdMiddleware
             return false;
         }
 
-        return preg_match('/^[a-zA-Z0-9\-_]{8,64}$/', $requestId) === 1;
+        $min = config('observability.min_id_length', 8);
+        $max = config('observability.max_id_length', 64);
+
+        return preg_match('/^[a-zA-Z0-9\-_]{'.$min.','.$max.'}$/', $requestId) === 1;
     }
 }

@@ -5,82 +5,90 @@ namespace App\Services;
 class LogSanitizer
 {
     /**
-     * Patrones de claves sensibles que deben redactarse en cualquier nivel de anidamiento.
+     * Claves sensibles combinadas (base global + extensiones de la vertical).
+     *
+     * @var array<int, string>
      */
-    private const SENSITIVE_KEY_PATTERNS = [
-        '/password/i',
-        '/secret/i',
-        '/token/i',
-        '/authorization/i',
-        '/cookie/i',
-        '/session/i',
-        '/bearer/i',
-        '/credit_card/i',
-        '/card_number/i',
-        '/cvv/i',
-        '/ssn/i',
-        '/dni/i',
-        '/documento/i',
-        '/historia_clinica/i',
-        '/medical_record/i',
-    ];
+    protected array $sensitiveKeys;
 
-    /**
-     * Sanitiza de manera recursiva un conjunto de datos (array u objeto) ocultando campos sensibles.
-     */
-    public function sanitize(mixed $data): mixed
+    public function __construct()
     {
-        if (is_array($data)) {
-            $clean = [];
-            foreach ($data as $key => $value) {
-                if ($this->isSensitiveKey((string) $key)) {
-                    $clean[$key] = '[REDACTED]';
-                } else {
-                    $clean[$key] = $this->sanitize($value);
-                }
-            }
+        $baseKeys = config('observability.sensitive_fields', [
+            'password',
+            'password_confirmation',
+            'credit_card',
+            'card_number',
+            'cvv',
+            'cvc',
+            'ssn',
+            'auth_token',
+            'token',
+            'secret',
+            'api_key',
+            'private_key',
+        ]);
 
-            return $clean;
-        }
+        $extensionKeys = config('observability.vertical_extensions.additional_sensitive_fields', []);
 
-        if (is_object($data)) {
-            $clean = new \stdClass;
-            foreach (get_object_vars($data) as $key => $value) {
-                if ($this->isSensitiveKey((string) $key)) {
-                    $clean->{$key} = '[REDACTED]';
-                } else {
-                    $clean->{$key} = $this->sanitize($value);
-                }
-            }
-
-            return $clean;
-        }
-
-        return $data;
+        $this->sensitiveKeys = array_unique(array_merge($baseKeys, $extensionKeys));
     }
 
     /**
-     * Enmascara un correo electrónico conservando el dominio y la primera letra (ej: m***@esteticaelite.co).
+     * Sanitiza de forma recursiva un arreglo de datos reemplazando llaves sensibles.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
      */
-    public function maskEmail(?string $email): string
+    public function sanitize(array $data): array
+    {
+        $sanitized = [];
+
+        foreach ($data as $key => $value) {
+            $normalizedKey = strtolower((string) $key);
+
+            if ($this->isSensitiveKey($normalizedKey)) {
+                $sanitized[$key] = '[REDACTED]';
+
+                continue;
+            }
+
+            if (is_array($value)) {
+                $sanitized[$key] = $this->sanitize($value);
+            } else {
+                $sanitized[$key] = $value;
+            }
+        }
+
+        return $sanitized;
+    }
+
+    /**
+     * Aplica enmascaramiento seguro a direcciones de correo electrónico.
+     */
+    public function maskEmail(?string $email): ?string
     {
         if (empty($email) || ! str_contains($email, '@')) {
-            return 'u***@unknown';
+            return null;
         }
 
         [$local, $domain] = explode('@', $email, 2);
-        $firstChar = mb_substr($local, 0, 1);
 
-        return $firstChar.'***@'.$domain;
+        if (strlen($local) <= 1) {
+            $maskedLocal = '*';
+        } else {
+            $maskedLocal = substr($local, 0, 1).str_repeat('*', max(1, strlen($local) - 1));
+        }
+
+        return $maskedLocal.'@'.$domain;
     }
 
     /**
-     * Revisa si una clave coincide con los patrones de información sensible.
+     * Verifica si una llave dada coincide con los criterios de desensibilización.
      */
-    public function isSensitiveKey(string $key): bool
+    protected function isSensitiveKey(string $key): bool
     {
-        foreach (self::SENSITIVE_KEY_PATTERNS as $pattern) {
-            if (preg_match($pattern, $key) === 1) {
+        foreach ($this->sensitiveKeys as $sensitive) {
+            if ($key === $sensitive || str_ends_with($key, '_'.$sensitive) || str_starts_with($key, $sensitive.'_')) {
                 return true;
             }
         }

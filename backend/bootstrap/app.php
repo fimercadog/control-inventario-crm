@@ -2,20 +2,17 @@
 
 use App\Http\Middleware\RequestIdMiddleware;
 use App\Http\Middleware\SecurityHeaders;
-use App\Models\User;
-use App\Services\LogSanitizer;
+use App\Services\ObservabilityService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -33,9 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->dontReportDuplicates();
-        $exceptions->reportable(function (Throwable $e) {
-            return false;
-        });
+        $exceptions->reportable(fn (Throwable $e) => false);
 
         $exceptions->render(function (AuthenticationException $exception, Request $request) {
             if ($request->is('api/*')) {
@@ -53,19 +48,9 @@ return Application::configure(basePath: dirname(__DIR__))
             return null;
         });
 
-        // 403 Forbidden: Registrar evento técnico de seguridad
+        // 403 Forbidden
         $exceptions->render(function (AuthorizationException|AccessDeniedHttpException $e, Request $request) {
-            $user = $request->user();
-            $staffUser = $user instanceof User ? $user : null;
-
-            Log::warning('Acceso denegado (403)', [
-                'request_id' => $request->header('X-Request-ID'),
-                'user_id' => $staffUser?->id,
-                'company_id' => $staffUser?->company_id,
-                'path' => $request->path(),
-                'method' => $request->method(),
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent(),
+            app(ObservabilityService::class)->logSecurityEvent('403_forbidden', $request, [
                 'message' => $e->getMessage() ?: 'Acceso no autorizado.',
             ]);
 
@@ -76,49 +61,34 @@ return Application::configure(basePath: dirname(__DIR__))
             return null;
         });
 
-        // Red de seguridad de la API: 429 Throttle y 5xx con contexto técnico y sanitización estricta
+        // Manejador centralizado para API: 429 Throttle y 5xx con ObservabilityService
         $exceptions->render(function (Throwable $e, Request $request) {
             if (! $request->is('api/*') || $e instanceof ValidationException) {
                 return null;
             }
 
-            $user = $request->user();
-            $staffUser = $user instanceof User ? $user : null;
-            $context = [
-                'request_id' => $request->header('X-Request-ID'),
-                'user_id' => $staffUser?->id,
-                'company_id' => $staffUser?->company_id,
-                'path' => $request->path(),
-                'method' => $request->method(),
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-            ];
+            $observability = app(ObservabilityService::class);
 
             if ($e instanceof HttpExceptionInterface) {
                 $status = $e->getStatusCode();
 
                 if ($status === 403) {
-                    Log::warning('Acceso denegado (403)', array_merge($context, ['message' => $e->getMessage()]));
+                    $observability->logSecurityEvent('403_forbidden', $request, ['message' => $e->getMessage()]);
 
                     return response()->json(['message' => 'Acceso no autorizado.'], 403, $e->getHeaders());
                 }
 
                 if ($status === 429) {
-                    Log::warning('Demasiadas solicitudes (429)', array_merge($context, [
+                    $observability->logSecurityEvent('429_throttle', $request, [
                         'message' => 'Límite de solicitudes superado.',
                         'retry_after' => $e->getHeaders()['Retry-After'] ?? null,
-                    ]));
+                    ]);
 
                     return response()->json(['message' => 'Demasiadas solicitudes.'], 429, $e->getHeaders());
                 }
 
                 if ($status >= 500) {
-                    Log::error('Error HTTP interno ('.$status.')', array_merge($context, [
-                        'exception_class' => get_class($e),
-                        'exception_message' => $e->getMessage(),
-                        'file' => $e->getFile(),
-                        'line' => $e->getLine(),
-                    ]));
+                    $observability->logUnhandledError($e, $request);
 
                     return response()->json(['message' => 'Error interno del servidor.'], $status, $e->getHeaders());
                 }
@@ -130,18 +100,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 );
             }
 
-            // Excepción 500 no controlada: guardar stack trace técnico pero JAMÁS el payload o datos sensibles
-            Log::error('Error interno no controlado (500)', array_merge($context, [
-                'exception_class' => get_class($e),
-                'exception_message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace_summary' => collect($e->getTrace())->take(5)->map(fn ($frame) => [
-                    'file' => $frame['file'] ?? 'unknown',
-                    'line' => $frame['line'] ?? 0,
-                    'function' => ($frame['class'] ?? '').($frame['type'] ?? '').($frame['function'] ?? ''),
-                ])->all(),
-            ]));
+            $observability->logUnhandledError($e, $request);
 
             return response()->json(['message' => 'Error interno del servidor.'], 500);
         });
