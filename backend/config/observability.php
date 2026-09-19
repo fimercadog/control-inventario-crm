@@ -1,21 +1,25 @@
 <?php
 
+$verticalConfig = file_exists(__DIR__.'/observability-vertical.php')
+    ? require __DIR__.'/observability-vertical.php'
+    : [];
+
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Versión del Módulo de Observabilidad
+    | Versión del Módulo de Observabilidad (Core Inmutable)
     |--------------------------------------------------------------------------
     |
-    | Identificador de versión del módulo transversal de observabilidad.
-    | Permite verificar qué ramas del ERP cuentan con la especificación.
+    | Identificador de versión del núcleo transversal de observabilidad.
+    | Este archivo NO debe ser modificado por las verticales.
     |
     */
-    'version' => '1.0.0',
+    'version' => '1.0.1',
 
     /*
     |--------------------------------------------------------------------------
-    | Configuración Base Global
+    | Configuración Base Global Core
     |--------------------------------------------------------------------------
     */
 
@@ -50,12 +54,12 @@ return [
     ],
 
     // Eventos de seguridad y diagnóstico habilitados
-    'events' => [
+    'events' => array_merge([
         'login_failed' => true,
         'forbidden' => true,
         'rate_limit' => true,
         'server_error' => true,
-    ],
+    ], $verticalConfig['custom_events'] ?? []),
 
     // Integración futura con Sentry o servicios APM externos
     'sentry' => [
@@ -66,17 +70,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Extensiones Permitidas por Vertical
+    | Extensiones Combinadas de la Vertical
     |--------------------------------------------------------------------------
-    |
-    | Las diferentes verticales del sistema ERP pueden extender esta sección
-    | sin alterar la configuración base global del núcleo reutilizable.
-    |
     */
     'vertical_extensions' => [
-        'additional_sensitive_fields' => [],
-        'custom_events' => [],
-        'module_name' => env('OBSERVABILITY_MODULE_NAME', 'core_erp'),
+        'additional_sensitive_fields' => $verticalConfig['additional_sensitive_fields'] ?? [],
+        'custom_events' => $verticalConfig['custom_events'] ?? [],
+        'module_name' => $verticalConfig['module_name'] ?? env('OBSERVABILITY_MODULE_NAME', 'core_erp'),
     ],
 
 ];
