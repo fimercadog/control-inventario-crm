@@ -4,19 +4,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Extensiones por Vertical (Personalización Local)
+    | Extensiones por Vertical - IPS / Salud Integral
     |--------------------------------------------------------------------------
-    |
-    | Este archivo es el único lugar permitido para personalizaciones por vertical.
-    | Permite agregar campos sensibles, eventos personalizados y definir el
-    | nombre del módulo sin tocar el núcleo inmutable config/observability.php.
-    |
     */
 
-    'additional_sensitive_fields' => [],
+    'additional_sensitive_fields' => [
+        'clinical_history',
+        'medical_notes',
+        'diagnosis',
+        'treatment_plan',
+        'prescription_details',
+        'patient_id_number',
+        'health_insurance_number',
+    ],
 
-    'custom_events' => [],
+    'custom_events' => [
+        'medical_record_accessed' => true,
+    ],
 
-    'module_name' => env('OBSERVABILITY_MODULE_NAME', 'core_erp'),
+    'module_name' => 'ips_salud',
 
 ];
