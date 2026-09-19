@@ -281,3 +281,8 @@ Route::prefix('v1/bot')->middleware(ValidateBotSecretToken::class)->group(functi
     Route::post('/sessions/close', [BotIntegrationController::class, 'closeSession']);
 });
 
+if (app()->environment('testing')) {
+    Route::get('/test-403', fn () => abort(403, 'Acceso denegado simulado'));
+    Route::get('/test-500', fn () => throw new \RuntimeException('Error simulado en backend'));
+}
+

@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Middleware\RequestIdMiddleware;
 use App\Http\Middleware\SecurityHeaders;
+use App\Services\ObservabilityService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -18,18 +22,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(RequestIdMiddleware::class);
         $middleware->append(SecurityHeaders::class);
         $middleware->redirectGuestsTo(fn (Request $request) => $request->is('api/*') ? null : route('login'));
-        // Cookie httpOnly de sesion en vez de bearer token: habilita CSRF +
-        // auth por cookie para los dominios en SANCTUM_STATEFUL_DOMAINS.
         $middleware->statefulApi();
-        // Formularios publicos del sitio (sin sesion): la proteccion es el
-        // throttle por IP, no el token CSRF de una sesion que no existe.
-        // /api/portal/login: mismo motivo que api/public/* -- la sesion (y su
-        // token CSRF) todavia no existe para quien recien pide el enlace magico.
-        $middleware->validateCsrfTokens(except: ['api/public/*', 'api/portal/login', 'api/v1/bot/*']);
+        $middleware->validateCsrfTokens(except: ['api/public/*', 'api/portal/login']);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->dontReportDuplicates();
+        $exceptions->reportable(fn (Throwable $e) => false);
+
         $exceptions->render(function (AuthenticationException $exception, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json(['message' => 'Unauthenticated.'], 401);
@@ -38,8 +40,6 @@ return Application::configure(basePath: dirname(__DIR__))
             return null;
         });
 
-        // 404 de la API sin filtrar internos (nombres de clase de modelo en el
-        // mensaje de route-model binding).
         $exceptions->render(function (NotFoundHttpException $exception, Request $request) {
             if ($request->is('api/*')) {
                 return response()->json(['message' => 'Recurso no encontrado.'], 404);
@@ -48,30 +48,59 @@ return Application::configure(basePath: dirname(__DIR__))
             return null;
         });
 
-        // Red de seguridad de la API: ninguna respuesta de error debe llevar
-        // stack trace, rutas del disco, usuario del SO ni clases internas del
-        // framework — ni siquiera con APP_DEBUG=true (la depuracion local vive
-        // en storage/logs, no en el cuerpo HTTP). Las de validacion (422) ya
-        // salen saneadas por Laravel (solo message + errors), se dejan pasar.
+        // 403 Forbidden
+        $exceptions->render(function (AuthorizationException|AccessDeniedHttpException $e, Request $request) {
+            app(ObservabilityService::class)->logSecurityEvent('403_forbidden', $request, [
+                'message' => $e->getMessage() ?: 'Acceso no autorizado.',
+            ]);
+
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'Acceso no autorizado.'], 403);
+            }
+
+            return null;
+        });
+
+        // Manejador centralizado para API: 429 Throttle y 5xx con ObservabilityService
         $exceptions->render(function (Throwable $e, Request $request) {
             if (! $request->is('api/*') || $e instanceof ValidationException) {
                 return null;
             }
 
+            $observability = app(ObservabilityService::class);
+
             if ($e instanceof HttpExceptionInterface) {
-                // Se conserva el status real y las cabeceras utiles (Retry-After
-                // en 429/503, Allow en 405). El mensaje del 4xx ya esta pensado
-                // para el cliente; el de un 5xx puede filtrar internos -> generico.
                 $status = $e->getStatusCode();
 
+                if ($status === 403) {
+                    $observability->logSecurityEvent('403_forbidden', $request, ['message' => $e->getMessage()]);
+
+                    return response()->json(['message' => 'Acceso no autorizado.'], 403, $e->getHeaders());
+                }
+
+                if ($status === 429) {
+                    $observability->logSecurityEvent('429_throttle', $request, [
+                        'message' => 'Límite de solicitudes superado.',
+                        'retry_after' => $e->getHeaders()['Retry-After'] ?? null,
+                    ]);
+
+                    return response()->json(['message' => 'Demasiadas solicitudes.'], 429, $e->getHeaders());
+                }
+
+                if ($status >= 500) {
+                    $observability->logUnhandledError($e, $request);
+
+                    return response()->json(['message' => 'Error interno del servidor.'], $status, $e->getHeaders());
+                }
+
                 return response()->json(
-                    ['message' => $status < 500 ? ($e->getMessage() ?: 'Solicitud no valida.') : 'Error interno del servidor.'],
+                    ['message' => $e->getMessage() ?: 'Solicitud no válida.'],
                     $status,
                     $e->getHeaders(),
                 );
             }
 
-            report($e);
+            $observability->logUnhandledError($e, $request);
 
             return response()->json(['message' => 'Error interno del servidor.'], 500);
         });
