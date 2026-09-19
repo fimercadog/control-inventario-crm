@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Extensiones por Vertical (Personalización Local)
+    | Extensiones por Vertical - Master / Main ERP
     |--------------------------------------------------------------------------
     |
     | Este archivo es el único lugar permitido para personalizaciones por vertical.
@@ -13,10 +13,17 @@ return [
     |
     */
 
-    'additional_sensitive_fields' => [],
+    'additional_sensitive_fields' => [
+        'financial_documents',
+        'bank_accounts',
+        'api_secrets',
+        'tax_id',
+    ],
 
-    'custom_events' => [],
+    'custom_events' => [
+        'system_deployment' => true,
+    ],
 
-    'module_name' => env('OBSERVABILITY_MODULE_NAME', 'core_erp'),
+    'module_name' => 'master_erp',
 
 ];
