@@ -229,7 +229,7 @@ export function teamBySlug(slug: string): TeamMember | undefined {
 
 export type Testimonial = {
   name: string;
-  pet: string;
+  treatment: string;
   text: string;
   rating: number;
 };
@@ -237,37 +237,37 @@ export type Testimonial = {
 export const testimonials: Testimonial[] = [
   {
     name: "Carolina Méndez",
-    pet: "Paciente de Botox & Armonización",
+    treatment: "Paciente de Botox & Armonización",
     text: "Tenía mucho temor de quedar inexpresiva con el Botox. La Dra. Sofía me explicó todo el protocolo y el resultado fue súper natural: luzco descansada y mi piel está divina.",
     rating: 5,
   },
   {
     name: "Mariana Giraldo",
-    pet: "Paciente de Ácido Hialurónico en Labios",
+    treatment: "Paciente de Ácido Hialurónico en Labios",
     text: "El perfilado de labios que me realizó la doctora quedó perfecto. Respetó la forma de mi boca y me dio el volumen sutil que buscaba sin exageraciones.",
     rating: 5,
   },
   {
     name: "Valeria Jaramillo",
-    pet: "Paciente de Sueroterapia & Hydrafacial",
+    treatment: "Paciente de Sueroterapia & Hydrafacial",
     text: "Los sueros de vitamina C más la limpieza facial antes de mi boda me dejaron la piel luminosa como nunca. La atención del equipo es 10/10.",
     rating: 5,
   },
   {
     name: "Fernando Aristizábal",
-    pet: "Paciente de Bioestimulador Radiesse",
+    treatment: "Paciente de Bioestimulador Radiesse",
     text: "A mis 48 años notaba mucha flacidez en el contorno mandibular. Con la bioestimulación de colágeno recuperé la firmeza sin necesidad de cirugía.",
     rating: 5,
   },
   {
     name: "Isabel Cristina Gómez",
-    pet: "Paciente de Peeling para Manchas",
+    treatment: "Paciente de Peeling para Manchas",
     text: "Logré atenuar manchas solares que llevaba años intentando borrar. La asesoría del Dr. Restrepo fue impecable y muy profesional.",
     rating: 5,
   },
   {
     name: "Daniela Osorio",
-    pet: "Paciente de Depilación Láser Médica",
+    treatment: "Paciente de Depilación Láser Médica",
     text: "El sistema de enfriamiento del láser hace que la sesión sea súper tolerante y cómoda. Los resultados son evidentes desde las primeras aplicaciones.",
     rating: 5,
   },

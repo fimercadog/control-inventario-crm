@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { SERVICE_ICON, ServiceCard, ServiceGrid } from "./service-card";
+import { ServiceCard, ServiceGrid } from "./service-card";
 import { services } from "./marketing-data";
 
-describe("SERVICE_ICON", () => {
-  it("has an icon mapped for every service", () => {
+describe("Service icons", () => {
+  it("has a Lucide icon defined for every service", () => {
     for (const service of services) {
-      expect(SERVICE_ICON[service.slug], `falta ícono para ${service.slug}`).toBeDefined();
+      expect(service.icon, `falta ícono para ${service.slug}`).toBeDefined();
     }
   });
 });

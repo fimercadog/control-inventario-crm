@@ -1,4 +1,4 @@
-import { ArrowRight, Activity, Droplet, HeartPulse, Sparkles, Syringe, Zap } from "lucide-react";
+import { ArrowRight, Activity, Droplet, HeartPulse, ShieldCheck, Sparkles, Syringe, UserCheck, FileText, Zap } from "lucide-react";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
 import { CtaLink } from "@/components/marketing/cta-link";
 import { EmergencyBanner } from "@/components/marketing/emergency-banner";
@@ -15,13 +15,13 @@ import { Reveal } from "@/components/marketing/reveal";
 import { ServiceGrid } from "@/components/marketing/service-card";
 import { StatsSection } from "@/components/marketing/stats-section";
 import { TestimonialGrid } from "@/components/marketing/testimonial-card";
-import { VetGrid } from "@/components/marketing/vet-card";
+import { TeamGrid } from "@/components/marketing/vet-card";
 
 const whyUs = [
-  { icon: "/gallery/icons/icon-16.png", title: "Médicos especialistas", text: "Médicos cirujanos y dermatólogos de planta especializados en medicina estética." },
-  { icon: "/gallery/icons/icon-15.png", title: "Ficha & seguimiento digital", text: "Registro estricto de productos, lotes y evolución fotográfica clínica en cada sesión." },
-  { icon: "/gallery/icons/icon-13.png", title: "Insumos 100% certificados", text: "Laboratorios líderes mundiales con aprobaciones de seguridad INVIMA y FDA." },
-  { icon: "/gallery/icons/icon-11.png", title: "Resultados naturales", text: "Enfoque armónico y transparente: resaltamos tu belleza sin alterar tu expresión." },
+  { icon: UserCheck, title: "Médicos especialistas", text: "Médicos cirujanos y dermatólogos de planta especializados en medicina estética." },
+  { icon: FileText, title: "Ficha & seguimiento digital", text: "Registro estricto de productos, lotes y evolución fotográfica clínica en cada sesión." },
+  { icon: ShieldCheck, title: "Insumos 100% certificados", text: "Laboratorios líderes mundiales con aprobaciones de seguridad INVIMA y FDA." },
+  { icon: Sparkles, title: "Resultados naturales", text: "Enfoque armónico y transparente: resaltamos tu belleza sin alterar tu expresión." },
 ];
 
 const areasTreated = [
@@ -100,7 +100,7 @@ export default function Home() {
           />
         </Reveal>
         <div className="mt-14">
-          <VetGrid team={team} />
+          <TeamGrid team={team} />
         </div>
         <div className="mt-10 flex justify-center">
           <CtaLink href="/equipo" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">

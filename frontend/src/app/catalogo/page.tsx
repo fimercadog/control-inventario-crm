@@ -77,7 +77,7 @@ export default function CatalogoPage() {
         eyebrow="Catálogo de Productos & Insumos"
         title="Productos médicos estéticos, dermocosmética y cuidado antiaging"
         lead="Explora nuestro catálogo de cuidado facial, sueroterapia e insumos estéticos para cotizar o agendar tu tratamiento."
-        image="/gallery/illustrations/illustration-1.png"
+        image="/gallery/aesthetic/limpieza_dermocosmiatria.jpg"
         imageAlt="Productos dermocosméticos y cuidado facial médico"
         actions={
           <>

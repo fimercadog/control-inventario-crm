@@ -3,7 +3,7 @@ import { Reveal } from "@/components/marketing/reveal";
 import { InitialsAvatar } from "@/components/marketing/photo-placeholder";
 import type { TeamMember } from "@/components/marketing/marketing-data";
 
-export function VetCard({ member, delay = 0 }: { member: TeamMember; delay?: number }) {
+export function TeamCard({ member, delay = 0 }: { member: TeamMember; delay?: number }) {
   return (
     <Reveal delay={delay}>
       <Link
@@ -21,12 +21,15 @@ export function VetCard({ member, delay = 0 }: { member: TeamMember; delay?: num
   );
 }
 
-export function VetGrid({ team }: { team: TeamMember[] }) {
+export function TeamGrid({ team }: { team: TeamMember[] }) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {team.map((member, i) => (
-        <VetCard key={member.slug} member={member} delay={i * 0.08} />
+        <TeamCard key={member.slug} member={member} delay={i * 0.08} />
       ))}
     </div>
   );
 }
+
+export const VetCard = TeamCard;
+export const VetGrid = TeamGrid;

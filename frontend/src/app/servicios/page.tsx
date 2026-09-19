@@ -10,7 +10,6 @@ import { Section, SectionHeading } from "@/components/marketing/marketing-ui";
 import { PhotoOverlayLinks } from "@/components/marketing/photo-overlay-links";
 import { PriorityBanner } from "@/components/marketing/priority-banner";
 import { Reveal } from "@/components/marketing/reveal";
-import { SERVICE_ICON } from "@/components/marketing/service-card";
 import { SplitHero } from "@/components/marketing/split-hero";
 import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 
@@ -21,7 +20,7 @@ export default function ServiciosPage() {
         eyebrow="Tratamientos & Catálogo Médica"
         title="Medicina Estética & Antiaging integral"
         lead="Toxina Botulínica, Ácido Hialurónico, Bioestimuladores de Colágeno, Peeling Médico, Hydrafacial y Sueroterapia — procedimientos bioseguros diseñados por médicos especialistas."
-        image="/gallery/illustrations/illustration-7.png"
+        image="/gallery/aesthetic/rejuvenecimiento_facial.jpg"
         imageAlt="Valoración estética facial personalizada"
         actions={
           <>
@@ -54,7 +53,7 @@ export default function ServiciosPage() {
       <div id="todos-los-servicios">
         <IconFeatureFloatCard
           items={services.map((s) => ({
-            icon: SERVICE_ICON[s.slug],
+            icon: s.icon,
             title: s.title,
             text: s.short,
             href: `/servicios/${s.slug}`,

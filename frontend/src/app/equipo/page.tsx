@@ -14,7 +14,7 @@ export default function EquipoPage() {
         eyebrow="Equipo Médico"
         title="Especialistas dedicados a resaltar tu belleza natural"
         lead="Médicos cirujanos, dermatólogos y coordinadores de experiencia médica enfocados en brindar un seguimiento bioseguro y personalizado."
-        image="/gallery/illustrations/illustration-4.png"
+        image="/gallery/aesthetic/cabina_clinica.jpg"
         imageAlt="Médico especialista en consultorio de medicina estética"
         actions={
           <CtaLink href="/agendar-cita" variant="cta">

@@ -78,8 +78,8 @@ export default function AgendarCitaPage() {
       service_id: Number(serviceId),
       date,
       start_time: startTime,
-      species_id: Number(speciesId),
-      breed_id: fd.get("breed_id") ? Number(fd.get("breed_id")) : null,
+      species_id: speciesId ? Number(speciesId) : (species[0]?.id ?? 1),
+      breed_id: null,
       pet_name: String(fd.get("pet_name") ?? "").trim(),
       name: String(fd.get("name") ?? "").trim(),
       email: String(fd.get("email") ?? "").trim(),
@@ -199,35 +199,8 @@ export default function AgendarCitaPage() {
               <>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   <label className="block text-sm">
-                    <span>Especie *</span>
-                    <select
-                      className={`mt-1 ${inputClass}`}
-                      value={speciesId}
-                      onChange={(e) => selectSpecies(e.target.value)}
-                      required
-                    >
-                      <option value="">Elegí una especie</option>
-                      {species.map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {s.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="block text-sm">
-                    <span>Raza</span>
-                    <select name="breed_id" className={`mt-1 ${inputClass}`} disabled={breeds.length === 0}>
-                      <option value="">{breeds.length === 0 ? "—" : "Elegí una raza (opcional)"}</option>
-                      {breeds.map((b) => (
-                        <option key={b.id} value={b.id}>
-                          {b.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="block text-sm">
-                    <span>Nombre del Paciente / Registro *</span>
-                    <input name="pet_name" required className={`mt-1 ${inputClass}`} />
+                    <span>Tratamiento o zona de interés *</span>
+                    <input name="pet_name" placeholder="Ej. Botox, Ácido Hialurónico, Facial..." required className={`mt-1 ${inputClass}`} />
                   </label>
                   <label className="block text-sm">
                     <span>Tu nombre *</span>

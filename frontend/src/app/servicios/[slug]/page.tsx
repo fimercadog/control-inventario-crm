@@ -8,7 +8,7 @@ import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { serviceBySlug, services, testimonials } from "@/components/marketing/marketing-data";
 import { Section, SectionHeading } from "@/components/marketing/marketing-ui";
 import { Reveal } from "@/components/marketing/reveal";
-import { SERVICE_ICON, ServiceGrid } from "@/components/marketing/service-card";
+import { ServiceGrid } from "@/components/marketing/service-card";
 import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
@@ -34,7 +34,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const service = serviceBySlug(slug);
   if (!service) notFound();
 
-  const iconSrc = SERVICE_ICON[service.slug];
+  const ServiceIcon = service.icon;
   const photo = SERVICE_PHOTO[service.slug] ?? "/gallery/aesthetic/hero_aesthetic.jpg";
   const related = services.filter((s) => s.slug !== service.slug).slice(0, 3);
 
@@ -82,7 +82,9 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
           title={`Sobre ${service.title.toLowerCase()}`}
         >
           <div className="flex items-start gap-3">
-            {iconSrc && <Image src={iconSrc} alt="" width={40} height={40} className="mt-1 size-10 shrink-0" />}
+            <span className="mt-1 grid size-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+              <ServiceIcon className="size-5" />
+            </span>
             <p>{service.description}</p>
           </div>
           <ul className="mt-6 space-y-3">

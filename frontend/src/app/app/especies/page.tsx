@@ -30,7 +30,7 @@ export default function SpeciesPage() {
   return (
     <ModuleTablePage<Species>
       title="Especies"
-      description="Tipos de animal que atiende la clínica."
+      description="Categorías de tratamientos y especialidades de la clínica."
       resource="/species"
       columns={columns}
       fields={fields}

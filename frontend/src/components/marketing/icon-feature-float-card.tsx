@@ -1,17 +1,15 @@
 import Image from "next/image";
+import type { LucideIcon } from "lucide-react";
 import { GradientBlob } from "@/components/marketing/gradient-blob";
 import { Reveal } from "@/components/marketing/reveal";
 import { container } from "@/components/marketing/page-hero";
 
-type Item = { icon: string; title: string; text: string; href?: string };
+export type IconFeatureItem = { icon: LucideIcon | string; title: string; text: string; href?: string };
 
 /**
- * Grilla de íconos SIN bordes/sombra individual, contenida en una única
- * tarjeta blanca flotante sobre un fondo con blob orgánico -- patrón "All Vet
- * Services" del pack Divi. A propósito no usa `cardHover`/bordes por ítem:
- * la tarjeta grande es el único contenedor visual.
+ * Grilla de características médicas contenida en una tarjeta blanca flotante con fondo orgánico.
  */
-export function IconFeatureFloatCard({ items }: { items: Item[] }) {
+export function IconFeatureFloatCard({ items }: { items: IconFeatureItem[] }) {
   return (
     <section className="relative isolate overflow-hidden py-16 sm:py-20">
       <GradientBlob className="-bottom-32 -left-20 size-[90%] opacity-45" warm float />
@@ -20,17 +18,24 @@ export function IconFeatureFloatCard({ items }: { items: Item[] }) {
           <div className="grid gap-x-10 gap-y-12 rounded-[2.5rem] bg-card p-8 shadow-elevation-4 sm:grid-cols-2 sm:p-12 lg:grid-cols-3">
             {items.map((item, i) => {
               const Wrapper = item.href ? "a" : "div";
+              const isStringIcon = typeof item.icon === "string";
+              const IconComp = !isStringIcon ? (item.icon as LucideIcon) : null;
+
               return (
                 <Reveal key={item.title} delay={0.1 + (i % 3) * 0.08}>
                   <Wrapper
                     {...(item.href ? { href: item.href } : {})}
                     className={item.href ? "group block" : undefined}
                   >
-                    <Image src={item.icon} alt="" width={56} height={56} className="size-14" />
-                    {/* Azul secundario, no navy -- getComputedStyle exacto del titulo de
-                        icono ("Mauris Blandit" etc, color rgb(43,135,218)) en el live-demo. */}
+                    {isStringIcon ? (
+                      <Image src={item.icon as string} alt="" width={56} height={56} className="size-14" />
+                    ) : IconComp ? (
+                      <span className="grid size-14 place-items-center rounded-2xl bg-primary/10 text-primary shadow-sm">
+                        <IconComp className="size-6" />
+                      </span>
+                    ) : null}
                     <p
-                      className={`mt-4 font-heading text-sm font-extrabold uppercase tracking-[0.14em] text-chart-4 ${item.href ? "group-hover:underline" : ""}`}
+                      className={`mt-4 font-heading text-sm font-extrabold uppercase tracking-[0.14em] text-cta ${item.href ? "group-hover:underline" : ""}`}
                     >
                       {item.title}
                     </p>

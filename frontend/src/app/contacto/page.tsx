@@ -18,13 +18,6 @@ export default function ContactPage() {
       <section className="relative isolate overflow-hidden">
         <GradientBlob className="left-1/2 top-0 size-[150%] -translate-x-1/2 opacity-40" warm />
         <div className={`${container} relative py-16 text-center sm:py-20`}>
-          <Reveal mount className="hidden sm:absolute sm:left-4 sm:top-8 sm:block sm:size-28 lg:left-12">
-            <Image src="/gallery/illustrations/illustration-9.png" alt="" width={160} height={160} />
-          </Reveal>
-          <Reveal mount delay={0.1} className="hidden sm:absolute sm:right-4 sm:top-8 sm:block sm:size-28 lg:right-12">
-            <Image src="/gallery/illustrations/illustration-3.png" alt="" width={160} height={160} />
-          </Reveal>
-
           <Reveal mount>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Contacto</p>
             <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">Escribinos</h1>

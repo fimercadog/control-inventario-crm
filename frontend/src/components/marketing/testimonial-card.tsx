@@ -20,7 +20,7 @@ export function TestimonialCard({ testimonial, delay = 0 }: { testimonial: Testi
         <blockquote className="mt-4 flex-1 text-sm leading-7 text-foreground/85">“{testimonial.text}”</blockquote>
         <figcaption className="mt-5">
           <p className="text-sm font-bold">{testimonial.name}</p>
-          <p className="text-xs text-muted-foreground">{testimonial.pet}</p>
+          <p className="text-xs text-muted-foreground">{testimonial.treatment}</p>
           {/* Contenido de ejemplo (demo), no testimonios reales de clientes --
               reemplazar por reseñas reales antes de vender/desplegar. */}
           <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground/70">

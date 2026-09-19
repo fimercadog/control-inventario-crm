@@ -23,7 +23,7 @@ export default function BlogPage() {
         eyebrow="Blog & Artículos Médicos"
         title="Medicina Estética & Antiaging explicada por nuestros especialistas"
         lead="Consejos médicos, mitos sobre el Botox, bioestimulación de colágeno y recomendaciones para mantener tu piel radiante."
-        image="/gallery/illustrations/illustration-10.png"
+        image="/gallery/aesthetic/armonizacion_perfilado.jpg"
         imageAlt="Ilustración médica estética y cuidado facial"
       />
 
