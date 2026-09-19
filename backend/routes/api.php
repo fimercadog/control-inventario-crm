@@ -239,3 +239,9 @@ Route::middleware('auth:sanctum')->group(function (): void {
         ->whereIn('resource', ['clients', 'deals', 'products', 'suppliers', 'stock-movements', 'purchase-orders', 'orders', 'invoices', 'accounts-receivable', 'accounts-payable', 'payments', 'cash-movements', 'audit-logs'])
         ->whereIn('format', ['csv', 'pdf']);
 });
+
+if (app()->environment('testing')) {
+    Route::get('/test-403', fn () => abort(403, 'Acceso denegado simulado'));
+    Route::get('/test-500', fn () => throw new \RuntimeException('Error simulado en backend'));
+}
+
