@@ -40,22 +40,22 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Clínica Veterinaria Los Andes | Veterinaria en Bogotá",
-    template: "%s | Clínica Veterinaria Los Andes",
+    default: "ERP PyME & CRM Multi-Servicios | Gestión Empresarial",
+    template: "%s | ERP PyME Core",
   },
   description:
-    "Clínica veterinaria en Bogotá: consulta general, vacunación, cirugía, laboratorio clínico y urgencias para perros, gatos y otras mascotas. Agendá tu cita online o por WhatsApp.",
+    "Sistema ERP empresarial y CRM multiservicios: gestión de clientes, inventarios, compras, ventas, facturación, cuentas por cobrar/pagar y auditoría.",
   openGraph: {
-    title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",
-    description: "Consulta, vacunación, cirugía y urgencias para tu mascota, con historia clínica digital por paciente.",
+    title: "ERP PyME & CRM Multi-Servicios — Gestión Empresarial Integral",
+    description: "Plataforma integral de gestión administrativa, inventario multibodega, CRM de clientes y contabilidad simplificada.",
     type: "website",
     locale: "es_CO",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Clínica Veterinaria Los Andes — Veterinaria en Bogotá",
-    description: "Consulta, vacunación, cirugía y urgencias para tu mascota.",
+    title: "ERP PyME & CRM Multi-Servicios — Gestión Empresarial Integral",
+    description: "Plataforma integral de gestión administrativa, inventarios y CRM.",
   },
 };
 

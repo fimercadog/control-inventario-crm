@@ -1,13 +1,13 @@
-import { Check, PawPrint } from "lucide-react";
+import { Building2, Check } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClinicWordmark } from "@/components/marketing/clinic-brand";
 import { HeroBackdrop } from "@/components/marketing/hero-backdrop";
 
 const points = [
-  "Propietarios, pacientes e historia clínica",
-  "Agenda por profesional y consultorio",
-  "Vacunas y desparasitación con recordatorios",
-  "Inventario de farmacia y reportes clínicos",
+  "Gestión integral de clientes, contactos y CRM",
+  "Inventario multibodega y alertas de stock",
+  "Ventas, facturación y cuentas por cobrar/pagar",
+  "Reportes analíticos y auditoría de operaciones",
 ];
 
 export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
@@ -18,13 +18,13 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
           <HeroBackdrop variant="navy" />
           <div className="relative max-w-lg">
             <span className="flex size-11 items-center justify-center rounded-xl bg-white/10 text-primary">
-              <PawPrint className="size-6" />
+              <Building2 className="size-6" />
             </span>
             <h2 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight">
-              Toda la clínica en una sola plataforma
+              Toda tu empresa en una sola plataforma
             </h2>
             <p className="mt-4 text-lg leading-8 text-white/70">
-              Propietarios, pacientes, agenda, historia clínica, vacunas, inventario de farmacia y reportes en un solo lugar.
+              Clientes, servicios, CRM, inventario multibodega, compras, ventas, facturación y finanzas en un solo lugar.
             </p>
             <ul className="mt-10 space-y-3">
               {points.map((p) => (

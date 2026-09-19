@@ -63,10 +63,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $company = Company::firstOrCreate([
-            'name' => 'Clínica Veterinaria Los Andes',
+            'name' => 'Empresa Demo ERP S.A.S.',
         ], [
             'nit' => '901.245.880-3',
-            'email' => 'recepcion@vetlosandes.co',
+            'email' => 'contacto@erp-pyme.test',
             'phone' => '+57 601 555 0188',
             'address' => 'Calle 93 #14-20, Bogotá',
             'timezone' => 'America/Bogota',
@@ -74,8 +74,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         [$users, $vets] = $this->seedRolesAndUsers($company);
-        $admin = $users['admin@vetlosandes.co'];
-        $reception = $users['recepcion@vetlosandes.co'];
+        $admin = $users['admin@erp-pyme.test'];
+        $reception = $users['recepcion@erp-pyme.test'];
 
         $warehouses = $this->seedWarehouses($company);
         $mainWarehouse = $warehouses['Farmacia / Vitrina'];
@@ -104,7 +104,7 @@ class DatabaseSeeder extends Seeder
         $this->seedLeads($company);
         $this->seedProductSales($company, $clients, $publicProducts, $mainWarehouse, $reception);
         $this->seedSurgeryQuotes($company, $clients, $services);
-        $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@vetlosandes.co']);
+        $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@erp-pyme.test']);
         $this->seedClientNotesAndTasks($company, $clients, $patients, $admin, $reception);
         $this->seedAuditLog($company, $admin, $clients, $patients);
     }
@@ -158,13 +158,13 @@ class DatabaseSeeder extends Seeder
         }
 
         $demo = [
-            ['superadmin@vetlosandes.co', 'Sofía Mercado', 'Super Admin'],
-            ['admin@vetlosandes.co', 'Camila Rojas', 'Administrador de empresa'],
-            ['veterinario@vetlosandes.co', 'Dr. Carlos Medina', 'Veterinario/a'],
-            ['veterinaria@vetlosandes.co', 'Dra. Laura Peña', 'Veterinario/a'],
-            ['recepcion@vetlosandes.co', 'Marcela Duarte', 'Recepción'],
-            ['inventario@vetlosandes.co', 'Valentina Castro', 'Inventario'],
-            ['ventas@vetlosandes.co', 'Sebastián Moreno', 'Ventas'],
+            ['superadmin@erp-pyme.test', 'Sofía Mercado', 'Super Admin'],
+            ['admin@erp-pyme.test', 'Camila Rojas', 'Administrador de empresa'],
+            ['operaciones@erp-pyme.test', 'Carlos Medina', 'Veterinario/a'],
+            ['operaciones2@erp-pyme.test', 'Laura Peña', 'Veterinario/a'],
+            ['recepcion@erp-pyme.test', 'Marcela Duarte', 'Recepción'],
+            ['inventario@erp-pyme.test', 'Valentina Castro', 'Inventario'],
+            ['ventas@erp-pyme.test', 'Sebastián Moreno', 'Ventas'],
         ];
 
         $users = [];
@@ -177,7 +177,7 @@ class DatabaseSeeder extends Seeder
             $users[$email] = $user;
         }
 
-        $vets = [$users['veterinario@vetlosandes.co'], $users['veterinaria@vetlosandes.co']];
+        $vets = [$users['operaciones@erp-pyme.test'], $users['operaciones2@erp-pyme.test']];
 
         return [$users, $vets];
     }

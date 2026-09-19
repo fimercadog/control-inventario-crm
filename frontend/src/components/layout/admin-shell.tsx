@@ -16,6 +16,7 @@ import {
   FileText,
   Handshake,
   Inbox,
+  Layers,
   LayoutDashboard,
   ListChecks,
   Lock,
@@ -97,28 +98,28 @@ const navGroups: NavGroup[] = [
     items: [{ href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
   },
   {
-    label: "Clínica",
+    label: "Servicios & Atenciones",
     items: [
       { href: "/app/agenda", label: "Citas del día", icon: CalendarDays, permissions: ["appointments.manage"] },
       { href: "/app/citas", label: "Citas", icon: CalendarClock, permissions: ["appointments.manage"] },
-      { href: "/app/pacientes", label: "Pacientes", icon: PawPrint, permissions: ["patients.manage"] },
-      { href: "/app/consultas", label: "Historia clínica", icon: Stethoscope, permissions: ["medical_records.manage"] },
-      { href: "/app/vacunas", label: "Vacunas", icon: Syringe, permissions: ["vaccinations.manage"] },
-      { href: "/app/vacunas-pendientes", label: "Vacunas por vencer", icon: AlertTriangle, permissions: ["vaccinations.manage"] },
-      { href: "/app/recetas", label: "Recetas", icon: FileText, permissions: ["prescriptions.manage"] },
+      { href: "/app/pacientes", label: "Pacientes / Beneficiarios", icon: Users, permissions: ["patients.manage"] },
+      { href: "/app/consultas", label: "Historial de atenciones", icon: ClipboardList, permissions: ["medical_records.manage"] },
+      { href: "/app/vacunas", label: "Inmunizaciones", icon: Syringe, permissions: ["vaccinations.manage"] },
+      { href: "/app/vacunas-pendientes", label: "Inmunizaciones por vencer", icon: AlertTriangle, permissions: ["vaccinations.manage"] },
+      { href: "/app/recetas", label: "Prescripciones / Recetas", icon: FileText, permissions: ["prescriptions.manage"] },
       { href: "/app/procedimientos", label: "Procedimientos", icon: ClipboardList, permissions: ["procedures.manage"] },
       { href: "/app/diagnosticos", label: "Diagnósticos", icon: ListChecks, permissions: ["medical_records.manage"] },
-      { href: "/app/reportes-clinicos", label: "Reportes clínicos", icon: BarChart3, permissions: ["clinical_reports.view"] },
+      { href: "/app/reportes-clinicos", label: "Reportes de atenciones", icon: BarChart3, permissions: ["clinical_reports.view"] },
       { href: "/app/servicios", label: "Servicios", icon: Tag, permissions: ["services.manage"] },
-      { href: "/app/especies", label: "Especies", icon: Rabbit, permissions: ["patients.manage"] },
-      { href: "/app/razas", label: "Razas", icon: Dna, permissions: ["patients.manage"] },
+      { href: "/app/especies", label: "Especies (Clasificación)", icon: Layers, permissions: ["patients.manage"] },
+      { href: "/app/razas", label: "Razas / Categorías", icon: Tags, permissions: ["patients.manage"] },
     ],
   },
   {
     label: "CRM",
     items: [
       { href: "/app/leads", label: "Solicitudes (Leads)", icon: Inbox, permissions: ["leads.view"] },
-      { href: "/app/clientes", label: "Clientes / Propietarios", icon: Users, permissions: ["clients.manage"] },
+      { href: "/app/clientes", label: "Clientes / Cuentas", icon: Users, permissions: ["clients.manage"] },
       { href: "/app/contactos", label: "Contactos", icon: Contact2, permissions: ["clients.manage"] },
       { href: "/app/segmentos", label: "Segmentos", icon: Tags, permissions: ["clients.manage"] },
       { href: "/app/notas", label: "Notas", icon: StickyNote, permissions: ["clients.manage"] },
@@ -228,24 +229,23 @@ const PREMIUM_INFO: Record<string, { title: string; body: React.ReactNode }> = {
     ),
   },
   "/app/ia": {
-    title: "Inteligencia Artificial para la clínica",
+    title: "Inteligencia Artificial ERP",
     body: (
       <>
         <p>
-          Potenciá la gestión clínica con una herramienta de inteligencia artificial diseñada para{" "}
+          Potenciá la gestión empresarial con una herramienta de inteligencia artificial diseñada para{" "}
           <strong className="font-semibold text-foreground">
-            apoyar la atención, facilitar el análisis de información y ayudarte en la toma de decisiones
+            apoyar la operación, facilitar el análisis de información y ayudarte en la toma de decisiones
           </strong>
           .
         </p>
         <p>
-          Podés utilizarla para consultar la historia de un paciente, identificar vacunas por vencer, revisar la
-          ocupación de la agenda, resumir datos relevantes y obtener apoyo para interpretar indicadores como
-          rotación de inventario de medicamentos y desempeño de la clínica.
+          Podés utilizarla para consultar el estado de inventarios, revisar alertas de stock, analizar ventas y
+          cuentas por cobrar, resumir datos relevantes y obtener apoyo para interpretar indicadores de desempeño del negocio.
         </p>
         <p>
           La inteligencia artificial funciona como un{" "}
-          <strong className="font-semibold text-foreground">asistente para el equipo de la clínica</strong>,
+          <strong className="font-semibold text-foreground">asistente para tu equipo comercial y administrativo</strong>,
           permitiendo trabajar de forma más ágil y obtener información útil a partir de los datos disponibles
           en el sistema.
         </p>
