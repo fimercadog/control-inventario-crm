@@ -2,12 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Models\AccountPayable;
+use App\Models\AccountReceivable;
 use App\Models\Activity;
 use App\Models\Appointment;
 use App\Models\AuditLog;
 use App\Models\Brand;
-use App\Models\CashRegister;
 use App\Models\Breed;
+use App\Models\CashMovement;
+use App\Models\CashRegister;
+use App\Models\CashSession;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\ClientNote;
@@ -17,15 +21,20 @@ use App\Models\Consultation;
 use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\Diagnosis;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\Lead;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Patient;
+use App\Models\Payment;
 use App\Models\Prescription;
 use App\Models\Procedure;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
+use App\Models\PurchaseReceipt;
+use App\Models\PurchaseReceiptItem;
 use App\Models\Quote;
 use App\Models\QuoteItem;
 use App\Models\Segment;
@@ -52,7 +61,8 @@ use Spatie\Permission\Models\Role;
  * pacientes y valoraciones, agenda con citas pasadas/hoy/futuras, ficha médica
  * SOAP, aplicaciones y dosis (algunas descuentan stock), diagnósticos estéticos,
  * recomendaciones, tratamientos y protocolos, catálogo e insumos médicos,
- * ventas de producto/dermocosmética, presupuestos y solicitudes del sitio público.
+ * ventas de producto/dermocosmética, presupuestos, facturación, cuentas por cobrar,
+ * cuentas por pagar, sesiones de caja, transferencias y solicitudes del sitio público.
  * `migrate:fresh --seed` es idempotente.
  */
 class DatabaseSeeder extends Seeder
@@ -91,6 +101,7 @@ class DatabaseSeeder extends Seeder
         $patients = $this->seedPatients($company, $clients, $species);
 
         $this->seedStock($company, $products, $suppliers, $mainWarehouse, $warehouses);
+        $this->seedStockTransfers($company, $products, $warehouses);
 
         $appointments = $this->seedAppointments($company, $patients, $services, $doctors);
         $consultations = $this->seedConsultations($company, $patients, $appointments, $doctors);
@@ -101,9 +112,14 @@ class DatabaseSeeder extends Seeder
         $this->seedProcedures($company, $patients, $services, $doctors);
 
         $this->seedLeads($company);
-        $this->seedProductSales($company, $clients, $publicProducts, $mainWarehouse, $reception);
+        $orders = $this->seedProductSales($company, $clients, $publicProducts, $mainWarehouse, $reception);
         $this->seedSurgeryQuotes($company, $clients, $services);
         $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@esteticaelite.co']);
+
+        [$invoices, $receivables] = $this->seedInvoicesAndReceivables($company, $clients, $orders, $mainWarehouse, $admin);
+        $payables = $this->seedPurchaseReceiptsAndPayables($company, $suppliers, $mainWarehouse, $admin, $products);
+        $this->seedCashSessionsMovementsAndPayments($company, $admin, $reception, $receivables, $payables);
+
         $this->seedClientNotesAndTasks($company, $clients, $patients, $admin, $reception);
         $this->seedAuditLog($company, $admin, $clients, $patients);
     }
@@ -444,6 +460,63 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
+        // Ajuste para generar alerta de stock bajo (Sculptra)
+        $sculptra = $products->firstWhere('sku', 'BIO-SCU');
+        if ($sculptra) {
+            $inQty = StockMovement::where('product_id', $sculptra->id)->where('type', 'in')->sum('quantity');
+            $outQty = StockMovement::where('product_id', $sculptra->id)->where('type', 'out')->sum('quantity');
+            $currentStock = $inQty - $outQty;
+            if ($currentStock > 3) {
+                StockMovement::create([
+                    'company_id' => $company->id,
+                    'product_id' => $sculptra->id,
+                    'warehouse_id' => $mainWarehouse->id,
+                    'type' => 'out',
+                    'quantity' => -($currentStock - 3),
+                    'reason' => 'Ajuste por consumo en procedimiento demo',
+                    'reference' => 'adjust:low_stock_demo',
+                ]);
+            }
+        }
+    }
+
+    private function seedStockTransfers(Company $company, Collection $products, array $warehouses): void
+    {
+        $deposit = $warehouses['Depósito de Reserva'] ?? null;
+        $pharmacy = $warehouses['Farmacia & Insumos Estéticos'] ?? null;
+        if (! $deposit || ! $pharmacy) {
+            return;
+        }
+
+        $botox = $products->firstWhere('sku', 'BOT-100U');
+        $kysse = $products->firstWhere('sku', 'HIA-LIP');
+
+        if ($botox) {
+            StockTransfer::firstOrCreate(
+                ['company_id' => $company->id, 'product_id' => $botox->id, 'reference' => 'TRF-INT-001'],
+                [
+                    'from_warehouse_id' => $deposit->id,
+                    'to_warehouse_id' => $pharmacy->id,
+                    'quantity' => 5,
+                    'notes' => 'Traslado de reserva a farmacia para atender citas agendadas de la semana.',
+                    'status' => 'completed',
+                ]
+            );
+        }
+
+        if ($kysse) {
+            StockTransfer::firstOrCreate(
+                ['company_id' => $company->id, 'product_id' => $kysse->id, 'reference' => 'TRF-INT-002'],
+                [
+                    'from_warehouse_id' => $deposit->id,
+                    'to_warehouse_id' => $pharmacy->id,
+                    'quantity' => 8,
+                    'notes' => 'Reabastecimiento de insumos para cabina 2.',
+                    'status' => 'completed',
+                ]
+            );
+        }
     }
 
     // -------------------------------------------------------------- agenda
@@ -738,27 +811,47 @@ class DatabaseSeeder extends Seeder
         }
     }
 
+    /** @return Collection<int,Order> */
     private function seedProductSales(
         Company $company,
         Collection $clients,
         Collection $publicProducts,
         Warehouse $warehouse,
         User $reception,
-    ): void {
+    ): Collection {
         $crem = $publicProducts->firstWhere('sku', 'CREM-HYAL');
+        $orders = collect();
 
         if ($crem) {
-            $order = Order::firstOrCreate(
+            $order1 = Order::firstOrCreate(
                 ['company_id' => $company->id, 'client_id' => $clients[0]->id, 'warehouse_id' => $warehouse->id],
                 ['owner_id' => $reception->id, 'status' => 'confirmed', 'total' => $crem->unit_price],
             );
-            if ($order->items()->count() === 0) {
+            if ($order1->items()->count() === 0) {
                 OrderItem::create([
-                    'order_id' => $order->id, 'product_id' => $crem->id, 'product_name' => $crem->name,
+                    'order_id' => $order1->id, 'product_id' => $crem->id, 'product_name' => $crem->name,
                     'sku' => $crem->sku, 'quantity' => 1, 'unit_price' => $crem->unit_price,
                 ]);
             }
+            $orders->push($order1);
         }
+
+        $order2 = Order::firstOrCreate(
+            ['company_id' => $company->id, 'client_id' => $clients[2]->id, 'warehouse_id' => $warehouse->id],
+            ['owner_id' => $reception->id, 'status' => 'pending', 'total' => 850000],
+        );
+        if ($order2->items()->count() === 0) {
+            $kysse = $publicProducts->firstWhere('sku', 'HIA-LIP') ?? $publicProducts->first();
+            if ($kysse) {
+                OrderItem::create([
+                    'order_id' => $order2->id, 'product_id' => $kysse->id, 'product_name' => $kysse->name,
+                    'sku' => $kysse->sku, 'quantity' => 1, 'unit_price' => 850000,
+                ]);
+            }
+        }
+        $orders->push($order2);
+
+        return $orders;
     }
 
     private function seedSurgeryQuotes(Company $company, Collection $clients, array $services): void
@@ -808,6 +901,376 @@ class DatabaseSeeder extends Seeder
                     'stage' => $stages[$i % count($stages)],
                     'expected_close_date' => Carbon::today()->addDays(7 + $i * 6),
                 ],
+            );
+        }
+    }
+
+    /** @return array{0: Collection<int,Invoice>, 1: Collection<int,AccountReceivable>} */
+    private function seedInvoicesAndReceivables(
+        Company $company,
+        Collection $clients,
+        Collection $orders,
+        Warehouse $warehouse,
+        User $admin,
+    ): array {
+        $invoices = collect();
+        $receivables = collect();
+
+        $inv1 = Invoice::firstOrCreate(
+            ['company_id' => $company->id, 'number' => 'INV-2026-001'],
+            [
+                'client_id' => $clients[0]->id,
+                'order_id' => $orders[0]->id ?? null,
+                'warehouse_id' => $warehouse->id,
+                'user_id' => $admin->id,
+                'issue_date' => Carbon::today()->subDays(12),
+                'due_date' => Carbon::today()->subDays(2),
+                'status' => 'paid',
+                'subtotal' => 160000,
+                'discount' => 0,
+                'tax' => 0,
+                'total' => 160000,
+                'notes' => 'Factura cancelada en recepción al momento de la entrega del producto.',
+            ]
+        );
+        if ($inv1->items()->count() === 0) {
+            InvoiceItem::create([
+                'invoice_id' => $inv1->id, 'product_name' => 'Crema Antiaging Mesoestetic 50ml',
+                'sku' => 'CREM-HYAL', 'quantity' => 1, 'unit_price' => 160000, 'line_total' => 160000,
+            ]);
+        }
+        $invoices->push($inv1);
+
+        $rec1 = AccountReceivable::firstOrCreate(
+            ['company_id' => $company->id, 'invoice_id' => $inv1->id],
+            [
+                'client_id' => $clients[0]->id,
+                'original_amount' => 160000,
+                'paid_amount' => 160000,
+                'balance' => 0,
+                'due_date' => Carbon::today()->subDays(2),
+                'status' => 'paid',
+            ]
+        );
+        $receivables->push($rec1);
+
+        $inv2 = Invoice::firstOrCreate(
+            ['company_id' => $company->id, 'number' => 'INV-2026-002'],
+            [
+                'client_id' => $clients[2]->id,
+                'order_id' => $orders[1]->id ?? null,
+                'warehouse_id' => $warehouse->id,
+                'user_id' => $admin->id,
+                'issue_date' => Carbon::today()->subDays(6),
+                'due_date' => Carbon::today()->addDays(9),
+                'status' => 'partially_paid',
+                'subtotal' => 850000,
+                'discount' => 0,
+                'tax' => 0,
+                'total' => 850000,
+                'notes' => 'Perfilado labial. Abono inicial registrado, saldo a la cita de revisión.',
+            ]
+        );
+        if ($inv2->items()->count() === 0) {
+            InvoiceItem::create([
+                'invoice_id' => $inv2->id, 'product_name' => 'Perfilado de Labios con Ácido Hialurónico',
+                'sku' => 'HIA-LIP', 'quantity' => 1, 'unit_price' => 850000, 'line_total' => 850000,
+            ]);
+        }
+        $invoices->push($inv2);
+
+        $rec2 = AccountReceivable::firstOrCreate(
+            ['company_id' => $company->id, 'invoice_id' => $inv2->id],
+            [
+                'client_id' => $clients[2]->id,
+                'original_amount' => 850000,
+                'paid_amount' => 400000,
+                'balance' => 450000,
+                'due_date' => Carbon::today()->addDays(9),
+                'status' => 'partial',
+            ]
+        );
+        $receivables->push($rec2);
+
+        $inv3 = Invoice::firstOrCreate(
+            ['company_id' => $company->id, 'number' => 'INV-2026-003'],
+            [
+                'client_id' => $clients[1]->id,
+                'warehouse_id' => $warehouse->id,
+                'user_id' => $admin->id,
+                'issue_date' => Carbon::today()->subDays(2),
+                'due_date' => Carbon::today()->addDays(28),
+                'status' => 'issued',
+                'subtotal' => 1500000,
+                'discount' => 0,
+                'tax' => 0,
+                'total' => 1500000,
+                'notes' => 'Tratamiento bioestimulador de colágeno Radiesse.',
+            ]
+        );
+        if ($inv3->items()->count() === 0) {
+            InvoiceItem::create([
+                'invoice_id' => $inv3->id, 'product_name' => 'Radiesse 1.5ml (Hidroxiapatita Cálcica)',
+                'sku' => 'BIO-RAD', 'quantity' => 1, 'unit_price' => 1500000, 'line_total' => 1500000,
+            ]);
+        }
+        $invoices->push($inv3);
+
+        $rec3 = AccountReceivable::firstOrCreate(
+            ['company_id' => $company->id, 'invoice_id' => $inv3->id],
+            [
+                'client_id' => $clients[1]->id,
+                'original_amount' => 1500000,
+                'paid_amount' => 0,
+                'balance' => 1500000,
+                'due_date' => Carbon::today()->addDays(28),
+                'status' => 'pending',
+            ]
+        );
+        $receivables->push($rec3);
+
+        return [$invoices, $receivables];
+    }
+
+    /** @return Collection<int,AccountPayable> */
+    private function seedPurchaseReceiptsAndPayables(
+        Company $company,
+        Collection $suppliers,
+        Warehouse $warehouse,
+        User $admin,
+        Collection $products,
+    ): Collection {
+        $payables = collect();
+        $po1 = PurchaseOrder::where('company_id', $company->id)->first();
+
+        if ($po1) {
+            $receipt1 = PurchaseReceipt::firstOrCreate(
+                ['company_id' => $company->id, 'purchase_order_id' => $po1->id],
+                [
+                    'warehouse_id' => $warehouse->id,
+                    'user_id' => $admin->id,
+                    'received_at' => Carbon::today()->subDays(11),
+                    'status' => 'confirmed',
+                    'notes' => 'Recepción de biológicos e insumos médicos en condiciones térmicas certificadas.',
+                ]
+            );
+
+            if ($receipt1->items()->count() === 0) {
+                foreach ($po1->items as $item) {
+                    PurchaseReceiptItem::create([
+                        'purchase_receipt_id' => $receipt1->id,
+                        'purchase_order_item_id' => $item->id,
+                        'product_id' => $item->product_id,
+                        'product_name' => $item->product_name,
+                        'sku' => $item->sku,
+                        'quantity' => $item->quantity,
+                        'unit_cost' => $item->unit_cost,
+                        'line_total' => $item->quantity * $item->unit_cost,
+                    ]);
+                }
+            }
+
+            $ap1 = AccountPayable::firstOrCreate(
+                ['company_id' => $company->id, 'purchase_order_id' => $po1->id],
+                [
+                    'supplier_id' => $po1->supplier_id,
+                    'purchase_receipt_id' => $receipt1->id,
+                    'original_amount' => $po1->total,
+                    'paid_amount' => 20000000,
+                    'balance' => max(0, $po1->total - 20000000),
+                    'due_date' => Carbon::today()->addDays(15),
+                    'status' => 'partial',
+                ]
+            );
+            $payables->push($ap1);
+        }
+
+        // Orden de compra 2 (Galderma)
+        $galderma = $suppliers->firstWhere('name', 'Galderma Medical Colombia SAS') ?? $suppliers->last();
+        if ($galderma) {
+            $po2 = PurchaseOrder::firstOrCreate(
+                ['company_id' => $company->id, 'supplier_id' => $galderma->id, 'order_date' => Carbon::today()->subDays(4)],
+                [
+                    'warehouse_id' => $warehouse->id,
+                    'status' => 'sent',
+                    'expected_date' => Carbon::today()->addDays(5),
+                    'total' => 15500000,
+                ]
+            );
+
+            if ($po2->items()->count() === 0) {
+                $sculptra = $products->firstWhere('sku', 'BIO-SCU');
+                if ($sculptra) {
+                    PurchaseOrderItem::create([
+                        'purchase_order_id' => $po2->id,
+                        'product_id' => $sculptra->id,
+                        'product_name' => $sculptra->name,
+                        'sku' => $sculptra->sku,
+                        'quantity' => 10,
+                        'unit_cost' => 890000,
+                    ]);
+                }
+            }
+
+            $ap2 = AccountPayable::firstOrCreate(
+                ['company_id' => $company->id, 'purchase_order_id' => $po2->id],
+                [
+                    'supplier_id' => $galderma->id,
+                    'purchase_receipt_id' => null,
+                    'original_amount' => 15500000,
+                    'paid_amount' => 0,
+                    'balance' => 15500000,
+                    'due_date' => Carbon::today()->addDays(26),
+                    'status' => 'pending',
+                ]
+            );
+            $payables->push($ap2);
+        }
+
+        return $payables;
+    }
+
+    private function seedCashSessionsMovementsAndPayments(
+        Company $company,
+        User $admin,
+        User $reception,
+        Collection $receivables,
+        Collection $payables,
+    ): void {
+        $register = CashRegister::where('company_id', $company->id)->first();
+        if (! $register) {
+            return;
+        }
+
+        // Sesión 1: Cerrada ayer
+        $session1 = CashSession::firstOrCreate(
+            ['company_id' => $company->id, 'cash_register_id' => $register->id, 'opened_at' => now()->subDays(1)->setTime(8, 0)],
+            [
+                'opened_by' => $reception->id,
+                'closed_by' => $reception->id,
+                'closed_at' => now()->subDays(1)->setTime(18, 30),
+                'opening_amount' => 300000,
+                'expected_amount' => 460000,
+                'closing_amount' => 460000,
+                'difference' => 0,
+                'status' => 'closed',
+                'notes' => 'Cierre de caja jornada anterior sin novedades.',
+            ]
+        );
+
+        if ($session1->wasRecentlyCreated) {
+            CashMovement::create([
+                'company_id' => $company->id,
+                'cash_session_id' => $session1->id,
+                'user_id' => $reception->id,
+                'type' => 'in',
+                'amount' => 300000,
+                'method' => 'cash',
+                'reference' => 'APERTURA-001',
+                'notes' => 'Base inicial en efectivo',
+                'source_type' => CashSession::class,
+                'source_id' => $session1->id,
+            ]);
+
+            CashMovement::create([
+                'company_id' => $company->id,
+                'cash_session_id' => $session1->id,
+                'user_id' => $reception->id,
+                'type' => 'in',
+                'amount' => 160000,
+                'method' => 'cash',
+                'reference' => 'INV-2026-001',
+                'notes' => 'Cobro contado venta producto Camila Herrera',
+                'source_type' => AccountReceivable::class,
+                'source_id' => $receivables[0]->id ?? 1,
+            ]);
+        }
+
+        // Sesión 2: Abierta hoy
+        $session2 = CashSession::firstOrCreate(
+            ['company_id' => $company->id, 'cash_register_id' => $register->id, 'opened_at' => now()->setTime(8, 30)],
+            [
+                'opened_by' => $reception->id,
+                'opening_amount' => 300000,
+                'expected_amount' => 700000,
+                'status' => 'open',
+                'notes' => 'Caja activa para turno del día.',
+            ]
+        );
+
+        if ($session2->wasRecentlyCreated) {
+            CashMovement::create([
+                'company_id' => $company->id,
+                'cash_session_id' => $session2->id,
+                'user_id' => $reception->id,
+                'type' => 'in',
+                'amount' => 300000,
+                'method' => 'cash',
+                'reference' => 'APERTURA-002',
+                'notes' => 'Base de efectivo inicial turno mañana',
+                'source_type' => CashSession::class,
+                'source_id' => $session2->id,
+            ]);
+
+            CashMovement::create([
+                'company_id' => $company->id,
+                'cash_session_id' => $session2->id,
+                'user_id' => $reception->id,
+                'type' => 'in',
+                'amount' => 400000,
+                'method' => 'transfer',
+                'reference' => 'INV-2026-002',
+                'notes' => 'Abono perfilado labial Marcela Ríos',
+                'source_type' => AccountReceivable::class,
+                'source_id' => $receivables[1]->id ?? 2,
+            ]);
+        }
+
+        // Pagos (Payment)
+        if ($receivables->count() > 0) {
+            Payment::firstOrCreate(
+                ['company_id' => $company->id, 'payable_type' => AccountReceivable::class, 'payable_id' => $receivables[0]->id],
+                [
+                    'user_id' => $reception->id,
+                    'direction' => 'in',
+                    'paid_at' => Carbon::today()->subDays(10),
+                    'amount' => 160000,
+                    'method' => 'cash',
+                    'reference' => 'REC-001',
+                    'notes' => 'Cobro completo de factura INV-2026-001',
+                    'cash_session_id' => $session1->id,
+                ]
+            );
+
+            if ($receivables->count() > 1) {
+                Payment::firstOrCreate(
+                    ['company_id' => $company->id, 'payable_type' => AccountReceivable::class, 'payable_id' => $receivables[1]->id],
+                    [
+                        'user_id' => $reception->id,
+                        'direction' => 'in',
+                        'paid_at' => Carbon::today(),
+                        'amount' => 400000,
+                        'method' => 'transfer',
+                        'reference' => 'TRF-BANK-9011',
+                        'notes' => 'Abono parcial de factura INV-2026-002',
+                        'cash_session_id' => $session2->id,
+                    ]
+                );
+            }
+        }
+
+        if ($payables->count() > 0) {
+            Payment::firstOrCreate(
+                ['company_id' => $company->id, 'payable_type' => AccountPayable::class, 'payable_id' => $payables[0]->id],
+                [
+                    'user_id' => $admin->id,
+                    'direction' => 'out',
+                    'paid_at' => Carbon::today()->subDays(5),
+                    'amount' => 20000000,
+                    'method' => 'transfer',
+                    'reference' => 'TRF-ALLERGAN-8821',
+                    'notes' => 'Abono a factura de compra Allergan Aesthetics',
+                ]
             );
         }
     }
