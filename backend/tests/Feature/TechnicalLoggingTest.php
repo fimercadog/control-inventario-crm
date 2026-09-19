@@ -188,10 +188,20 @@ class TechnicalLoggingTest extends TestCase
         ]);
     }
 
+    public function test_vertical_config_extensions_are_merged_into_observability_config(): void
+    {
+        $config = config('observability');
+
+        $this->assertArrayHasKey('version', $config);
+        $this->assertEquals('1.0.1', $config['version']);
+        $this->assertArrayHasKey('vertical_extensions', $config);
+    }
+
     public function test_core_observability_module_has_zero_vertical_coupling(): void
     {
         $filesToCheck = [
             base_path('config/observability.php'),
+            base_path('config/observability-vertical.php'),
             base_path('app/Contracts/SupportContextInterface.php'),
             base_path('app/Services/ObservabilityService.php'),
             base_path('app/Services/LogSanitizer.php'),
