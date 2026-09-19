@@ -1,16 +1,21 @@
-# Módulo Transversal de Observabilidad, Logging Técnico y Soporte Remoto (v1.0.0)
+# Módulo Transversal de Observabilidad, Logging Técnico y Soporte Remoto (v1.0.1)
 
-Este documento define la arquitectura, componentes, configuración y procedimientos de instalación para el módulo transversal reutilizable de observabilidad del ERP.
+Este documento define la arquitectura, componentes, configuración y procedimientos de instalación y actualización para el módulo transversal reutilizable de observabilidad del ERP.
 
 ---
 
-## 🏛️ Arquitectura del Módulo
+## 🏛️ Arquitectura del Módulo y Portabilidad Separada
 
-El módulo provee observabilidad técnica, trazabilidad por `Request ID`, sanitización recursiva de datos sensibles, manejo seguro de errores HTTP (403, 429, 500) y generación del contrato para tickets de soporte técnico remoto, sin acoplamiento a ninguna vertical de negocio concreta.
+El módulo provee observabilidad técnica, trazabilidad por `Request ID`, sanitización recursiva de datos sensibles, manejo seguro de errores HTTP (403, 429, 500) y generación del contrato para tickets de soporte técnico remoto.
+
+Para garantar cero conflictos al aplicar actualizaciones entre ramas (mediante `git cherry-pick`), la arquitectura divide estrictamente el **Core Inmutable** de la **Extensión Local por Vertical**.
 
 ```
-[Cliente / App]
-       │ (Header: X-Request-ID)
+                       [config/observability-vertical.php]  (Extensión Local)
+                                       │
+                                       ▼
+[config/observability.php] (Core Inmutable v1.0.1)
+       │
        ▼
 [RequestIdMiddleware] ──> Asigna / valida X-Request-ID y contexts en Monolog
        │
@@ -24,18 +29,16 @@ El módulo provee observabilidad técnica, trazabilidad por `Request ID`, saniti
        └── Captura 403, 429 y 500 ──> Registra eventos desensibilizados en Log
 ```
 
-### 🔒 Independencia de la Auditoría Funcional
-- **Observability (Módulo Técnico):** Almacena logs de infraestructura, seguridad (403, 429, fallos de auth), errores 5xx y UUIDs de request en archivos rotativos (`storage/logs/laravel-*.log`).
-- **AuditService / `audit_logs` (Módulo de Negocio):** Almacena cambios en la base de datos (creación, edición, eliminación de registros) en la tabla `audit_logs`. **Ambos sistemas son 100% independientes.**
-
 ---
 
-## 📂 Archivos del Núcleo Reutilizable (Core Files)
+## 📂 Archivos del CORE Inmutable
+
+Los siguientes archivos componen el núcleo reutilizable del módulo. **NO deben modificarse en las verticales de negocio**:
 
 | Archivo | Rol en el Módulo |
 |---|---|
 | `app/Contracts/SupportContextInterface.php` | Contrato formal PHP para la estructura de soporte. |
-| `config/observability.php` | Configuración central, versionado y extensiones por vertical. |
+| `config/observability.php` | Configuración base global e integrador core (v1.0.1). |
 | `config/logging.php` | Configuración del canal de logs diarios (`LOG_CHANNEL=daily`). |
 | `app/Services/ObservabilityService.php` | Servicio principal de observabilidad y diagnóstico. |
 | `app/Services/LogSanitizer.php` | Motor de sanitización recursiva y enmascaramiento. |
@@ -47,107 +50,69 @@ El módulo provee observabilidad técnica, trazabilidad por `Request ID`, saniti
 
 ---
 
-## ⚙️ Variables de Entorno (`.env`)
+## 🟢 Archivo Permitido para Personalización por Vertical
 
-Las siguientes variables son opcionales y cuentan con valores por defecto seguros:
+Toda personalización local o específica de un producto/vertical debe realizarse **exclusivamente** en:
 
-```ini
-# Canal y retención de logs
-LOG_CHANNEL=daily
-LOG_LEVEL=debug
-LOG_DAILY_DAYS=30
-
-# Módulo de Observabilidad
-OBSERVABILITY_REQUEST_HEADER=X-Request-ID
-OBSERVABILITY_MODULE_NAME=core_erp
-
-# Integración futura APM (Opcional)
-SENTRY_ENABLED=false
-SENTRY_DSN=
-SENTRY_TRACES_SAMPLE_RATE=0.1
-```
-
----
-
-## 🚀 Pasos para Instalar en Otra Rama / Vertical
-
-### Opción A: Mediante Git Cherry-Pick (Recomendado)
-1. Cambiar a la rama de destino:
-   ```bash
-   git checkout <rama-destino>
-   ```
-2. Aplicar el commit del módulo transversal:
-   ```bash
-   git cherry-pick <HASH_DEL_COMMIT_OBSERVABILIDAD>
-   ```
-3. Correr las pruebas para confirmar la integración limpia:
-   ```bash
-   php artisan test --filter=TechnicalLoggingTest
-   ```
-
-### Opción B: Copia Manual de Archivos Núcleo
-1. Copiar los 10 archivos listados en la sección de **Archivos del Núcleo Reutilizable**.
-2. Verificar que `config/logging.php` tenga `LOG_CHANNEL=daily`.
-3. Ejecutar `php artisan test --filter=TechnicalLoggingTest`.
-
----
-
-## 🟢 Adaptaciones Permitidas por Vertical
-
-Cada vertical puede personalizar aspectos específicos **sin modificar el código fuente del núcleo**, editando la sección `vertical_extensions` de `config/observability.php`:
+`config/observability-vertical.php`
 
 ```php
-// config/observability.php
-'vertical_extensions' => [
-    // Agregar campos sensibles específicos de la vertical
+<?php
+
+return [
+    // Campos sensibles adicionales propios de esta vertical
     'additional_sensitive_fields' => [
         'custom_notes',
         'national_id',
         'financial_key',
     ],
+
     // Habilitar o registrar tipos de eventos personalizados
     'custom_events' => [
         'document_printed' => true,
     ],
-    // Nombre identificador de la vertical/módulo
-    'module_name' => 'custom_vertical',
-],
+
+    // Identificador del módulo/vertical
+    'module_name' => env('OBSERVABILITY_MODULE_NAME', 'custom_vertical'),
+];
 ```
 
 ---
 
-## 🔴 Adaptaciones Prohibidas (Restricciones del Núcleo)
+## 🔴 Reglas de Inmutabilidad y Lo Que NUNCA Debe Modificarse Directamente
 
-1. **PROHIBIDO** incluir términos de negocio o referencias a productos específicos en el núcleo reutilizable (`ObservabilityService`, `LogSanitizer`, `RequestIdMiddleware`, `SupportContextInterface`).
-2. **PROHIBIDO** guardar passwords, tokens o stack traces completos en las respuestas JSON enviadas al cliente.
-3. **PROHIBIDO** mezclar consultas a la tabla `audit_logs` dentro del flujo de logs técnicos de excepciones.
-4. **PROHIBIDO** eliminar los campos obligatorios del contrato de soporte (`request_id`, `user_id`, `company_id`, `module`, `url`, `timestamp`, `environment`, `app_version`).
+1. **NUNCA modificar `config/observability.php` directamente** en una rama de vertical. Toda extensión se hace en `config/observability-vertical.php`.
+2. **NUNCA incluir términos de negocio o verticales específicas** en los archivos del CORE reutilizable.
+3. **NUNCA modificar `ObservabilityService.php`, `LogSanitizer.php` o `bootstrap/app.php`** para incluir lógica de controladores o entidades de negocio.
+
+---
+
+## 🔄 Cómo Actualizar de v1.0.0 a Versiones Futuras
+
+Dado que la personalización local reside en `config/observability-vertical.php`, las ramas pueden actualizar el CORE sin conflictos:
+
+1. Cambiar a la rama de destino:
+   ```bash
+   git checkout <rama-destino>
+   ```
+2. Aplicar el commit de actualización del CORE mediante `cherry-pick`:
+   ```bash
+   git cherry-pick <HASH_DEL_COMMIT_CORE>
+   ```
+3. `git` actualizará `config/observability.php` y los archivos core de forma limpia sin tocar `config/observability-vertical.php`.
+4. Validar la actualización:
+   ```bash
+   php artisan test --filter=TechnicalLoggingTest
+   ```
 
 ---
 
 ## 🧪 Pruebas Requeridas
 
-Para validar la correcta operación del módulo en cualquier rama:
-
 ```bash
-# 1. Pruebas específicas del módulo y test de neutralidad
+# Pruebas del módulo y test de neutralidad del CORE
 php artisan test --filter=TechnicalLoggingTest
 
-# 2. Suite completa de pruebas backend
+# Suite completa de pruebas backend
 php artisan test
 ```
-
----
-
-## 🔄 Procedimiento de Rollback
-
-Si se requiere revertir el módulo en una rama:
-1. Revertir el commit de observabilidad:
-   ```bash
-   git revert <HASH_DEL_COMMIT_OBSERVABILIDAD>
-   ```
-2. Restablecer el canal de logs en `.env` si aplica:
-   ```ini
-   LOG_CHANNEL=single
-   ```
-3. Ejecutar `php artisan test` para confirmar la estabilidad del backend.
