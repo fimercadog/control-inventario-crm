@@ -13,7 +13,7 @@ function formatDate(iso: string) {
 /**
  * Tarjeta editorial para el listado del blog -- sin borde/sombra de "card
  * SaaS": foto grande sin recuadro, categoría/fecha como texto plano arriba
- * del título (no badge), igual al Veterinarian Blog real del pack.
+ * del título (no badge).
  */
 export function BlogCard({ post, delay = 0 }: { post: BlogPost; delay?: number }) {
   return (

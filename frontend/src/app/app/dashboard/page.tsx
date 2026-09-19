@@ -13,7 +13,7 @@ import {
   Handshake,
   Minus,
   Package,
-  PawPrint,
+  Sparkles,
   Receipt,
   RefreshCw,
   ShieldCheck,
@@ -634,8 +634,8 @@ export default function DashboardPage() {
           <SectionLabel>Clínica</SectionLabel>
           <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
             <MiniStat label="Citas hoy" value={data.clinical.appointments_today} icon={CalendarClock} tone={TONE.indigo} />
-            <MiniStat label="Pacientes activos" value={data.clinical.active_patients} icon={PawPrint} tone={TONE.green} />
-            <MiniStat label="Vacunas por vencer" value={data.clinical.vaccinations_due} icon={Syringe} tone={TONE.amber} />
+            <MiniStat label="Pacientes activos" value={data.clinical.active_patients} icon={Sparkles} tone={TONE.green} />
+            <MiniStat label="Sesiones por realizar" value={data.clinical.vaccinations_due} icon={Syringe} tone={TONE.amber} />
             <MiniStat label="Consultas del mes" value={data.clinical.consultations_month} icon={Stethoscope} tone={TONE.violet} />
           </div>
         </motion.div>

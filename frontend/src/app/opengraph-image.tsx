@@ -33,13 +33,13 @@ export default function OpengraphImage() {
             marginBottom: 40,
           }}
         >
-          LA
+          EE
         </div>
         <div style={{ display: "flex", fontSize: 60, fontWeight: 900, color: "#241f19" }}>
-          Clínica Veterinaria Los Andes
+          Clínica Estética & Medicina Antiaging Élite
         </div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#6b6355", maxWidth: 860 }}>
-          Consulta, vacunación, cirugía y urgencias para tu mascota, con un equipo que la conoce desde la primera visita.
+          Tratamientos faciales, corporales y medicina estética avanzada con profesionales altamente capacitados.
         </div>
       </div>
     ),

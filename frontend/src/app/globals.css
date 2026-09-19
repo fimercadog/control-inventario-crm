@@ -89,10 +89,10 @@
   --marketing-shadow: 0 24px 70px rgb(0 0 0 / 0.45);
 }
 
-/* El sitio publico + login viven en su propia identidad de "clinica
-   veterinaria" (teal calido + ambar), aislada del verde SaaS del panel: esta
+/* El sitio público + login viven en su propia identidad de "clínica
+   estética & medicina antiaging" (emerald/navy premium), aislada del panel: esta
    clase re-declara la paleta completa para que ni el toggle oscuro del panel
-   ni el `:root` de arriba lleguen hasta aca. */
+   ni el `:root` de arriba lleguen hasta acá. */
 .site-theme {
   color-scheme: light;
   /* Re-aplica color/fondo con las variables ya sobrescritas: sin esto, si el
@@ -105,15 +105,7 @@
   --card-foreground: #241f19;
   --popover: #ffffff;
   --popover-foreground: #241f19;
-  /* Paleta real del pack Divi "Veterinarian" (DiviVet), extraida del
-     live-demo (https://www.elegantthemes.com/layouts/business/veterinarian-home-page/live-demo)
-     via getComputedStyle + muestreo de pixel sobre captura del propio
-     live-demo. Reemplaza el teal/ambar inventado que se usaba antes -- ver
-     referencia-visual-veterinaria.md. Navy del boton "View All Services" del
-     hero ~rgb(47,92,147); azul del boton "Click Here" (.et_pb_promo_button)
-     getComputedStyle exacto rgb(43,135,218); fondo crema de seccion alterna
-     ("What We Do") getComputedStyle exacto rgb(255,246,239); texto de nav
-     getComputedStyle exacto rgb(32,41,47). */
+  /* Paleta visual de la clínica estética & medicina antiaging (emerald, navy, cream) */
   --primary: #2f5c93;
   --primary-hover: #204774;
   --primary-foreground: #ffffff;
@@ -140,23 +132,14 @@
   --chart-5: #fb7a68;
   --blob: linear-gradient(140deg, #1e4d82 0%, #2b87da 55%, #bfe3fb 100%);
   --blob-warm: linear-gradient(140deg, #fb8a68 0%, #fea79e 55%, #ffd9c9 100%);
-  /* Fondo crema de seccion alterna (getComputedStyle exacto del live-demo,
-     seccion "What We Do": rgb(255,246,239)) -- Divi alterna blanco/crema
-     entre secciones en vez de usar cards con borde para separar contenido. */
+  /* Fondo crema de sección alterna */
   --section-cream: #fff6ef;
-  /* Acento calido secundario para CTAs (Agendar cita / WhatsApp) que necesitan
-     destacar por encima del navy primario. Valor exacto extraido del boton
-     real del pack Divi via getComputedStyle (rgb(255,112,0)), no aproximado. */
+  /* Acento para CTAs principales */
   --cta: #ff7000;
   --cta-hover: #d95f00;
   --cta-foreground: #ffffff;
 
-  /* Tipografia real del pack Divi "Veterinarian" (extraida del live-demo):
-     Nunito para titulos/botones (peso 700-800), Open Sans para cuerpo.
-     Solo dentro de `.site-theme` -- el panel /app/* sigue en Roboto. Redefinir
-     la custom property NO alcanza (nada la relee en el subarbol): hay que
-     re-aplicar `font-family` aca mismo, mismo patron que `background-color`/
-     `color` arriba. */
+  /* Tipografía para la landing pública: Nunito para títulos, Open Sans para cuerpo. */
   --font-sans: var(--font-body-marketing);
   --font-heading: var(--font-heading-marketing);
   --font-nav: var(--font-nav-marketing);

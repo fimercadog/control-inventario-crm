@@ -6,10 +6,7 @@ import { Reveal } from "@/components/marketing/reveal";
 export const container = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
 
 /**
- * Visual del hero de home: fotografía real (pack Divi "Veterinarian",
- * licenciado — ver docs/referencia-visual.md) con las mismas tarjetas
- * flotantes de confianza que antes, ahora sobre la foto en vez de la
- * ilustración de blobs.
+ * Visual del hero de home: fotografía real premium de medicina estética.
  */
 function HeroArt() {
   return (

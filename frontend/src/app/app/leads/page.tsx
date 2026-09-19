@@ -30,7 +30,7 @@ const STATUS_LABEL: Record<Lead["status"], string> = { new: "Nuevo", contacted: 
 
 const columns: AppColumnDef<Lead>[] = [
   { accessorKey: "name", header: "Nombre" },
-  { header: "Mascota / Empresa", cell: ({ row }) => row.original.company_name ?? "—" },
+  { header: "Tratamiento de interés / Empresa", cell: ({ row }) => row.original.company_name ?? "—" },
   { accessorKey: "email", header: "Correo" },
   { header: "Telefono", cell: ({ row }) => row.original.phone ?? "—" },
   { header: "Origen", cell: ({ row }) => <Badge>{SOURCE_LABEL[row.original.source]}</Badge> },
@@ -43,7 +43,7 @@ const columns: AppColumnDef<Lead>[] = [
 
 const fields: CrudField[] = [
   { name: "name", label: "Nombre", required: true },
-  { name: "company_name", label: "Mascota / Empresa" },
+  { name: "company_name", label: "Tratamiento de interés / Empresa" },
   { name: "email", label: "Correo", type: "email", required: true },
   { name: "phone", label: "Telefono" },
   { name: "message", label: "Mensaje", type: "textarea", colSpan: "full" },

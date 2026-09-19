@@ -83,7 +83,7 @@ export default function ClientDetailPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Section title="Mascotas" count={data.patients.length}>
+        <Section title="Pacientes asociados" count={data.patients.length}>
           {data.patients.map((p) => (
             <Row
               key={p.id}

@@ -14,8 +14,7 @@ const robotoMono = Roboto_Mono({
   subsets: ["latin"],
 });
 
-// Tipografía real del pack Divi "Veterinarian" (extraída del live-demo via
-// getComputedStyle, no una aproximación): Nunito para títulos/botones,
+// Tipografía del sitio público: Nunito para títulos/botones,
 // Open Sans para texto de cuerpo. Solo se consumen dentro de `.site-theme`
 // (sitio público + login) -- el panel /app/* sigue en Roboto sin tocar.
 const nunito = Nunito({

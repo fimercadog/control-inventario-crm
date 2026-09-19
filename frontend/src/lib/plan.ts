@@ -1,13 +1,11 @@
-// Plan comercial de este despliegue (vertical veterinaria).
+// Plan comercial de este despliegue (vertical clínica estética & medicina antiaging).
 //
 //   NEXT_PUBLIC_PLAN vacío  -> plataforma completa.
 //   NEXT_PUBLIC_PLAN=base   -> clínica chica de una sola sede: se ocultan los
 //                              módulos que no aplican a ese caso. El código
 //                              sigue ahí; una clínica más grande (cadena,
-//                              convenios, criaderos, cuentas corporativas) los
+//                              convenios, sedes corporativas) los
 //                              habilita quitando su ruta de BASE_PLAN_HIDDEN.
-//
-// Ver docs/roadmap-veterinaria.md (S1).
 
 export const isBasePlan = () => process.env.NEXT_PUBLIC_PLAN === "base";
 

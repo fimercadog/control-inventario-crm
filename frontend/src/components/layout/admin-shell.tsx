@@ -421,7 +421,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <LogoMark size="sm" />
       <div>
         <p className="flex items-center gap-1.5 text-sm font-black tracking-tight text-foreground">
-          Vet<span className="text-primary">·</span>Panel
+          Élite<span className="text-primary">·</span>Panel
           <span className="rounded bg-warning/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-warning">
             Beta
           </span>
@@ -496,9 +496,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <Menu className="h-4 w-4" />
             </Button>
             <div className="min-w-0 max-w-32 sm:max-w-none">
-              <p className="truncate text-sm font-medium">{user?.company?.name ?? "VetPanel"}</p>
+              <p className="truncate text-sm font-medium">{user?.company?.name ?? "ÉlitePanel"}</p>
               <p className="hidden truncate text-xs text-muted-foreground sm:block">
-                Panel de gestión veterinaria
+                Panel de gestión médica estética
               </p>
             </div>
           </div>

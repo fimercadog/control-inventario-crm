@@ -1,13 +1,13 @@
-import { Check, PawPrint } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClinicWordmark } from "@/components/marketing/clinic-brand";
 import { HeroBackdrop } from "@/components/marketing/hero-backdrop";
 
 const points = [
-  "Propietarios, pacientes e historia clínica",
-  "Agenda por profesional y consultorio",
-  "Vacunas y desparasitación con recordatorios",
-  "Inventario de farmacia y reportes clínicos",
+  "Pacientes y valoraciones estéticas",
+  "Agenda por especialista y cabina",
+  "Tratamientos, insumos y protocolos",
+  "Inventario de dermo-cosméticos y finanzas",
 ];
 
 export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
@@ -18,13 +18,13 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
           <HeroBackdrop variant="navy" />
           <div className="relative max-w-lg">
             <span className="flex size-11 items-center justify-center rounded-xl bg-white/10 text-primary">
-              <PawPrint className="size-6" />
+              <Sparkles className="size-6" />
             </span>
             <h2 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight">
-              Toda la clínica en una sola plataforma
+              Gestión médica estética integral
             </h2>
             <p className="mt-4 text-lg leading-8 text-white/70">
-              Propietarios, pacientes, agenda, historia clínica, vacunas, inventario de farmacia y reportes en un solo lugar.
+              Pacientes, citas, valoraciones, historial de procedimientos, control de stock y caja administrativa en un solo lugar.
             </p>
             <ul className="mt-10 space-y-3">
               {points.map((p) => (
@@ -37,9 +37,9 @@ export function AuthSplitLayout({ children }: { children: React.ReactNode }) {
         </section>
         <section className="flex items-center justify-center bg-background px-4 py-12 sm:px-6">
           <div className="w-full max-w-md">
-            {/* Misma identidad que el sitio publico (Los Andes), no la marca
-                generica del software -- para que no se sienta como un producto
-                distinto al llegar desde "Iniciar sesion". */}
+            {/* Misma identidad que el sitio público (Élite Estética), no la marca
+                genérica del software -- para que no se sienta como un producto
+                distinto al llegar desde "Iniciar sesión". */}
             <ClinicWordmark className="mb-8 justify-center" />
             {children}
           </div>

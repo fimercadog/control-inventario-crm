@@ -4,10 +4,7 @@ import { InitialsAvatar } from "@/components/marketing/photo-placeholder";
 import type { TeamMember } from "@/components/marketing/marketing-data";
 
 /**
- * Fila apilada foto-bleed-izquierda + card blanca superpuesta a la derecha --
- * patron "Highly Trained Veterinarians" de About en el pack Divi (no un grid
- * de cards parejas). Sin fotografia real del staff se usa InitialsAvatar
- * (ver photo-placeholder.tsx) en vez de una foto de stock adivinada.
+ * Fila apilada foto-bleed-izquierda + card blanca superpuesta a la derecha para el equipo médico.
  */
 export function TeamProfileRow({ member, delay = 0 }: { member: TeamMember; delay?: number }) {
   return (

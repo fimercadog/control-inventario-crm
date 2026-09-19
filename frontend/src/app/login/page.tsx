@@ -12,8 +12,8 @@ const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
 const demoEmails: Record<string, string> = {
   superadmin: "superadmin@esteticaelite.co",
   admin: "admin@esteticaelite.co",
-  veterinario: "medico@esteticaelite.co",
-  veterinaria: "medica@esteticaelite.co",
+  medico: "medico@esteticaelite.co",
+  especialista: "especialista@esteticaelite.co",
   recepcion: "recepcion@esteticaelite.co",
   inventario: "inventario@esteticaelite.co",
   ventas: "ventas@esteticaelite.co",

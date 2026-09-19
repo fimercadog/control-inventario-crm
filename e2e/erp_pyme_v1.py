@@ -73,7 +73,7 @@ def dismiss_beta(page: Page) -> None:
         pass
 
 
-def login(page: Page, email: str = "admin@vetlosandes.co") -> None:
+def login(page: Page, email: str = "admin@esteticaelite.co") -> None:
     page.goto(f"{FRONT_URL}/login")
     page.wait_for_load_state("networkidle")
     page.get_by_placeholder("Email").fill(email)
@@ -101,7 +101,7 @@ def first(req: APIRequestContext, path: str) -> dict:
     return data[0]
 
 
-def api_login(req: APIRequestContext, email: str = "admin@vetlosandes.co") -> None:
+def api_login(req: APIRequestContext, email: str = "admin@esteticaelite.co") -> None:
     headers = {"Accept": "application/json", "Origin": FRONT_URL, "Referer": f"{FRONT_URL}/login"}
     req.get(f"{API_URL}/sanctum/csrf-cookie", headers=headers)
     state = req.storage_state()
@@ -257,7 +257,7 @@ def main() -> int:
 
             print("· permisos: recepción sin acceso a facturas")
             page.get_by_role("button", name="Cerrar sesion").click()
-            login(page, "recepcion@vetlosandes.co")
+            login(page, "recepcion@esteticaelite.co")
             page.goto(f"{FRONT_URL}/app/facturas")
             dismiss_beta(page)
             expect(page.get_by_text("No tienes acceso a esta seccion")).to_be_visible(timeout=20000)

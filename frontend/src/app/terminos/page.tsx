@@ -11,7 +11,7 @@ export default function TermsPage() {
     <LegalPage
       title="Terminos y Condiciones"
       updated="30 de agosto de 2026"
-      intro="Estos terminos regulan el acceso y uso de este sitio web, operado por [Razon social] (Clínica Veterinaria Los Andes), NIT [NIT]. Al navegar el sitio o enviar un formulario aceptas estos terminos."
+      intro="Estos términos regulan el acceso y uso de este sitio web, operado por [Razón Social] (Clínica Estética & Medicina Antiaging Élite), NIT [NIT]. Al navegar el sitio o enviar un formulario aceptas estos términos."
       sections={[
         {
           heading: "1. Objeto del sitio",

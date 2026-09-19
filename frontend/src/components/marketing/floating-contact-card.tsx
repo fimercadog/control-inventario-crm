@@ -11,7 +11,7 @@ import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
  * hero); si no, se revela por scroll como el resto de la pagina.
  */
 export function FloatingContactCard({
-  title = "Escribinos cuando quieras",
+  title = "Contáctanos cuando quieras",
   mount = false,
   delay = 0,
 }: {
@@ -23,10 +23,9 @@ export function FloatingContactCard({
     <div className="grid gap-6 rounded-3xl bg-card p-8 shadow-elevation-4 sm:grid-cols-[1.1fr_1fr_1fr] sm:items-center sm:p-10">
       <Reveal mount={mount} direction="up" delay={delay}>
         <h2 className="text-xl font-extrabold leading-tight tracking-tight sm:text-2xl">{title}</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Urgencias 24/7 · resto de consultas, horario de atención.</p>
+        <p className="mt-2 text-sm text-muted-foreground">Consultas, valoraciones y tratamientos en nuestro horario de atención.</p>
       </Reveal>
-      {/* Datos de contacto y horario entran desde los costados, uno de cada
-          lado -- como si se abrieran hacia afuera del bloque de titulo. */}
+      {/* Datos de contacto y horario entran desde los costados */}
       <Reveal mount={mount} direction="left" delay={delay + 0.12} className="space-y-2.5 text-sm">
         <p className="text-xs font-bold uppercase tracking-[0.18em] text-cta">Contacto</p>
         <p className="flex items-center gap-2">
@@ -36,7 +35,7 @@ export function FloatingContactCard({
           <Phone className="size-4 shrink-0 text-primary" /> +57 601 555 0188
         </p>
         <p className="flex items-center gap-2">
-          <Mail className="size-4 shrink-0 text-primary" /> recepcion@vetlosandes.co
+          <Mail className="size-4 shrink-0 text-primary" /> contacto@esteticaelite.co
         </p>
       </Reveal>
       <Reveal mount={mount} direction="right" delay={delay + 0.18} className="space-y-2.5 text-sm">
@@ -45,10 +44,10 @@ export function FloatingContactCard({
           <Clock className="size-4 shrink-0 text-primary" /> Lun a sáb, 8:00 a 19:00
         </p>
         <p className="flex items-center gap-2">
-          <Clock className="size-4 shrink-0 text-primary" /> Urgencias los 7 días
+          <Clock className="size-4 shrink-0 text-primary" /> Atención con cita previa
         </p>
         <CtaLink href={WHATSAPP_URL} variant="ghost" size="sm" className="mt-1 px-0 text-primary hover:bg-transparent">
-          Escribinos por WhatsApp →
+          Escríbenos por WhatsApp →
         </CtaLink>
       </Reveal>
     </div>

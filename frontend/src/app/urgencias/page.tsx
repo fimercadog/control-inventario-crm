@@ -28,32 +28,30 @@ const steps = [
 export default function UrgenciasPage() {
   return (
     <MarketingLayout>
-      {/* Hero: misma familia visual que Servicios/Productos/Equipo/Nosotros/Blog
-          -- ilustracion protagonista (veterinario aplicando una inyeccion, sobre
-          fondo rojo/salmon, tono de alerta) en vez del full-bleed anterior. */}
+      {/* Hero: misma familia visual que Servicios/Productos/Equipo/Nosotros/Blog */}
       <SplitHero
         eyebrow="Urgencias"
         title="Cuando no puede esperar, actuamos rápido"
         lead="Ante un accidente, una intoxicación o un cuadro que empeora rápido, escribinos o llamá antes de venir para que el equipo esté listo."
-        image="/gallery/illustrations/illustration-8.png"
-        imageAlt="Veterinaria aplicando una inyección a un gato"
+        image="/gallery/aesthetic/cabina_clinica.jpg"
+        imageAlt="Atención y valoración médica estética"
         actions={
           <CtaLink href={WHATSAPP_URL} variant="cta">
             <PhoneCall className="size-4" />
-            Urgencias por WhatsApp
+            Consulta por WhatsApp
           </CtaLink>
         }
       />
       <div className="relative z-10 mx-auto -mt-8 max-w-5xl px-4 sm:px-6 lg:px-8">
-        <PriorityBanner label="Línea directa 24/7" detail="+57 601 555 0188" />
+        <PriorityBanner label="Línea directa" detail="+57 601 555 0188" />
       </div>
 
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="¿Cuándo es una urgencia?" title="Señales que no hay que esperar a que pasen solas" center={false} />
+          <SectionHeading eyebrow="Atención Prioritaria" title="Señales o inquietudes sobre tu tratamiento" center={false} />
         </Reveal>
         {/* Una sola tarjeta flotante sin bordes por item -- mismo patron que
-            IconFeatureFloatCard, no un grid de cards individuales. */}
+            IconFeatureFloatCard, no un grid of cards individuales. */}
         <div className="mt-10 rounded-[2rem] bg-card p-6 shadow-elevation-4 sm:p-10">
           <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
             {signs.map((sign, i) => (
@@ -67,14 +65,14 @@ export default function UrgenciasPage() {
           </div>
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
-          Ante la duda, escribinos: es mejor una consulta de más que llegar tarde a una urgencia real.
+          Ante la duda, escríbenos: es mejor resolver una inquietud a tiempo con nuestros especialistas.
         </p>
       </Section>
 
       <Section className="bg-section-cream">
         <PhotoFeatureStack
-          image="/gallery/paw-procedure.jpg"
-          imageAlt="Procedimiento veterinario de urgencia"
+          image="/gallery/aesthetic/fototratamientos_laser.jpg"
+          imageAlt="Procedimiento médico estético asistido"
           reverse
           features={[
             { title: "Prioridad inmediata", text: "Una urgencia no espera turno ni agenda. El equipo se prepara mientras estás en camino." },

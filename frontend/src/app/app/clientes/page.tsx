@@ -41,14 +41,14 @@ const fields: CrudField[] = [
 export default function ClientsPage() {
   return (
     <ModuleTablePage<Client>
-      title="Propietarios"
-      description="Propietarios de la clínica. Desde el detalle ves sus mascotas y su historial."
+      title="Clientes / Pacientes"
+      description="Clientes y pacientes de la clínica. Desde el detalle puedes consultar su historial clínico y tratamientos."
       resource="/clients"
       exportResource="clients"
       columns={columns}
       fields={fields}
-      actionLabel="Nuevo propietario"
-      modalDescription="Datos de contacto del propietario."
+      actionLabel="Nuevo cliente"
+      modalDescription="Datos de contacto del cliente o paciente."
       extraRowActions={(row) => (
         <>
           <WhatsAppAction phone={row.phone} name={row.name} />

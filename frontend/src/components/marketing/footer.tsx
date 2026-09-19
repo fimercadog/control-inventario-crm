@@ -6,9 +6,8 @@ const columns: { title: string; links: [string, string][] }[] = [
   {
     title: "Clínica",
     links: [
-      ["Servicios", "/servicios"],
-      ["Equipo veterinario", "/equipo"],
-      ["Urgencias", "/urgencias"],
+      ["Servicios & Tratamientos", "/servicios"],
+      ["Equipo médico", "/equipo"],
       ["Nosotros", "/nosotros"],
       ["Preguntas frecuentes", "/preguntas-frecuentes"],
       ["Testimonios", "/testimonios"],
@@ -17,8 +16,8 @@ const columns: { title: string; links: [string, string][] }[] = [
   {
     title: "Recursos",
     links: [
-      ["Blog", "/blog"],
-      ["Agendar cita", "/agendar-cita"],
+      ["Blog & Novedades", "/blog"],
+      ["Agendar valoración", "/agendar-cita"],
       ["Contacto", "/contacto"],
       ["Acceso al panel", "/login"],
     ],
@@ -39,8 +38,7 @@ export function MarketingFooter() {
         <div className="max-w-xs">
           <ClinicWordmark />
           <p className="mt-4 text-sm leading-6 text-muted-foreground">
-            Atención veterinaria integral para tu mascota: consulta, vacunación, cirugía y urgencias, con un equipo
-            que la conoce desde la primera visita.
+            Atención médica estética integral y medicina antiaging con tecnología de vanguardia y profesionales capacitados.
           </p>
           <ul className="mt-5 space-y-2.5 text-sm text-foreground/80">
             <li className="flex items-start gap-2.5">
@@ -53,11 +51,11 @@ export function MarketingFooter() {
             </li>
             <li className="flex items-center gap-2.5">
               <Mail className="size-4 shrink-0 text-primary" />
-              recepcion@vetlosandes.co
+              contacto@esteticaelite.co
             </li>
             <li className="flex items-start gap-2.5">
               <Clock className="mt-0.5 size-4 shrink-0 text-primary" />
-              Lun a sáb, 8:00 a 19:00 · Urgencias 24/7
+              Lun a sáb, 8:00 a 19:00
             </li>
           </ul>
         </div>
@@ -84,7 +82,7 @@ export function MarketingFooter() {
 
       <div className="bg-ink text-ink-foreground">
         <div className="mx-auto max-w-7xl px-4 py-5 text-xs text-white/60 sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} Clínica Veterinaria Los Andes.
+          © {new Date().getFullYear()} Clínica Estética & Medicina Antiaging Élite.
         </div>
       </div>
     </footer>

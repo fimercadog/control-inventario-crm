@@ -352,7 +352,7 @@ export type AppUser = {
   roles: string[];
 };
 
-/* ---- Vertical veterinaria ---- */
+/* ---- Vertical Clínica Estética & Medicina Antiaging ---- */
 
 export type Species = {
   id: number;

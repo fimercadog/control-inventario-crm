@@ -32,7 +32,7 @@ class PublicAppointmentController extends Controller
 
         $message = collect([
             $data['message'] ?? null,
-            ! empty($data['pet_name']) ? 'Mascota: '.$data['pet_name'] : null,
+            ! empty($data['pet_name']) ? 'Tratamiento de interés / Paciente: '.$data['pet_name'] : null,
             ! empty($data['reason']) ? 'Motivo: '.$data['reason'] : null,
             ! empty($data['preferred_date']) ? 'Fecha preferida: '.$data['preferred_date'] : null,
         ])->filter()->implode(' — ');

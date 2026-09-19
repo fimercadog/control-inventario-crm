@@ -69,7 +69,7 @@ export default function PatientsPage() {
   return (
     <ModuleTablePage<Patient>
       title="Pacientes"
-      description="Mascotas atendidas, cada una ligada a su propietario."
+      description="Pacientes registrados para consultas y procedimientos médicos estéticos."
       resource="/patients"
       columns={columns}
       fields={fields}

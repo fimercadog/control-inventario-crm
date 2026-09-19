@@ -156,7 +156,7 @@ def main() -> int:
             print("· verificación en la Agenda del CRM")
             page.goto(f"{FRONT_URL}/login")
             page.wait_for_load_state("networkidle")
-            page.get_by_placeholder("Email").fill("veterinario@vetlosandes.co")
+            page.get_by_placeholder("Email").fill("medico@esteticaelite.co")
             page.get_by_placeholder("Contraseña").fill("password")
             page.get_by_role("button", name="Entrar al panel").click()
             try:

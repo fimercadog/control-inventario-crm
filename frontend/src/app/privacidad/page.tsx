@@ -24,14 +24,14 @@ export default function PrivacyPage() {
         {
           heading: "2. Datos que recolectamos",
           body: [
-            "A traves de los formularios de contacto y de solicitud de cita recolectamos: nombre, nombre de tu mascota, correo electronico, numero de telefono o WhatsApp, motivo de la consulta y el contenido del mensaje que nos envies.",
-            "No solicitamos datos sensibles a traves de este sitio. Si decides incluirlos en un campo de texto libre, se entendera que autorizas su tratamiento para los fines aqui descritos.",
+            "A través de los formularios de contacto y de solicitud de valoración recolectamos: nombre, tratamiento de interés, correo electrónico, número de teléfono o WhatsApp, motivo de la consulta y el contenido del mensaje que nos envíes.",
+            "No solicitamos datos sensibles a través de este sitio. Si decides incluirlos en un campo de texto libre, se entenderá que autorizas su tratamiento para los fines aquí descritos.",
           ],
         },
         {
           heading: "3. Finalidades del tratamiento",
           body: [
-            "Los datos se tratan para: (i) responder tus solicitudes de informacion; (ii) confirmar disponibilidad y agendar la cita de tu mascota; (iii) contactarte sobre el seguimiento de una consulta o tratamiento en curso; (iv) enviarte recordatorios de vacunacion u otros avisos relacionados con la atencion de tu mascota; y (v) atender obligaciones legales y requerimientos de autoridades competentes.",
+            "Los datos se tratan para: (i) responder tus solicitudes de información; (ii) confirmar disponibilidad y agendar tu cita o valoración médica estética; (iii) contactarte sobre el seguimiento de un tratamiento en curso; (iv) enviarte recordatorios de sesiones u otros avisos relacionados con tu atención; y (v) atender obligaciones legales y requerimientos de autoridades competentes.",
           ],
         },
         {

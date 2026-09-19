@@ -14,7 +14,7 @@ import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 export default function ContactPage() {
   return (
     <MarketingLayout>
-      {/* Hero: texto centrado sobre blob + ilustraciones flanqueando -- patrón "Veterinarian Contact". */}
+      {/* Hero: texto centrado sobre blob + ilustraciones flanqueando */}
       <section className="relative isolate overflow-hidden">
         <GradientBlob className="left-1/2 top-0 size-[150%] -translate-x-1/2 opacity-40" warm />
         <div className={`${container} relative py-16 text-center sm:py-20`}>
@@ -74,7 +74,7 @@ export default function ContactPage() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="strict-origin-when-cross-origin"
-              title="Ubicación de Clínica Veterinaria Los Andes en Google Maps"
+              title="Ubicación de Clínica Estética Élite en Google Maps"
               className="size-full"
             />
           </div>
