@@ -8,6 +8,7 @@ import {
   ArrowLeftRight,
   BarChart3,
   Bot,
+  Building2,
   CalendarClock,
   CalendarDays,
   ClipboardList,
@@ -42,6 +43,7 @@ import {
   Tags,
   TrendingUp,
   Truck,
+  UserCheck,
   UserCircle,
   Users,
   Warehouse,
@@ -96,6 +98,15 @@ const navGroups: NavGroup[] = [
   {
     label: "",
     items: [{ href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
+  },
+  {
+    label: "Inmobiliaria & Bienes Raíces",
+    items: [
+      { href: "/app/propiedades", label: "Propiedades", icon: Building2, permissions: ["properties.manage"] },
+      { href: "/app/propietarios", label: "Propietarios", icon: UserCheck, permissions: ["owners.manage"] },
+      { href: "/app/visitas", label: "Visitas Agendadas", icon: CalendarDays, permissions: ["visits.manage"] },
+      { href: "/app/cierres", label: "Cierres & Operaciones", icon: Handshake, permissions: ["deals.manage"] },
+    ],
   },
   {
     label: "Servicios & Atenciones",

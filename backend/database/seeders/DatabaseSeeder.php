@@ -20,10 +20,13 @@ use App\Models\Diagnosis;
 use App\Models\Lead;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Owner;
 use App\Models\Patient;
 use App\Models\Prescription;
 use App\Models\Procedure;
 use App\Models\Product;
+use App\Models\Property;
+use App\Models\PropertyImage;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
 use App\Models\Quote;
@@ -36,6 +39,7 @@ use App\Models\StockTransfer;
 use App\Models\Supplier;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Visit;
 use App\Models\Warehouse;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -106,6 +110,7 @@ class DatabaseSeeder extends Seeder
         $this->seedSurgeryQuotes($company, $clients, $services);
         $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@erp-pyme.test']);
         $this->seedClientNotesAndTasks($company, $clients, $patients, $admin, $reception);
+        $this->seedRealEstateData($company, $users, $clients);
         $this->seedAuditLog($company, $admin, $clients, $patients);
     }
 
@@ -120,6 +125,7 @@ class DatabaseSeeder extends Seeder
             'purchase_receipts.manage', 'orders.manage', 'invoices.manage', 'accounts_receivable.view',
             'accounts_payable.view', 'payments.manage', 'cash.manage', 'reports.view',
             'users.manage', 'roles.manage', 'audit.view', 'settings.manage',
+            'properties.manage', 'owners.manage', 'visits.manage',
             'services.manage', 'patients.manage', 'appointments.manage', 'medical_records.manage',
             'vaccinations.manage', 'prescriptions.manage', 'procedures.manage', 'clinical_reports.view',
         ];
@@ -1033,6 +1039,137 @@ class DatabaseSeeder extends Seeder
                 $at = Carbon::now()->subDays($daysAgo)->subHours(random_int(0, 8));
                 $log->forceFill(['created_at' => $at, 'updated_at' => $at])->saveQuietly();
             }
+        }
+    }
+
+    private function seedRealEstateData(Company $company, array $users, Collection $clients): void
+    {
+        $owner1 = Owner::firstOrCreate([
+            'company_id' => $company->id,
+            'email' => 'propietario.gomez@test.com',
+        ], [
+            'name' => 'Roberto Gómez',
+            'document' => '79.452.110',
+            'phone' => '+57 310 444 8899',
+            'whatsapp' => '+57 310 444 8899',
+            'address' => 'Calle 127 #45-12, Bogotá',
+            'notes' => 'Propietario inversionista con múltiples inmuebles',
+            'status' => 'active',
+        ]);
+
+        $owner2 = Owner::firstOrCreate([
+            'company_id' => $company->id,
+            'email' => 'marcela.velasquez@test.com',
+        ], [
+            'name' => 'Marcela Velásquez',
+            'document' => '52.889.340',
+            'phone' => '+57 315 222 3344',
+            'whatsapp' => '+57 315 222 3344',
+            'address' => 'Carrera 43A #1-50, Medellín',
+            'notes' => 'Propietaria apartamento El Poblado',
+            'status' => 'active',
+        ]);
+
+        $agent = $users['ventas@erp-pyme.test'] ?? $users['admin@erp-pyme.test'];
+
+        $prop1 = Property::firstOrCreate([
+            'company_id' => $company->id,
+            'code' => 'INM-001',
+        ], [
+            'slug' => 'apartamento-exclusivo-chico-reservado',
+            'title' => 'Apartamento Exclusivo Chicó Reservado',
+            'description' => 'Hermoso apartamento con vista panorámica, acabado de lujo, iluminado, balcón amplio y 2 parqueaderos cubiertos.',
+            'property_type' => 'apartment',
+            'listing_type' => 'sale',
+            'status' => 'published',
+            'is_featured' => true,
+            'owner_id' => $owner1->id,
+            'agent_id' => $agent->id,
+            'city' => 'Bogotá',
+            'zone' => 'Chicó',
+            'address' => 'Carrera 9 #94-25, Apto 501',
+            'price' => 850000000,
+            'admin_fee' => 750000,
+            'stratum' => 6,
+            'bedrooms' => 3,
+            'bathrooms' => 3,
+            'parking_spots' => 2,
+            'built_area' => 125.5,
+            'private_area' => 118.0,
+            'year_built' => 2020,
+            'features' => ['Ascensor Privado', 'Balcón', 'Vigilancia 24/7', 'Gimnasio', 'Depósito'],
+            'published_at' => now(),
+        ]);
+
+        $prop2 = Property::firstOrCreate([
+            'company_id' => $company->id,
+            'code' => 'INM-002',
+        ], [
+            'slug' => 'casa-campestre-poblado-medellin',
+            'title' => 'Casa Campestre El Poblado',
+            'description' => 'Espectacular casa campestre en condominio cerrado, amplios jardines, piscina privada y excelente tranquilidad.',
+            'property_type' => 'house',
+            'listing_type' => 'sale',
+            'status' => 'published',
+            'is_featured' => true,
+            'owner_id' => $owner2->id,
+            'agent_id' => $agent->id,
+            'city' => 'Medellín',
+            'zone' => 'El Poblado',
+            'address' => 'Transversal Superior #10-120',
+            'price' => 1450000000,
+            'admin_fee' => 1100000,
+            'stratum' => 6,
+            'bedrooms' => 4,
+            'bathrooms' => 5,
+            'parking_spots' => 4,
+            'built_area' => 340.0,
+            'private_area' => 300.0,
+            'year_built' => 2018,
+            'features' => ['Piscina', 'Jardín Privado', 'Condominio', 'BBQ', 'Zonas Verdes'],
+            'published_at' => now(),
+        ]);
+
+        $prop3 = Property::firstOrCreate([
+            'company_id' => $company->id,
+            'code' => 'INM-003',
+        ], [
+            'slug' => 'oficina-moderna-zona-rosada',
+            'title' => 'Oficina Moderna Zona Rosa',
+            'description' => 'Oficina amoblada lista para ocupar en centro empresarial de primer nivel, recepción amoblada y salas de juntas.',
+            'property_type' => 'office',
+            'listing_type' => 'rent',
+            'status' => 'published',
+            'is_featured' => false,
+            'owner_id' => $owner1->id,
+            'agent_id' => $agent->id,
+            'city' => 'Bogotá',
+            'zone' => 'Zona Rosa',
+            'address' => 'Calle 82 #11-30, Ofic 402',
+            'price' => 6800000,
+            'admin_fee' => 850000,
+            'stratum' => 6,
+            'bedrooms' => 0,
+            'bathrooms' => 2,
+            'parking_spots' => 2,
+            'built_area' => 85.0,
+            'private_area' => 80.0,
+            'year_built' => 2021,
+            'features' => ['Amoblada', 'Aire Acondicionado', 'Salas de Juntas', 'Planta Eléctrica'],
+            'published_at' => now(),
+        ]);
+
+        if ($clients->isNotEmpty()) {
+            Visit::firstOrCreate([
+                'company_id' => $company->id,
+                'property_id' => $prop1->id,
+                'client_id' => $clients->first()->id,
+            ], [
+                'agent_id' => $agent->id,
+                'scheduled_at' => now()->addDays(2)->setHour(10)->setMinute(0),
+                'status' => 'scheduled',
+                'notes' => 'Cliente interesado en compra de contado',
+            ]);
         }
     }
 }

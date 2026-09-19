@@ -34,6 +34,10 @@ use App\Http\Controllers\Api\PortalAuthController;
 use App\Http\Controllers\Api\PrescriptionController;
 use App\Http\Controllers\Api\ProcedureController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\PropertyController;
+use App\Http\Controllers\Api\OwnerController;
+use App\Http\Controllers\Api\VisitController;
+use App\Http\Controllers\Api\PublicPropertyController;
 use App\Http\Controllers\Api\PublicAppointmentController;
 use App\Http\Controllers\Api\PublicCatalogController;
 use App\Http\Controllers\Api\PublicSchedulingController;
@@ -69,6 +73,11 @@ Route::post('/public/leads', [LeadController::class, 'store'])->middleware('thro
 
 // Portal publico "Solicita tu cita": genera un Lead (source=appointment).
 Route::post('/public/appointments', [PublicAppointmentController::class, 'store'])->middleware('throttle:appointment-request');
+
+// Catalogo publico inmobiliario: navegable por visitantes anonimos.
+Route::get('/public/properties', [PublicPropertyController::class, 'index'])->middleware('throttle:catalog-read');
+Route::get('/public/properties/{slug}', [PublicPropertyController::class, 'show'])->middleware('throttle:catalog-read');
+Route::post('/public/properties/lead', [PublicPropertyController::class, 'lead'])->middleware('throttle:5,1');
 
 // Catalogo publico: navegable por visitantes anonimos. La solicitud de
 // cotizacion entra al CRM como Cliente + Quote en borrador.
@@ -230,6 +239,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('/permissions', [RoleController::class, 'permissions'])->middleware('can:roles.manage');
     Route::apiResource('roles', RoleController::class)->only(['index', 'show', 'store', 'update'])->middleware('can:roles.manage');
     Route::apiResource('users', UserController::class)->only(['index', 'store', 'update'])->middleware('can:users.manage');
+
+    // Vertical Inmobiliario
+    Route::get('/properties/options', [PropertyController::class, 'options']);
+    Route::get('/properties/slug/{slug}', [PropertyController::class, 'bySlug']);
+    Route::apiResource('properties', PropertyController::class);
+    Route::apiResource('owners', OwnerController::class);
+    Route::apiResource('visits', VisitController::class);
 
     // El permiso por recurso se valida dentro del controlador.
     Route::get('/exports/{resource}.{format}', ExportController::class)
