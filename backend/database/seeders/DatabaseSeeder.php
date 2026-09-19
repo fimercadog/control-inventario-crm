@@ -122,6 +122,11 @@ class DatabaseSeeder extends Seeder
             'users.manage', 'roles.manage', 'audit.view', 'settings.manage',
             'services.manage', 'patients.manage', 'appointments.manage', 'medical_records.manage',
             'vaccinations.manage', 'prescriptions.manage', 'procedures.manage', 'clinical_reports.view',
+            'employees.manage', 'attendance.manage', 'requests.approve', 'documents.manage',
+        ];
+
+        $hrms = [
+            'employees.manage', 'attendance.manage', 'requests.approve', 'documents.manage',
         ];
 
         $clinical = [
@@ -136,6 +141,7 @@ class DatabaseSeeder extends Seeder
         $roles = [
             'Super Admin' => $permissionNames,
             'Administrador de empresa' => $permissionNames,
+            'Recursos Humanos' => array_merge(['dashboard.view', 'users.manage', 'reports.view', 'audit.view'], $hrms),
             'Veterinario/a' => array_merge(['dashboard.view', 'clients.manage', 'orders.manage', 'reports.view'], $clinical),
             'Recepción' => [
                 'dashboard.view', 'leads.view', 'clients.manage', 'patients.manage', 'services.manage',

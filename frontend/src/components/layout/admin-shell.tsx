@@ -43,6 +43,12 @@ import {
   TrendingUp,
   Truck,
   UserCircle,
+  UserCheck,
+  Clock,
+  Briefcase,
+  Building,
+  UserPlus,
+  FolderGit2,
   Users,
   Warehouse,
   WifiOff,
@@ -96,6 +102,20 @@ const navGroups: NavGroup[] = [
   {
     label: "",
     items: [{ href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
+  },
+  {
+    label: "Recursos Humanos",
+    items: [
+      { href: "/app/empleados", label: "Empleados / Fichas", icon: UserCheck, permissions: ["employees.manage"] },
+      { href: "/app/asistencia", label: "Control de Asistencia", icon: Clock, permissions: ["attendance.manage"] },
+      { href: "/app/vacaciones", label: "Solicitudes de Vacaciones", icon: CalendarDays, permissions: ["requests.approve"] },
+      { href: "/app/permisos", label: "Permisos y Licencias", icon: FileText, permissions: ["requests.approve"] },
+      { href: "/app/incapacidades", label: "Incapacidades Médicas", icon: AlertTriangle, permissions: ["requests.approve"] },
+      { href: "/app/documentos", label: "Documentos Laborales", icon: FolderGit2, permissions: ["documents.manage"] },
+      { href: "/app/turnos", label: "Gestión de Turnos", icon: CalendarClock, permissions: ["attendance.manage"] },
+      { href: "/app/organizacion", label: "Estructura Org. (Depto/Cargo)", icon: Building, permissions: ["settings.manage"] },
+      { href: "/app/reclutamiento", label: "Aspirantes & Selección", icon: UserPlus, permissions: ["employees.manage"] },
+    ],
   },
   {
     label: "Servicios & Atenciones",

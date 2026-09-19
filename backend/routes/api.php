@@ -35,6 +35,15 @@ use App\Http\Controllers\Api\PrescriptionController;
 use App\Http\Controllers\Api\ProcedureController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PublicAppointmentController;
+use App\Http\Controllers\Api\AttendanceController;
+use App\Http\Controllers\Api\DepartmentController;
+use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\EmployeeDocumentController;
+use App\Http\Controllers\Api\PermissionRequestController;
+use App\Http\Controllers\Api\PositionController;
+use App\Http\Controllers\Api\ShiftController;
+use App\Http\Controllers\Api\SickLeaveController;
+use App\Http\Controllers\Api\VacationRequestController;
 use App\Http\Controllers\Api\PublicCatalogController;
 use App\Http\Controllers\Api\PublicSchedulingController;
 use App\Http\Controllers\Api\PurchaseOrderController;
@@ -226,6 +235,17 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/appointments/{id}/attended', [AppointmentController::class, 'markAttended'])->middleware('can:appointments.manage')->whereNumber('id');
     Route::post('/appointments/{id}/no-show', [AppointmentController::class, 'markNoShow'])->middleware('can:appointments.manage')->whereNumber('id');
 
+    // --- Recursos Humanos (RRHH) ---
+    Route::apiResource('employees', EmployeeController::class)->middleware('can:employees.manage');
+    Route::apiResource('departments', DepartmentController::class)->middleware('can:settings.manage');
+    Route::apiResource('positions', PositionController::class)->middleware('can:settings.manage');
+    Route::apiResource('attendances', AttendanceController::class)->middleware('can:attendance.manage');
+    Route::apiResource('vacation-requests', VacationRequestController::class)->middleware('can:requests.approve');
+    Route::apiResource('permission-requests', PermissionRequestController::class)->middleware('can:requests.approve');
+    Route::apiResource('sick-leaves', SickLeaveController::class)->middleware('can:requests.approve');
+    Route::apiResource('employee-documents', EmployeeDocumentController::class)->middleware('can:documents.manage');
+    Route::apiResource('shifts', ShiftController::class)->middleware('can:attendance.manage');
+
     Route::apiResource('audit-logs', AuditLogController::class)->only(['index', 'show'])->middleware('can:audit.view');
     Route::get('/permissions', [RoleController::class, 'permissions'])->middleware('can:roles.manage');
     Route::apiResource('roles', RoleController::class)->only(['index', 'show', 'store', 'update'])->middleware('can:roles.manage');
@@ -233,6 +253,6 @@ Route::middleware('auth:sanctum')->group(function (): void {
 
     // El permiso por recurso se valida dentro del controlador.
     Route::get('/exports/{resource}.{format}', ExportController::class)
-        ->whereIn('resource', ['clients', 'deals', 'products', 'suppliers', 'stock-movements', 'purchase-orders', 'orders', 'invoices', 'accounts-receivable', 'accounts-payable', 'payments', 'cash-movements', 'audit-logs'])
+        ->whereIn('resource', ['clients', 'deals', 'products', 'suppliers', 'stock-movements', 'purchase-orders', 'orders', 'invoices', 'accounts-receivable', 'accounts-payable', 'payments', 'cash-movements', 'audit-logs', 'employees', 'attendances', 'vacation-requests', 'permission-requests', 'sick-leaves', 'employee-documents'])
         ->whereIn('format', ['csv', 'pdf']);
 });

@@ -11,6 +11,14 @@ import {
   Sparkles,
   Stethoscope,
   Syringe,
+  Users,
+  Clock,
+  CalendarDays,
+  FileText,
+  CalendarClock,
+  LayoutDashboard,
+  Briefcase,
+  Bot,
   type LucideIcon,
 } from "lucide-react";
 
@@ -435,3 +443,86 @@ export function adjacentPosts(post: BlogPost): { prev: BlogPost | null; next: Bl
     next: i < blogPosts.length - 1 ? blogPosts[i + 1] : null,
   };
 }
+
+
+
+// --- HRMS Product Pages Data ---
+export const navProduct = [
+  ["Gestión de empleados", "/producto/empleados"],
+  ["Asistencia", "/producto/asistencia"],
+  ["Vacaciones y permisos", "/producto/vacaciones"],
+  ["Documentos", "/producto/documentos"],
+  ["Turnos", "/producto/turnos"],
+  ["Reportes", "/producto/reportes"],
+  ["IA para RRHH", "/producto/ia"],
+];
+
+export const navSolutions = [
+  ["Para pequeñas empresas", "/soluciones#pymes"],
+  ["Para equipos de RRHH", "/soluciones#rrhh"],
+  ["Para empresas con turnos", "/soluciones#turnos"],
+  ["Para reclutamiento", "/soluciones#reclutamiento"],
+];
+
+export const features = [
+  { title: "Empleados", description: "Centraliza toda la información de tus colaboradores.", icon: Users, href: "/producto/empleados" },
+  { title: "Asistencia", description: "Controla entradas, salidas, retrasos y ausencias.", icon: Clock, href: "/producto/asistencia" },
+  { title: "Vacaciones y permisos", description: "Gestiona solicitudes, aprobaciones y saldos.", icon: CalendarDays, href: "/producto/vacaciones" },
+  { title: "Documentos", description: "Organiza contratos, certificados y archivos laborales.", icon: FileText, href: "/producto/documentos" },
+  { title: "Turnos", description: "Planifica horarios, jornadas y descansos.", icon: CalendarClock, href: "/producto/turnos" },
+  { title: "Reportes", description: "Obtén métricas útiles para tomar decisiones.", icon: LayoutDashboard, href: "/producto/reportes" },
+  { title: "Reclutamiento", description: "Gestiona candidatos y procesos de selección.", icon: Briefcase, href: "/reclutamiento" },
+  { title: "IA para RRHH", description: "Automatiza consultas y procesos internos.", icon: Bot, href: "/producto/ia" },
+];
+
+export const productPages = {
+  empleados: {
+    title: "Expediente digital de cada empleado",
+    eyebrow: "Gestión de empleados",
+    description: "Toda la información personal, laboral, documental e histórica de tus colaboradores en una ficha clara y accionable.",
+    icon: Users,
+    bullets: ["Datos personales y laborales", "Cargo, área, contrato y jefe", "Documentos e historial por colaborador", "Tabs para asistencia, vacaciones y novedades"],
+  },
+  asistencia: {
+    title: "Asistencia clara, diaria y reportable",
+    eyebrow: "Control de asistencia",
+    description: "Visualiza presentes, ausentes, llegadas tarde e incapacidades con filtros por fecha, área y empleado.",
+    icon: Clock,
+    bullets: ["Entradas y salidas", "Retrasos y ausencias", "Historial por colaborador", "Reportes exportables"],
+  },
+  vacaciones: {
+    title: "Vacaciones y permisos sin cadenas de correos",
+    eyebrow: "Solicitudes y aprobaciones",
+    description: "Convierte solicitudes dispersas en flujos aprobables, trazables y visibles para RRHH.",
+    icon: CalendarDays,
+    bullets: ["Empleado solicita", "Jefe aprueba o rechaza", "RRHH queda informado", "Saldo y calendario actualizados"],
+  },
+  documentos: {
+    title: "Documentos laborales siempre ubicables",
+    eyebrow: "Gestión documental",
+    description: "Contratos, certificados, anexos y soportes con alertas de vencimiento y expediente asociado.",
+    icon: FileText,
+    bullets: ["Contratos y anexos", "Certificados laborales", "Soportes personales", "Alertas por vencimiento"],
+  },
+  turnos: {
+    title: "Planificación semanal de turnos",
+    eyebrow: "Turnos y jornadas",
+    description: "Asigna horarios, controla descansos y detecta conflictos antes de que lleguen a la operación.",
+    icon: CalendarClock,
+    bullets: ["Vista semanal", "Asignación por empleado", "Horarios y descansos", "Conflictos básicos"],
+  },
+  reportes: {
+    title: "Reportes para decidir, no solo almacenar",
+    eyebrow: "Analítica de RRHH",
+    description: "Indicadores de asistencia, ausentismo, vacaciones, documentos, altas, bajas y distribución por área.",
+    icon: LayoutDashboard,
+    bullets: ["Ausentismo y tardanzas", "Distribución por área", "Documentos vencidos", "Exportaciones CSV/PDF"],
+  },
+  ia: {
+    title: "Tu asistente de Recursos Humanos disponible 24/7",
+    eyebrow: "IA para RRHH",
+    description: "Prepara una capa conversacional para responder políticas, vacaciones, turnos, certificados y solicitudes.",
+    icon: Bot,
+    bullets: ["Consultas de vacaciones", "Certificados laborales", "Políticas internas", "Solicitudes guiadas"],
+  },
+};
