@@ -26,6 +26,15 @@ class AuthController extends Controller
             ->first();
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            \Illuminate\Support\Facades\Log::warning('Fallo de inicio de sesión', [
+                'request_id' => $request->header('X-Request-ID'),
+                'email_masked' => (new \App\Services\LogSanitizer)->maskEmail($credentials['email'] ?? null),
+                'reason' => ! $user ? 'Usuario no encontrado o inactivo' : 'Contraseña incorrecta',
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'path' => $request->path(),
+            ]);
+
             throw ValidationException::withMessages([
                 'email' => ['Las credenciales no son validas.'],
             ]);

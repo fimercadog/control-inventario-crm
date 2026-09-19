@@ -95,7 +95,7 @@ class SchedulingService
     {
         return User::query()
             ->where('company_id', $companyId)
-            ->role(['Médico/a Especialista', 'Médico/a', 'Veterinario/a'])
+            ->whereHas('roles', fn ($q) => $q->whereIn('name', ['Médico/a Especialista', 'Médico/a', 'Veterinario/a']))
             ->get(['id', 'name']);
     }
 
