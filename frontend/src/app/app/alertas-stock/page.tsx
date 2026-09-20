@@ -1,15 +1,15 @@
 "use client";
 
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Product } from "@/lib/types";
 
 function stockBadge(product: Product) {
   const stock = product.stock_on_hand ?? 0;
-  if (stock <= 0) return <Badge className="bg-destructive/15 text-destructive">Agotado</Badge>;
-  if (stock < product.reorder_level) return <Badge className="bg-warning/20 text-warning">Bajo</Badge>;
-  return <Badge className="bg-primary/15 text-primary">Sobrestock</Badge>;
+  if (stock <= 0) return <StatusBadge status="out_of_stock" label="Agotado" />;
+  if (stock < product.reorder_level) return <StatusBadge status="low_stock" label="Bajo stock" />;
+  return <StatusBadge status="overstock" label="Sobrestock" />;
 }
 
 const columns: AppColumnDef<Product>[] = [

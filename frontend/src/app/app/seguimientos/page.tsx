@@ -2,7 +2,7 @@
 
 import { ModuleTablePage } from "@/components/module-table-page";
 import { ToggleCompleteAction } from "@/components/crud/toggle-complete-action";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { activityFields } from "@/lib/activity-fields";
 import { ActivityRow } from "@/lib/types";
@@ -11,7 +11,7 @@ const columns: AppColumnDef<ActivityRow>[] = [
   { accessorKey: "subject", header: "Asunto" },
   { header: "Cliente", cell: ({ row }) => row.original.client?.name ?? "—" },
   dateColumn<ActivityRow>("due_date", "Proximo contacto"),
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.completed ? "Hecho" : "Pendiente"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.completed ? "completed" : "pending"} label={row.original.completed ? "Hecho" : "Pendiente"} /> },
 ];
 
 export default function FollowUpsPage() {
