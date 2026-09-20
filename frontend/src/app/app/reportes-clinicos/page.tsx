@@ -1,11 +1,32 @@
 "use client";
 
 import * as React from "react";
+import { motion } from "framer-motion";
+import {
+  Activity,
+  BarChart3,
+  CalendarDays,
+  ClipboardList,
+  DollarSign,
+  FileText,
+  Stethoscope,
+  Syringe,
+  UserCheck,
+  Users,
+} from "lucide-react";
 import { toast } from "sonner";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  containerVariants,
+  itemVariants,
+  REPORT_TONES,
+  ReportChartFrame,
+  ReportDistributionCard,
+  ReportKpiCard,
+  ReportSectionHeader,
+} from "@/components/ui/report-card";
 import { api } from "@/lib/api";
-import { isoDateLocal } from "@/lib/utils";
 import { APPOINTMENT_STATUS_LABEL } from "@/lib/appointments";
+import { isoDateLocal } from "@/lib/utils";
 
 type ClinicalReport = {
   range: { from: string; to: string };
@@ -18,97 +39,85 @@ type ClinicalReport = {
   revenue_by_service: Record<string, number>;
 };
 
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <Card>
-      <CardContent className="p-5">
-        <p className="text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
-        <p className="mt-1 text-2xl font-semibold tabular-nums">{value}</p>
-      </CardContent>
-    </Card>
-  );
-}
-
-function Breakdown({ title, rows, money }: { title: string; rows: Record<string, number>; money?: boolean }) {
-  const entries = Object.entries(rows);
-  return (
-    <Card>
-      <CardContent className="p-5">
-        <h3 className="mb-3 text-base font-medium">{title}</h3>
-        {entries.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Sin datos.</p>
-        ) : (
-          <ul className="space-y-2 text-sm">
-            {entries.map(([k, v]) => (
-              <li key={k} className="flex justify-between border-b border-border pb-2 last:border-0 last:pb-0">
-                <span>{k}</span>
-                <span className="font-medium tabular-nums">
-                  {money ? `$${Number(v).toLocaleString("es-CO")}` : v}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </CardContent>
-    </Card>
-  );
-}
-
 export default function ClinicalReportsPage() {
   const monthStart = isoDateLocal(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
   const today = isoDateLocal(new Date());
   const [from, setFrom] = React.useState(monthStart);
   const [to, setTo] = React.useState(today);
-  const [report, setReport] = React.useState<ClinicalReport | null>(null);
+  const [data, setData] = React.useState<ClinicalReport | null>(null);
 
-  const load = React.useCallback(() => {
+  const fetchReport = React.useCallback(() => {
     api
-      .get<ClinicalReport>("/reports/clinical", { params: { from, to } })
-      .then((r) => setReport(r.data))
-      .catch(() => toast.error("No se pudo cargar el reporte."));
+      .get<ClinicalReport>(`/reports/clinical?from=${from}&to=${to}`)
+      .then((r) => setData(r.data))
+      .catch(() => toast.error("Error al cargar informe de operacion"));
   }, [from, to]);
 
   React.useEffect(() => {
-    load();
-  }, [load]);
+    fetchReport();
+  }, [fetchReport]);
+
+  if (!data) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center space-y-3 p-8 text-center">
+        <ReportKpiCard label="Cargando Reportes Operativos" value={0} icon={BarChart3} tone={REPORT_TONES.emerald} />
+        <p className="text-xs text-muted-foreground">Generando analítica de citas y atención...</p>
+      </div>
+    );
+  }
+
+  const statusRows = Object.entries(data.appointments_by_status).map(([k, v]) => ({
+    name: APPOINTMENT_STATUS_LABEL[k] ?? k,
+    value: v,
+  }));
+
+  const practitionerRows = Object.entries(data.appointments_by_practitioner).map(([k, v]) => ({
+    name: k,
+    value: v,
+  }));
+
+  const serviceRows = Object.entries(data.revenue_by_service).map(([k, v]) => ({
+    name: k,
+    value: v,
+  }));
 
   return (
-    <div className="space-y-5">
-      <div className="flex flex-wrap items-end justify-between gap-3">
+    <motion.div variants={containerVariants} initial="hidden" animate="show" className="space-y-8">
+      {/* Header */}
+      <motion.div variants={itemVariants} className="flex flex-col justify-between gap-2 border-b border-border/60 pb-5 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-2xl font-semibold">Reportes clínicos</h1>
-          <p className="text-sm text-muted-foreground">Actividad de la clínica en el período.</p>
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="h-9 rounded-md border border-border bg-card px-2" />
-          <span className="text-muted-foreground">a</span>
-          <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="h-9 rounded-md border border-border bg-card px-2" />
-        </div>
-      </div>
-
-      {report === null ? (
-        <p className="text-sm text-muted-foreground">Cargando...</p>
-      ) : (
-        <>
-          <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
-            <Stat label="Pacientes atendidos" value={report.patients_attended} />
-            <Stat label="Consultas" value={report.consultations} />
-            <Stat label="Vacunas aplicadas" value={report.vaccinations_applied} />
-            <Stat label="Desparasitaciones" value={report.dewormings_applied} />
+          <div className="flex items-center gap-2">
+            <span className="rounded-md bg-emerald-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+              Analítica Operativa & Servicios
+            </span>
+            <span className="text-xs text-muted-foreground">
+              Rango: {data.range.from} a {data.range.to}
+            </span>
           </div>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">Reportes Operativos & Servicios</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Volumen de atención a clientes/viajeros, servicios aplicados e ingresos por tipo de servicio.
+          </p>
+        </div>
+      </motion.div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <Breakdown
-              title="Citas por estado"
-              rows={Object.fromEntries(
-                Object.entries(report.appointments_by_status).map(([k, v]) => [APPOINTMENT_STATUS_LABEL[k] ?? k, v]),
-              )}
-            />
-            <Breakdown title="Citas por profesional" rows={report.appointments_by_practitioner} />
-            <Breakdown title="Ingreso estimado por servicio" rows={report.revenue_by_service} money />
-          </div>
-        </>
-      )}
-    </div>
+      {/* KPI Cards Operativos */}
+      <motion.section variants={itemVariants} className="space-y-4">
+        <ReportSectionHeader title="Resumen de Atención & Servicios" description="Métricas de atención al cliente e itinerarios prestados." icon={Activity} tone={REPORT_TONES.emerald} />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ReportKpiCard label="Atendidos en Rango" value={data.patients_attended} icon={UserCheck} tone={REPORT_TONES.emerald} emphasis />
+          <ReportKpiCard label="Atenciones / Consultas" value={data.consultations} icon={Stethoscope} tone={REPORT_TONES.sky} />
+          <ReportKpiCard label="Servicios Principales" value={data.vaccinations_applied} icon={Syringe} tone={REPORT_TONES.indigo} />
+          <ReportKpiCard label="Asistencias Secundarias" value={data.dewormings_applied} icon={ClipboardList} tone={REPORT_TONES.violet} />
+        </div>
+      </motion.section>
+
+      {/* Desglose en Tarjetas Modernas */}
+      <motion.section variants={itemVariants} className="grid gap-6 lg:grid-cols-3">
+        <ReportDistributionCard title="Reservas & Citas por Estado" description="Distribución por estado técnico." icon={CalendarDays} tone={REPORT_TONES.indigo} rows={statusRows} />
+        <ReportDistributionCard title="Atención por Especialista / Agente" description="Volumen atendido por cada profesional." icon={Users} tone={REPORT_TONES.violet} rows={practitionerRows} />
+        <ReportDistributionCard title="Ingresos por Servicio Turístico" description="Monto facturado por servicio prestado." icon={DollarSign} tone={REPORT_TONES.emerald} rows={serviceRows} isMoney />
+      </motion.section>
+    </motion.div>
   );
 }
