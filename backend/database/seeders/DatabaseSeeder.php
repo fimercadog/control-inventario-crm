@@ -2,11 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\AccountPayable;
+use App\Models\AccountReceivable;
 use App\Models\Activity;
 use App\Models\Appointment;
 use App\Models\AuditLog;
 use App\Models\Brand;
+use App\Models\CashMovement;
 use App\Models\CashRegister;
+use App\Models\CashSession;
 use App\Models\Breed;
 use App\Models\Category;
 use App\Models\Client;
@@ -17,6 +21,8 @@ use App\Models\Consultation;
 use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\Diagnosis;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\Lead;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -111,6 +117,7 @@ class DatabaseSeeder extends Seeder
         $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@erp-pyme.test']);
         $this->seedClientNotesAndTasks($company, $clients, $patients, $admin, $reception);
         $this->seedRealEstateData($company, $users, $clients);
+        $this->seedFinancialData($company, $reception, $clients, $suppliers);
         $this->seedAuditLog($company, $admin, $clients, $patients);
     }
 
@@ -1170,6 +1177,118 @@ class DatabaseSeeder extends Seeder
                 'status' => 'scheduled',
                 'notes' => 'Cliente interesado en compra de contado',
             ]);
+        }
+    }
+
+    private function seedFinancialData(
+        Company $company,
+        User $reception,
+        Collection $clients,
+        Collection $suppliers,
+    ): void {
+        $cashRegister = CashRegister::where('company_id', $company->id)->first();
+        if ($cashRegister && CashSession::where('company_id', $company->id)->doesntExist()) {
+            $session = CashSession::create([
+                'company_id' => $company->id,
+                'cash_register_id' => $cashRegister->id,
+                'opened_by' => $reception->id,
+                'opening_amount' => 300000,
+                'closing_amount' => 1150000,
+                'status' => 'closed',
+                'opened_at' => now()->subDay()->setHour(8)->setMinute(0),
+                'closed_at' => now()->subDay()->setHour(18)->setMinute(0),
+            ]);
+
+            CashMovement::create([
+                'company_id' => $company->id,
+                'cash_session_id' => $session->id,
+                'user_id' => $reception->id,
+                'type' => 'income',
+                'amount' => 850000,
+                'method' => 'cash',
+                'notes' => 'Comisión venta inmueble Chicó',
+                'source_type' => 'App\\Models\\Client',
+                'source_id' => $clients->first()?->id ?? 1,
+            ]);
+
+            CashSession::create([
+                'company_id' => $company->id,
+                'cash_register_id' => $cashRegister->id,
+                'opened_by' => $reception->id,
+                'opening_amount' => 300000,
+                'status' => 'open',
+                'opened_at' => now()->setHour(8)->setMinute(0),
+            ]);
+        }
+
+        if (Invoice::where('company_id', $company->id)->doesntExist() && $clients->isNotEmpty()) {
+            $client = $clients->first();
+            $invNumber = 1001;
+
+            foreach ([
+                ['status' => 'paid', 'total' => 4500000, 'paid' => 4500000, 'items' => [['Comisión por venta INM-001 Chicó', 4500000]]],
+                ['status' => 'posted', 'total' => 2500000, 'paid' => 0, 'items' => [['Canon de arrendamiento oficina Zona Rosa', 2500000]]],
+                ['status' => 'posted', 'total' => 1200000, 'paid' => 400000, 'items' => [['Honorarios administración propiedad El Poblado', 1200000]]],
+                ['status' => 'draft', 'total' => 850000, 'paid' => 0, 'items' => [['Avalúo comercial inmueble Chicó', 850000]]],
+                ['status' => 'cancelled', 'total' => 300000, 'paid' => 0, 'items' => [['Publicación destacada en portales inmobiliarios', 300000]]],
+            ] as $invData) {
+                $num = 'FAC-' . $invNumber++;
+                $invoice = Invoice::create([
+                    'company_id' => $company->id,
+                    'client_id' => $client->id,
+                    'number' => $num,
+                    'status' => $invData['status'],
+                    'issue_date' => now()->subDays(rand(1, 15))->toDateString(),
+                    'due_date' => now()->addDays(rand(5, 30))->toDateString(),
+                    'subtotal' => $invData['total'],
+                    'tax' => 0,
+                    'total' => $invData['total'],
+                ]);
+
+                foreach ($invData['items'] as [$itemDesc, $itemPrice]) {
+                    InvoiceItem::create([
+                        'invoice_id' => $invoice->id,
+                        'product_name' => $itemDesc,
+                        'quantity' => 1,
+                        'unit_price' => $itemPrice,
+                        'discount' => 0,
+                        'tax' => 0,
+                        'line_total' => $itemPrice,
+                    ]);
+                }
+
+                if (in_array($invData['status'], ['posted', 'paid']) && ($invData['total'] - $invData['paid']) > 0) {
+                    AccountReceivable::create([
+                        'company_id' => $company->id,
+                        'client_id' => $client->id,
+                        'invoice_id' => $invoice->id,
+                        'original_amount' => $invData['total'],
+                        'paid_amount' => $invData['paid'],
+                        'balance' => $invData['total'] - $invData['paid'],
+                        'status' => ($invData['paid'] > 0) ? 'partial' : 'pending',
+                        'due_date' => $invoice->due_date,
+                    ]);
+                }
+            }
+        }
+
+        if (AccountPayable::where('company_id', $company->id)->doesntExist() && $suppliers->isNotEmpty()) {
+            $supplier = $suppliers->first();
+            foreach ([
+                ['amount' => 2200000, 'balance' => 2200000, 'status' => 'pending'],
+                ['amount' => 1500000, 'balance' => 750000, 'status' => 'partial'],
+                ['amount' => 450000, 'balance' => 0, 'status' => 'paid'],
+            ] as $apData) {
+                AccountPayable::create([
+                    'company_id' => $company->id,
+                    'supplier_id' => $supplier->id,
+                    'original_amount' => $apData['amount'],
+                    'paid_amount' => $apData['amount'] - $apData['balance'],
+                    'balance' => $apData['balance'],
+                    'status' => $apData['status'],
+                    'due_date' => now()->addDays(rand(10, 30))->toDateString(),
+                ]);
+            }
         }
     }
 }
