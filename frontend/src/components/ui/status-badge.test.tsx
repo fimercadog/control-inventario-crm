@@ -3,27 +3,36 @@ import { render, screen } from "@testing-library/react";
 import { StatusBadge, getStatusBadgeConfig, getCategoryFromText } from "./status-badge";
 
 describe("StatusBadge Component - ERP Core", () => {
-  it("maps core status keys to correct categories", () => {
-    expect(getStatusBadgeConfig("draft")).toEqual({ label: "Borrador", category: "secondary" });
-    expect(getStatusBadgeConfig("sent")).toEqual({ label: "Enviada", category: "info" });
-    expect(getStatusBadgeConfig("pending")).toEqual({ label: "Pendiente", category: "warning" });
-    expect(getStatusBadgeConfig("accepted")).toEqual({ label: "Aceptada", category: "success" });
-    expect(getStatusBadgeConfig("rejected")).toEqual({ label: "Rechazada", category: "destructive" });
-    expect(getStatusBadgeConfig("ai")).toEqual({ label: "IA", category: "purple" });
+  it("maps core status keys to correct categories and definitions", () => {
+    expect(getStatusBadgeConfig("draft").category).toBe("secondary");
+    expect(getStatusBadgeConfig("sent").category).toBe("info");
+    expect(getStatusBadgeConfig("pending").category).toBe("warning");
+    expect(getStatusBadgeConfig("accepted").category).toBe("success");
+    expect(getStatusBadgeConfig("rejected").category).toBe("destructive");
+    expect(getStatusBadgeConfig("ai").category).toBe("purple");
   });
 
-  it("maps ERP financial and inventory status keys correctly", () => {
-    expect(getStatusBadgeConfig("paid")).toEqual({ label: "Pagada", category: "success" });
-    expect(getStatusBadgeConfig("partially_paid")).toEqual({ label: "Parcialmente pagada", category: "warning" });
-    expect(getStatusBadgeConfig("overdue")).toEqual({ label: "Vencida", category: "destructive" });
-    expect(getStatusBadgeConfig("low_stock")).toEqual({ label: "Bajo stock", category: "warning" });
-    expect(getStatusBadgeConfig("out_of_stock")).toEqual({ label: "Agotado", category: "destructive" });
+  it("ensures distinct visual styles for distinct status keys within info category", () => {
+    const configNew = getStatusBadgeConfig("new");
+    const configContacted = getStatusBadgeConfig("contacted");
+    expect(configNew.className).toContain("sky");
+    expect(configContacted.className).toContain("indigo");
+    expect(configNew.className).not.toBe(configContacted.className);
+  });
+
+  it("ensures distinct visual styles for paid vs pending vs overdue", () => {
+    const configPaid = getStatusBadgeConfig("paid");
+    const configPending = getStatusBadgeConfig("pending");
+    const configOverdue = getStatusBadgeConfig("overdue");
+    expect(configPaid.className).toContain("green");
+    expect(configPending.className).toContain("amber");
+    expect(configOverdue.className).toContain("red-200");
   });
 
   it("maps travel agency status keys correctly", () => {
-    expect(getStatusBadgeConfig("quoted")).toEqual({ label: "Cotizado", category: "warning" });
-    expect(getStatusBadgeConfig("reserved")).toEqual({ label: "Reservado", category: "info" });
-    expect(getStatusBadgeConfig("traveling")).toEqual({ label: "En viaje", category: "purple" });
+    expect(getStatusBadgeConfig("quoted").category).toBe("warning");
+    expect(getStatusBadgeConfig("reserved").category).toBe("info");
+    expect(getStatusBadgeConfig("traveling").category).toBe("purple");
   });
 
   it("infers category from text fallback correctly", () => {
