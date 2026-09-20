@@ -31,6 +31,45 @@ export const STATUS_DICTIONARY: Record<string, StatusDefinition> = {
   rejected: { label: "Rechazada", category: "destructive" },
   overdue: { label: "Vencida", category: "destructive" },
 
+  // --- Citas, Asistencia & Salud ---
+  scheduled: { label: "Programada", category: "info" },
+  attended: { label: "Atendida", category: "success" },
+  "no-show": { label: "No asistió", category: "warning" },
+  triage: { label: "Triage", category: "warning" },
+  in_consultation: { label: "En atención", category: "info" },
+  discharged: { label: "Egresado", category: "success" },
+  auth_pending: { label: "Autorización pendiente", category: "warning" },
+
+  // --- Clínica Estética ---
+  assessment_pending: { label: "Valoración pendiente", category: "warning" },
+  in_treatment: { label: "Tratamiento activo", category: "info" },
+  session_completed: { label: "Sesión completada", category: "success" },
+  consent_pending: { label: "Consentimiento pendiente", category: "warning" },
+
+  // --- Veterinaria ---
+  vaccinated: { label: "Vacunado", category: "success" },
+  vaccine_due: { label: "Vacuna pendiente", category: "warning" },
+  active_treatment: { label: "Tratamiento activo", category: "info" },
+  medical_discharge: { label: "Alta médica", category: "success" },
+
+  // --- RRHH & Selección ---
+  candidate: { label: "Candidato", category: "secondary" },
+  in_selection: { label: "En selección", category: "info" },
+  hired: { label: "Contratado", category: "success" },
+  candidate_rejected: { label: "Descartado", category: "destructive" },
+
+  // --- Inmobiliaria ---
+  available: { label: "Disponible", category: "success" },
+  reserved: { label: "Reservado", category: "warning" },
+  rented: { label: "Arrendado", category: "info" },
+  sold: { label: "Vendido", category: "purple" },
+
+  // --- CareNote (IA & Transcripción) ---
+  session_open: { label: "Sesión abierta", category: "info" },
+  transcribing: { label: "Transcribiendo", category: "purple" },
+  ready: { label: "Nota lista", category: "success" },
+  transcription_failed: { label: "Transcripción fallida", category: "destructive" },
+
   // --- CRM, Leads & Oportunidades ---
   new: { label: "Nuevo", category: "info" },
   contacted: { label: "Contactado", category: "info" },
@@ -40,6 +79,7 @@ export const STATUS_DICTIONARY: Record<string, StatusDefinition> = {
   negotiation: { label: "Negociación", category: "warning" },
   won: { label: "Ganado", category: "success" },
   lost: { label: "Perdido", category: "destructive" },
+  discarded: { label: "Descartado", category: "destructive" },
 
   // --- Entidades Generales & Maestros ---
   active: { label: "Activo", category: "success" },
@@ -83,17 +123,18 @@ export const STATUS_DICTIONARY: Record<string, StatusDefinition> = {
 export function getCategoryFromText(text: string): StatusCategory {
   const norm = text.toLowerCase().trim();
 
-  // 1. Gris (Neutral / Borrador / Interno)
+  // 1. Gris (Neutral / Borrador / Interno / Candidato)
   if (
     norm.includes("borrador") ||
     norm.includes("intern") ||
     norm.includes("manual") ||
+    norm.includes("candidato") ||
     norm.includes("sin dato")
   ) {
     return "secondary";
   }
 
-  // 2. Verde (Éxito / Pagado / Confirmado / Aceptado / Activo / Ganado)
+  // 2. Verde (Éxito / Pagado / Confirmado / Aceptado / Activo / Ganado / Disponible / Vacunado / Alta)
   if (
     (norm.includes("pagad") && !norm.includes("parcial")) ||
     norm.includes("aceptad") ||
@@ -103,6 +144,11 @@ export function getCategoryFromText(text: string): StatusCategory {
     norm.includes("ganad") ||
     norm.includes("completad") ||
     norm.includes("sincronizad") ||
+    norm.includes("disponible") ||
+    norm.includes("vacunado") ||
+    norm.includes("alta") ||
+    norm.includes("contratado") ||
+    norm.includes("nota lista") ||
     norm === "activo" ||
     norm === "activa" ||
     norm === "abierta" ||
@@ -113,7 +159,7 @@ export function getCategoryFromText(text: string): StatusCategory {
     return "success";
   }
 
-  // 3. Azul (Enviado / Emitido / Programado / Información / Sitio web)
+  // 3. Azul (Enviado / Emitido / Programado / Información / Sitio web / Atención / Arrendado)
   if (
     norm.includes("enviad") ||
     norm.includes("emitid") ||
@@ -124,15 +170,23 @@ export function getCategoryFromText(text: string): StatusCategory {
     norm.includes("traslado") ||
     norm.includes("nuevo") ||
     norm.includes("contactad") ||
-    norm.includes("sobrestock")
+    norm.includes("sobrestock") ||
+    norm.includes("atención") ||
+    norm.includes("atencion") ||
+    norm.includes("arrendado") ||
+    norm.includes("en selección") ||
+    norm.includes("en seleccion") ||
+    norm.includes("sesión abierta") ||
+    norm.includes("sesion abierta")
   ) {
     return "info";
   }
 
-  // 4. Ámbar / Amarillo (Pendiente / Parcial / Por revisar / Advertencia / Bajo stock)
+  // 4. Ámbar / Amarillo (Pendiente / Parcial / Por revisar / Advertencia / Bajo stock / Reservado / Triage)
   if (
     norm.includes("parcial") ||
     norm.includes("pendient") ||
+    norm.includes("triage") ||
     norm.includes("calificacion") ||
     norm.includes("calificación") ||
     norm.includes("propuesta") ||
@@ -140,12 +194,16 @@ export function getCategoryFromText(text: string): StatusCategory {
     norm.includes("negociación") ||
     norm.includes("no asistió") ||
     norm.includes("bajo") ||
-    norm.includes("salida")
+    norm.includes("salida") ||
+    norm.includes("reservado") ||
+    norm.includes("valoración") ||
+    norm.includes("valoracion") ||
+    norm.includes("consentimiento")
   ) {
     return "warning";
   }
 
-  // 5. Rojo (Rechazado / Vencido / Cancelado / Error / Inactivo / Agotado)
+  // 5. Rojo (Rechazado / Vencido / Cancelado / Error / Inactivo / Agotado / Descartado / Fallida)
   if (
     norm.includes("rechazad") ||
     norm.includes("vencid") ||
@@ -156,6 +214,7 @@ export function getCategoryFromText(text: string): StatusCategory {
     norm.includes("error") ||
     norm.includes("conflicto") ||
     norm.includes("agotad") ||
+    norm.includes("fallid") ||
     norm === "inactivo" ||
     norm === "inactiva" ||
     norm === "cerrada" ||
@@ -164,8 +223,14 @@ export function getCategoryFromText(text: string): StatusCategory {
     return "destructive";
   }
 
-  // 6. Morado (Especial / IA / Premium)
-  if (norm.includes("ia") || norm.includes("premium") || norm.includes("automatizad")) {
+  // 6. Morado (Especial / IA / Premium / Transcribiendo / Vendido)
+  if (
+    norm.includes("ia") ||
+    norm.includes("premium") ||
+    norm.includes("automatizad") ||
+    norm.includes("transcribiendo") ||
+    norm.includes("vendido")
+  ) {
     return "purple";
   }
 
