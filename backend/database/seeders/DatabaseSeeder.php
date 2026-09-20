@@ -1153,5 +1153,225 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
+        // --- AGENCIA DE VIAJES SEEDERS ---
+        if (\App\Models\TravelDestination::where('company_id', $company->id)->doesntExist()) {
+            $cancun = \App\Models\TravelDestination::create([
+                'company_id' => $company->id,
+                'name' => 'Cancún & Riviera Maya',
+                'code' => 'DEST-CUN',
+                'country' => 'México',
+                'city' => 'Cancún',
+                'season' => 'Todo el año',
+                'description' => 'Playas de arena blanca, mar turquesa, cenotes sagrados y resorts All-Inclusive de lujo.',
+                'highlights' => 'Xcaret, Chichén Itzá, Playa Delfines, Tulum',
+                'is_featured' => true,
+                'image_url' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800',
+                'status' => 'active',
+            ]);
+
+            $paris = \App\Models\TravelDestination::create([
+                'company_id' => $company->id,
+                'name' => 'París & Valle del Loira',
+                'code' => 'DEST-PAR',
+                'country' => 'Francia',
+                'city' => 'París',
+                'season' => 'Primavera / Otoño',
+                'description' => 'La ciudad de la luz, arte en el Louvre, gastronomía gourmet y castillos majestuosos.',
+                'highlights' => 'Torre Eiffel, Museo del Louvre, Palacio de Versalles, Crucero por el Sena',
+                'is_featured' => true,
+                'image_url' => 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&q=80&w=800',
+                'status' => 'active',
+            ]);
+
+            $madrid = \App\Models\TravelDestination::create([
+                'company_id' => $company->id,
+                'name' => 'Madrid, Barcelona & Andalucía',
+                'code' => 'DEST-MAD',
+                'country' => 'España',
+                'city' => 'Madrid',
+                'season' => 'Primavera / Otoño',
+                'description' => 'Cultura, flamenco, arquitectura de Gaudí y la mejor gastronomía de tapas.',
+                'highlights' => 'La Alhambra, Sagrada Familia, Parque del Retiro, Museo del Prado',
+                'is_featured' => true,
+                'image_url' => 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&q=80&w=800',
+                'status' => 'active',
+            ]);
+
+            $puntaCana = \App\Models\TravelDestination::create([
+                'company_id' => $company->id,
+                'name' => 'Punta Cana & Isla Saona',
+                'code' => 'DEST-PUJ',
+                'country' => 'República Dominicana',
+                'city' => 'Punta Cana',
+                'season' => 'Todo el año',
+                'description' => 'Resorts All-Inclusive de primera clase, palmeras y arrecifes de coral.',
+                'highlights' => 'Isla Saona, Playa Bávaro, Hoyo Azul, Scape Park',
+                'is_featured' => false,
+                'image_url' => 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=800',
+                'status' => 'active',
+            ]);
+
+            // Paquetes Turísticos
+            $pkgCancun = \App\Models\TravelPackage::create([
+                'company_id' => $company->id,
+                'destination_id' => $cancun->id,
+                'name' => 'Caribe Soñado 5D/4N All-Inclusive',
+                'code' => 'PAQ-CUN-01',
+                'duration_days' => 5,
+                'duration_nights' => 4,
+                'departure_date' => now()->addDays(30)->toDateString(),
+                'price' => 3850000.00,
+                'available_slots' => 12,
+                'includes' => 'Tiquetes aéreos redondos, Resort 5 estrellas Todo Incluido, Traslados aeropuerto, Tour Chichén Itzá',
+                'excludes' => 'Gastos personales, Propinas',
+                'is_featured' => true,
+                'image_url' => 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800',
+                'status' => 'active',
+            ]);
+
+            $pkgEuropa = \App\Models\TravelPackage::create([
+                'company_id' => $company->id,
+                'destination_id' => $paris->id,
+                'name' => 'Europa Clásica 15D/14N (Madrid, París & Roma)',
+                'code' => 'PAQ-EUR-01',
+                'duration_days' => 15,
+                'duration_nights' => 14,
+                'departure_date' => now()->addDays(45)->toDateString(),
+                'price' => 12900000.00,
+                'available_slots' => 8,
+                'includes' => 'Vuelos internacionales, Trenes de alta velocidad, Hoteles 4 estrellas con desayuno, Guías en español, Seguro Schengen',
+                'excludes' => 'Tasa turística de ciudades, Almuerzos libres',
+                'is_featured' => true,
+                'image_url' => 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&q=80&w=800',
+                'status' => 'active',
+            ]);
+
+            // Viajeros
+            $adminUser = User::where('company_id', $company->id)->first() ?? User::first();
+            $clientsList = Client::where('company_id', $company->id)->get();
+            $firstClient = $clientsList->first();
+
+            $traveler1 = \App\Models\TravelTraveler::create([
+                'company_id' => $company->id,
+                'client_id' => $firstClient ? $firstClient->id : null,
+                'first_name' => 'Alejandro',
+                'last_name' => 'Morales',
+                'document_type' => 'CC',
+                'document_number' => '1020304050',
+                'passport_number' => 'PAS-889412',
+                'passport_expiration' => now()->addYears(5)->toDateString(),
+                'nationality' => 'Colombiana',
+                'birth_date' => '1988-04-12',
+                'gender' => 'Masculino',
+                'phone' => '+57 310 445 8899',
+                'email' => 'amorales@gmail.com',
+                'special_requirements' => 'Asiento en pasillo, comida vegetariana',
+                'status' => 'active',
+            ]);
+
+            $traveler2 = \App\Models\TravelTraveler::create([
+                'company_id' => $company->id,
+                'client_id' => $firstClient ? $firstClient->id : null,
+                'first_name' => 'Natalia',
+                'last_name' => 'Cárdenas',
+                'document_type' => 'CC',
+                'document_number' => '1030405060',
+                'passport_number' => 'PAS-774125',
+                'passport_expiration' => now()->addYears(4)->toDateString(),
+                'nationality' => 'Colombiana',
+                'birth_date' => '1992-08-25',
+                'gender' => 'Femenino',
+                'phone' => '+57 312 889 7744',
+                'email' => 'ncardenas@hotmail.com',
+                'special_requirements' => 'Habitación cama King',
+                'status' => 'active',
+            ]);
+
+            // Reservas
+            $booking1 = \App\Models\TravelBooking::create([
+                'company_id' => $company->id,
+                'booking_number' => 'RES-CUN-2026-001',
+                'client_id' => $firstClient ? $firstClient->id : 1,
+                'package_id' => $pkgCancun->id,
+                'destination_id' => $cancun->id,
+                'travel_date' => now()->addDays(20)->toDateString(),
+                'return_date' => now()->addDays(25)->toDateString(),
+                'num_travelers' => 2,
+                'total_amount' => 7700000.00,
+                'paid_amount' => 3850000.00,
+                'pending_amount' => 3850000.00,
+                'status' => 'confirmed',
+                'user_id' => $adminUser ? $adminUser->id : null,
+                'notes' => 'Abono del 50% realizado. Saldo pendiente 10 días antes del vuelo.',
+            ]);
+
+            $booking1->travelers()->sync([$traveler1->id, $traveler2->id]);
+
+            // Itinerarios
+            \App\Models\TravelItinerary::create([
+                'company_id' => $company->id,
+                'booking_id' => $booking1->id,
+                'package_id' => $pkgCancun->id,
+                'day_number' => 1,
+                'title' => 'Llegada a Cancún y Check-in en Resort',
+                'description' => 'Recibimiento en aeropuerto por nuestro operador, traslado privado al resort All-Inclusive.',
+                'activity_date' => $booking1->travel_date,
+                'location' => 'Cancún',
+                'included_services' => 'Traslado privado, Cena de bienvenida',
+            ]);
+
+            \App\Models\TravelItinerary::create([
+                'company_id' => $company->id,
+                'booking_id' => $booking1->id,
+                'package_id' => $pkgCancun->id,
+                'day_number' => 2,
+                'title' => 'Excursión a Chichén Itzá & Cenote Sagrado',
+                'description' => 'Tour guiado en español a la pirámide de Kukulcán con almuerzo buffet regional.',
+                'activity_date' => Carbon::parse($booking1->travel_date)->addDay()->toDateString(),
+                'location' => 'Chichén Itzá',
+                'included_services' => 'Transporte en bus climatizado, Entradas, Almuerzo buffet',
+            ]);
+
+            // Servicios Turísticos
+            \App\Models\TravelService::create([
+                'company_id' => $company->id,
+                'booking_id' => $booking1->id,
+                'supplier_id' => $suppliers->first()?->id,
+                'service_type' => 'flight',
+                'name' => 'Vuelo Bogotá - Cancún (Avianca AV254)',
+                'supplier_reference' => 'PNR-AV-8841',
+                'start_date' => $booking1->travel_date->toDateTimeString(),
+                'end_date' => $booking1->travel_date->toDateTimeString(),
+                'cost_price' => 2200000.00,
+                'selling_price' => 2800000.00,
+                'status' => 'confirmed',
+            ]);
+
+            \App\Models\TravelService::create([
+                'company_id' => $company->id,
+                'booking_id' => $booking1->id,
+                'supplier_id' => $suppliers->first()?->id,
+                'service_type' => 'hotel',
+                'name' => 'Hard Rock Hotel Cancún All-Inclusive (4 noches)',
+                'supplier_reference' => 'HOTEL-HR-998',
+                'start_date' => $booking1->travel_date->toDateTimeString(),
+                'end_date' => $booking1->return_date->toDateTimeString(),
+                'cost_price' => 3800000.00,
+                'selling_price' => 4900000.00,
+                'status' => 'confirmed',
+            ]);
+
+            // Documentos de Viaje
+            \App\Models\TravelDocument::create([
+                'company_id' => $company->id,
+                'booking_id' => $booking1->id,
+                'document_type' => 'voucher',
+                'title' => 'Voucher de Servicios Hard Rock Hotel Cancún',
+                'document_number' => 'VOUCH-CUN-884',
+                'issued_at' => now(),
+                'notes' => 'Presentar en recepción del hotel al momento del check-in.',
+            ]);
+        }
     }
 }

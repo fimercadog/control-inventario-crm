@@ -20,6 +20,12 @@ describe("StatusBadge Component - ERP Core", () => {
     expect(getStatusBadgeConfig("out_of_stock")).toEqual({ label: "Agotado", category: "destructive" });
   });
 
+  it("maps travel agency status keys correctly", () => {
+    expect(getStatusBadgeConfig("quoted")).toEqual({ label: "Cotizado", category: "warning" });
+    expect(getStatusBadgeConfig("reserved")).toEqual({ label: "Reservado", category: "info" });
+    expect(getStatusBadgeConfig("traveling")).toEqual({ label: "En viaje", category: "purple" });
+  });
+
   it("infers category from text fallback correctly", () => {
     expect(getCategoryFromText("Factura pagada")).toBe("success");
     expect(getCategoryFromText("Pago parcial")).toBe("warning");

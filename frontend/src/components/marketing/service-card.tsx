@@ -4,20 +4,14 @@ import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/marketing/reveal";
 import type { Service } from "@/components/marketing/marketing-data";
 
-/** Ícono ilustrado del pack Divi "Veterinarian" por servicio (ver docs/referencia-visual-veterinaria.md). */
+/** Ícono por servicio para Agencia de Viajes. */
 export const SERVICE_ICON: Record<string, string> = {
-  "consulta-veterinaria": "/gallery/icons/icon-16.png",
-  vacunacion: "/gallery/icons/icon-9.png",
-  desparasitacion: "/gallery/icons/icon-10.png",
-  "medicina-preventiva": "/gallery/icons/icon-1.png",
-  "laboratorio-clinico": "/gallery/icons/icon-13.png",
-  cirugia: "/gallery/icons/icon-14.png",
-  "odontologia-veterinaria": "/gallery/icons/icon-15.png",
-  hospitalizacion: "/gallery/icons/icon-12.png",
-  urgencias: "/gallery/icons/icon-2.png",
-  nutricion: "/gallery/icons/icon-4.png",
-  "diagnostico-por-imagen": "/gallery/icons/icon-14.png",
-  "peluqueria-grooming": "/gallery/icons/icon-8.png",
+  "paquetes-turisticos": "/gallery/icons/icon-1.png",
+  "tiquetes-aereos": "/gallery/icons/icon-2.png",
+  "hoteles-alojamiento": "/gallery/icons/icon-3.png",
+  "tours-guiados": "/gallery/icons/icon-4.png",
+  "seguro-viajero": "/gallery/icons/icon-5.png",
+  "cruceros-experiencias": "/gallery/icons/icon-6.png",
 };
 
 export function ServiceCard({ service, delay = 0 }: { service: Service; delay?: number }) {

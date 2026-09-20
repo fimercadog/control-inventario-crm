@@ -41,6 +41,15 @@ export const STATUS_DICTIONARY: Record<string, StatusDefinition> = {
   won: { label: "Ganado", category: "success" },
   lost: { label: "Perdido", category: "destructive" },
 
+  // --- Agencia de Viajes ---
+  quoted: { label: "Cotizado", category: "warning" },
+  reserved: { label: "Reservado", category: "info" },
+  pending_payment: { label: "Pago pendiente", category: "warning" },
+  traveling: { label: "En viaje", category: "purple" },
+  completed: { label: "Completado", category: "success" },
+  expired: { label: "Expirada", category: "destructive" },
+  scheduled: { label: "Programado", category: "info" },
+
   // --- Entidades Generales & Maestros ---
   active: { label: "Activo", category: "success" },
   inactive: { label: "Inactivo", category: "destructive" },

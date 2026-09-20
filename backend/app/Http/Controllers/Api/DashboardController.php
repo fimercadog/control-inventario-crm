@@ -56,6 +56,13 @@ class DashboardController extends Controller
                 'consultations_month' => Consultation::where('company_id', $companyId)
                     ->whereDate('date', '>=', $monthStart)->whereDate('date', '<=', $today)->count(),
             ],
+            'travel' => [
+                'active_bookings' => \App\Models\TravelBooking::where('company_id', $companyId)->whereNotIn('status', ['cancelled', 'completed'])->count(),
+                'travelers_count' => \App\Models\TravelTraveler::where('company_id', $companyId)->count(),
+                'upcoming_trips' => \App\Models\TravelBooking::where('company_id', $companyId)->whereDate('travel_date', '>=', $today)->count(),
+                'destinations_count' => \App\Models\TravelDestination::where('company_id', $companyId)->count(),
+                'packages_count' => \App\Models\TravelPackage::where('company_id', $companyId)->count(),
+            ],
             'metrics' => [
                 'total_clients' => Client::where('company_id', $companyId)->count(),
                 'open_deals' => (clone $openDeals)->count(),

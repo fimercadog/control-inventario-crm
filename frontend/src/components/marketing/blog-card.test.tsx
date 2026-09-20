@@ -9,7 +9,7 @@ describe("BlogCard", () => {
   it("renders the title, category, and a link to the post", () => {
     render(<BlogCard post={post} />);
     expect(screen.getByText(post.title)).toBeInTheDocument();
-    expect(screen.getByText(new RegExp(post.category))).toBeInTheDocument();
+    expect(screen.getAllByText(new RegExp(post.category))[0]).toBeInTheDocument();
     expect(screen.getByRole("link")).toHaveAttribute("href", `/blog/${post.slug}`);
   });
 
@@ -23,6 +23,6 @@ describe("FeaturedPost", () => {
   it("renders the author name and links to the post", () => {
     render(<FeaturedPost post={post} />);
     expect(screen.getByRole("link")).toHaveAttribute("href", `/blog/${post.slug}`);
-    expect(screen.getByText("Dr. Carlos Medina")).toBeInTheDocument();
+    expect(screen.getByText("Laura Peña")).toBeInTheDocument();
   });
 });

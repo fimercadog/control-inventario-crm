@@ -226,6 +226,14 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/appointments/{id}/attended', [AppointmentController::class, 'markAttended'])->middleware('can:appointments.manage')->whereNumber('id');
     Route::post('/appointments/{id}/no-show', [AppointmentController::class, 'markNoShow'])->middleware('can:appointments.manage')->whereNumber('id');
 
+    // --- Agencia de Viajes & Turismo ---
+    Route::apiResource('destinations', \App\Http\Controllers\Api\TravelDestinationController::class);
+    Route::apiResource('packages', \App\Http\Controllers\Api\TravelPackageController::class);
+    Route::apiResource('bookings', \App\Http\Controllers\Api\TravelBookingController::class);
+    Route::apiResource('reservas', \App\Http\Controllers\Api\TravelBookingController::class);
+    Route::apiResource('travelers', \App\Http\Controllers\Api\TravelTravelerController::class);
+    Route::apiResource('viajeros', \App\Http\Controllers\Api\TravelTravelerController::class);
+
     Route::apiResource('audit-logs', AuditLogController::class)->only(['index', 'show'])->middleware('can:audit.view');
     Route::get('/permissions', [RoleController::class, 'permissions'])->middleware('can:roles.manage');
     Route::apiResource('roles', RoleController::class)->only(['index', 'show', 'store', 'update'])->middleware('can:roles.manage');
