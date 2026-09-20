@@ -146,6 +146,8 @@ export function getCategoryFromText(text: string): StatusCategory {
     norm.includes("sincronizad") ||
     norm.includes("disponible") ||
     norm.includes("vacunado") ||
+    norm.includes("vacunac") ||
+    norm.includes("completa") ||
     norm.includes("alta") ||
     norm.includes("contratado") ||
     norm.includes("nota lista") ||
@@ -164,6 +166,8 @@ export function getCategoryFromText(text: string): StatusCategory {
     norm.includes("enviad") ||
     norm.includes("emitid") ||
     norm.includes("programad") ||
+    norm.includes("en curso") ||
+    norm.includes("tratamiento") ||
     norm.includes("sitio web") ||
     norm.includes("prospeccion") ||
     norm.includes("prospección") ||
@@ -203,7 +207,7 @@ export function getCategoryFromText(text: string): StatusCategory {
     return "warning";
   }
 
-  // 5. Rojo (Rechazado / Vencido / Cancelado / Error / Inactivo / Agotado / Descartado)
+  // 5. Rojo (Rechazado / Vencido / Cancelado / Error / Inactivo / Agotado / Descartado / Fallid)
   if (
     norm.includes("rechazad") ||
     norm.includes("vencid") ||
@@ -214,7 +218,7 @@ export function getCategoryFromText(text: string): StatusCategory {
     norm.includes("error") ||
     norm.includes("conflicto") ||
     norm.includes("agotad") ||
-    norm.includes("fallida") ||
+    norm.includes("fallid") ||
     norm === "inactivo" ||
     norm === "inactiva" ||
     norm === "cerrada" ||
