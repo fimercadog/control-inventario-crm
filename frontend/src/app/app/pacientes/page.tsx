@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Patient } from "@/lib/types";
 
@@ -37,7 +37,7 @@ const columns: AppColumnDef<Patient>[] = [
   { header: "Grupo RH", cell: ({ row }) => row.original.blood_type || "—" },
   { header: "Teléfono", cell: ({ row }) => row.original.phone || "—" },
   { header: "Sexo", cell: ({ row }) => SEX_LABEL[row.original.sex] ?? row.original.sex },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={row.original.status === "active" ? "Activo" : "Inactivo"} /> },
 ];
 
 const fields: CrudField[] = [

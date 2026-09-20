@@ -2,7 +2,7 @@
 
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Supplier } from "@/lib/types";
 
@@ -11,7 +11,7 @@ const columns: AppColumnDef<Supplier>[] = [
   { header: "Contacto", cell: ({ row }) => row.original.contact_name ?? "—" },
   { header: "Correo", cell: ({ row }) => row.original.email ?? "—" },
   { header: "Telefono", cell: ({ row }) => row.original.phone ?? "—" },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={row.original.status === "active" ? "Activo" : "Inactivo"} /> },
 ];
 
 const fields: CrudField[] = [

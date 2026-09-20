@@ -5,7 +5,7 @@ import { Eye } from "lucide-react";
 import { CrudField } from "@/components/crud/crud-modal";
 import { WhatsAppAction } from "@/components/crud/whatsapp-action";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Client } from "@/lib/types";
 
@@ -15,7 +15,7 @@ const columns: AppColumnDef<Client>[] = [
   { header: "Segmento", cell: ({ row }) => row.original.segment ?? "—" },
   { header: "Correo", cell: ({ row }) => row.original.email ?? "—" },
   { header: "Telefono", cell: ({ row }) => row.original.phone ?? "—" },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={row.original.status === "active" ? "Activo" : "Inactivo"} /> },
 ];
 
 const fields: CrudField[] = [

@@ -4,7 +4,7 @@ import { Eye } from "lucide-react";
 import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Order } from "@/lib/types";
 
@@ -13,7 +13,7 @@ const STATUS_LABEL: Record<Order["status"], string> = { draft: "Borrador", confi
 const columns: AppColumnDef<Order>[] = [
   { header: "Cliente", cell: ({ row }) => row.original.client?.name ?? `#${row.original.client_id}` },
   { header: "Bodega", cell: ({ row }) => row.original.warehouse?.name ?? `#${row.original.warehouse_id}` },
-  { header: "Estado", cell: ({ row }) => <Badge>{STATUS_LABEL[row.original.status]}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={STATUS_LABEL[row.original.status]} /> },
   { header: "Total", cell: ({ row }) => `$${Number(row.original.total).toLocaleString("es-CO")}` },
 ];
 

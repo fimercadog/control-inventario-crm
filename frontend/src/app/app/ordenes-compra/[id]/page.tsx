@@ -4,7 +4,7 @@ import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -100,7 +100,7 @@ export default function PurchaseOrderDetailPage() {
           <p className="text-sm text-muted-foreground">{order.supplier?.name ?? `Proveedor #${order.supplier_id}`}</p>
         </div>
         <div className="flex items-center gap-3">
-          <Badge>{STATUS_LABEL[order.status]}</Badge>
+          <StatusBadge status={order.status} label={STATUS_LABEL[order.status]} />
           <Button variant="ghost" size="sm" onClick={() => router.push("/app/ordenes-compra")}>Volver</Button>
         </div>
       </div>

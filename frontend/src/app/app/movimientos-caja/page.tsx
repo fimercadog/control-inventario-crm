@@ -1,13 +1,13 @@
 "use client";
 
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { CashMovement } from "@/lib/types";
 
 const columns: AppColumnDef<CashMovement>[] = [
   { header: "Sesión", cell: ({ row }) => `#${row.original.cash_session_id}` },
-  { header: "Tipo", cell: ({ row }) => <Badge>{row.original.type === "in" ? "Entrada" : "Salida"}</Badge> },
+  { header: "Tipo", cell: ({ row }) => <StatusBadge status={row.original.type === "in" ? "success" : "warning"} label={row.original.type === "in" ? "Entrada" : "Salida"} /> },
   { header: "Método", accessorKey: "method" },
   { header: "Referencia", cell: ({ row }) => row.original.reference ?? "—" },
   { header: "Valor", cell: ({ row }) => `$${Number(row.original.amount).toLocaleString("es-CO")}` },

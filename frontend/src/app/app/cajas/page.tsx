@@ -2,13 +2,13 @@
 
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { CashRegister } from "@/lib/types";
 
 const columns: AppColumnDef<CashRegister>[] = [
   { header: "Nombre", accessorKey: "name" },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activa" : "Inactiva"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={row.original.status === "active" ? "Activa" : "Inactiva"} /> },
 ];
 
 const fields: CrudField[] = [

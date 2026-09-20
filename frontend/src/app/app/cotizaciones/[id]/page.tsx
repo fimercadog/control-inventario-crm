@@ -4,7 +4,7 @@ import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -104,7 +104,7 @@ export default function QuoteDetailPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Badge>{STATUS_LABEL[quote.status]}</Badge>
+          <StatusBadge status={quote.status} label={STATUS_LABEL[quote.status]} />
           <Button variant="ghost" size="sm" onClick={() => router.push("/app/cotizaciones")}>
             Volver
           </Button>

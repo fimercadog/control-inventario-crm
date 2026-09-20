@@ -4,7 +4,7 @@ import { Eye } from "lucide-react";
 import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef, dateColumn } from "@/lib/table-types";
 import { Quote } from "@/lib/types";
 
@@ -22,12 +22,12 @@ const columns: AppColumnDef<Quote>[] = [
     header: "Origen",
     cell: ({ row }) =>
       row.original.source === "catalog" ? (
-        <Badge className="bg-primary/15 text-primary">Sitio web</Badge>
+        <StatusBadge status="info" label="Sitio web" />
       ) : (
-        <Badge>Interna</Badge>
+        <StatusBadge status="secondary" label="Interna" />
       ),
   },
-  { header: "Estado", cell: ({ row }) => <Badge>{STATUS_LABEL[row.original.status]}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={STATUS_LABEL[row.original.status]} /> },
   dateColumn<Quote>("valid_until", "Valida hasta"),
   { header: "Total", cell: ({ row }) => `$${Number(row.original.total).toLocaleString("es-CO")}` },
 ];
