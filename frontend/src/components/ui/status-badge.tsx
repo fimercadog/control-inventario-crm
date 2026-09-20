@@ -203,7 +203,7 @@ export function getCategoryFromText(text: string): StatusCategory {
     return "warning";
   }
 
-  // 5. Rojo (Rechazado / Vencido / Cancelado / Error / Inactivo / Agotado / Descartado)
+  // 5. Rojo (Rechazado / Vencido / Cancelado / Error / Inactivo / Agotado / Descartado / Fallid)
   if (
     norm.includes("rechazad") ||
     norm.includes("vencid") ||
@@ -214,7 +214,7 @@ export function getCategoryFromText(text: string): StatusCategory {
     norm.includes("error") ||
     norm.includes("conflicto") ||
     norm.includes("agotad") ||
-    norm.includes("fallida") ||
+    norm.includes("fallid") ||
     norm === "inactivo" ||
     norm === "inactiva" ||
     norm === "cerrada" ||
