@@ -96,7 +96,8 @@ class ErpFlowTest extends TestCase
         $this->assertSame(100, $this->product->fresh()->stockOnHand($this->warehouse->id));
         $this->assertDatabaseHas('purchase_orders', ['id' => $po['id'], 'status' => 'received']);
 
-        $payableId = (int) $this->getJson('/api/accounts-payable')->json('data.0.id');
+        $payables = $this->getJson('/api/accounts-payable')->json('data');
+        $payableId = (int) collect($payables)->firstWhere('original_amount', 24000)['id'];
         $this->postJson('/api/payments', [
             'target_type' => 'payable',
             'target_id' => $payableId,
