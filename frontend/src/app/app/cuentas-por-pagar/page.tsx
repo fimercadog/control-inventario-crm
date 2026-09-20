@@ -1,7 +1,7 @@
 "use client";
 
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { AccountPayable } from "@/lib/types";
 
@@ -15,7 +15,7 @@ const STATUS_LABEL: Record<AccountPayable["status"], string> = {
 const columns: AppColumnDef<AccountPayable>[] = [
   { header: "Proveedor", cell: ({ row }) => row.original.supplier?.name ?? `#${row.original.supplier_id}` },
   { header: "Recepción", cell: ({ row }) => row.original.purchase_receipt_id ? `#${row.original.purchase_receipt_id}` : "—" },
-  { header: "Estado", cell: ({ row }) => <Badge>{STATUS_LABEL[row.original.status]}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={STATUS_LABEL[row.original.status]} /> },
   dateColumn<AccountPayable>("due_date", "Vence"),
   { header: "Saldo", cell: ({ row }) => `$${Number(row.original.balance).toLocaleString("es-CO")}` },
 ];

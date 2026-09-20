@@ -43,7 +43,7 @@ import {
   YAxis,
 } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { useDashboard, type DashboardData, type Delta } from "@/lib/use-dashboard";
 import { useCountUp } from "@/lib/use-count-up";
 import { isBasePlan } from "@/lib/plan";
@@ -544,7 +544,7 @@ function LowStockList({ products }: { products: DashboardData["low_stock_alerts"
             <p className="truncate text-sm font-medium">{p.name}</p>
             <p className="text-xs text-muted-foreground">SKU {p.sku} · reorden en {p.reorder_level}</p>
           </div>
-          <Badge className="ml-auto shrink-0 bg-destructive/15 text-destructive">Bajo stock</Badge>
+          <StatusBadge status="overdue" label="Stock crítico" className="ml-auto shrink-0" />
         </li>
       ))}
     </ul>

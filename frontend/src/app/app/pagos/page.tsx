@@ -2,12 +2,12 @@
 
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { Payment } from "@/lib/types";
 
 const columns: AppColumnDef<Payment>[] = [
-  { header: "Tipo", cell: ({ row }) => <Badge>{row.original.direction === "in" ? "Cobro" : "Pago"}</Badge> },
+  { header: "Tipo", cell: ({ row }) => <StatusBadge status={row.original.direction === "in" ? "success" : "warning"} label={row.original.direction === "in" ? "Cobro" : "Pago"} /> },
   { header: "Documento", cell: ({ row }) => `${row.original.target_type === "receivable" ? "CxC" : "CxP"} #${row.original.target_id}` },
   dateColumn<Payment>("paid_at", "Fecha"),
   { header: "Método", accessorKey: "method" },

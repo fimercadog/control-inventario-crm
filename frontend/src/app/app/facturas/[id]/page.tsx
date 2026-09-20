@@ -4,7 +4,7 @@ import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { CheckCircle2, FileText, Printer, ShieldAlert, XCircle } from "lucide-react";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/lib/api";
@@ -96,7 +96,7 @@ export default function InvoiceDetailPage() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <Badge>{STATUS_LABEL[invoice.status] ?? invoice.status}</Badge>
+          <StatusBadge status={invoice.status} label={STATUS_LABEL[invoice.status]} />
           <Button variant="outline" size="sm" onClick={printInvoice}>
             <Printer className="mr-1.5 h-4 w-4" /> Imprimir
           </Button>
