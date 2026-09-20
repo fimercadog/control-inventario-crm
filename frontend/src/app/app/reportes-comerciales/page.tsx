@@ -1,7 +1,29 @@
 "use client";
 
 import * as React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import {
+  BarChart3,
+  Briefcase,
+  CheckCircle2,
+  DollarSign,
+  FileText,
+  PieChart,
+  ShoppingCart,
+  TrendingUp,
+  UserCheck,
+  Users,
+  XCircle,
+} from "lucide-react";
+import {
+  containerVariants,
+  itemVariants,
+  REPORT_TONES,
+  ReportChartFrame,
+  ReportDistributionCard,
+  ReportKpiCard,
+  ReportSectionHeader,
+} from "@/components/ui/report-card";
 import { api } from "@/lib/api";
 
 type FunnelRow = { stage: string; count: number; conversion_from_prev: number | null };
@@ -18,25 +40,14 @@ type CommercialReport = {
 };
 
 const STAGE_LABEL: Record<string, string> = {
-  prospecting: "Prospeccion",
-  qualification: "Calificacion",
+  prospecting: "Prospección",
+  qualification: "Calificación",
   proposal: "Propuesta",
-  negotiation: "Negociacion",
+  negotiation: "Negociación",
   won: "Ganado",
 };
 
 const money = (n: number) => `$${Math.round(n).toLocaleString("es-CO")}`;
-
-function Panel({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <Card>
-      <CardContent className="p-5">
-        <h2 className="mb-4 text-base font-medium">{title}</h2>
-        {children}
-      </CardContent>
-    </Card>
-  );
-}
 
 export default function CommercialReportsPage() {
   const [data, setData] = React.useState<CommercialReport | null>(null);
@@ -47,127 +58,134 @@ export default function CommercialReportsPage() {
 
   if (!data) {
     return (
-      <div className="space-y-6">
-        <h1 className="text-2xl font-semibold">Reportes comerciales</h1>
-        <p className="text-sm text-muted-foreground">Cargando...</p>
+      <div className="flex min-h-[400px] flex-col items-center justify-center space-y-3 p-8 text-center">
+        <ReportKpiCard label="Cargando Analítica Comercial" value={0} icon={BarChart3} tone={REPORT_TONES.indigo} />
+        <p className="text-xs text-muted-foreground">Generando métricas del embudo comercial...</p>
       </div>
     );
   }
 
   const top = data.funnel[0]?.count || 1;
+  const productRows = data.sales_by_product.map((p) => ({
+    name: `${p.name} (${p.units} u)`,
+    value: p.revenue,
+  }));
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Reportes comerciales</h1>
-        <p className="text-sm text-muted-foreground">
-          Conversión de presupuestos, equipo y ventas por producto. Generado {new Date(data.generated_at).toLocaleString("es-CO")}.
-        </p>
-      </div>
+    <motion.div variants={containerVariants} initial="hidden" animate="show" className="space-y-8">
+      {/* Header */}
+      <motion.div variants={itemVariants} className="flex flex-col justify-between gap-2 border-b border-border/60 pb-5 sm:flex-row sm:items-center">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+              Analítica Comercial & Embudo Estético
+            </span>
+            <span className="text-xs text-muted-foreground">
+              Generado {new Date(data.generated_at).toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" })}
+            </span>
+          </div>
+          <h1 className="mt-1 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">Reportes Comerciales & CRM</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Conversión de valoraciones estéticas, desempeño de especialistas y volumen de ingresos por tratamiento.
+          </p>
+        </div>
+      </motion.div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Panel title={`Embudo de ventas · tasa de cierre ${data.win_rate ?? "—"}%`}>
-          <div className="space-y-3">
-            {data.funnel.map((f) => (
-              <div key={f.stage} className="flex items-center gap-3">
-                <span className="w-28 shrink-0 text-sm text-muted-foreground">{STAGE_LABEL[f.stage] ?? f.stage}</span>
-                <div className="h-8 flex-1 overflow-hidden rounded-md bg-muted">
-                  <div
-                    className="flex h-full items-center rounded-md bg-primary pl-3 text-xs font-semibold text-primary-foreground"
-                    style={{ width: `${Math.max(10, (f.count / top) * 100)}%` }}
-                  >
-                    {f.count}
+      {/* KPI Cards de Cotizaciones & Win Rate */}
+      <motion.section variants={itemVariants} className="space-y-4">
+        <ReportSectionHeader title="Rendimiento de Cotizaciones & Cierre" description="Efectividad en la conversión de valoraciones a tratamientos pagados." icon={FileText} tone={REPORT_TONES.indigo} />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ReportKpiCard label="Tasa de Cierre (Win Rate)" value={data.win_rate ?? 0} suffix="%" icon={TrendingUp} tone={REPORT_TONES.emerald} emphasis />
+          <ReportKpiCard label="Presupuestos Enviados" value={data.quotes.sent} icon={FileText} tone={REPORT_TONES.sky} />
+          <ReportKpiCard label="Presupuestos Aceptados" value={data.quotes.accepted} icon={CheckCircle2} tone={REPORT_TONES.green} />
+          <ReportKpiCard label="Tasa de Aceptación" value={data.quotes.acceptance_rate ?? 0} suffix="%" icon={BarChart3} tone={REPORT_TONES.violet} />
+        </div>
+      </motion.section>
+
+      {/* Embudo Comercial & Productos Destacados */}
+      <motion.section variants={itemVariants} className="grid gap-6 lg:grid-cols-2">
+        <ReportChartFrame
+          title="Embudo Comercial de Valoraciones Estéticas"
+          description={`Tasa global de cierre acumulada: ${data.win_rate ?? "—"}%`}
+          icon={Briefcase}
+          tone={REPORT_TONES.indigo}
+        >
+          <div className="space-y-3.5 pt-2">
+            {data.funnel.map((f) => {
+              const pct = Math.max(8, Math.round((f.count / top) * 100));
+              return (
+                <div key={f.stage} className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-semibold">
+                    <span className="text-foreground">{STAGE_LABEL[f.stage] ?? f.stage}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-foreground">{f.count} op.</span>
+                      {f.conversion_from_prev !== null ? (
+                        <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] text-primary">{f.conversion_from_prev}% conv.</span>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="h-3.5 w-full overflow-hidden rounded-full bg-muted/60">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${pct}%` }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-sky-400"
+                    />
                   </div>
                 </div>
-                <span className="w-14 shrink-0 text-right text-xs tabular-nums text-muted-foreground">
-                  {f.conversion_from_prev !== null ? `${f.conversion_from_prev}%` : ""}
-                </span>
-              </div>
-            ))}
+              );
+            })}
           </div>
-        </Panel>
+        </ReportChartFrame>
 
-        <Panel title="Presupuestos">
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <div className="rounded-lg border border-border p-3">
-              <p className="text-xs text-muted-foreground">Enviadas</p>
-              <p className="text-xl font-semibold">{data.quotes.sent}</p>
-            </div>
-            <div className="rounded-lg border border-border p-3">
-              <p className="text-xs text-muted-foreground">Aceptadas</p>
-              <p className="text-xl font-semibold">{data.quotes.accepted}</p>
-            </div>
-            <div className="rounded-lg border border-border p-3">
-              <p className="text-xs text-muted-foreground">Rechazadas</p>
-              <p className="text-xl font-semibold">{data.quotes.rejected}</p>
-            </div>
-            <div className="rounded-lg border border-border p-3">
-              <p className="text-xs text-muted-foreground">Tasa de aceptacion</p>
-              <p className="text-xl font-semibold">{data.quotes.acceptance_rate ?? "—"}%</p>
-            </div>
-          </div>
-        </Panel>
-      </div>
+        <ReportDistributionCard
+          title="Ingresos por Tratamiento Estético"
+          description="Ventas acumuladas en sesiones e ingresos por producto/servicio."
+          icon={ShoppingCart}
+          tone={REPORT_TONES.emerald}
+          rows={productRows}
+          isMoney
+        />
+      </motion.section>
 
-      <Panel title="Ventas por vendedor">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="text-left text-muted-foreground">
-              <tr>
-                <th className="w-10 py-2 pr-3 text-right tabular-nums">#</th>
-                <th className="py-2">Vendedor</th>
-                <th className="py-2">Abiertos</th>
-                <th className="py-2">Ganados</th>
-                <th className="py-2">Valor ganado</th>
-                <th className="py-2">Ingresos (mes)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.by_owner.length === 0 ? (
+      {/* Desempeño por Vendedor / Asesor */}
+      <motion.section variants={itemVariants} className="space-y-4">
+        <ReportSectionHeader title="Desempeño Comercial por Asesora Estética" description="Seguimiento de valoraciones, tratamientos ganados e ingresos del mes." icon={UserCheck} tone={REPORT_TONES.violet} />
+        <ReportChartFrame title="Ranking de Asesores & Médicos" icon={Users} tone={REPORT_TONES.violet}>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b border-border/60 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 <tr>
-                  <td colSpan={6} className="py-4 text-center text-muted-foreground">Sin datos por vendedor.</td>
+                  <th className="py-3 px-3">#</th>
+                  <th className="py-3 px-3">Asesor / Médico</th>
+                  <th className="py-3 px-3">Abiertos</th>
+                  <th className="py-3 px-3">Ganados</th>
+                  <th className="py-3 px-3">Valor Ganado</th>
+                  <th className="py-3 px-3">Ingresos (Mes)</th>
                 </tr>
-              ) : (
-                data.by_owner.map((o, i) => (
-                  <tr key={o.owner} className="border-t border-border">
-                    <td className="py-2 pr-3 text-right tabular-nums text-muted-foreground">{i + 1}</td>
-                    <td className="py-2 font-medium">{o.owner}</td>
-                    <td className="py-2">{o.open_deals}</td>
-                    <td className="py-2">{o.won_deals}</td>
-                    <td className="py-2">{money(o.won_value)}</td>
-                    <td className="py-2">{money(o.revenue_month)}</td>
+              </thead>
+              <tbody className="divide-y divide-border/40">
+                {data.by_owner.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-6 text-center text-xs text-muted-foreground">Sin ventas registradas por asesor todavía.</td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </Panel>
-
-      <Panel title="Ventas por producto (pedidos confirmados)">
-        {data.sales_by_product.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Sin ventas confirmadas todavia.</p>
-        ) : (
-          <div className="space-y-3">
-            {data.sales_by_product.map((p) => (
-              <div key={p.name}>
-                <div className="flex justify-between text-sm">
-                  <span>{p.name}</span>
-                  <span className="text-muted-foreground">
-                    {p.units} u · {money(p.revenue)}
-                  </span>
-                </div>
-                <div className="mt-1 h-1.5 rounded bg-muted">
-                  <div
-                    className="h-full rounded bg-primary"
-                    style={{ width: `${(p.revenue / (data.sales_by_product[0]?.revenue || 1)) * 100}%` }}
-                  />
-                </div>
-              </div>
-            ))}
+                ) : (
+                  data.by_owner.map((o, i) => (
+                    <tr key={o.owner} className="transition-colors hover:bg-muted/40">
+                      <td className="py-3 px-3 font-mono text-xs text-muted-foreground">{i + 1}</td>
+                      <td className="py-3 px-3 font-bold text-foreground">{o.owner}</td>
+                      <td className="py-3 px-3 font-medium">{o.open_deals}</td>
+                      <td className="py-3 px-3 font-bold text-emerald-600 dark:text-emerald-400">{o.won_deals}</td>
+                      <td className="py-3 px-3 font-semibold">{money(o.won_value)}</td>
+                      <td className="py-3 px-3 font-bold text-primary">{money(o.revenue_month)}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
-        )}
-      </Panel>
-    </div>
+        </ReportChartFrame>
+      </motion.section>
+    </motion.div>
   );
 }
