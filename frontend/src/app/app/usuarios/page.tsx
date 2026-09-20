@@ -4,7 +4,7 @@ import * as React from "react";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ToggleStatusAction } from "@/components/crud/toggle-status-action";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { api, PaginatedResponse } from "@/lib/api";
 import { AppColumnDef } from "@/lib/table-types";
 import { AppUser, Role } from "@/lib/types";
@@ -13,7 +13,7 @@ const columns: AppColumnDef<AppUser>[] = [
   { accessorKey: "name", header: "Nombre" },
   { accessorKey: "email", header: "Correo" },
   { header: "Roles", cell: ({ row }) => row.original.roles?.join(", ") || "Sin rol" },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={row.original.status === "active" ? "Activo" : "Inactivo"} /> },
 ];
 
 const baseFields: CrudField[] = [

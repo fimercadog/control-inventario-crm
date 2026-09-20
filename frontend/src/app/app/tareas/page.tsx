@@ -2,14 +2,14 @@
 
 import { ModuleTablePage } from "@/components/module-table-page";
 import { ToggleCompleteAction } from "@/components/crud/toggle-complete-action";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { ACTIVITY_TYPE_LABEL, activityFields } from "@/lib/activity-fields";
 import { ActivityRow } from "@/lib/types";
 
 const columns: AppColumnDef<ActivityRow>[] = [
   { accessorKey: "subject", header: "Asunto" },
-  { header: "Tipo", cell: ({ row }) => <Badge>{ACTIVITY_TYPE_LABEL[row.original.type] ?? row.original.type}</Badge> },
+  { header: "Tipo", cell: ({ row }) => <StatusBadge status="secondary" label={ACTIVITY_TYPE_LABEL[row.original.type] ?? row.original.type} /> },
   { header: "Cliente", cell: ({ row }) => row.original.client?.name ?? "—" },
   dateColumn<ActivityRow>("due_date", "Vencimiento"),
 ];
