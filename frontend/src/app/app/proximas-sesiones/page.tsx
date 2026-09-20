@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
@@ -41,9 +41,10 @@ export default function NextSessionsPage() {
             return (
               <Card key={a.id}>
                 <CardContent className="flex flex-wrap items-center gap-3 p-4 text-sm">
-                  <Badge className={overdue ? "bg-destructive/15 text-destructive" : ""}>
-                    {a.next_due_at ? formatDate(a.next_due_at) : "—"}
-                  </Badge>
+                  <StatusBadge
+                    status={overdue ? "overdue" : "pending"}
+                    label={a.next_due_at ? formatDate(a.next_due_at) : "—"}
+                  />
                   <span className="font-medium">{a.name}</span>
                   <span className="text-muted-foreground">{TYPE_LABEL[a.type] ?? a.type}</span>
                   <Link href={`/app/pacientes/${a.patient_id}`} className="ml-auto text-primary hover:underline">

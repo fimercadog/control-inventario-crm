@@ -4,7 +4,7 @@ import * as React from "react";
 import { toast } from "sonner";
 import { AlertTriangle, GitCompareArrows, RefreshCw, Trash2, WifiOff } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -187,7 +187,7 @@ export default function ContingencyPage() {
         <CardContent className="p-5">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-base font-medium">Estado</h2>
-            <Badge className={isActive ? "bg-warning/15 text-warning" : undefined}>{isActive ? "Activa" : "Inactiva"}</Badge>
+            <StatusBadge status={isActive ? "contingency" : "active"} label={isActive ? "Activa" : "Inactiva"} />
           </div>
 
           {isActive && status?.session ? (
@@ -253,9 +253,7 @@ export default function ContingencyPage() {
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge className={tx.status === "failed" || tx.status === "conflict" ? "bg-destructive/15 text-destructive" : undefined}>
-                      {statusBadge[tx.status]}
-                    </Badge>
+                    <StatusBadge status={tx.status} label={statusBadge[tx.status]} />
                     {tx.status === "conflict" ? (
                       <Button variant="outline" size="sm" onClick={() => setResolving(tx)}>
                         <GitCompareArrows className="h-4 w-4" /> Resolver

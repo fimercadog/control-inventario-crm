@@ -2,13 +2,13 @@
 
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { CashSession } from "@/lib/types";
 
 const columns: AppColumnDef<CashSession>[] = [
   { header: "Caja", cell: ({ row }) => row.original.register?.name ?? `#${row.original.cash_register_id}` },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "open" ? "Abierta" : "Cerrada"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} /> },
   { header: "Inicial", cell: ({ row }) => `$${Number(row.original.opening_amount).toLocaleString("es-CO")}` },
   { header: "Esperado", cell: ({ row }) => `$${Number(row.original.expected_amount).toLocaleString("es-CO")}` },
   { header: "Diferencia", cell: ({ row }) => row.original.difference == null ? "—" : `$${Number(row.original.difference).toLocaleString("es-CO")}` },

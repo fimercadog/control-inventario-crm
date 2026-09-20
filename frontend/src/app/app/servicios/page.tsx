@@ -2,7 +2,7 @@
 
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Service } from "@/lib/types";
 
@@ -30,7 +30,7 @@ const columns: AppColumnDef<Service>[] = [
     cell: ({ row }) => (row.original.estimated_duration_minutes ? `${row.original.estimated_duration_minutes} min` : "—"),
   },
   { header: "Precio", cell: ({ row }) => cop(row.original.price) },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} /> },
 ];
 
 const fields: CrudField[] = [

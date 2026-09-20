@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { ClinicalApplication } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
@@ -20,7 +20,7 @@ const columns: AppColumnDef<ClinicalApplication>[] = [
       </Link>
     ),
   },
-  { header: "Tipo", cell: ({ row }) => <Badge>{TYPE_LABEL[row.original.type] ?? row.original.type}</Badge> },
+  { header: "Tipo", cell: ({ row }) => <StatusBadge status={row.original.type} label={TYPE_LABEL[row.original.type] ?? row.original.type} /> },
   { header: "Nombre / Insumo", cell: ({ row }) => row.original.name },
   { header: "Lote", cell: ({ row }) => row.original.lot ?? "—" },
   { header: "Próxima dosis / sesión", cell: ({ row }) => (row.original.next_due_at ? formatDate(row.original.next_due_at) : "—") },

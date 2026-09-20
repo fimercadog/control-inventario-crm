@@ -2,14 +2,14 @@
 
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Warehouse } from "@/lib/types";
 
 const columns: AppColumnDef<Warehouse>[] = [
   { accessorKey: "name", header: "Nombre" },
   { header: "Ubicacion", cell: ({ row }) => row.original.location ?? "—" },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activa" : "Inactiva"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} /> },
 ];
 
 const fields: CrudField[] = [
