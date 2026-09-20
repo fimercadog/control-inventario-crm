@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/lib/api";
@@ -98,7 +98,7 @@ export default function RoleDetailPage() {
           <p className="text-sm text-muted-foreground">Elegi que puede hacer este rol en el panel.</p>
         </div>
         <div className="flex items-center gap-3">
-          <Badge>{role.status === "active" ? "Activo" : "Inactivo"}</Badge>
+          <StatusBadge status={role.status} />
           <Button variant="ghost" size="sm" onClick={() => router.push("/app/roles")}>Volver</Button>
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { Deal } from "@/lib/types";
 
@@ -19,7 +19,7 @@ const columns: AppColumnDef<Deal>[] = [
   { accessorKey: "title", header: "Titulo" },
   { header: "Cliente", cell: ({ row }) => row.original.client?.name ?? `#${row.original.client_id}` },
   { header: "Monto", cell: ({ row }) => `$${Number(row.original.amount).toLocaleString("es-CO")}` },
-  { header: "Etapa", cell: ({ row }) => <Badge>{STAGE_LABEL[row.original.stage] ?? row.original.stage}</Badge> },
+  { header: "Etapa", cell: ({ row }) => <StatusBadge status={row.original.stage} label={STAGE_LABEL[row.original.stage] ?? row.original.stage} /> },
   dateColumn<Deal>("expected_close_date", "Cierre esperado"),
 ];
 

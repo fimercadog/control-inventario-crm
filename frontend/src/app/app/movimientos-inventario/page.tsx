@@ -2,7 +2,7 @@
 
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { StockMovement } from "@/lib/types";
 
@@ -11,7 +11,7 @@ const TYPE_LABEL: Record<string, string> = { in: "Entrada", out: "Salida", adjus
 const columns: AppColumnDef<StockMovement>[] = [
   { header: "Producto", cell: ({ row }) => row.original.product?.name ?? `#${row.original.product_id}` },
   { header: "Bodega", cell: ({ row }) => row.original.warehouse?.name ?? `#${row.original.warehouse_id}` },
-  { header: "Tipo", cell: ({ row }) => <Badge>{TYPE_LABEL[row.original.type] ?? row.original.type}</Badge> },
+  { header: "Tipo", cell: ({ row }) => <StatusBadge status={row.original.type} label={TYPE_LABEL[row.original.type] ?? row.original.type} /> },
   { header: "Cantidad", cell: ({ row }) => row.original.quantity },
   { header: "Motivo", cell: ({ row }) => row.original.reason ?? "—" },
   dateColumn<StockMovement>("created_at", "Fecha"),
