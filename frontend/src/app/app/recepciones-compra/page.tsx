@@ -2,14 +2,14 @@
 
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { PurchaseReceipt } from "@/lib/types";
 
 const columns: AppColumnDef<PurchaseReceipt>[] = [
   { header: "Orden", cell: ({ row }) => `#${row.original.purchase_order_id}` },
   { header: "Bodega", cell: ({ row }) => row.original.warehouse?.name ?? `#${row.original.warehouse_id}` },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "confirmed" ? "Confirmada" : row.original.status}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} /> },
   dateColumn<PurchaseReceipt>("received_at", "Fecha"),
   { header: "Notas", cell: ({ row }) => row.original.notes ?? "—" },
 ];

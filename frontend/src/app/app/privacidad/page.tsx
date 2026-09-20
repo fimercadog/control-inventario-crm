@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { ShieldCheck, CheckCircle2, History, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { api, PaginatedResponse } from "@/lib/api";
 import { PrivacyAcceptance } from "@/lib/carenote-types";
 
@@ -79,7 +79,7 @@ export default function PrivacidadConsentimientoPage() {
       <Card className="p-6 border shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-slate-900">Política de Privacidad Vigente</h2>
-          <Badge className="bg-emerald-600 text-white font-semibold">Versión v1.0-carenote-2026</Badge>
+          <StatusBadge status="active" label="Versión v1.0-carenote-2026" />
         </div>
 
         <div className="p-4 bg-slate-50 border rounded-md text-xs text-slate-700 space-y-2 leading-relaxed max-h-48 overflow-y-auto font-mono">

@@ -4,7 +4,7 @@ import { Eye } from "lucide-react";
 import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { PurchaseOrder } from "@/lib/types";
 
@@ -19,7 +19,7 @@ const STATUS_LABEL: Record<PurchaseOrder["status"], string> = {
 const columns: AppColumnDef<PurchaseOrder>[] = [
   { header: "Proveedor", cell: ({ row }) => row.original.supplier?.name ?? `#${row.original.supplier_id}` },
   { header: "Bodega", cell: ({ row }) => row.original.warehouse?.name ?? `#${row.original.warehouse_id}` },
-  { header: "Estado", cell: ({ row }) => <Badge>{STATUS_LABEL[row.original.status]}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={STATUS_LABEL[row.original.status]} /> },
   dateColumn<PurchaseOrder>("expected_date", "Fecha esperada"),
   { header: "Total", cell: ({ row }) => `$${Number(row.original.total).toLocaleString("es-CO")}` },
 ];

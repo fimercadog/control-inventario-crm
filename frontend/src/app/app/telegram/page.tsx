@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Send, Key, CheckCircle, RefreshCw, MessageSquare, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { api } from "@/lib/api";
 import { TelegramLinkStatus } from "@/lib/carenote-types";
 
@@ -71,13 +71,9 @@ export default function TelegramLinkPage() {
           {loading ? (
             <span className="text-xs text-slate-400">Verificando...</span>
           ) : status?.is_linked ? (
-            <Badge className="bg-emerald-600 text-white font-semibold text-sm px-3 py-1 flex items-center gap-1.5">
-              <CheckCircle className="w-4 h-4" /> Vinculado y Activo
-            </Badge>
+            <StatusBadge status="active" label="Vinculado y Activo" />
           ) : (
-            <Badge className="border border-amber-500 text-amber-700 bg-amber-50 font-semibold text-sm px-3 py-1">
-              Pendiente de Vinculación
-            </Badge>
+            <StatusBadge status="pending" label="Pendiente de Vinculación" />
           )}
         </div>
 

@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { api } from "@/lib/api";
 import { CareEncounter, EncounterStatus } from "@/lib/carenote-types";
 import { AudioRecorderUploader } from "@/components/carenote/audio-recorder-uploader";
@@ -53,13 +53,13 @@ export default function AtencionOperativaPage() {
   const statusBadge = (status?: EncounterStatus) => {
     switch (status) {
       case "en_proceso":
-        return <Badge className="bg-blue-600 text-white font-semibold text-sm px-3 py-1">🔵 En proceso</Badge>;
+        return <StatusBadge status="in_progress" label="En proceso" />;
       case "borrador_pendiente":
-        return <Badge className="bg-amber-600 text-white font-semibold text-sm px-3 py-1">📝 Borrador pendiente</Badge>;
+        return <StatusBadge status="pending" label="Borrador pendiente" />;
       case "revisada":
-        return <Badge className="bg-indigo-600 text-white font-semibold text-sm px-3 py-1">✓ Revisada</Badge>;
+        return <StatusBadge variant="purple" label="Revisada" />;
       case "cerrada":
-        return <Badge className="bg-emerald-600 text-white font-semibold text-sm px-3 py-1">🔒 Cerrada</Badge>;
+        return <StatusBadge status="closed" label="Cerrada" />;
       default:
         return null;
     }

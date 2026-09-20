@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Patient } from "@/lib/types";
 
@@ -32,7 +32,7 @@ const columns: AppColumnDef<Patient & Record<string, any>>[] = [
   { header: "Teléfono", cell: ({ row }) => row.original.phone || "—" },
   { header: "Dirección", cell: ({ row }) => [row.original.address, row.original.city].filter(Boolean).join(", ") || "—" },
   { header: "EPS / Aseguradora", cell: ({ row }) => row.original.health_coverage_provider || "Particular" },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} /> },
 ];
 
 const fields: CrudField[] = [

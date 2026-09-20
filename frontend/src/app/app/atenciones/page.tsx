@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Plus, Search, Filter, Stethoscope, Clock, CheckCircle, FileEdit, Lock, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { api, PaginatedResponse } from "@/lib/api";
 import { CareEncounter, EncounterStatus } from "@/lib/carenote-types";
 
@@ -45,13 +45,13 @@ export default function AtencionesListPage() {
   const statusBadge = (status: EncounterStatus) => {
     switch (status) {
       case "en_proceso":
-        return <Badge className="bg-blue-600 text-white font-semibold">🔵 En proceso</Badge>;
+        return <StatusBadge status="in_progress" label="En proceso" />;
       case "borrador_pendiente":
-        return <Badge className="bg-amber-600 text-white font-semibold">📝 Borrador pendiente</Badge>;
+        return <StatusBadge status="pending" label="Borrador pendiente" />;
       case "revisada":
-        return <Badge className="bg-indigo-600 text-white font-semibold">✓ Revisada</Badge>;
+        return <StatusBadge variant="purple" label="Revisada" />;
       case "cerrada":
-        return <Badge className="bg-emerald-600 text-white font-semibold">🔒 Cerrada</Badge>;
+        return <StatusBadge status="closed" label="Cerrada" />;
     }
   };
 

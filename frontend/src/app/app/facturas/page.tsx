@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { dateColumn, AppColumnDef } from "@/lib/table-types";
 import { Invoice } from "@/lib/types";
 
@@ -25,7 +25,7 @@ const columns: AppColumnDef<Invoice>[] = [
     ),
   },
   { header: "Cliente", cell: ({ row }) => row.original.client?.name ?? `#${row.original.client_id}` },
-  { header: "Estado", cell: ({ row }) => <Badge>{STATUS_LABEL[row.original.status]}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={STATUS_LABEL[row.original.status]} /> },
   dateColumn<Invoice>("due_date", "Vence"),
   { header: "Total", cell: ({ row }) => `$${Number(row.original.total).toLocaleString("es-CO")}` },
 ];

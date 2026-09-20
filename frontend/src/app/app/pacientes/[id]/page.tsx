@@ -4,7 +4,7 @@ import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
@@ -82,7 +82,7 @@ export default function PatientDetailPage() {
             <Fact label="Fecha Nacimiento" value={patient.birth_date ? formatDate(patient.birth_date) : null} />
             <Fact label="Contacto Emergencia" value={patient.emergency_contact_name} />
             <Fact label="Tel. Emergencia" value={patient.emergency_contact_phone} />
-            <Fact label="Estado" value={<Badge>{patient.status === "active" ? "Activo" : "Inactivo"}</Badge>} />
+            <Fact label="Estado" value={<StatusBadge status={patient.status} />} />
           </CardContent>
         </Card>
 
@@ -120,9 +120,7 @@ export default function PatientDetailPage() {
                       <span className="text-xs font-semibold capitalize text-slate-700">
                         {enc.encounter_type.replace("_", " ")}
                       </span>
-                      <Badge className="border border-slate-200 text-xs">
-                        {enc.status}
-                      </Badge>
+                      <StatusBadge status={enc.status} />
                     </div>
                     <p className="text-xs text-slate-500">
                       Iniciada: {new Date(enc.started_at).toLocaleString("es-CO")} • Profesional: {enc.professional?.name || "Asignado"}
