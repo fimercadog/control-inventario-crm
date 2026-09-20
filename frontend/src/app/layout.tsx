@@ -40,22 +40,22 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "ERP PyME & CRM Multi-Servicios | Gestión Empresarial",
-    template: "%s | ERP PyME Core",
+    default: "Viajes Globales | Agencia de Viajes, Paquetes Turísticos & CRM",
+    template: "%s | Viajes Globales",
   },
   description:
-    "Sistema ERP empresarial y CRM multiservicios: gestión de clientes, inventarios, compras, ventas, facturación, cuentas por cobrar/pagar y auditoría.",
+    "Plataforma integral para agencias de viajes: reservas de vuelos, hoteles, paquetes turísticos, itinerarios, gestión de viajeros y facturación de turismo.",
   openGraph: {
-    title: "ERP PyME & CRM Multi-Servicios — Gestión Empresarial Integral",
-    description: "Plataforma integral de gestión administrativa, inventario multibodega, CRM de clientes y contabilidad simplificada.",
+    title: "Viajes Globales — Agencia de Viajes & Turismo Internacional",
+    description: "Gestión completa de paquetes turísticos, reservas, itinerarios de viaje, hoteles y atención personalizada a viajeros.",
     type: "website",
     locale: "es_CO",
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ERP PyME & CRM Multi-Servicios — Gestión Empresarial Integral",
-    description: "Plataforma integral de gestión administrativa, inventarios y CRM.",
+    title: "Viajes Globales — Agencia de Viajes & Turismo Internacional",
+    description: "Gestión completa de reservas, itinerarios, paquetes y experiencia del viajero.",
   },
 };
 

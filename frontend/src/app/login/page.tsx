@@ -2,20 +2,16 @@ import type { Metadata } from "next";
 import { AuthSplitLayout } from "@/components/auth/auth-split-layout";
 import { LoginForm } from "./login-form";
 
-export const metadata: Metadata = { title: { absolute: "Iniciar sesión | ERP PyME" } };
+export const metadata: Metadata = { title: { absolute: "Iniciar sesión | Viajes Globales" } };
 
-// Este dominio es un showcase: los atajos de usuarios demo se muestran por
-// defecto para que cualquiera entre y pruebe roles. Para un despliegue con
-// datos reales de cliente: NEXT_PUBLIC_DEMO_MODE=false y rotar las cuentas.
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
 
 const demoEmails: Record<string, string> = {
-  superadmin: "superadmin@erp-pyme.test",
-  admin: "admin@erp-pyme.test",
-  operaciones: "operaciones@erp-pyme.test",
-  recepcion: "recepcion@erp-pyme.test",
-  inventario: "inventario@erp-pyme.test",
-  ventas: "ventas@erp-pyme.test",
+  superadmin: "superadmin@viajesglobales.test",
+  admin: "admin@viajesglobales.test",
+  agente: "agente@viajesglobales.test",
+  operaciones: "operaciones@viajesglobales.test",
+  finanzas: "finanzas@viajesglobales.test",
 };
 
 export default async function LoginPage({
@@ -28,10 +24,10 @@ export default async function LoginPage({
 
   return (
     <AuthSplitLayout>
-      <h1 className="text-2xl font-semibold text-foreground">Iniciar sesion</h1>
+      <h1 className="text-2xl font-semibold text-foreground">Iniciar sesión</h1>
       <p className="mt-2 text-sm text-muted-foreground">
         {demoMode
-          ? "Usa un usuario demo para entrar al panel y probar roles."
+          ? "Ingresa con una cuenta demo para acceder al panel de la agencia de viajes."
           : "Ingresa con las credenciales de tu cuenta."}
       </p>
       <LoginForm initialEmail={initialEmail} autoLogin={Boolean(initialEmail)} demoMode={demoMode} />

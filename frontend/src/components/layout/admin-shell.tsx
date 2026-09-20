@@ -95,102 +95,60 @@ type NavGroup = { label: string; items: NavItem[] };
 const navGroups: NavGroup[] = [
   {
     label: "",
-    items: [{ href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
+    items: [{ href: "/app/dashboard", label: "Dashboard Agencia", icon: LayoutDashboard, permissions: ["dashboard.view"] }],
   },
   {
-    label: "Servicios & Atenciones",
-    items: [
-      { href: "/app/agenda", label: "Citas del día", icon: CalendarDays, permissions: ["appointments.manage"] },
-      { href: "/app/citas", label: "Citas", icon: CalendarClock, permissions: ["appointments.manage"] },
-      { href: "/app/pacientes", label: "Pacientes / Beneficiarios", icon: Users, permissions: ["patients.manage"] },
-      { href: "/app/consultas", label: "Historial de atenciones", icon: ClipboardList, permissions: ["medical_records.manage"] },
-      { href: "/app/vacunas", label: "Inmunizaciones", icon: Syringe, permissions: ["vaccinations.manage"] },
-      { href: "/app/vacunas-pendientes", label: "Inmunizaciones por vencer", icon: AlertTriangle, permissions: ["vaccinations.manage"] },
-      { href: "/app/recetas", label: "Prescripciones / Recetas", icon: FileText, permissions: ["prescriptions.manage"] },
-      { href: "/app/procedimientos", label: "Procedimientos", icon: ClipboardList, permissions: ["procedures.manage"] },
-      { href: "/app/diagnosticos", label: "Diagnósticos", icon: ListChecks, permissions: ["medical_records.manage"] },
-      { href: "/app/reportes-clinicos", label: "Reportes de atenciones", icon: BarChart3, permissions: ["clinical_reports.view"] },
-      { href: "/app/servicios", label: "Servicios", icon: Tag, permissions: ["services.manage"] },
-      { href: "/app/especies", label: "Especies (Clasificación)", icon: Layers, permissions: ["patients.manage"] },
-      { href: "/app/razas", label: "Razas / Categorías", icon: Tags, permissions: ["patients.manage"] },
-    ],
-  },
-  {
-    label: "CRM",
+    label: "Comercial",
     items: [
       { href: "/app/leads", label: "Solicitudes (Leads)", icon: Inbox, permissions: ["leads.view"] },
-      { href: "/app/clientes", label: "Clientes / Cuentas", icon: Users, permissions: ["clients.manage"] },
-      { href: "/app/contactos", label: "Contactos", icon: Contact2, permissions: ["clients.manage"] },
-      { href: "/app/segmentos", label: "Segmentos", icon: Tags, permissions: ["clients.manage"] },
-      { href: "/app/notas", label: "Notas", icon: StickyNote, permissions: ["clients.manage"] },
-      { href: "/app/deals", label: "Planes y oportunidades", icon: Handshake, permissions: ["deals.manage"] },
-      { href: "/app/cotizaciones", label: "Cotizaciones / Presupuestos", icon: FileText, permissions: ["deals.manage"] },
-      { href: "/app/actividades", label: "Actividades", icon: ListChecks, permissions: ["activities.manage"] },
-      { href: "/app/tareas", label: "Tareas", icon: ListTodo, permissions: ["activities.manage"] },
+      { href: "/app/clientes", label: "Clientes & Cuentas", icon: Users, permissions: ["clients.manage"] },
+      { href: "/app/pacientes", label: "Directorio de Viajeros", icon: Users, permissions: ["patients.manage"] },
+      { href: "/app/cotizaciones", label: "Cotizaciones de Viaje", icon: FileText, permissions: ["deals.manage"] },
+      { href: "/app/citas", label: "Reservas de Viaje", icon: CalendarDays, permissions: ["appointments.manage"] },
+      { href: "/app/pedidos", label: "Ventas & Confirmaciones", icon: Receipt, permissions: ["orders.manage"] },
+    ],
+  },
+  {
+    label: "Viajes & Destinos",
+    items: [
+      { href: "/app/productos", label: "Catálogo de Destinos", icon: Package, permissions: ["products.manage"] },
+      { href: "/app/categorias", label: "Paquetes Turísticos", icon: Tags, permissions: ["products.manage"] },
+      { href: "/app/consultas", label: "Itinerarios & Rutas", icon: ClipboardList, permissions: ["medical_records.manage"] },
+      { href: "/app/servicios", label: "Servicios Turísticos", icon: Tag, permissions: ["services.manage"] },
+    ],
+  },
+  {
+    label: "Proveedores Turísticos",
+    items: [
+      { href: "/app/proveedores", label: "Proveedores & Operadores", icon: Truck, permissions: ["suppliers.manage"] },
+      { href: "/app/bodegas", label: "Hoteles & Cadenas", icon: Warehouse, permissions: ["warehouses.manage"] },
+    ],
+  },
+  {
+    label: "Finanzas & Cartera",
+    items: [
+      { href: "/app/facturas", label: "Facturas Electrónicas", icon: FileText, permissions: ["invoices.manage"] },
+      { href: "/app/cuentas-por-cobrar", label: "Cuentas por Cobrar (Abonos)", icon: Receipt, permissions: ["accounts_receivable.view"] },
+      { href: "/app/cuentas-por-pagar", label: "Cuentas por Pagar (Proveedores)", icon: FileText, permissions: ["accounts_payable.view"] },
+      { href: "/app/pagos", label: "Pagos & Recibos", icon: Receipt, permissions: ["payments.manage"] },
+      { href: "/app/cajas", label: "Caja & Movimientos", icon: ArrowLeftRight, permissions: ["cash.manage"] },
+    ],
+  },
+  {
+    label: "Gestión & Operaciones",
+    items: [
+      { href: "/app/tareas", label: "Tareas de Viaje", icon: ListTodo, permissions: ["activities.manage"] },
       { href: "/app/seguimientos", label: "Seguimientos", icon: CalendarClock, permissions: ["activities.manage"] },
-      { href: "/app/calendario", label: "Calendario", icon: CalendarDays, permissions: ["activities.manage"] },
-      { href: "/app/pedidos", label: "Pedidos", icon: Receipt, permissions: ["orders.manage"] },
+      { href: "/app/notas", label: "Documentos de Viaje", icon: StickyNote, permissions: ["clients.manage"] },
     ],
   },
   {
-    label: "Ventas",
+    label: "Administración",
     items: [
-      { href: "/app/facturas", label: "Facturas", icon: FileText, permissions: ["invoices.manage"] },
-      { href: "/app/pagos", label: "Pagos y abonos", icon: Receipt, permissions: ["payments.manage"] },
-    ],
-  },
-  {
-    label: "Inventario",
-    items: [
-      { href: "/app/productos", label: "Productos", icon: Package, permissions: ["products.manage"] },
-      { href: "/app/categorias", label: "Categorias", icon: Tags, permissions: ["products.manage"] },
-      { href: "/app/marcas", label: "Marcas", icon: Tag, permissions: ["products.manage"] },
-      { href: "/app/unidades", label: "Unidades", icon: Ruler, permissions: ["products.manage"] },
-      { href: "/app/bodegas", label: "Bodegas", icon: Warehouse, permissions: ["warehouses.manage"] },
-      { href: "/app/movimientos-inventario", label: "Movimientos", icon: ArrowLeftRight, permissions: ["stock.manage"] },
-      { href: "/app/transferencias", label: "Transferencias", icon: Repeat, permissions: ["stock.manage"] },
-      { href: "/app/alertas-stock", label: "Alertas de stock", icon: AlertTriangle, permissions: ["products.manage"] },
-    ],
-  },
-  {
-    label: "Compras",
-    items: [
-      { href: "/app/proveedores", label: "Proveedores", icon: Truck, permissions: ["suppliers.manage"] },
-      { href: "/app/ordenes-compra", label: "Ordenes de compra", icon: ShoppingCart, permissions: ["purchase_orders.manage"] },
-      { href: "/app/recepciones-compra", label: "Recepciones", icon: ClipboardList, permissions: ["purchase_receipts.manage"] },
-    ],
-  },
-  {
-    label: "Finanzas",
-    items: [
-      { href: "/app/cuentas-por-cobrar", label: "Cuentas por cobrar", icon: Receipt, permissions: ["accounts_receivable.view"] },
-      { href: "/app/cuentas-por-pagar", label: "Cuentas por pagar", icon: FileText, permissions: ["accounts_payable.view"] },
-      { href: "/app/cajas", label: "Cajas", icon: Warehouse, permissions: ["cash.manage"] },
-      { href: "/app/sesiones-caja", label: "Sesiones de caja", icon: ClipboardList, permissions: ["cash.manage"] },
-      { href: "/app/movimientos-caja", label: "Movimientos de caja", icon: ArrowLeftRight, permissions: ["cash.manage"] },
-    ],
-  },
-  {
-    label: "Analitica",
-    items: [
-      { href: "/app/reportes", label: "Reportes", icon: BarChart3, permissions: ["reports.view"] },
-      { href: "/app/reportes-comerciales", label: "Reportes comerciales", icon: TrendingUp, permissions: ["reports.view"] },
-    ],
-  },
-  {
-    label: "Herramientas",
-    items: [
-      { href: "/app/contingencia", label: "Modo contingencia", icon: WifiOff, alert: true },
-      { href: "/app/ia", label: "Asistente IA", icon: Bot, premium: true },
-    ],
-  },
-  {
-    label: "Administracion",
-    items: [
-      { href: "/app/auditoria", label: "Auditoria", icon: ClipboardList, permissions: ["audit.view"] },
-      { href: "/app/usuarios", label: "Usuarios", icon: UserCircle, permissions: ["users.manage"] },
-      { href: "/app/roles", label: "Roles", icon: Shield, permissions: ["roles.manage"] },
-      { href: "/app/configuracion", label: "Configuracion", icon: Settings, permissions: ["settings.manage"] },
+      { href: "/app/auditoria", label: "Auditoría de Operaciones", icon: ClipboardList, permissions: ["audit.view"] },
+      { href: "/app/usuarios", label: "Usuarios & Agentes", icon: UserCircle, permissions: ["users.manage"] },
+      { href: "/app/roles", label: "Roles & Permisos", icon: Shield, permissions: ["roles.manage"] },
+      { href: "/app/configuracion", label: "Configuración Agencia", icon: Settings, permissions: ["settings.manage"] },
     ],
   },
 ];

@@ -3,15 +3,8 @@ import { CtaLink } from "@/components/marketing/cta-link";
 import { Reveal } from "@/components/marketing/reveal";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
-/**
- * Tarjeta de contacto flotante, superpuesta sobre el borde inferior de una
- * foto full-bleed (negative margin del padre). Mismo bloque "Contact Us
- * Anytime, 7 days a Week" que reaparece en Home y Contact del pack Divi.
- * `mount` para cuando la tarjeta ya esta en el viewport al cargar (debajo del
- * hero); si no, se revela por scroll como el resto de la pagina.
- */
 export function FloatingContactCard({
-  title = "Escribinos cuando quieras",
+  title = "Planea tus vacaciones soñadas",
   mount = false,
   delay = 0,
 }: {
@@ -23,32 +16,30 @@ export function FloatingContactCard({
     <div className="grid gap-6 rounded-3xl bg-card p-8 shadow-elevation-4 sm:grid-cols-[1.1fr_1fr_1fr] sm:items-center sm:p-10">
       <Reveal mount={mount} direction="up" delay={delay}>
         <h2 className="text-xl font-extrabold leading-tight tracking-tight sm:text-2xl">{title}</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Urgencias 24/7 · resto de consultas, horario de atención.</p>
+        <p className="mt-2 text-sm text-muted-foreground">Asesoría personalizada y soporte a viajeros 24/7 durante tu viaje.</p>
       </Reveal>
-      {/* Datos de contacto y horario entran desde los costados, uno de cada
-          lado -- como si se abrieran hacia afuera del bloque de titulo. */}
       <Reveal mount={mount} direction="left" delay={delay + 0.12} className="space-y-2.5 text-sm">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cta">Contacto</p>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-600">Contacto</p>
         <p className="flex items-center gap-2">
-          <MapPin className="size-4 shrink-0 text-primary" /> Calle 93 #14-20, Bogotá
+          <MapPin className="size-4 shrink-0 text-sky-600" /> Av. 82 #11-30, Bogotá
         </p>
         <p className="flex items-center gap-2">
-          <Phone className="size-4 shrink-0 text-primary" /> +57 601 555 0188
+          <Phone className="size-4 shrink-0 text-sky-600" /> +57 601 744 9000
         </p>
         <p className="flex items-center gap-2">
-          <Mail className="size-4 shrink-0 text-primary" /> recepcion@vetlosandes.co
+          <Mail className="size-4 shrink-0 text-sky-600" /> reservas@viajesglobales.com
         </p>
       </Reveal>
       <Reveal mount={mount} direction="right" delay={delay + 0.18} className="space-y-2.5 text-sm">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-cta">Horario</p>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-600">Atención</p>
         <p className="flex items-center gap-2">
-          <Clock className="size-4 shrink-0 text-primary" /> Lun a sáb, 8:00 a 19:00
+          <Clock className="size-4 shrink-0 text-sky-600" /> Lun a sáb, 8:00 a 18:00
         </p>
         <p className="flex items-center gap-2">
-          <Clock className="size-4 shrink-0 text-primary" /> Urgencias los 7 días
+          <Clock className="size-4 shrink-0 text-sky-600" /> Soporte en destino 24/7
         </p>
-        <CtaLink href={WHATSAPP_URL} variant="ghost" size="sm" className="mt-1 px-0 text-primary hover:bg-transparent">
-          Escribinos por WhatsApp →
+        <CtaLink href={WHATSAPP_URL} variant="ghost" size="sm" className="mt-1 px-0 text-sky-600 hover:bg-transparent">
+          Hablar por WhatsApp con un asesor →
         </CtaLink>
       </Reveal>
     </div>

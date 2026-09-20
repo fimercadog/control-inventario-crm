@@ -1,24 +1,16 @@
 import {
-  Activity,
-  Bone,
-  Cross,
-  FlaskConical,
-  HeartPulse,
-  Scissors,
-  Scan,
-  Siren,
-  Smile,
+  Compass,
+  Globe,
+  Hotel,
+  MapPin,
+  Plane,
+  ShieldCheck,
+  Ship,
   Sparkles,
-  Stethoscope,
-  Syringe,
+  Ticket,
+  Users,
   type LucideIcon,
 } from "lucide-react";
-
-// Contenido demo de la vertical veterinaria. Nombres y roles coinciden con el
-// dataset sembrado en el backend (`DatabaseSeeder.php`: "Clínica Veterinaria
-// Los Andes", Dr. Carlos Medina, Dra. Laura Peña, Marcela Duarte) para que el
-// sitio público y el panel cuenten la misma historia. Listo para reemplazar
-// por la información real de la clínica antes de vender/desplegar.
 
 export type Service = {
   slug: string;
@@ -32,127 +24,94 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    slug: "consulta-veterinaria",
-    icon: Stethoscope,
-    title: "Consulta veterinaria",
-    short: "Revisión general, diagnóstico y seguimiento con un veterinario de planta.",
+    slug: "paquetes-turisticos",
+    icon: Globe,
+    title: "Paquetes Turísticos Todo Incluido",
+    short: "Planes vacacionales con tiquetes, hoteles, traslados y experiencias guiadas.",
     description:
-      "La consulta general es la puerta de entrada a la atención de tu mascota: examen físico completo, revisión de peso y signos vitales, y una conversación honesta sobre lo que necesita. Queda registrada en su historia clínica para que cada visita siguiente parta de donde quedó la anterior.",
+      "Diseñamos paquetes turísticos completos a destinos nacionales e internacionales. Incluyen tiquetes aéreos, alojamiento de calidad, asistencia en destino y tours programados para que disfrutes sin preocupaciones.",
     bullets: [
-      "Examen físico completo y control de peso",
-      "Historia clínica digital por paciente",
-      "Orientación sobre alimentación y cuidados",
-      "Derivación a especialista si el caso lo requiere",
+      "Vuelos redondos y equipaje incluido",
+      "Hoteles seleccionados de 4 y 5 estrellas",
+      "Traslados aeropuerto - hotel - aeropuerto",
+      "Tours guiados en español con entradas incluidas",
     ],
     featured: true,
   },
   {
-    slug: "vacunacion",
-    icon: Syringe,
-    title: "Vacunación",
-    short: "Esquemas de vacunación al día, con recordatorio de la próxima dosis.",
+    slug: "tiquetes-aereos",
+    icon: Plane,
+    title: "Reserva de Tiquetes Aéreos",
+    short: "Vuelos nacionales e internacionales con las mejores aerolíneas comerciales.",
     description:
-      "Aplicamos los esquemas de vacunación recomendados para perros y gatos según edad y estilo de vida, y dejamos registrado el lote y la fecha exacta para avisarte cuándo toca la próxima dosis, sin que se te pase.",
+      "Buscamos y reservamos tus tiquetes aéreos con tarifas preferenciales, selección de asientos, equipaje adicional y soporte prioritario ante cambios de itinerarios.",
     bullets: [
-      "Polivalente, antirrábica y triple felina",
-      "Lote y vencimiento registrados por aplicación",
-      "Recordatorio de la próxima dosis",
-      "Carné de vacunación disponible en cada visita",
+      "Conexiones optimizadas y mejores escalas",
+      "Asistencia en reprogramaciones y cambios",
+      "Gestión de equipaje de bodega y cabina",
+      "Check-in anticipado y selección de asientos",
     ],
     featured: true,
   },
   {
-    slug: "desparasitacion",
-    icon: Bone,
-    title: "Desparasitación",
-    short: "Control interno y externo, con calendario según peso y edad.",
+    slug: "hoteles-alojamiento",
+    icon: Hotel,
+    title: "Reserva de Hoteles & Resort",
+    short: "Alojamiento en resorts de lujo, hoteles boutique y villas privadas.",
     description:
-      "La desparasitación interna y externa es preventiva: protege a tu mascota y a tu familia. Definimos el producto y la frecuencia según peso, edad y estilo de vida, y lo dejamos anotado en su historia para el próximo control.",
-    bullets: ["Desparasitación interna y externa", "Dosis según peso y edad", "Calendario de refuerzos", "Seguro para cachorros y gatitos"],
-  },
-  {
-    slug: "medicina-preventiva",
-    icon: HeartPulse,
-    title: "Medicina preventiva",
-    short: "Chequeos periódicos para detectar a tiempo lo que todavía no duele.",
-    description:
-      "Un chequeo preventivo anual (o semestral en pacientes senior) detecta cambios antes de que se conviertan en un problema serio: peso, dentadura, piel, corazón y un panel básico de laboratorio si hace falta.",
-    bullets: ["Chequeo anual o semestral", "Panel de laboratorio preventivo", "Plan de salud por etapa de vida", "Seguimiento de pacientes senior"],
+      "Contamos con convenios directos con las principales cadenas hoteleras del mundo. Te garantizamos tarifas exclusivas, desayunos incluidos y beneficios adicionales como early check-in.",
+    bullets: [
+      "Resorts All-Inclusive en el Caribe y destinos de playa",
+      "Hoteles boutique céntricos en capitales mundiales",
+      "Upgrades de habitación según disponibilidad",
+      "Cancelación flexible en hospedaje seleccionado",
+    ],
     featured: true,
   },
   {
-    slug: "laboratorio-clinico",
-    icon: FlaskConical,
-    title: "Laboratorio clínico",
-    short: "Análisis de sangre, orina y heces con resultados el mismo día.",
+    slug: "tours-guiados",
+    icon: Compass,
+    title: "Tours Exclusivos & Guías Locales",
+    short: "Excursiones privadas y grupales con guías expertos bilingües.",
     description:
-      "Contamos con laboratorio propio para los análisis más frecuentes, lo que agiliza el diagnóstico en consultas de urgencia y en el seguimiento de tratamientos en curso.",
-    bullets: ["Hemograma y química sanguínea", "Uroanálisis y coproanálisis", "Resultados el mismo día en la mayoría de los casos", "Interpretación con tu veterinario tratante"],
+      "Vive cada destino como un habitante local. Ofrecemos tours privados o grupales pequeños a sitios históricos, parques naturales y rutas gastronómicas con guías certificados.",
+    bullets: [
+      "Entradas prioritarias sin filas a monumentos",
+      "Guías turísticos profesionales bilingües",
+      "Tours gastronómicos y culturales personalizados",
+      "Transporte privado y seguro de excursión",
+    ],
+    featured: false,
   },
   {
-    slug: "cirugia",
-    icon: Scissors,
-    title: "Cirugía",
-    short: "Cirugías de tejidos blandos y esterilización con protocolo anestésico seguro.",
+    slug: "seguro-viajero",
+    icon: ShieldCheck,
+    title: "Seguro & Asistencia al Viajero",
+    short: "Protección integral médica, equipaje y cancelación de viaje 24/7.",
     description:
-      "Desde esterilizaciones de rutina hasta cirugías de tejidos blandos, trabajamos con protocolo anestésico monitoreado y control post-operatorio hasta el alta.",
-    bullets: ["Esterilización canina y felina", "Cirugía de tejidos blandos", "Monitoreo anestésico", "Control post-operatorio incluido"],
-    featured: true,
+      "Viaja con total tranquilidad. Ofrecemos asistencia médica internacional con cobertura médica completa, seguro por pérdida de equipaje, retraso de vuelos y cancelación con reembolso.",
+    bullets: [
+      "Asistencia médica de emergencia 24/7 en español",
+      "Cobertura por cancelación e interrupción de viaje",
+      "Indemnización por pérdida o retraso de equipaje",
+      "Cumplimiento de requisitos de visado y Schengen",
+    ],
+    featured: false,
   },
   {
-    slug: "odontologia-veterinaria",
-    icon: Smile,
-    title: "Odontología veterinaria",
-    short: "Profilaxis dental bajo anestesia para frenar la enfermedad periodontal.",
+    slug: "cruceros-experiencias",
+    icon: Ship,
+    title: "Cruceros & Expediciones Marítimas",
+    short: "Viajes en crucero por el Caribe, Mediterráneo y Fiordos.",
     description:
-      "La enfermedad periodontal es una de las causas más comunes de dolor crónico no diagnosticado en mascotas adultas. La profilaxis dental bajo anestesia controlada, con limpieza y pulido, la previene y trata.",
-    bullets: ["Profilaxis y limpieza bajo anestesia", "Extracciones cuando son necesarias", "Evaluación del estado dental en cada consulta", "Recomendaciones de higiene en casa"],
-  },
-  {
-    slug: "hospitalizacion",
-    icon: Cross,
-    title: "Hospitalización",
-    short: "Internación con monitoreo para pacientes que necesitan observación.",
-    description:
-      "Para pacientes que requieren fluidoterapia, medicación continua u observación post-quirúrgica, contamos con área de hospitalización con seguimiento por el equipo veterinario.",
-    bullets: ["Fluidoterapia y medicación continua", "Observación post-quirúrgica", "Reportes de evolución al propietario", "Alta coordinada con tu veterinario"],
-  },
-  {
-    slug: "urgencias",
-    icon: Siren,
-    title: "Urgencias",
-    short: "Atención prioritaria para las situaciones que no pueden esperar.",
-    description:
-      "Ante un accidente, una intoxicación o un cuadro que empeora rápido, la prioridad es estabilizar. Llamanos antes de venir para que el equipo esté listo cuando llegues.",
-    bullets: ["Atención prioritaria sin cita previa", "Estabilización y manejo del dolor", "Línea directa para casos urgentes", "Derivación si el caso supera nuestra capacidad"],
-    featured: true,
-  },
-  {
-    slug: "nutricion",
-    icon: Activity,
-    title: "Nutrición",
-    short: "Planes de alimentación por etapa de vida o condición clínica.",
-    description:
-      "La nutrición es parte del tratamiento, no un accesorio: acompañamos con planes de alimentación para cachorros, adultos, pacientes senior o con condiciones específicas como renal, digestiva o de control de peso.",
-    bullets: ["Plan nutricional por etapa de vida", "Dietas terapéuticas (renal, digestiva, peso)", "Seguimiento de peso en cada visita", "Recomendación de marca y porción"],
-  },
-  {
-    slug: "diagnostico-por-imagen",
-    icon: Scan,
-    title: "Diagnóstico por imagen",
-    short: "Radiografía y ecografía para ver lo que el examen físico no alcanza.",
-    description:
-      "Cuando el examen físico y el laboratorio no bastan, la imagenología ayuda a confirmar un diagnóstico: fracturas, cuerpos extraños, patologías abdominales o cardíacas.",
-    bullets: ["Radiografía digital", "Ecografía abdominal", "Informe interpretado por el veterinario tratante", "Coordinación con cirugía si el caso lo requiere"],
-  },
-  {
-    slug: "peluqueria-grooming",
-    icon: Sparkles,
-    title: "Peluquería / grooming",
-    short: "Baño y corte de higiene, ideal para combinar con la consulta.",
-    description:
-      "Baño medicado o de rutina, corte de higiene y limpieza de oídos, a cargo de personal capacitado. Se puede combinar con la consulta para aprovechar la misma visita.",
-    bullets: ["Baño de rutina o medicado", "Corte de higiene", "Limpieza de oídos", "Ideal para combinar con la consulta"],
+      "Reserva tus cruceros con las principales navieras del mundo. Disfruta de gastronomía de clase mundial, entretenimientos a bordo y excursiones en múltiples puertos de escala.",
+    bullets: [
+      "Cabinas con balcón y suites ejecutivas",
+      "Paquetes de bebidas y cenas de especialidad",
+      "Excursiones terrestres reservadas con anticipación",
+      "Crédito a bordo de regalo en salidas seleccionadas",
+    ],
+    featured: false,
   },
 ];
 
@@ -174,30 +133,30 @@ export type TeamMember = {
 export const team: TeamMember[] = [
   {
     slug: "carlos-medina",
-    name: "Dr. Carlos Medina",
-    role: "Médico veterinario",
-    specialty: "Medicina general y cirugía de tejidos blandos",
-    bio: "Más de 10 años atendiendo perros y gatos, con especial interés en medicina preventiva y cirugía.",
+    name: "Carlos Medina",
+    role: "Director de Operaciones Turísticas",
+    specialty: "Planificación de viajes grupales e itinerarios a medida",
+    bio: "Más de 15 años diseñando itinerarios de viaje inolvidables y coordinando alianzas internacionales.",
     longBio:
-      "El Dr. Carlos Medina lidera la consulta general y el área quirúrgica de la clínica. Cree que la mejor cirugía es la que se evita con un buen chequeo preventivo a tiempo, y dedica parte de cada consulta a explicarle al propietario qué está viendo y por qué.",
+      "Carlos Medina lidera el equipo de operaciones turísticas en Viajes Globales. Se especializa en armar rutas complejas con múltiples destinos, trenes y vuelos, garantizando una logística perfecta para familias y grupos corporativos.",
   },
   {
     slug: "laura-pena",
-    name: "Dra. Laura Peña",
-    role: "Médica veterinaria",
-    specialty: "Medicina interna y diagnóstico por imagen",
-    bio: "Se enfoca en casos de medicina interna, laboratorio y diagnóstico por imagen.",
+    name: "Laura Peña",
+    role: "Especialista en Destinos Internacionales",
+    specialty: "Europa, Asia, África y Medio Oriente",
+    bio: "Experta en itinerarios a Europa y destinos exóticos con experiencias culturales exclusivas.",
     longBio:
-      "La Dra. Laura Peña se especializa en medicina interna: los casos que necesitan laboratorio, ecografía y seguimiento cercano. Trabaja de la mano con el propietario para que el plan de tratamiento sea claro y sostenible en casa.",
+      "Laura Peña se dedica a asesorar viajeros en destinos de larga distancia. Diseña experiencias gastronómicas, accesos VIP a museos y hospedajes con encanto local en las principales capitales del mundo.",
   },
   {
     slug: "marcela-duarte",
     name: "Marcela Duarte",
-    role: "Coordinadora de recepción",
-    specialty: "Agenda, urgencias y atención al propietario",
-    bio: "El primer contacto de la clínica: agenda tu cita, resuelve dudas y coordina las urgencias.",
+    role: "Asesora Senior de Viajes & Experiencias",
+    specialty: "Lunas de miel, resorts todo incluido y cruceros",
+    bio: "Especialista en vacaciones de playa, lunas de miel y paquetes familiares con atención personalizada.",
     longBio:
-      "Marcela coordina la recepción y la agenda de la clínica. Es quien contesta el WhatsApp, confirma tu cita y prioriza una urgencia en cuanto entra. Si no sabés por dónde empezar, empezá por ella.",
+      "Marcela Duarte coordina las reservas de cruceros y resorts de playa. Es el primer punto de contacto para quienes buscan unas vacaciones románticas o de descanso total sin preocuparse por la logística.",
   },
 ];
 
@@ -207,46 +166,29 @@ export function teamBySlug(slug: string): TeamMember | undefined {
 
 export type Testimonial = {
   name: string;
-  pet: string;
+  pet?: string;
+  detail?: string;
   text: string;
   rating: number;
 };
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Camila Herrera",
-    pet: "dueña de Luna (golden retriever)",
-    text: "Llevamos a Luna desde cachorra. Siempre nos explican todo antes de hacer cualquier procedimiento, y el seguimiento de las vacunas nos salvó más de un olvido.",
+    name: "Familia Morales Cárdenas",
+    detail: "Viajeros a Madrid, París y Roma",
+    text: "El itinerario a Europa que preparó Viajes Globales superó todas nuestras expectativas. Todo estuvo coordinado al milímetro: tiquetes, trenes, hoteles y tours guiados.",
     rating: 5,
   },
   {
-    name: "Andrés Vargas",
-    pet: "dueño de Michi (gata)",
-    text: "Michi es súper arisca en el veterinario y acá tienen una paciencia increíble. La cirugía de esterilización fue impecable, con controles post-operatorios muy claros.",
+    name: "Andrés & Valentina Gómez",
+    detail: "Luna de Miel en Cancún",
+    text: "Excelente servicio de la agencia. Nos asesoraron en cada detalle de nuestras vacaciones en Cancún con resort Todo Incluido. ¡Volveremos a viajar con ustedes sin duda!",
     rating: 5,
   },
   {
-    name: "Marcela Ríos",
-    pet: "dueña de Kiara",
-    text: "Un fin de semana Kiara se lastimó una pata y nos atendieron de urgencia sin drama. Desde entonces no la llevamos a otro lado.",
-    rating: 5,
-  },
-  {
-    name: "Felipe Castaño",
-    pet: "dueño de Toby y Rocco",
-    text: "Tengo dos perros con esquemas de vacunación distintos y nunca se me confunden las fechas: siempre me avisan a tiempo.",
-    rating: 5,
-  },
-  {
-    name: "Diana Torres",
-    pet: "dueña de Nina",
-    text: "Nina es una perrita senior y el chequeo preventivo semestral nos ha permitido llegar a tiempo a un par de cosas que ni notábamos.",
-    rating: 4,
-  },
-  {
-    name: "Juan David Peláez",
-    pet: "dueño de Zeus",
-    text: "La profilaxis dental de Zeus le cambió el aliento y, según el veterinario, le evitó un dolor que ni sabíamos que tenía.",
+    name: "Gabriel Restrepo",
+    detail: "Crucero por el Caribe Sur",
+    text: "Comprar nuestro crucero por el Caribe con Viajes Globales fue súper fácil. Los pagos en cuotas y la asistencia de viaje nos dieron total tranquilidad.",
     rating: 5,
   },
 ];
@@ -255,53 +197,34 @@ export type Faq = { question: string; answer: string };
 
 export const faqs: Faq[] = [
   {
-    question: "¿Necesito pedir cita o puedo llegar directamente?",
+    question: "¿Con cuánto tiempo de anticipación debo reservar mi paquete de viaje?",
     answer:
-      "Para consultas de rutina recomendamos agendar cita (por el sitio, WhatsApp o teléfono) para no hacerte esperar. Las urgencias se atienden siempre, con o sin cita previa.",
+      "Recomendamos reservar con 60 a 90 días de anticipación para destinos internacionales y 30 a 45 días para vuelos y hoteles nacionales, asegurando mejores tarifas y cupos disponibles.",
   },
   {
-    question: "¿Qué hago si es una urgencia fuera de horario?",
+    question: "¿Puedo pagar mi viaje en cuotas mensuales antes de la fecha de salida?",
     answer:
-      "Escribinos por WhatsApp o llamá a la línea de la clínica. Te vamos a indicar si podemos recibirte de inmediato o coordinar la atención más cercana.",
+      "Sí. Ofrecemos planes de abonos flexibles donde puedes separar tu cupo con un anticipo inicial e ir pagando el saldo en cuotas mensuales hasta 15 días antes del viaje.",
   },
   {
-    question: "¿Cómo es la primera consulta de mi mascota?",
+    question: "¿Qué incluye el seguro de asistencia médica al viajero?",
     answer:
-      "Empezamos con una historia clínica completa: antecedentes, alimentación y estilo de vida, seguido de un examen físico general. Si trae vacunas previas, llevá el carné.",
+      "Incluye atención médica de emergencia en clínicas del destino, medicamentos recetados, repatriación sanitaria, indemnización por equipaje demorado y cobertura ante cancelación por causas de fuerza mayor.",
   },
   {
-    question: "¿Con qué frecuencia hay que vacunar?",
+    question: "¿Ustedes gestionan el trámite de visado si mi destino lo requiere?",
     answer:
-      "Depende de la vacuna y la edad: los cachorros y gatitos llevan un esquema inicial de varias dosis, y luego refuerzos anuales. Nosotros llevamos el registro y te avisamos cuándo toca.",
-  },
-  {
-    question: "¿Atienden otras especies además de perros y gatos?",
-    answer:
-      "Sí, también atendemos aves, conejos y algunos exóticos. Si no estás seguro, escribinos antes con el caso puntual.",
-  },
-  {
-    question: "¿Qué medios de pago aceptan?",
-    answer: "Efectivo, tarjeta débito/crédito y transferencia. Para procedimientos mayores entregamos presupuesto por escrito antes de proceder.",
-  },
-  {
-    question: "¿Necesito ayuno antes de una cirugía?",
-    answer:
-      "Sí. Para cualquier procedimiento con anestesia te vamos a indicar el ayuno de sólidos y líquidos requerido según el caso, con al menos un día de anticipación.",
-  },
-  {
-    question: "¿Puedo pedir mi cita por WhatsApp?",
-    answer:
-      "Sí, es la vía más rápida. También podés usar el formulario de \"Agendar cita\" del sitio: recepción confirma disponibilidad y te contacta.",
+      "Sí. Te brindamos asesoría completa y cartas de confirmación de reserva (vuelos y hoteles) para la solicitud de visados en embajadas y consulados.",
   },
 ];
 
 export type Stat = { value: string; label: string };
 
 export const stats: Stat[] = [
-  { value: "12+", label: "años de trayectoria" },
-  { value: "3.500+", label: "mascotas atendidas" },
-  { value: "2", label: "veterinarios de planta" },
-  { value: "4.9/5", label: "satisfacción de propietarios" },
+  { value: "+12,500", label: "viajeros satisfechos" },
+  { value: "48", label: "destinos internacionales" },
+  { value: "99.4%", label: "calificación de experiencia" },
+  { value: "15+", label: "años de trayectoria turística" },
 ];
 
 export type BlogPost = {
@@ -316,106 +239,44 @@ export type BlogPost = {
   body: string[];
 };
 
-export const blogCategories = ["Prevención", "Vacunas", "Nutrición", "Cirugía", "Cachorros", "Urgencias"];
+export const blogCategories = ["Destinos", "Consejos de Viaje", "Europa", "Caribe", "Cruceros", "Requisitos"];
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "cuando-llevar-a-tu-mascota-al-veterinario",
-    title: "Señales que indican que tu mascota necesita una consulta ya",
-    category: "Urgencias",
-    excerpt: "Decaimiento, vómito persistente, dificultad para respirar: una guía rápida para saber cuándo esperar y cuándo no.",
-    image: "/gallery/pet-7.jpg",
-    authorSlug: "carlos-medina",
+    slug: "guia-para-viajar-a-europa-por-primera-vez",
+    title: "Guía esencial para planear tu primer viaje a Europa",
+    category: "Europa",
+    excerpt: "Requisitos de entrada, seguro ETIAS/Schengen, mejor época para viajar y cómo armar un itinerario inteligente.",
+    image: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&q=80&w=800",
+    authorSlug: "laura-pena",
     date: "2026-08-12",
-    readMinutes: 4,
+    readMinutes: 5,
     body: [
-      "No toda molestia es una urgencia, pero algunas señales sí ameritan atención inmediata y no un \"vamos viendo cómo sigue\". La regla general que usamos en consulta: si el síntoma es súbito, si compromete la respiración, o si tu mascota deja de responder como siempre, es momento de venir.",
-      "Decaimiento marcado — que no se levante a comer, que no reaccione a estímulos que normalmente la entusiasman — es de las señales más subestimadas. Un perro o gato que \"está raro\" desde hace más de unas horas ya justifica una consulta, no una espera de \"a ver si mejora solo\".",
-      "El vómito persistente (más de dos o tres episodios en pocas horas, o con sangre) y la dificultad para respirar son motivo de consulta prioritaria siempre. En el segundo caso, cada minuto cuenta: llamanos antes de salir para que el equipo esté listo cuando llegues.",
-      "Otras señales que no deberían esperar: distensión abdominal repentina, convulsiones, imposibilidad de orinar, sangrado que no cede, o un golpe/caída con cojera inmediata. Ante la duda, la llamada no cuesta nada — preferimos revisar de más que de menos.",
+      "Planear un viaje a Europa por primera vez es emocionante pero exige una organización logística adecuada: decidir qué ciudades visitar, cómo desplazarse entre países y qué documentos llevar en regla.",
+      "El primer paso es elegir una ruta coherente. Intentar abarcar demasiados países en dos semanas suele provocar agotamiento. Recomendamos seleccionar 3 o 4 ciudades principales conectadas por trenes de alta velocidad (como Madrid, Barcelona, París o Roma).",
+      "Asegúrate de contar con pasaporte vigente con al menos 6 meses de validez desde la fecha de regreso, seguro de asistencia médica con cobertura mínima exigida por el Espacio Schengen y reservas confirmadas de tiquetes de regreso y hoteles.",
+      "Comprar las entradas a atracciones icónicas (como la Torre Eiffel, el Coliseo Romano o la Sagrada Familia) con semanas de anticipación evita perder horas en filas y garantiza tu ingreso en el horario seleccionado.",
     ],
   },
   {
-    slug: "calendario-de-vacunacion-cachorros",
-    title: "El calendario de vacunación de un cachorro, mes a mes",
-    category: "Vacunas",
-    excerpt: "Qué vacuna toca en cada etapa y por qué saltarse una dosis puede dejar una ventana de riesgo.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "laura-pena",
+    slug: "los-mejores-resorts-all-inclusive-del-caribe",
+    title: "Top 5 destinos All-Inclusive para tus vacaciones en la playa",
+    category: "Caribe",
+    excerpt: "Cancún, Punta Cana, Aruba y Riviera Maya: consejos para elegir la mejor época y el resort perfecto.",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800",
+    authorSlug: "marcela-duarte",
     date: "2026-07-28",
-    readMinutes: 5,
-    body: [
-      "Un cachorro nace con cierta protección de la madre, pero esa inmunidad baja gradualmente entre las 6 y las 16 semanas de vida — justo la ventana en la que hay que vacunar, y por eso el esquema se aplica en varias dosis, no en una sola.",
-      "El esquema típico arranca alrededor de las 6-8 semanas con la primera dosis de la polivalente (moquillo, parvovirus, hepatitis, entre otras según el laboratorio), se refuerza cada 3-4 semanas hasta las 16 semanas, y la antirrábica se suma desde los 3 meses.",
-      "Saltarse una dosis del esquema inicial no es \"recuperable\" con solo aplicar la siguiente: cada refuerzo depende de que el anterior haya generado la respuesta esperada. Por eso llevamos el registro exacto de lote y fecha, y te avisamos con anticipación cuándo toca la próxima.",
-      "Después del primer año, la mayoría de las vacunas pasan a un esquema de refuerzo anual. Traé siempre el carné de vacunación a cada visita, aunque sea de rutina — es el historial que evita que se repita o se salte una dosis.",
-    ],
-  },
-  {
-    slug: "como-elegir-el-alimento-correcto",
-    title: "Cómo elegir el alimento correcto según la edad y tamaño de tu mascota",
-    category: "Nutrición",
-    excerpt: "No todos los alimentos \"premium\" son iguales. Qué mirar en la etiqueta antes de decidir.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-07-10",
     readMinutes: 4,
     body: [
-      "La palabra \"premium\" en el empaque no está regulada — no garantiza nada por sí sola. Lo que sí importa es la lista de ingredientes (una fuente de proteína animal identificada, no genérica como \"subproductos\") y que el alimento esté formulado para la etapa de vida correcta.",
-      "Un cachorro necesita más proteína y calorías por su crecimiento; un adulto sedentario necesita menos de lo que dice la tabla genérica de la bolsa; un senior suele beneficiarse de fórmulas más livianas para las articulaciones y el riñón. Alimentar con la fórmula de otra etapa no es un ahorro, es un desajuste silencioso.",
-      "El tamaño también importa: las razas grandes necesitan un control más estricto de calcio y fósforo en el crecimiento para evitar problemas articulares a futuro, y las razas pequeñas gastan más energía por kilo de lo que parece.",
-      "Si tu mascota tiene una condición clínica (renal, digestiva, sobrepeso), el alimento pasa a ser parte del tratamiento, no una elección de supermercado — ahí sí conviene una dieta terapéutica indicada en consulta, no una decisión por cuenta propia.",
-    ],
-  },
-  {
-    slug: "preparar-a-tu-mascota-para-una-cirugia",
-    title: "Cómo preparar a tu mascota (y a vos) para una cirugía programada",
-    category: "Cirugía",
-    excerpt: "Ayuno, traslado y qué esperar el día de la cirugía y en el post-operatorio.",
-    image: "/gallery/pet-13.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-06-22",
-    readMinutes: 5,
-    body: [
-      "Toda cirugía con anestesia requiere ayuno previo — típicamente de sólidos desde la noche anterior y de agua unas horas antes, aunque el esquema exacto varía según el paciente y te lo confirmamos al agendar. Un estómago lleno durante la anestesia es un riesgo real de aspiración, así que esta indicación no es opcional.",
-      "El día de la cirugía, traé a tu mascota temprano y con tiempo: hacemos una revisión pre-anestésica antes de proceder. Es normal sentir ansiedad — la mayoría de los propietarios la sienten más que sus mascotas — y preferimos que preguntes todo lo que necesites antes, no durante la espera.",
-      "Durante el procedimiento trabajamos con monitoreo anestésico continuo (frecuencia cardíaca, oxigenación, temperatura) y te llamamos apenas termina para contarte cómo salió y coordinar el retiro.",
-      "El post-operatorio es donde más se juega la recuperación: reposo estricto los primeros días, collar isabelino si aplica para que no se lastime el punto, y los controles que te indiquemos sin saltarte ninguno, aunque la herida se vea bien.",
-    ],
-  },
-  {
-    slug: "chequeos-preventivos-mascotas-senior",
-    title: "Por qué los chequeos preventivos importan más después de los 7 años",
-    category: "Prevención",
-    excerpt: "Los cambios en una mascota senior son graduales — el chequeo semestral detecta lo que el día a día no muestra.",
-    image: "/gallery/pet-3.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-30",
-    readMinutes: 4,
-    body: [
-      "A partir de los 7 años (antes en razas grandes), el metabolismo, las articulaciones, los riñones y el corazón empiezan a cambiar de forma gradual — tan gradual que en casa es difícil notarlo, porque lo ves todos los días.",
-      "Por eso pasamos de un chequeo anual a uno semestral en pacientes senior: duplicar la frecuencia de control multiplica las chances de detectar algo a tiempo, cuando todavía es manejable con un ajuste de dieta o tratamiento, y no cuando ya se volvió una urgencia.",
-      "Un chequeo senior típico incluye examen físico completo, control de peso y masa muscular, revisión dental, y un panel básico de laboratorio (función renal, hepática, hemograma) al menos una vez al año, más seguido si el caso lo amerita.",
-      "No es alarmismo: es la misma lógica que un chequeo médico humano después de cierta edad. La mascota no te va a decir que algo le duele distinto — el chequeo periódico es la forma de enterarte antes de que sea evidente.",
-    ],
-  },
-  {
-    slug: "primeros-dias-de-un-cachorro-en-casa",
-    title: "Los primeros días de un cachorro en casa: checklist veterinario",
-    category: "Cachorros",
-    excerpt: "Primera visita, desparasitación, socialización y los errores más comunes de los primeros dueños.",
-    image: "/gallery/pet-1.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-08",
-    readMinutes: 5,
-    body: [
-      "La primera visita veterinaria debería pasar en la primera semana en casa, aunque el cachorro se vea perfectamente sano: revisamos peso, examen físico general, y armamos el esquema de vacunación y desparasitación desde cero con fechas concretas.",
-      "La desparasitación interna en cachorros empieza más temprano y con más frecuencia de lo que la mayoría espera — cada 2-3 semanas hasta los 3 meses, después mensual hasta el año. No es opcional ni algo que se resuelve \"cuando se vea algo raro\".",
-      "La socialización tiene una ventana crítica entre las 3 y las 14 semanas: es cuando el cachorro aprende qué es normal (otras personas, otros animales, ruidos, superficies) sin miedo. Perderse esa ventana no es irreversible, pero cuesta mucho más trabajo después.",
-      "El error más común de los primeros dueños: esperar a que \"se vea algo mal\" para consultar. La medicina preventiva en un cachorro no es un gasto extra, es la base de toda la salud que va a tener de adulto — y sale más barata que resolver lo que se pudo prevenir.",
+      "El concepto Todo Incluido es la mejor opción para unas vacaciones de descanso absoluto. Gastronomía ilimitada, cócteles frente al mar, deportes acuáticos y entretenimiento nocturno sin gastos adicionales en el destino.",
+      "Cancún y Riviera Maya destacan por sus playas de agua turquesa, acceso a parques ecológicos como Xcaret y cenotes sagrados. Punta Cana ofrece playas extensas bordeadas de cocoteros y resorts familiares de gran escala.",
+      "Para viajar con niños, busca resorts con parque acuático y club infantil supervisado. Para escapadas en pareja o lunas de miel, los hoteles 'Solo Adultos' brindan ambientes tranquilos con restaurantes gourmet a la carta.",
+      "Recomendamos reservar tu paquete con anticipación para asegurar habitaciones con vista al mar y acceder a promociones de niños gratis o transfers privados sin costo adicional.",
     ],
   },
 ];
+
+export const recentPosts = blogPosts.slice(0, 3);
 
 export function blogPostBySlug(slug: string): BlogPost | undefined {
   return blogPosts.find((p) => p.slug === slug);
