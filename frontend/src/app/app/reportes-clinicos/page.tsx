@@ -76,8 +76,8 @@ export default function ClinicalReportsPage() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold">Reportes clínicos</h1>
-          <p className="text-sm text-muted-foreground">Actividad de la clínica en el período.</p>
+          <h1 className="text-2xl font-semibold">Reportes Estéticos & Asistenciales</h1>
+          <p className="text-sm text-muted-foreground">Actividad médica y de tratamientos de la clínica en el período.</p>
         </div>
         <div className="flex items-center gap-2 text-sm">
           <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="h-9 rounded-md border border-border bg-card px-2" />
@@ -92,9 +92,9 @@ export default function ClinicalReportsPage() {
         <>
           <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
             <Stat label="Pacientes atendidos" value={report.patients_attended} />
-            <Stat label="Consultas" value={report.consultations} />
-            <Stat label="Vacunas aplicadas" value={report.vaccinations_applied} />
-            <Stat label="Desparasitaciones" value={report.dewormings_applied} />
+            <Stat label="Valoraciones estéticas" value={report.consultations} />
+            <Stat label="Aplicaciones médicas" value={report.vaccinations_applied} />
+            <Stat label="Dosis / Sueros" value={report.dewormings_applied} />
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
@@ -104,7 +104,7 @@ export default function ClinicalReportsPage() {
                 Object.entries(report.appointments_by_status).map(([k, v]) => [APPOINTMENT_STATUS_LABEL[k] ?? k, v]),
               )}
             />
-            <Breakdown title="Citas por profesional" rows={report.appointments_by_practitioner} />
+            <Breakdown title="Citas por especialista" rows={report.appointments_by_practitioner} />
             <Breakdown title="Ingreso estimado por servicio" rows={report.revenue_by_service} money />
           </div>
         </>

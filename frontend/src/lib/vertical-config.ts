@@ -58,18 +58,21 @@ export const AESTHETIC_VERTICAL_CONFIG = {
   defaultUserName: "Dra. Valentina Mendoza",
 
   // Módulos Deshabilitados en Medicina Estética (Ocultados completamente en UI)
-  disabledModules: ["vacunas", "vacunas-pendientes", "especies", "razas"],
+  disabledModules: [],
 
   // Mapeo de Nombres de Módulos para Medicina Estética
   moduleLabels: {
     dashboard: "Dashboard",
     citas: "Agenda de Citas",
-    pacientes: "Pacientes",
+    pacientes: "Pacientes Estéticos",
     consultas: "Valoraciones Estéticas",
+    aplicaciones: "Aplicaciones & Dosis",
+    "proximas-sesiones": "Próximas Sesiones",
     procedimientos: "Procedimientos Estéticos",
     diagnosticos: "Diagnósticos Estéticos",
     recetas: "Fórmulas & Prescripciones",
     servicios: "Tratamientos & Servicios",
+    especies: "Zonas & Especialidades",
     productos: "Dermocosmética & Insumos",
     "alertas-stock": "Alertas de Insumos",
     "movimientos-inventario": "Movimientos de Stock",

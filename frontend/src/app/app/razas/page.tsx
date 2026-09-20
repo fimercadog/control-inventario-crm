@@ -7,14 +7,14 @@ import { AppColumnDef } from "@/lib/table-types";
 import { Breed } from "@/lib/types";
 
 const columns: AppColumnDef<Breed>[] = [
-  { accessorKey: "name", header: "Nombre" },
-  { header: "Especie", cell: ({ row }) => row.original.species ?? "—" },
+  { accessorKey: "name", header: "Especialidad / Subzona" },
+  { header: "Zona Principal", cell: ({ row }) => row.original.species ?? "—" },
   { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activa" : "Inactiva"}</Badge> },
 ];
 
 const fields: CrudField[] = [
-  { name: "name", label: "Nombre", required: true },
-  { name: "species_id", label: "Especie", type: "select", optionsResource: "/species", required: true },
+  { name: "name", label: "Nombre de subzona / especialidad", required: true },
+  { name: "species_id", label: "Zona Principal", type: "select", optionsResource: "/species", required: true },
   {
     name: "status",
     label: "Estado",
@@ -30,13 +30,13 @@ const fields: CrudField[] = [
 export default function BreedsPage() {
   return (
     <ModuleTablePage<Breed>
-      title="Razas"
-      description="Razas por especie."
+      title="Especialidades & Subzonas"
+      description="Subzonas y áreas de tratamiento específicas por zona principal."
       resource="/breeds"
       columns={columns}
       fields={fields}
-      actionLabel="Nueva raza"
-      modalDescription="Elegí la especie a la que pertenece la raza."
+      actionLabel="Nueva subzona"
+      modalDescription="Elige la zona principal a la que pertenece la subzona."
     />
   );
 }

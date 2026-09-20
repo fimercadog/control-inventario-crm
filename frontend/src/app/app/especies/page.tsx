@@ -7,13 +7,13 @@ import { AppColumnDef } from "@/lib/table-types";
 import { Species } from "@/lib/types";
 
 const columns: AppColumnDef<Species>[] = [
-  { accessorKey: "name", header: "Nombre" },
-  { header: "Razas", cell: ({ row }) => row.original.breeds_count ?? 0 },
+  { accessorKey: "name", header: "Nombre de la zona" },
+  { header: "Especialidades / Subzonas", cell: ({ row }) => row.original.breeds_count ?? 0 },
   { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activa" : "Inactiva"}</Badge> },
 ];
 
 const fields: CrudField[] = [
-  { name: "name", label: "Nombre", required: true },
+  { name: "name", label: "Nombre de la zona", required: true },
   {
     name: "status",
     label: "Estado",
@@ -29,13 +29,13 @@ const fields: CrudField[] = [
 export default function SpeciesPage() {
   return (
     <ModuleTablePage<Species>
-      title="Especies"
-      description="Categorías de tratamientos y especialidades de la clínica."
+      title="Zonas Anatómicas Estéticas"
+      description="Categorías principales de la clínica (Facial, Corporal, Capilar, Antiaging)."
       resource="/species"
       columns={columns}
       fields={fields}
-      actionLabel="Nueva especie"
-      modalDescription="Cada raza pertenece a una especie."
+      actionLabel="Nueva zona"
+      modalDescription="Categorías anatómicas principales para organizar los tratamientos de la clínica."
     />
   );
 }

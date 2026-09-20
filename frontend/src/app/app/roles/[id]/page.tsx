@@ -11,29 +11,29 @@ import { Role } from "@/lib/types";
 
 const PERMISSION_LABEL: Record<string, string> = {
   "dashboard.view": "Ver dashboard",
-  "leads.view": "Ver leads",
-  "clients.manage": "Gestionar clientes",
-  "deals.manage": "Gestionar deals",
+  "leads.view": "Ver solicitudes / leads",
+  "clients.manage": "Gestionar clientes y pacientes",
+  "deals.manage": "Gestionar planes y oportunidades",
   "activities.manage": "Gestionar actividades",
   "orders.manage": "Gestionar pedidos",
-  "products.manage": "Gestionar productos",
+  "products.manage": "Gestionar productos e insumos",
   "warehouses.manage": "Gestionar bodegas",
   "stock.manage": "Registrar movimientos de inventario",
   "suppliers.manage": "Gestionar proveedores",
-  "purchase_orders.manage": "Gestionar ordenes de compra",
+  "purchase_orders.manage": "Gestionar órdenes de compra",
   "reports.view": "Ver reportes",
   "users.manage": "Gestionar usuarios",
   "roles.manage": "Gestionar roles",
-  "audit.view": "Ver auditoria",
-  "settings.manage": "Gestionar configuracion de la empresa",
-  "services.manage": "Gestionar catálogo de servicios",
-  "patients.manage": "Gestionar propietarios y pacientes",
+  "audit.view": "Ver auditoría",
+  "settings.manage": "Gestionar configuración de la empresa",
+  "services.manage": "Gestionar catálogo de servicios y zonas",
+  "patients.manage": "Gestionar pacientes estéticos",
   "appointments.manage": "Gestionar citas y agenda",
-  "medical_records.manage": "Gestionar historia clínica",
-  "vaccinations.manage": "Gestionar vacunas y desparasitación",
-  "prescriptions.manage": "Gestionar prescripciones",
-  "procedures.manage": "Gestionar procedimientos",
-  "clinical_reports.view": "Ver reportes clínicos",
+  "medical_records.manage": "Gestionar historia médica estética",
+  "vaccinations.manage": "Gestionar aplicaciones médicas & dosis",
+  "prescriptions.manage": "Gestionar prescripciones & fórmulas",
+  "procedures.manage": "Gestionar tratamientos & protocolos",
+  "clinical_reports.view": "Ver reportes estéticos & asistenciales",
 };
 
 export default function RoleDetailPage() {
@@ -103,7 +103,7 @@ export default function RoleDetailPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">{role.name}</h1>
-          <p className="text-sm text-muted-foreground">Elegi que puede hacer este rol en el panel.</p>
+          <p className="text-sm text-muted-foreground">Elegí qué puede hacer este rol en el panel.</p>
         </div>
         <div className="flex items-center gap-3">
           <Badge>{role.status === "active" ? "Activo" : "Inactivo"}</Badge>

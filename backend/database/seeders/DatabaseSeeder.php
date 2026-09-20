@@ -389,15 +389,15 @@ class DatabaseSeeder extends Seeder
 
         // [clientIdx, nombre, especie, raza, sexo, nacimiento, peso, esterilizado, microchip]
         $rows = [
-            [0, 'Camila Herrera (Facial)', 'Facial', 'Frente & Entrecejo', 'female', '1992-03-14', 58.4, false, 'EST-900215001'],
-            [1, 'Andrés Vargas (Corporal)', 'Corporal', 'Abdomen & Flancos', 'male', '1985-07-02', 78.1, false, 'EST-900215002'],
+            [0, 'Camila Herrera (Facial)', 'Facial', 'Frente & Entrecejo', 'female', '1992-03-14', 58.4, false, null],
+            [1, 'Andrés Vargas (Corporal)', 'Corporal', 'Abdomen & Flancos', 'male', '1985-07-02', 78.1, false, null],
             [2, 'Marcela Ríos (Facial)', 'Facial', 'Labios & Perfilado', 'female', '1990-11-20', 54.2, false, null],
-            [3, 'Felipe Castaño (Antiaging)', 'Antiaging', 'Sueroterapia IV Detox', 'male', '1978-02-10', 81.1, false, 'EST-900215003'],
+            [3, 'Felipe Castaño (Antiaging)', 'Antiaging', 'Sueroterapia IV Detox', 'male', '1978-02-10', 81.1, false, null],
             [4, 'Diana Torres (Facial)', 'Facial', 'Pómulos & Ojeras', 'female', '1988-01-05', 60.8, false, null],
-            [5, 'Juan David Peláez (Facial)', 'Facial', 'Contorno Mandibular', 'male', '1983-05-30', 76.7, false, 'EST-900215004'],
+            [5, 'Juan David Peláez (Facial)', 'Facial', 'Contorno Mandibular', 'male', '1983-05-30', 76.7, false, null],
             [6, 'Laura Gutiérrez (Capilar)', 'Capilar', 'Fortalecimiento Capilar', 'female', '1994-01-18', 56.2, false, null],
-            [7, 'Santiago Rojas (Facial)', 'Facial', 'Surcos Nasogenianos', 'male', '1980-09-12', 82.9, false, 'EST-900215005'],
-            [8, 'Natalia Ospina (Corporal)', 'Corporal', 'Glúteos & Muslos', 'female', '1995-06-25', 62.8, false, 'EST-900215006'],
+            [7, 'Santiago Rojas (Facial)', 'Facial', 'Surcos Nasogenianos', 'male', '1980-09-12', 82.9, false, null],
+            [8, 'Natalia Ospina (Corporal)', 'Corporal', 'Glúteos & Muslos', 'female', '1995-06-25', 62.8, false, null],
         ];
 
         return collect($rows)->map(fn ($d) => Patient::firstOrCreate(

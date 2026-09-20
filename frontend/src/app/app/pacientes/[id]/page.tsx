@@ -11,7 +11,7 @@ import { api } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
 import { ClinicalApplication, Consultation, Patient } from "@/lib/types";
 
-const SEX_LABEL: Record<string, string> = { male: "Macho", female: "Hembra", unknown: "Sin dato" };
+const SEX_LABEL: Record<string, string> = { male: "Masculino", female: "Femenino", unknown: "Sin dato" };
 
 function ageFrom(birth?: string | null): string | null {
   if (!birth) return null;
@@ -96,9 +96,9 @@ export default function PatientDetailPage() {
         <div>
           <h1 className="text-2xl font-semibold">{patient.name}</h1>
           <p className="text-sm text-muted-foreground">
-            {[patient.species, patient.breed].filter(Boolean).join(" · ") || "Sin especie"}
+            {[patient.species, patient.breed].filter(Boolean).join(" · ") || "Sin zona asignada"}
             {" · "}
-            Propietario:{" "}
+            Cliente / Titular:{" "}
             <Link href={`/app/clientes/${patient.client_id}`} className="text-primary hover:underline">
               {patient.client ?? "—"}
             </Link>
@@ -139,8 +139,6 @@ export default function PatientDetailPage() {
             <Fact label="Nacimiento" value={patient.birth_date ? formatDate(patient.birth_date) : null} />
             <Fact label="Edad" value={ageFrom(patient.birth_date)} />
             <Fact label="Peso" value={patient.weight != null ? `${patient.weight} kg` : null} />
-            <Fact label="Microchip" value={patient.microchip} />
-            <Fact label="Esterilizado" value={patient.sterilized ? "Sí" : "No"} />
             <Fact
               label="Estado"
               value={<Badge>{patient.status === "active" ? "Activo" : "Inactivo"}</Badge>}
@@ -152,9 +150,9 @@ export default function PatientDetailPage() {
       <Card>
         <CardContent className="p-5">
           <div className="mb-3 flex items-center justify-between">
-            <h3 className="text-base font-medium">Historia clínica</h3>
+            <h3 className="text-base font-medium">Historia médica estética</h3>
             <Link href="/app/consultas" className="text-xs text-primary hover:underline">
-              Nueva consulta
+              Nueva valoración
             </Link>
           </div>
           {consultations.length === 0 ? (
@@ -186,8 +184,8 @@ export default function PatientDetailPage() {
         <Card>
           <CardContent className="p-5">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-base font-medium">Vacunas y desparasitación</h3>
-              <Link href="/app/vacunas" className="text-xs text-primary hover:underline">
+              <h3 className="text-base font-medium">Aplicaciones médicas & dosis</h3>
+              <Link href="/app/aplicaciones" className="text-xs text-primary hover:underline">
                 Registrar
               </Link>
             </div>
@@ -199,7 +197,7 @@ export default function PatientDetailPage() {
                   <li key={a.id} className="flex items-center justify-between gap-3 border-b border-border pb-2 text-sm last:border-0 last:pb-0">
                     <span className="min-w-0 truncate">
                       {a.name}
-                      <span className="text-muted-foreground"> · {a.type === "vaccine" ? "vacuna" : "desparasitación"}</span>
+                      <span className="text-muted-foreground"> · {a.type === "vaccine" ? "aplicación médica" : "dosis / suero"}</span>
                     </span>
                     <span className="shrink-0 text-xs text-muted-foreground">
                       {formatDate(a.applied_at)}

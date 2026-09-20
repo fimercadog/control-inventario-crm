@@ -7,13 +7,13 @@ import { AppColumnDef } from "@/lib/table-types";
 import { Service } from "@/lib/types";
 
 const TYPE_OPTIONS = [
-  { label: "Consulta", value: "consulta" },
-  { label: "Vacunación", value: "vacunacion" },
-  { label: "Cirugía", value: "cirugia" },
-  { label: "Curación", value: "curacion" },
-  { label: "Hospitalización", value: "hospitalizacion" },
-  { label: "Peluquería", value: "peluqueria" },
-  { label: "Otro", value: "otro" },
+  { label: "Valoración Médica", value: "consulta" },
+  { label: "Inyectables & Toxinas", value: "vacunacion" },
+  { label: "Armonización & Rellenos", value: "cirugia" },
+  { label: "Cosmiatría & Peelings", value: "curacion" },
+  { label: "Sueroterapia IV", value: "hospitalizacion" },
+  { label: "Aparatología & Higiene", value: "peluqueria" },
+  { label: "Láser & Otros", value: "otro" },
 ];
 
 const TYPE_LABEL = Object.fromEntries(TYPE_OPTIONS.map((o) => [o.value, o.label]));
@@ -35,7 +35,7 @@ const columns: AppColumnDef<Service>[] = [
 
 const fields: CrudField[] = [
   { name: "name", label: "Nombre", required: true },
-  { name: "type", label: "Tipo", type: "select", options: TYPE_OPTIONS, omitWhenEmpty: true },
+  { name: "type", label: "Tipo de servicio", type: "select", options: TYPE_OPTIONS, omitWhenEmpty: true },
   { name: "estimated_duration_minutes", label: "Duración estimada (min)", type: "number", min: 0, omitWhenEmpty: true },
   { name: "price", label: "Precio", type: "number", min: 0, required: true },
   { name: "description", label: "Descripción", type: "textarea", omitWhenEmpty: true, colSpan: "full" },
@@ -54,8 +54,8 @@ const fields: CrudField[] = [
 export default function ServicesPage() {
   return (
     <ModuleTablePage<Service>
-      title="Servicios"
-      description="Catálogo de servicios que presta la clínica."
+      title="Servicios & Tratamientos"
+      description="Catálogo de servicios y tratamientos médicos estéticos de la clínica."
       resource="/services"
       columns={columns}
       fields={fields}
