@@ -2,12 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Models\AccountPayable;
+use App\Models\AccountReceivable;
 use App\Models\Activity;
 use App\Models\Appointment;
 use App\Models\AuditLog;
 use App\Models\Brand;
-use App\Models\CashRegister;
 use App\Models\Breed;
+use App\Models\CashMovement;
+use App\Models\CashRegister;
+use App\Models\CashSession;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\ClientNote;
@@ -17,6 +21,8 @@ use App\Models\Consultation;
 use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\Diagnosis;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\Lead;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -107,6 +113,10 @@ class DatabaseSeeder extends Seeder
         $this->seedWellnessDeals($company, $clients, $admin, $users['ventas@vetlosandes.co']);
         $this->seedClientNotesAndTasks($company, $clients, $patients, $admin, $reception);
         $this->seedAuditLog($company, $admin, $clients, $patients);
+
+        $this->seedInvoicesAndAccounts($company, $clients, $products, $reception, $mainWarehouse);
+        $this->seedAccountsPayable($company, $suppliers);
+        $this->seedCashSessions($company, $reception);
     }
 
     // ---------------------------------------------------------------- usuarios
@@ -1034,5 +1044,141 @@ class DatabaseSeeder extends Seeder
                 $log->forceFill(['created_at' => $at, 'updated_at' => $at])->saveQuietly();
             }
         }
+    }
+
+    private function seedInvoicesAndAccounts(
+        Company $company,
+        Collection $clients,
+        Collection $products,
+        User $reception,
+        Warehouse $warehouse
+    ): void {
+        $rows = [
+            ['client' => $clients[0], 'number' => 'FE-1001', 'status' => 'paid', 'days_ago' => 15, 'items' => [[$products->firstWhere('sku', 'VAC-DHPPI'), 1, 45000], [$products->firstWhere('sku', 'FARM-AMOXI'), 2, 2500]]],
+            ['client' => $clients[1], 'number' => 'FE-1002', 'status' => 'issued', 'days_ago' => 10, 'items' => [[$products->firstWhere('sku', 'ALIM-GASTRO'), 1, 128000]]],
+            ['client' => $clients[2], 'number' => 'FE-1003', 'status' => 'overdue', 'days_ago' => 35, 'items' => [[$products->firstWhere('sku', 'FARM-MELOX'), 1, 45000], [$products->firstWhere('sku', 'ACC-SHAMP'), 1, 36000]]],
+            ['client' => $clients[3], 'number' => 'FE-1004', 'status' => 'issued', 'days_ago' => 5, 'items' => [[$products->firstWhere('sku', 'ACC-DENTAL'), 1, 24000]]],
+            ['client' => $clients[4], 'number' => 'FE-1005', 'status' => 'paid', 'days_ago' => 20, 'items' => [[$products->firstWhere('sku', 'ANTI-EXT'), 1, 55000]]],
+        ];
+
+        foreach ($rows as $r) {
+            $subtotal = array_reduce($r['items'], fn($acc, $it) => $acc + ($it[1] * $it[2]), 0);
+            $tax = round($subtotal * 0.19, 2);
+            $total = $subtotal + $tax;
+            $issueDate = Carbon::today()->subDays($r['days_ago']);
+            $dueDate = $issueDate->copy()->addDays(30);
+
+            $invoice = Invoice::firstOrCreate(
+                ['company_id' => $company->id, 'number' => $r['number']],
+                [
+                    'client_id' => $r['client']->id,
+                    'warehouse_id' => $warehouse->id,
+                    'user_id' => $reception->id,
+                    'issue_date' => $issueDate,
+                    'due_date' => $dueDate,
+                    'status' => $r['status'],
+                    'subtotal' => $subtotal,
+                    'discount' => 0,
+                    'tax' => $tax,
+                    'total' => $total,
+                    'notes' => 'Factura de prueba veterinaria',
+                ]
+            );
+
+            if ($invoice->wasRecentlyCreated) {
+                foreach ($r['items'] as [$prod, $qty, $price]) {
+                    InvoiceItem::create([
+                        'invoice_id' => $invoice->id,
+                        'product_id' => $prod?->id,
+                        'product_name' => $prod?->name ?? 'Servicio veterinario',
+                        'sku' => $prod?->sku,
+                        'quantity' => $qty,
+                        'unit_price' => $price,
+                        'discount' => 0,
+                        'tax' => round($qty * $price * 0.19, 2),
+                        'line_total' => round($qty * $price * 1.19, 2),
+                    ]);
+                }
+
+                AccountReceivable::create([
+                    'company_id' => $company->id,
+                    'client_id' => $r['client']->id,
+                    'invoice_id' => $invoice->id,
+                    'original_amount' => $total,
+                    'paid_amount' => $r['status'] === 'paid' ? $total : 0,
+                    'balance' => $r['status'] === 'paid' ? 0 : $total,
+                    'due_date' => $dueDate,
+                    'status' => $r['status'] === 'paid' ? 'paid' : ($r['days_ago'] > 30 ? 'overdue' : 'pending'),
+                ]);
+            }
+        }
+    }
+
+    private function seedAccountsPayable(Company $company, Collection $suppliers): void
+    {
+        $rows = [
+            ['supplier' => $suppliers[0], 'amount' => 1250000, 'paid' => 1250000, 'status' => 'paid', 'due_days' => -10],
+            ['supplier' => $suppliers[1], 'amount' => 840000, 'paid' => 0, 'status' => 'pending', 'due_days' => 15],
+            ['supplier' => $suppliers[2], 'amount' => 450000, 'paid' => 0, 'status' => 'overdue', 'due_days' => -5],
+        ];
+
+        foreach ($rows as $r) {
+            AccountPayable::firstOrCreate(
+                ['company_id' => $company->id, 'supplier_id' => $r['supplier']->id, 'original_amount' => $r['amount']],
+                [
+                    'paid_amount' => $r['paid'],
+                    'balance' => $r['amount'] - $r['paid'],
+                    'due_date' => Carbon::today()->addDays($r['due_days']),
+                    'status' => $r['status'],
+                ]
+            );
+        }
+    }
+
+    private function seedCashSessions(Company $company, User $reception): void
+    {
+        $register = CashRegister::where('company_id', $company->id)->first();
+        if (!$register) return;
+
+        $s1 = CashSession::firstOrCreate(
+            ['company_id' => $company->id, 'cash_register_id' => $register->id, 'opened_at' => Carbon::yesterday()->setTime(8, 0)],
+            [
+                'opened_by' => $reception->id,
+                'closed_by' => $reception->id,
+                'closed_at' => Carbon::yesterday()->setTime(18, 0),
+                'opening_amount' => 200000,
+                'expected_amount' => 650000,
+                'closing_amount' => 650000,
+                'difference' => 0,
+                'status' => 'closed',
+                'notes' => 'Cierre de turno veterinario sin novedades',
+            ]
+        );
+        if ($s1->wasRecentlyCreated) {
+            CashMovement::create([
+                'company_id' => $company->id,
+                'cash_session_id' => $s1->id,
+                'user_id' => $reception->id,
+                'type' => 'in',
+                'amount' => 450000,
+                'method' => 'cash',
+                'source_type' => 'manual',
+                'source_id' => 1,
+                'notes' => 'Ingreso por servicios veterinarios',
+            ]);
+        }
+
+        CashSession::firstOrCreate(
+            ['company_id' => $company->id, 'cash_register_id' => $register->id, 'opened_at' => Carbon::today()->setTime(8, 0)],
+            [
+                'opened_by' => $reception->id,
+                'opening_amount' => 200000,
+                'expected_amount' => 380000,
+                'closing_amount' => 0,
+                'difference' => 0,
+                'status' => 'open',
+                'notes' => 'Turno activo veterinario del día',
+            ]
+        );
     }
 }
