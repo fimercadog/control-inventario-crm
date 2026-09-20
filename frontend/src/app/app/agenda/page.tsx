@@ -5,7 +5,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { AppointmentStatusAction } from "@/components/crud/appointment-status-action";
 import { APPOINTMENT_STATUS_LABEL as STATUS_LABEL } from "@/lib/appointments";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
@@ -92,7 +92,7 @@ export default function AgendaPage() {
                     {[a.service, a.practitioner, a.resource, a.reason].filter(Boolean).join(" · ") || "—"}
                   </p>
                 </div>
-                <Badge>{STATUS_LABEL[a.status] ?? a.status}</Badge>
+                <StatusBadge status={a.status} label={STATUS_LABEL[a.status]} />
                 <AppointmentStatusAction appointment={a} onDone={load} />
               </CardContent>
             </Card>

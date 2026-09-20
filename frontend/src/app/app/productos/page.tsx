@@ -4,7 +4,7 @@ import { ImageOff } from "lucide-react";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ProductImageAction } from "@/components/crud/product-image-action";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { AppColumnDef } from "@/lib/table-types";
 import { Product } from "@/lib/types";
 
@@ -32,14 +32,14 @@ const columns: AppColumnDef<Product>[] = [
     cell: ({ row }) => {
       const stock = row.original.stock_on_hand ?? 0;
       const low = stock < row.original.reorder_level;
-      return <Badge className={low ? "bg-warning/20 text-warning" : undefined}>{stock}{low ? " (bajo)" : ""}</Badge>;
+      return <StatusBadge status={low ? "low_stock" : "active"} label={`${stock}${low ? " (bajo)" : ""}`} />;
     },
   },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status === "active" ? "Activo" : "Inactivo"}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} /> },
   {
     header: "Catalogo",
     cell: ({ row }) =>
-      row.original.is_public ? <Badge className="bg-primary/15 text-primary">Publico</Badge> : "—",
+      row.original.is_public ? <StatusBadge status="catalog" label="Público" /> : "—",
   },
 ];
 

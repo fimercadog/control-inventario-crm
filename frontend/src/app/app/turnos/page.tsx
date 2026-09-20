@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
 import { AppColumnDef } from "@/lib/table-types";
@@ -12,7 +12,7 @@ const columns: AppColumnDef<Shift>[] = [
   { accessorKey: "start_time", header: "Inicio" },
   { accessorKey: "end_time", header: "Fin" },
   { accessorKey: "break_minutes", header: "Descanso" },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} /> },
 ];
 
 const fields: CrudField[] = [

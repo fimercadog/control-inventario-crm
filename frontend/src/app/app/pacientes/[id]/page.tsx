@@ -4,7 +4,7 @@ import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
@@ -143,7 +143,7 @@ export default function PatientDetailPage() {
             <Fact label="Esterilizado" value={patient.sterilized ? "Sí" : "No"} />
             <Fact
               label="Estado"
-              value={<Badge>{patient.status === "active" ? "Activo" : "Inactivo"}</Badge>}
+              value={<StatusBadge status={patient.status} />}
             />
           </CardContent>
         </Card>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
 import { AppColumnDef } from "@/lib/table-types";
@@ -22,7 +22,7 @@ const statusField: CrudField = {
 const departmentColumns: AppColumnDef<Department>[] = [
   { accessorKey: "name", header: "Departamento" },
   { accessorKey: "description", header: "Descripcion" },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} /> },
 ];
 
 const departmentFields: CrudField[] = [
@@ -35,7 +35,7 @@ const positionColumns: AppColumnDef<Position>[] = [
   { accessorKey: "name", header: "Cargo" },
   { header: "Departamento", cell: ({ row }) => row.original.department?.name ?? "Sin departamento" },
   { accessorKey: "description", header: "Descripcion" },
-  { header: "Estado", cell: ({ row }) => <Badge>{row.original.status}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} /> },
 ];
 
 const positionFields: CrudField[] = [

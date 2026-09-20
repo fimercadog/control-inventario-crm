@@ -3,7 +3,7 @@
 import { AppointmentStatusAction } from "@/components/crud/appointment-status-action";
 import { CrudField } from "@/components/crud/crud-modal";
 import { ModuleTablePage } from "@/components/module-table-page";
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { APPOINTMENT_STATUS_LABEL as STATUS_LABEL } from "@/lib/appointments";
 import { AppColumnDef } from "@/lib/table-types";
 import { Appointment } from "@/lib/types";
@@ -19,7 +19,7 @@ const columns: AppColumnDef<Appointment>[] = [
   { header: "Servicio", cell: ({ row }) => row.original.service ?? "—" },
   { header: "Profesional", cell: ({ row }) => row.original.practitioner ?? "—" },
   { header: "Box", cell: ({ row }) => row.original.resource ?? "—" },
-  { header: "Estado", cell: ({ row }) => <Badge>{STATUS_LABEL[row.original.status] ?? row.original.status}</Badge> },
+  { header: "Estado", cell: ({ row }) => <StatusBadge status={row.original.status} label={STATUS_LABEL[row.original.status]} /> },
 ];
 
 const fields: CrudField[] = [

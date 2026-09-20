@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function EmployeeProfilePage({ params }: { params: Promise<{ id: string }> }) {
@@ -11,7 +11,7 @@ export default async function EmployeeProfilePage({ params }: { params: Promise<
           <h1 className="text-2xl font-semibold">Perfil de empleado #{id}</h1>
           <p className="text-sm text-muted-foreground">Ficha preparada para resumen, datos personales, documentos y trazabilidad.</p>
         </div>
-        <Badge>Parcial</Badge>
+        <StatusBadge status="Parcial" />
       </div>
       <div className="grid gap-4 lg:grid-cols-3">
         {["Resumen", "Datos personales", "Datos laborales", "Documentos", "Asistencia", "Vacaciones", "Permisos", "Incapacidades", "Novedades"].map((tab) => (
