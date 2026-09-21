@@ -73,11 +73,12 @@ export function ReportKpiCard({
 }) {
   return (
     <Card
-      className={`relative overflow-hidden border-border/70 transition-all duration-200 hover:shadow-md ${
+      className={`relative overflow-hidden border-t-4 border-border/70 shadow-elevation-1 transition-all duration-200 hover:shadow-md ${
         emphasis ? "ring-1 ring-primary/25 shadow-[0_0_0_1px_rgba(99,102,241,0.06),0_8px_30px_-12px_rgba(99,102,241,0.25)]" : ""
       }`}
+      style={{ borderTopColor: tone }}
     >
-      <span aria-hidden className="absolute inset-x-0 top-0 h-1 rounded-t-lg" style={{ backgroundColor: tone }} />
+      <span aria-hidden className="absolute inset-x-0 top-0 h-1 z-10" style={{ backgroundColor: tone }} />
       {emphasis ? (
         <span
           aria-hidden
@@ -133,8 +134,8 @@ export function ReportChartFrame({
   action?: React.ReactNode;
 }) {
   return (
-    <Card className="relative overflow-hidden border-border/70 shadow-elevation-1">
-      <span aria-hidden className="absolute inset-x-0 top-0 h-1 rounded-t-lg" style={{ backgroundColor: tone }} />
+    <Card className="relative overflow-hidden border-t-4 border-border/70 shadow-elevation-1" style={{ borderTopColor: tone }}>
+      <span aria-hidden className="absolute inset-x-0 top-0 h-1 z-10" style={{ backgroundColor: tone }} />
       <CardContent className="p-5 pt-6">
         <div className="mb-4 flex items-center justify-between gap-2">
           <div className="flex items-center gap-3">
