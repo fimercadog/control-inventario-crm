@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
+"use client";
+
+import * as React from "react";
+import { useSearchParams } from "next/navigation";
 import { AuthSplitLayout } from "@/components/auth/auth-split-layout";
 import { LoginForm } from "./login-form";
 
-export const metadata: Metadata = { title: { absolute: "Iniciar sesión | IPS Panel" } };
-
-// Este dominio es un showcase: los atajos de usuarios demo se muestran por
-// defecto para que cualquiera entre y pruebe roles. Para un despliegue con
-// datos reales de cliente: NEXT_PUBLIC_DEMO_MODE=false y rotar las cuentas.
 const demoMode = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
 
 const demoEmails: Record<string, string> = {
@@ -19,13 +17,10 @@ const demoEmails: Record<string, string> = {
   ventas: "ventas@novaips.test",
 };
 
-export default async function LoginPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ demo?: string }>;
-}) {
-  const params = await searchParams;
-  const initialEmail = demoMode && params.demo ? demoEmails[params.demo] : undefined;
+function LoginContent() {
+  const searchParams = useSearchParams();
+  const demoParam = searchParams.get("demo") ?? "";
+  const initialEmail = demoMode && demoParam ? demoEmails[demoParam] : undefined;
 
   return (
     <AuthSplitLayout>
@@ -37,5 +32,13 @@ export default async function LoginPage({
       </p>
       <LoginForm initialEmail={initialEmail} autoLogin={Boolean(initialEmail)} demoMode={demoMode} />
     </AuthSplitLayout>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <React.Suspense fallback={<p className="p-8 text-center text-sm text-muted-foreground">Cargando...</p>}>
+      <LoginContent />
+    </React.Suspense>
   );
 }

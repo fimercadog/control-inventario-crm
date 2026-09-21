@@ -6,10 +6,14 @@ import { AppointmentCta } from "@/components/marketing/appointment-cta";
 import { AuthorBlock } from "@/components/marketing/author-block";
 import { formatDate } from "@/components/marketing/blog-card";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
-import { adjacentPosts, blogPostBySlug, relatedPosts, teamBySlug } from "@/components/marketing/marketing-data";
+import { adjacentPosts, blogPostBySlug, blogPosts, relatedPosts, teamBySlug } from "@/components/marketing/marketing-data";
 import { Section } from "@/components/marketing/marketing-ui";
 import { RelatedPosts } from "@/components/marketing/related-posts";
 import { Reveal } from "@/components/marketing/reveal";
+
+export function generateStaticParams() {
+  return blogPosts.map((post) => ({ slug: post.slug }));
+}
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

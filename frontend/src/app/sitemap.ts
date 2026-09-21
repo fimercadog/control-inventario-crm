@@ -4,6 +4,8 @@ import { SITE_URL } from "@/lib/site";
 
 const baseUrl = SITE_URL;
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
