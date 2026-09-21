@@ -12,15 +12,15 @@ describe("StatusBadge Component - Clínica Estética CRM Visual Contrast", () =>
     expect(getStatusBadgeConfig("ai").category).toBe("purple");
   });
 
-  it("CRITICAL: new vs contacted (and nuevo vs contactado) have distinct classNames", () => {
+  it("CRITICAL: new vs contacted (and nuevo vs contactado) have distinct classNames with solid backgrounds and dark text", () => {
     const configNew = getStatusBadgeConfig("new");
     const configContacted = getStatusBadgeConfig("contacted");
 
-    expect(configNew.className).toContain("bg-sky-50");
-    expect(configNew.className).toContain("border-sky-400");
+    expect(configNew.className).toContain("bg-sky-200");
+    expect(configNew.className).toContain("text-zinc-950");
 
-    expect(configContacted.className).toContain("bg-indigo-100");
-    expect(configContacted.className).toContain("border-indigo-500");
+    expect(configContacted.className).toContain("bg-indigo-200");
+    expect(configContacted.className).toContain("text-zinc-950");
 
     expect(configNew.className).not.toBe(configContacted.className);
 
@@ -29,12 +29,16 @@ describe("StatusBadge Component - Clínica Estética CRM Visual Contrast", () =>
     expect(configNuevo.className).not.toBe(configContactado.className);
   });
 
-  it("CRITICAL: active (Soft Emerald) vs paid (Solid Green) are visually distinct", () => {
+  it("CRITICAL: active (Solid Emerald) vs paid (Solid Green) are visually distinct", () => {
     const configActive = getStatusBadgeConfig("active");
     const configPaid = getStatusBadgeConfig("paid");
 
-    expect(configActive.className).toContain("bg-emerald-50");
-    expect(configPaid.className).toContain("bg-green-200");
+    expect(configActive.className).toContain("bg-emerald-200");
+    expect(configActive.className).toContain("text-zinc-950");
+
+    expect(configPaid.className).toContain("bg-green-300");
+    expect(configPaid.className).toContain("text-zinc-950");
+
     expect(configPaid.className).not.toBe(configActive.className);
   });
 
