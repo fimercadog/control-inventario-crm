@@ -108,7 +108,7 @@ const navGroups: NavGroup[] = [
       { href: "/app/citas", label: "Agenda & Consultas", icon: CalendarClock, permissions: ["appointments.manage"] },
       { href: "/app/pacientes", label: "Directorio de Pacientes", icon: Users, permissions: ["patients.manage"] },
       { href: "/app/consultas", label: "Historias Clínicas", icon: Stethoscope, permissions: ["medical_records.manage"] },
-      { href: "/app/procedimientos", label: "Procedimientos Ambulatorios", icon: Activity, permissions: ["procedures.manage"] },
+      { href: "/app/procedimientos", label: "Procedimientos", icon: Activity, permissions: ["procedures.manage"] },
       { href: "/app/urgencias", label: "Triage / Consulta Prioritaria", icon: Siren, permissions: ["medical_records.manage"] },
     ],
   },

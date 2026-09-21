@@ -68,7 +68,7 @@ export const IPS_VERTICAL_CONFIG = {
     citas: "Agenda de Citas Médicas",
     pacientes: "Directorio de Pacientes",
     consultas: "Historias Clínicas",
-    procedimientos: "Procedimientos Ambulatorios",
+    procedimientos: "Procedimientos",
     diagnosticos: "Diagnósticos CIE-10",
     recetas: "Órdenes & Prescripciones Médicas",
     servicios: "Portafolio de Servicios & Tarifario",
