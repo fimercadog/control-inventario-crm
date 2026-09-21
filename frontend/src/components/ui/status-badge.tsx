@@ -6,124 +6,130 @@ export type StatusCategory = "success" | "warning" | "info" | "destructive" | "s
 export type StatusDefinition = {
   label: string;
   category: StatusCategory;
+  className?: string;
 };
 
 /**
- * Diccionario maestro y estricto de estados técnicos del ERP Transversal.
- * Mapea cada clave técnica backend a su texto canonical en español y su categoría semántica de color.
+ * Diccionario maestro y estricto de estados técnicos del ERP Transversal e IPS.
+ * Todos los badges utilizan el estándar visual de fondo sólido medio/claro con texto negro (text-zinc-950).
  */
 export const STATUS_DICTIONARY: Record<string, StatusDefinition> = {
   // --- Ventas, Facturación & Cuentas ---
-  draft: { label: "Borrador", category: "secondary" },
-  issued: { label: "Emitida", category: "info" },
-  sent: { label: "Enviada", category: "info" },
-  pending: { label: "Pendiente", category: "warning" },
-  partial: { label: "Parcial", category: "warning" },
-  partially_paid: { label: "Parcialmente pagada", category: "warning" },
-  paid: { label: "Pagada", category: "success" },
-  accepted: { label: "Aceptada", category: "success" },
-  confirmed: { label: "Confirmada", category: "success" },
-  received: { label: "Recibida", category: "success" },
-  converted: { label: "Convertida", category: "success" },
-  void: { label: "Anulada", category: "destructive" },
-  cancelled: { label: "Cancelada", category: "destructive" },
-  cancel: { label: "Cancelada", category: "destructive" },
-  rejected: { label: "Rechazada", category: "destructive" },
-  overdue: { label: "Vencida", category: "destructive" },
+  draft: { label: "Borrador", category: "secondary", className: "bg-zinc-200 text-zinc-950 border-none font-medium dark:bg-zinc-700 dark:text-zinc-100" },
+  issued: { label: "Emitida", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-medium dark:bg-sky-900 dark:text-sky-100" },
+  sent: { label: "Enviada", category: "info", className: "bg-blue-200 text-zinc-950 border-none font-medium dark:bg-blue-900 dark:text-blue-100" },
+  pending: { label: "Pendiente", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-bold dark:bg-amber-800 dark:text-amber-100" },
+  partial: { label: "Parcial", category: "warning", className: "bg-yellow-300 text-zinc-950 border-none font-bold dark:bg-yellow-700 dark:text-yellow-100" },
+  partially_paid: { label: "Parcialmente pagada", category: "warning", className: "bg-yellow-300 text-zinc-950 border-none font-bold dark:bg-yellow-700 dark:text-yellow-100" },
+  paid: { label: "Pagada", category: "success", className: "bg-green-300 text-zinc-950 border-none font-extrabold uppercase tracking-wider dark:bg-green-800 dark:text-green-100" },
+  accepted: { label: "Aceptada", category: "success", className: "bg-teal-200 text-zinc-950 border-none font-semibold dark:bg-teal-800 dark:text-teal-100" },
+  confirmed: { label: "Confirmada", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  received: { label: "Recibida", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-medium dark:bg-emerald-800 dark:text-emerald-100" },
+  converted: { label: "Convertida", category: "success", className: "bg-teal-200 text-zinc-950 border-none font-medium dark:bg-teal-800 dark:text-teal-100" },
+  void: { label: "Anulada", category: "destructive", className: "bg-rose-200 text-zinc-950 border-none font-medium dark:bg-rose-900 dark:text-rose-100" },
+  cancelled: { label: "Cancelada", category: "destructive", className: "bg-rose-200 text-zinc-950 border-none font-bold dark:bg-rose-900 dark:text-rose-100" },
+  cancel: { label: "Cancelada", category: "destructive", className: "bg-rose-200 text-zinc-950 border-none font-bold dark:bg-rose-900 dark:text-rose-100" },
+  rejected: { label: "Rechazada", category: "destructive", className: "bg-red-300 text-zinc-950 border-none font-bold dark:bg-red-900 dark:text-red-100" },
+  overdue: { label: "Vencida", category: "destructive", className: "bg-red-300 text-zinc-950 border-none font-extrabold uppercase tracking-wider dark:bg-red-900 dark:text-red-100" },
 
-  // --- Citas, Asistencia & Salud ---
-  scheduled: { label: "Programada", category: "info" },
-  attended: { label: "Atendida", category: "success" },
-  "no-show": { label: "No asistió", category: "warning" },
-  triage: { label: "Triage", category: "warning" },
-  in_consultation: { label: "En atención", category: "info" },
-  discharged: { label: "Egresado", category: "success" },
-  auth_pending: { label: "Autorización pendiente", category: "warning" },
+  // --- Citas, Asistencia & Salud IPS ---
+  scheduled: { label: "Programada", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-medium dark:bg-sky-800 dark:text-sky-100" },
+  attended: { label: "Atendida", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  "no-show": { label: "No asistió", category: "warning", className: "bg-orange-200 text-zinc-950 border-none font-medium dark:bg-orange-800 dark:text-orange-100" },
+  triage: { label: "Triage", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-bold dark:bg-amber-800 dark:text-amber-100" },
+  in_consultation: { label: "En atención", category: "info", className: "bg-blue-200 text-zinc-950 border-none font-bold dark:bg-blue-800 dark:text-blue-100" },
+  discharged: { label: "Egresado", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  auth_pending: { label: "Autorización pendiente", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-medium dark:bg-amber-800 dark:text-amber-100" },
 
   // --- Clínica Estética ---
-  assessment_pending: { label: "Valoración pendiente", category: "warning" },
-  in_treatment: { label: "Tratamiento activo", category: "info" },
-  session_completed: { label: "Sesión completada", category: "success" },
-  consent_pending: { label: "Consentimiento pendiente", category: "warning" },
+  assessment_pending: { label: "Valoración pendiente", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-medium dark:bg-amber-800 dark:text-amber-100" },
+  in_treatment: { label: "Tratamiento activo", category: "info", className: "bg-blue-200 text-zinc-950 border-none font-bold dark:bg-blue-800 dark:text-blue-100" },
+  session_completed: { label: "Sesión completada", category: "success", className: "bg-lime-200 text-zinc-950 border-none font-bold dark:bg-lime-800 dark:text-lime-100" },
+  consent_pending: { label: "Consentimiento pendiente", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-medium dark:bg-amber-800 dark:text-amber-100" },
 
   // --- Veterinaria ---
-  vaccinated: { label: "Vacunado", category: "success" },
-  vaccine_due: { label: "Vacuna pendiente", category: "warning" },
-  active_treatment: { label: "Tratamiento activo", category: "info" },
-  medical_discharge: { label: "Alta médica", category: "success" },
+  vaccinated: { label: "Vacunado", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  vaccine_due: { label: "Vacuna pendiente", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-bold dark:bg-amber-800 dark:text-amber-100" },
+  active_treatment: { label: "Tratamiento activo", category: "info", className: "bg-blue-200 text-zinc-950 border-none font-bold dark:bg-blue-800 dark:text-blue-100" },
+  medical_discharge: { label: "Alta médica", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
 
   // --- RRHH & Selección ---
-  candidate: { label: "Candidato", category: "secondary" },
-  in_selection: { label: "En selección", category: "info" },
-  hired: { label: "Contratado", category: "success" },
-  candidate_rejected: { label: "Descartado", category: "destructive" },
+  candidate: { label: "Candidato", category: "secondary", className: "bg-zinc-200 text-zinc-950 border-none font-medium dark:bg-zinc-700 dark:text-zinc-100" },
+  in_selection: { label: "En selección", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-medium dark:bg-sky-900 dark:text-sky-100" },
+  hired: { label: "Contratado", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-bold dark:bg-emerald-800 dark:text-emerald-100" },
+  candidate_rejected: { label: "Descartado", category: "destructive", className: "bg-red-300 text-zinc-950 border-none font-bold dark:bg-red-900 dark:text-red-100" },
 
   // --- Inmobiliaria ---
-  available: { label: "Disponible", category: "success" },
-  reserved: { label: "Reservado", category: "warning" },
-  rented: { label: "Arrendado", category: "info" },
-  sold: { label: "Vendido", category: "purple" },
+  available: { label: "Disponible", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  reserved: { label: "Reservado", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-bold dark:bg-amber-800 dark:text-amber-100" },
+  rented: { label: "Arrendado", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-semibold dark:bg-sky-800 dark:text-sky-100" },
+  sold: { label: "Vendido", category: "purple", className: "bg-purple-200 text-zinc-950 border-none font-bold dark:bg-purple-800 dark:text-purple-100" },
 
   // --- CareNote (IA & Transcripción) ---
-  session_open: { label: "Sesión abierta", category: "info" },
-  transcribing: { label: "Transcribiendo", category: "purple" },
-  ready: { label: "Nota lista", category: "success" },
-  transcription_failed: { label: "Transcripción fallida", category: "destructive" },
+  session_open: { label: "Sesión abierta", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-bold dark:bg-sky-800 dark:text-sky-100" },
+  transcribing: { label: "Transcribiendo", category: "purple", className: "bg-purple-200 text-zinc-950 border-none font-bold dark:bg-purple-800 dark:text-purple-100" },
+  ready: { label: "Nota lista", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-bold dark:bg-emerald-800 dark:text-emerald-100" },
+  transcription_failed: { label: "Transcripción fallida", category: "destructive", className: "bg-red-300 text-zinc-950 border-none font-bold dark:bg-red-900 dark:text-red-100" },
 
   // --- CRM, Leads & Oportunidades ---
-  new: { label: "Nuevo", category: "info" },
-  contacted: { label: "Contactado", category: "info" },
-  prospecting: { label: "Prospección", category: "info" },
-  qualification: { label: "Calificación", category: "warning" },
-  proposal: { label: "Propuesta", category: "warning" },
-  negotiation: { label: "Negociación", category: "warning" },
-  won: { label: "Ganado", category: "success" },
-  lost: { label: "Perdido", category: "destructive" },
-  discarded: { label: "Descartado", category: "destructive" },
+  new: { label: "Nuevo", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-bold dark:bg-sky-800 dark:text-sky-100" },
+  nuevo: { label: "Nuevo", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-bold dark:bg-sky-800 dark:text-sky-100" },
+  contacted: { label: "Contactado", category: "info", className: "bg-indigo-200 text-zinc-950 border-none font-bold dark:bg-indigo-800 dark:text-indigo-100" },
+  contactado: { label: "Contactado", category: "info", className: "bg-indigo-200 text-zinc-950 border-none font-bold dark:bg-indigo-800 dark:text-indigo-100" },
+  connected: { label: "Conectado", category: "info", className: "bg-indigo-200 text-zinc-950 border-none font-bold dark:bg-indigo-800 dark:text-indigo-100" },
+  conectado: { label: "Conectado", category: "info", className: "bg-indigo-200 text-zinc-950 border-none font-bold dark:bg-indigo-800 dark:text-indigo-100" },
+  prospecting: { label: "Prospección", category: "info", className: "bg-blue-200 text-zinc-950 border-none font-medium dark:bg-blue-800 dark:text-blue-100" },
+  qualification: { label: "Calificación", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-medium dark:bg-amber-800 dark:text-amber-100" },
+  proposal: { label: "Propuesta", category: "warning", className: "bg-orange-200 text-zinc-950 border-none font-medium dark:bg-orange-800 dark:text-orange-100" },
+  negotiation: { label: "Negociación", category: "warning", className: "bg-yellow-300 text-zinc-950 border-none font-bold dark:bg-yellow-700 dark:text-yellow-100" },
+  won: { label: "Ganado", category: "success", className: "bg-green-300 text-zinc-950 border-none font-extrabold uppercase dark:bg-green-800 dark:text-green-100" },
+  lost: { label: "Perdido", category: "destructive", className: "bg-red-300 text-zinc-950 border-none font-bold dark:bg-red-900 dark:text-red-100" },
+  discarded: { label: "Descartado", category: "destructive", className: "bg-red-200 text-zinc-950 border-none font-medium dark:bg-red-900 dark:text-red-100" },
+
+  // --- Citas, Agenda & Servicios ---
+  in_progress: { label: "En proceso", category: "info", className: "bg-blue-200 text-zinc-950 border-none font-bold dark:bg-blue-800 dark:text-blue-100" },
+  completed: { label: "Completado", category: "success", className: "bg-lime-200 text-zinc-950 border-none font-bold dark:bg-lime-800 dark:text-lime-100" },
 
   // --- Entidades Generales & Maestros ---
-  active: { label: "Activo", category: "success" },
-  inactive: { label: "Inactivo", category: "destructive" },
-  open: { label: "Abierta", category: "success" },
-  closed: { label: "Cerrada", category: "destructive" },
+  active: { label: "Activo", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  inactive: { label: "Inactivo", category: "secondary", className: "bg-zinc-200 text-zinc-700 border-none font-normal dark:bg-zinc-800 dark:text-zinc-400" },
+  open: { label: "Abierta", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  closed: { label: "Cerrada", category: "destructive", className: "bg-rose-200 text-zinc-950 border-none font-medium dark:bg-rose-900 dark:text-rose-100" },
+  deleted: { label: "Eliminado", category: "destructive", className: "bg-red-300 text-zinc-950 border-none font-extrabold dark:bg-red-900 dark:text-red-100" },
 
   // --- Orígenes, Canales & Tags ---
-  catalog: { label: "Sitio web", category: "info" },
-  web: { label: "Sitio web", category: "info" },
-  website: { label: "Sitio web", category: "info" },
-  internal: { label: "Interna", category: "secondary" },
-  manual: { label: "Manual", category: "secondary" },
-  contingency: { label: "Contingencia", category: "warning" },
-  ai: { label: "IA", category: "purple" },
-  automated: { label: "Automatizado", category: "purple" },
-  premium: { label: "Premium", category: "purple" },
+  catalog: { label: "Sitio web", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-medium dark:bg-sky-900 dark:text-sky-100" },
+  web: { label: "Sitio web", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-medium dark:bg-sky-900 dark:text-sky-100" },
+  website: { label: "Sitio web", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-medium dark:bg-sky-900 dark:text-sky-100" },
+  internal: { label: "Interna", category: "secondary", className: "bg-zinc-200 text-zinc-950 border-none font-medium dark:bg-zinc-700 dark:text-zinc-100" },
+  manual: { label: "Manual", category: "secondary", className: "bg-zinc-200 text-zinc-950 border-none font-medium dark:bg-zinc-700 dark:text-zinc-100" },
+  contingency: { label: "Contingencia", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-bold dark:bg-amber-800 dark:text-amber-100" },
+  ai: { label: "IA", category: "purple", className: "bg-purple-200 text-zinc-950 border-none font-bold dark:bg-purple-800 dark:text-purple-100" },
+  automated: { label: "Automatizado", category: "purple", className: "bg-purple-200 text-zinc-950 border-none font-medium dark:bg-purple-800 dark:text-purple-100" },
+  premium: { label: "Premium", category: "purple", className: "bg-violet-200 text-zinc-950 border-none font-bold dark:bg-violet-800 dark:text-violet-100" },
 
   // --- Inventario & Alertas ---
-  in: { label: "Entrada", category: "success" },
-  out: { label: "Salida", category: "warning" },
-  COMPRA: { label: "Compra", category: "success" },
-  VENTA: { label: "Venta", category: "warning" },
-  AJUSTE_ENTRADA: { label: "Ajuste entrada", category: "success" },
-  AJUSTE_SALIDA: { label: "Ajuste salida", category: "warning" },
-  TRASLADO: { label: "Traslado", category: "info" },
-  low: { label: "Bajo stock", category: "warning" },
-  low_stock: { label: "Bajo stock", category: "warning" },
-  out_of_stock: { label: "Agotado", category: "destructive" },
-  overstock: { label: "Sobrestock", category: "info" },
+  in: { label: "Entrada", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  out: { label: "Salida", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-semibold dark:bg-amber-800 dark:text-amber-100" },
+  COMPRA: { label: "Compra", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  VENTA: { label: "Venta", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-semibold dark:bg-amber-800 dark:text-amber-100" },
+  AJUSTE_ENTRADA: { label: "Ajuste entrada", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  AJUSTE_SALIDA: { label: "Ajuste salida", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-semibold dark:bg-amber-800 dark:text-amber-100" },
+  TRASLADO: { label: "Traslado", category: "info", className: "bg-blue-200 text-zinc-950 border-none font-semibold dark:bg-blue-800 dark:text-blue-100" },
+  low: { label: "Bajo stock", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-semibold dark:bg-amber-800 dark:text-amber-100" },
+  low_stock: { label: "Bajo stock", category: "warning", className: "bg-amber-200 text-zinc-950 border-none font-semibold dark:bg-amber-800 dark:text-amber-100" },
+  out_of_stock: { label: "Agotado", category: "destructive", className: "bg-red-300 text-zinc-950 border-none font-extrabold dark:bg-red-900 dark:text-red-100" },
+  overstock: { label: "Sobrestock", category: "info", className: "bg-sky-200 text-zinc-950 border-none font-semibold dark:bg-sky-800 dark:text-sky-100" },
 
   // --- Contingencia & Cola Técnica ---
-  synced: { label: "Sincronizado", category: "success" },
-  failed: { label: "Con error", category: "destructive" },
-  conflict: { label: "Conflicto", category: "destructive" },
+  synced: { label: "Sincronizado", category: "success", className: "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100" },
+  failed: { label: "Con error", category: "destructive", className: "bg-red-300 text-zinc-950 border-none font-bold dark:bg-red-900 dark:text-red-100" },
+  conflict: { label: "Conflicto", category: "destructive", className: "bg-rose-200 text-zinc-950 border-none font-bold dark:bg-rose-900 dark:text-rose-100" },
 };
 
-/**
- * Mapeo inteligente por texto secundario cuando el status técnico no viene explícito.
- */
 export function getCategoryFromText(text: string): StatusCategory {
   const norm = text.toLowerCase().trim();
 
-  // 1. Gris (Neutral / Borrador / Interno / Candidato)
   if (
     norm.includes("borrador") ||
     norm.includes("intern") ||
@@ -134,7 +140,6 @@ export function getCategoryFromText(text: string): StatusCategory {
     return "secondary";
   }
 
-  // 2. Verde (Éxito / Pagado / Confirmado / Aceptado / Activo / Ganado / Disponible / Vacunado / Alta)
   if (
     (norm.includes("pagad") && !norm.includes("parcial")) ||
     norm.includes("aceptad") ||
@@ -159,7 +164,6 @@ export function getCategoryFromText(text: string): StatusCategory {
     return "success";
   }
 
-  // 3. Azul (Enviado / Emitido / Programado / Información / Sitio web / Atención / Arrendado)
   if (
     norm.includes("enviad") ||
     norm.includes("emitid") ||
@@ -170,6 +174,7 @@ export function getCategoryFromText(text: string): StatusCategory {
     norm.includes("traslado") ||
     norm.includes("nuevo") ||
     norm.includes("contactad") ||
+    norm.includes("conectad") ||
     norm.includes("sobrestock") ||
     norm.includes("atención") ||
     norm.includes("atencion") ||
@@ -182,7 +187,6 @@ export function getCategoryFromText(text: string): StatusCategory {
     return "info";
   }
 
-  // 4. Ámbar / Amarillo (Pendiente / Parcial / Por revisar / Advertencia / Bajo stock / Reservado / Triage)
   if (
     norm.includes("parcial") ||
     norm.includes("pendient") ||
@@ -203,7 +207,6 @@ export function getCategoryFromText(text: string): StatusCategory {
     return "warning";
   }
 
-  // 5. Rojo (Rechazado / Vencido / Cancelado / Error / Inactivo / Agotado / Descartado / Fallida)
   if (
     norm.includes("rechazad") ||
     norm.includes("vencid") ||
@@ -223,7 +226,6 @@ export function getCategoryFromText(text: string): StatusCategory {
     return "destructive";
   }
 
-  // 6. Morado (Especial / IA / Premium / Transcribiendo / Vendido)
   if (
     norm.includes("ia") ||
     norm.includes("premium") ||
@@ -237,22 +239,46 @@ export function getCategoryFromText(text: string): StatusCategory {
   return "secondary";
 }
 
-/**
- * Obtiene la configuración completa (label + categoría) de un estado técnico.
- */
 export function getStatusBadgeConfig(statusKey?: string, customLabel?: string): StatusDefinition {
-  if (statusKey && STATUS_DICTIONARY[statusKey]) {
-    const def = STATUS_DICTIONARY[statusKey];
+  const normalizedKey = statusKey?.toLowerCase().trim();
+
+  if (normalizedKey && STATUS_DICTIONARY[normalizedKey]) {
+    const def = STATUS_DICTIONARY[normalizedKey];
     return {
       label: customLabel ?? def.label,
       category: def.category,
+      className: def.className,
     };
   }
 
   const text = customLabel ?? statusKey ?? "Desconocido";
+  const category = getCategoryFromText(text);
+
+  let dynamicClassName: string | undefined;
+  const norm = text.toLowerCase().trim();
+
+  if (norm === "nuevo" || norm === "new") {
+    dynamicClassName = "bg-sky-200 text-zinc-950 border-none font-bold dark:bg-sky-800 dark:text-sky-100";
+  } else if (norm.includes("contactad") || norm.includes("conectad") || norm === "contacted" || norm === "connected") {
+    dynamicClassName = "bg-indigo-200 text-zinc-950 border-none font-bold dark:bg-indigo-800 dark:text-indigo-100";
+  } else if (norm === "activo" || norm === "activa" || norm === "active") {
+    dynamicClassName = "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100";
+  } else if (norm.includes("pagad") || norm === "paid") {
+    dynamicClassName = "bg-green-300 text-zinc-950 border-none font-extrabold uppercase tracking-wider dark:bg-green-800 dark:text-green-100";
+  } else if (norm.includes("pendient") || norm === "pending") {
+    dynamicClassName = "bg-amber-200 text-zinc-950 border-none font-bold dark:bg-amber-800 dark:text-amber-100";
+  } else if (norm.includes("parcial") || norm === "partial") {
+    dynamicClassName = "bg-yellow-300 text-zinc-950 border-none font-bold dark:bg-yellow-700 dark:text-yellow-100";
+  } else if (norm.includes("cancelad") || norm === "cancelled") {
+    dynamicClassName = "bg-rose-200 text-zinc-950 border-none font-bold dark:bg-rose-900 dark:text-rose-100";
+  } else if (norm.includes("eliminad") || norm === "deleted") {
+    dynamicClassName = "bg-red-300 text-zinc-950 border-none font-extrabold dark:bg-red-900 dark:text-red-100";
+  }
+
   return {
     label: text,
-    category: getCategoryFromText(text),
+    category,
+    className: dynamicClassName,
   };
 }
 
@@ -266,24 +292,26 @@ export function StatusBadge({ status, label, className, variant, children, ...pr
   const category = variant ?? config.category;
   const displayText = children ?? config.label;
 
-  let categoryStyles = "bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
+  let categoryStyles = config.className;
 
-  if (category === "success") {
-    categoryStyles = "bg-emerald-50 text-emerald-800 border border-emerald-300/60 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800/80";
-  } else if (category === "info") {
-    categoryStyles = "bg-sky-50 text-sky-800 border border-sky-300/60 dark:bg-sky-950/70 dark:text-sky-300 dark:border-sky-800/80";
-  } else if (category === "warning") {
-    categoryStyles = "bg-amber-50 text-amber-900 border border-amber-300/60 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800/80";
-  } else if (category === "destructive") {
-    categoryStyles = "bg-rose-50 text-rose-800 border border-rose-300/60 dark:bg-rose-950/70 dark:text-rose-300 dark:border-rose-800/80";
-  } else if (category === "purple") {
-    categoryStyles = "bg-purple-50 text-purple-800 border border-purple-300/60 dark:bg-purple-950/70 dark:text-purple-300 dark:border-purple-800/80";
-  } else if (category === "secondary") {
-    categoryStyles = "bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
+  if (!categoryStyles) {
+    if (category === "success") {
+      categoryStyles = "bg-emerald-200 text-zinc-950 border-none font-semibold dark:bg-emerald-800 dark:text-emerald-100";
+    } else if (category === "info") {
+      categoryStyles = "bg-sky-200 text-zinc-950 border-none font-semibold dark:bg-sky-800 dark:text-sky-100";
+    } else if (category === "warning") {
+      categoryStyles = "bg-amber-200 text-zinc-950 border-none font-semibold dark:bg-amber-800 dark:text-amber-100";
+    } else if (category === "destructive") {
+      categoryStyles = "bg-rose-200 text-zinc-950 border-none font-semibold dark:bg-rose-900 dark:text-rose-100";
+    } else if (category === "purple") {
+      categoryStyles = "bg-purple-200 text-zinc-950 border-none font-semibold dark:bg-purple-800 dark:text-purple-100";
+    } else {
+      categoryStyles = "bg-zinc-200 text-zinc-950 border-none font-medium dark:bg-zinc-700 dark:text-zinc-100";
+    }
   }
 
   return (
-    <Badge className={`${categoryStyles} ${className ?? ""}`} {...props}>
+    <Badge className={`px-2.5 py-0.5 text-xs rounded-md ${categoryStyles} ${className ?? ""}`} {...props}>
       {displayText}
     </Badge>
   );
