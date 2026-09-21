@@ -171,8 +171,8 @@ const allNavItems: NavItem[] = navGroups.flatMap((g) => g.items);
 
 function PremiumBadge() {
   return (
-    <span className="ml-auto flex items-center gap-1 rounded bg-sky-500/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-600">
-      <Lock className="h-3 w-3" /> Premium
+    <span className="ml-auto shrink-0 flex items-center gap-1 rounded bg-sky-500/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-sky-600 dark:bg-sky-500/20 dark:text-sky-400">
+      <Lock className="h-3 w-3 shrink-0" /> Premium
     </span>
   );
 }
@@ -221,14 +221,14 @@ function NavLink({ item }: { item: NavItem }) {
       <Link
         href={item.href}
         className={cn(
-          "flex h-9 items-center gap-3 rounded-md px-3 text-sm font-medium text-amber-600 transition-colors hover:bg-amber-500/10 dark:text-amber-400",
+          "flex min-h-[36px] h-auto items-center gap-2.5 rounded-md px-3 py-1.5 text-xs sm:text-sm font-medium text-amber-600 transition-colors hover:bg-amber-500/10 dark:text-amber-400",
           active && "bg-amber-500/10",
         )}
       >
-        <Icon className="h-4 w-4" />
-        <span>{item.label}</span>
+        <Icon className="h-4 w-4 shrink-0" />
+        <span className="min-w-0 flex-1 leading-tight">{item.label}</span>
         {contingencyActive ? (
-          <span className="ml-auto rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
+          <span className="ml-auto shrink-0 rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
             Activo{pendingCount ? ` · ${pendingCount}` : ""}
           </span>
         ) : null}
@@ -243,10 +243,10 @@ function NavLink({ item }: { item: NavItem }) {
         <DialogTrigger asChild>
           <button
             type="button"
-            className="flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"
+            className="flex min-h-[36px] h-auto w-full items-center gap-2.5 rounded-md px-3 py-1.5 text-xs sm:text-sm text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"
           >
-            <Icon className="h-4 w-4" />
-            <span>{item.label}</span>
+            <Icon className="h-4 w-4 shrink-0" />
+            <span className="min-w-0 flex-1 text-left leading-tight">{item.label}</span>
             <PremiumBadge />
           </button>
         </DialogTrigger>
@@ -266,12 +266,12 @@ function NavLink({ item }: { item: NavItem }) {
     <Link
       href={item.href}
       className={cn(
-        "flex h-9 items-center gap-3 rounded-md px-3 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100",
+        "flex min-h-[36px] h-auto items-center gap-2.5 rounded-md px-3 py-1.5 text-xs sm:text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100",
         active && "bg-sky-50 font-semibold text-sky-700 dark:bg-sky-950/60 dark:text-sky-300",
       )}
     >
-      <Icon className="h-4 w-4" />
-      <span>{item.label}</span>
+      <Icon className="h-4 w-4 shrink-0" />
+      <span className="min-w-0 flex-1 leading-tight">{item.label}</span>
     </Link>
   );
 }
