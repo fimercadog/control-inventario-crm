@@ -622,20 +622,35 @@ class DatabaseSeeder extends Seeder
     private function seedDiagnoses(Company $company): array
     {
         return collect([
-            ['GEA', 'Gastroenteritis aguda'],
-            ['PERIO2', 'Enfermedad periodontal grado 2'],
-            ['DERM-AT', 'Dermatitis atópica'],
-            ['OTIT-EXT', 'Otitis externa'],
-            ['IRA', 'Infección respiratoria alta'],
-            ['ESGUINCE', 'Esguince de rodilla'],
-            ['ERC', 'Enfermedad renal crónica'],
-            ['OBES', 'Sobrepeso / obesidad'],
-            ['PARASIT', 'Parasitismo intestinal'],
-            ['CONJ', 'Conjuntivitis'],
+            ['A09.9', 'Gastroenteritis y colitis de origen no especificado'],
+            ['J06.9', 'Infección aguda de las vías respiratorias superiores, no especificada'],
+            ['J00', 'Rinofaringitis aguda [resfriado común]'],
+            ['M54.5', 'Lumbago no especificado / Dolor lumbar mecánico'],
+            ['S83.6', 'Esguince y torcedura de la rodilla'],
+            ['L20.9', 'Dermatitis atópica, no especificada'],
+            ['H60.9', 'Otitis externa, no especificada'],
+            ['N18.9', 'Enfermedad renal crónica, no especificada'],
+            ['E66.9', 'Obesidad no especificada'],
+            ['B82.9', 'Parasitosis intestinal, sin otra especificación'],
+            ['H10.9', 'Conjuntivitis no especificada'],
+            ['I10', 'Hipertensión esencial (primaria)'],
+            ['E11.9', 'Diabetes mellitus tipo 2 sin complicaciones'],
+            ['K29.7', 'Gastritis, no especificada'],
+            ['R51', 'Cefalea / Dolor de cabeza'],
+            ['G43.9', 'Migraña, no especificada'],
+            ['R50.9', 'Fiebre, no especificada'],
+            ['N39.0', 'Infección de vías urinarias, sitio no especificado'],
+            ['Z00.0', 'Examen médico general / Chequeo preventivo de rutina'],
+            ['K05.3', 'Periodontitis crónica'],
+            ['F41.1', 'Trastorno de ansiedad generalizada'],
+            ['F32.9', 'Episodio depresivo, no especificado'],
+            ['M25.5', 'Dolor articular (artralgia)'],
+            ['J45.9', 'Asma, no especificado'],
+            ['J18.9', 'Neumonía, no especificada'],
         ])->mapWithKeys(fn ($d) => [
             $d[0] => Diagnosis::firstOrCreate(
-                ['company_id' => $company->id, 'name' => $d[1]],
-                ['code' => $d[0], 'status' => 'active'],
+                ['company_id' => $company->id, 'code' => $d[0]],
+                ['name' => $d[1], 'status' => 'active'],
             ),
         ])->all();
     }
@@ -643,9 +658,9 @@ class DatabaseSeeder extends Seeder
     private function attachDiagnoses(Collection $consultations, array $diagnoses): void
     {
         $byReason = [
-            'Consulta por malestar gastrointestinal' => ['GEA', 'PARASIT'],
-            'Gripa e infección respiratoria alta' => ['IRA'],
-            'Dolor lumbar y esguince moderado' => ['ESGUINCE'],
+            'Consulta por malestar gastrointestinal' => ['A09.9', 'B82.9'],
+            'Gripa e infección respiratoria alta' => ['J06.9', 'J00'],
+            'Dolor lumbar y esguince moderado' => ['M54.5', 'S83.6'],
         ];
         foreach ($consultations as $consultation) {
             $codes = $byReason[$consultation->reason] ?? [];
