@@ -20,6 +20,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
+import { api } from "@/lib/api";
+import { Product, Service, Procedure } from "@/lib/types";
+
 export type ConceptCategory = "concepto" | "medicamento" | "insumo" | "procedimiento" | "servicio";
 
 export type ClinicalItemPayload = {
@@ -31,6 +34,56 @@ export type ClinicalItemPayload = {
   total: number;
   generatesBilling: boolean;
   affectsInventory: boolean;
+};
+
+export type CatalogOption = {
+  id: string | number;
+  name: string;
+  price: number;
+  sku?: string;
+  description?: string;
+};
+
+const FALLBACK_CATALOGS: Record<ConceptCategory, CatalogOption[]> = {
+  concepto: [
+    { id: "c1", name: "Control de herida asistencial", price: 0, description: "Revisión de herida, curación y evaluación de cicatrización." },
+    { id: "c2", name: "Indicaciones y recomendaciones posoperatorias", price: 0, description: "Cuidado de herida en casa y signos de alarma." },
+    { id: "c3", name: "Evaluación y lectura de laboratorios clínicos", price: 0, description: "Revisión de hemograma, química sanguínea y parcial de orina." },
+    { id: "c4", name: "Valoración de riesgo cardiovascular", price: 0, description: "Evaluación de antecedentes, presión arterial y estilo de vida." },
+  ],
+  medicamento: [
+    { id: "m1", name: "Amoxicilina 500mg (Cápsulas x 10)", price: 15000, sku: "MED-AMX500" },
+    { id: "m2", name: "Ibuprofeno 400mg (Tabletas x 10)", price: 8500, sku: "MED-IBU400" },
+    { id: "m3", name: "Acetaminofén 500mg (Tabletas x 10)", price: 6000, sku: "MED-ACT500" },
+    { id: "m4", name: "Omeprazol 20mg (Cápsulas x 14)", price: 14000, sku: "MED-OMP20" },
+    { id: "m5", name: "Enalapril 10mg (Tabletas x 30)", price: 12000, sku: "MED-ENL10" },
+    { id: "m6", name: "Solución Salina Estéril 500ml", price: 18000, sku: "MED-SS500" },
+    { id: "m7", name: "Suero Oral Rehidratante (Sobre)", price: 5000, sku: "MED-SUERO" },
+  ],
+  insumo: [
+    { id: "i1", name: "Gasas Estériles (Paquete x 5)", price: 8500, sku: "INS-GASA" },
+    { id: "i2", name: "Jeringa Descartable 5ml c/aguja", price: 3500, sku: "INS-JER5" },
+    { id: "i3", name: "Catéter Intravenoso Periférico N°20", price: 12000, sku: "INS-CAT20" },
+    { id: "i4", name: "Guantes de Nitrilo Quirúrgicos (Par)", price: 4500, sku: "INS-GUANTE" },
+    { id: "i5", name: "Esparadrapo Hipoalergénico 2 pulgadas", price: 7000, sku: "INS-ESPAR" },
+    { id: "i6", name: "Solución Antiséptica Yodopovidona 120ml", price: 16000, sku: "INS-ANTISEP" },
+    { id: "i7", name: "Venda Elástica 4 pulgadas", price: 9000, sku: "INS-VENDA" },
+  ],
+  procedimiento: [
+    { id: "p1", name: "Curación ambulatoria de herida compleja", price: 45000 },
+    { id: "p2", name: "Sutura asistencial de herida limpia", price: 65000 },
+    { id: "p3", name: "Retiro de puntos de sutura", price: 25000 },
+    { id: "p4", name: "Lavado asistencial / Otoscopia curativa", price: 35000 },
+    { id: "p5", name: "Inmovilización / Vendaje asistencial", price: 40000 },
+    { id: "p6", name: "Toma de muestra de laboratorio clínico", price: 20000 },
+  ],
+  servicio: [
+    { id: "s1", name: "Valoración Médica Especializada", price: 90000 },
+    { id: "s2", name: "Consulta Médica General", price: 60000 },
+    { id: "s3", name: "Consulta Prioritaria de Urgencias", price: 110000 },
+    { id: "s4", name: "Control y Seguimiento Ambulatorio", price: 40000 },
+    { id: "s5", name: "Telemedicina / Consulta Virtual", price: 50000 },
+  ],
 };
 
 interface AddClinicalConceptModalProps {
@@ -184,14 +237,96 @@ export function AddClinicalConceptModal({
   const [description, setDescription] = React.useState(config.defaultDesc);
   const [quantity, setQuantity] = React.useState(1);
   const [unitPrice, setUnitPrice] = React.useState(config.defaultPrice);
+  const [selectedCatalogId, setSelectedCatalogId] = React.useState<string>("");
+
+  const [catalogItems, setCatalogItems] = React.useState<Record<ConceptCategory, CatalogOption[]>>(FALLBACK_CATALOGS);
+
+  // Carga dinámica de ítems desde los módulos de la API (Productos, Servicios, Procedimientos)
+  React.useEffect(() => {
+    if (!open) return;
+
+    // 1. Cargar Productos desde /products (para Medicamentos e Insumos)
+    api.get<{ data: Product[] }>("/products")
+      .then((res) => {
+        if (res.data?.data?.length) {
+          const fetched = res.data.data;
+          const mapped: CatalogOption[] = fetched.map((p) => ({
+            id: p.id,
+            name: p.name,
+            price: Number(p.unit_price) || 0,
+            sku: p.sku,
+          }));
+          setCatalogItems((prev) => ({
+            ...prev,
+            medicamento: mapped,
+            insumo: mapped,
+          }));
+        }
+      })
+      .catch(() => {});
+
+    // 2. Cargar Servicios desde /services
+    api.get<{ data: Service[] }>("/services")
+      .then((res) => {
+        if (res.data?.data?.length) {
+          const fetched = res.data.data;
+          const mapped: CatalogOption[] = fetched.map((s) => ({
+            id: s.id,
+            name: s.name,
+            price: Number(s.price) || 0,
+            description: s.description || undefined,
+          }));
+          setCatalogItems((prev) => ({
+            ...prev,
+            servicio: mapped,
+          }));
+        }
+      })
+      .catch(() => {});
+
+    // 3. Cargar Procedimientos desde /procedures
+    api.get<{ data: Procedure[] }>("/procedures")
+      .then((res) => {
+        if (res.data?.data?.length) {
+          const fetched = res.data.data;
+          const mapped: CatalogOption[] = fetched.map((p) => ({
+            id: p.id,
+            name: p.type || p.service || `Procedimiento #${p.id}`,
+            price: 45000,
+          }));
+          setCatalogItems((prev) => ({
+            ...prev,
+            procedimiento: mapped,
+          }));
+        }
+      })
+      .catch(() => {});
+  }, [open]);
+
+  const currentOptions = catalogItems[activeTab] || FALLBACK_CATALOGS[activeTab] || [];
 
   const handleTabChange = (newTab: ConceptCategory) => {
     setActiveTab(newTab);
+    setSelectedCatalogId("");
     const newConfig = CATEGORY_CONFIG[newTab];
     setTitle(newConfig.defaultTitle);
     setDescription(newConfig.defaultDesc);
     setUnitPrice(newConfig.defaultPrice);
     setQuantity(1);
+  };
+
+  const handleSelectFromCatalog = (catalogId: string) => {
+    setSelectedCatalogId(catalogId);
+    if (!catalogId) return;
+
+    const found = currentOptions.find((opt) => String(opt.id) === String(catalogId));
+    if (found) {
+      setTitle(found.name);
+      setUnitPrice(found.price);
+      if (found.description) {
+        setDescription(found.description);
+      }
+    }
   };
 
   const total = quantity * unitPrice;
@@ -276,6 +411,34 @@ export function AddClinicalConceptModal({
                   <h3 className="text-sm font-bold text-slate-900">Información del Concepto</h3>
                   <p className="text-xs text-slate-500">
                     Registra los detalles del {config.label.toLowerCase()} para la atención del paciente.
+                  </p>
+                </div>
+
+                {/* Selector de Catálogo desde Módulo */}
+                <div className="space-y-1.5 rounded-xl border border-primary/20 bg-primary/5 p-3.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-primary flex items-center gap-1.5">
+                      <Database className="h-3.5 w-3.5" />
+                      Cargar desde el Módulo de {config.label}
+                    </label>
+                    <span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
+                      {currentOptions.length} disponible(s)
+                    </span>
+                  </div>
+                  <select
+                    value={selectedCatalogId}
+                    onChange={(e) => handleSelectFromCatalog(e.target.value)}
+                    className="w-full h-10 rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer"
+                  >
+                    <option value="">-- Seleccionar {config.label.toLowerCase()} del catálogo --</option>
+                    {currentOptions.map((item) => (
+                      <option key={item.id} value={String(item.id)}>
+                        {item.sku ? `[${item.sku}] ` : ""}{item.name} {item.price > 0 ? `— $${item.price.toLocaleString("es-CO")}` : ""}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-[11px] text-slate-500">
+                    Selecciona un registro del módulo para autocompletar el nombre y precio oficial.
                   </p>
                 </div>
 
