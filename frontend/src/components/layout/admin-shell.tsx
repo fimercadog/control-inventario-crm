@@ -455,16 +455,6 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               </div>
             </div>
             <BetaNotice />
-            <Button
-              variant="outline"
-              size="icon"
-              aria-label="Cambiar tema"
-              title={theme === "dark" ? "Cambiar a tema claro" : "Cambiar a tema oscuro"}
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            >
-              <Sun className="h-4 w-4 dark:hidden" />
-              <Moon className="hidden h-4 w-4 dark:block" />
-            </Button>
             <Button variant="outline" size="icon" aria-label="Cerrar sesión" title="Cerrar sesión" onClick={logout}>
               <LogOut className="h-4 w-4" />
             </Button>

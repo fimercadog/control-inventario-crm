@@ -161,7 +161,7 @@ export function ConsultaDetailView() {
                 return (
                   <div
                     key={index}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-border bg-slate-900/40 p-4 transition hover:bg-slate-900/70"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-slate-200 bg-slate-50/70 p-4 transition hover:bg-slate-100/90"
                   >
                     <div className="flex items-start gap-3.5 min-w-0">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
