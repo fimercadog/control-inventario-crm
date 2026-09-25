@@ -94,7 +94,7 @@ return new class extends Migration
         Schema::create('accounts_payable', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('supplier_id')->constrained()->restrictOnDelete();
+            $table->foreignId('supplier_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('purchase_order_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('purchase_receipt_id')->nullable()->constrained()->nullOnDelete();
             $table->decimal('original_amount', 12, 2);
@@ -148,7 +148,7 @@ return new class extends Migration
             $table->string('method')->default('cash');
             $table->string('reference')->nullable();
             $table->text('notes')->nullable();
-            $table->morphs('source');
+            $table->nullableMorphs('source');
             $table->string('idempotency_key')->nullable();
             $table->timestamps();
 

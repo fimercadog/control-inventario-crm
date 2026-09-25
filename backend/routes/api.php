@@ -246,6 +246,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('employee-documents', EmployeeDocumentController::class)->middleware('can:documents.manage');
     Route::apiResource('shifts', ShiftController::class)->middleware('can:attendance.manage');
 
+    Route::apiResource('payrolls', \App\Http\Controllers\Api\PayrollController::class)->middleware('can:employees.manage');
+    Route::post('/payrolls/{id}/calculate', [\App\Http\Controllers\Api\PayrollController::class, 'calculate'])->middleware('can:employees.manage')->whereNumber('id');
+    Route::post('/payrolls/{id}/approve', [\App\Http\Controllers\Api\PayrollController::class, 'approve'])->middleware('can:employees.manage')->whereNumber('id');
+    Route::post('/payrolls/{id}/pay', [\App\Http\Controllers\Api\PayrollController::class, 'pay'])->middleware('can:employees.manage')->whereNumber('id');
+    Route::post('/payrolls/{id}/close', [\App\Http\Controllers\Api\PayrollController::class, 'close'])->middleware('can:employees.manage')->whereNumber('id');
+    Route::get('/payrolls/{id}/details/{detailId}/receipt', [\App\Http\Controllers\Api\PayrollController::class, 'receipt'])->middleware('can:employees.manage')->whereNumber('id')->whereNumber('detailId');
+
     Route::apiResource('audit-logs', AuditLogController::class)->only(['index', 'show'])->middleware('can:audit.view');
     Route::get('/permissions', [RoleController::class, 'permissions'])->middleware('can:roles.manage');
     Route::apiResource('roles', RoleController::class)->only(['index', 'show', 'store', 'update'])->middleware('can:roles.manage');

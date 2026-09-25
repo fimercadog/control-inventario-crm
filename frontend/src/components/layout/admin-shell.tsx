@@ -107,6 +107,7 @@ const navGroups: NavGroup[] = [
     label: "Recursos Humanos",
     items: [
       { href: "/app/empleados", label: "Empleados / Fichas", icon: UserCheck, permissions: ["employees.manage"] },
+      { href: "/app/nomina", label: "Nómina Transaccional", icon: Receipt, permissions: ["employees.manage"] },
       { href: "/app/asistencia", label: "Control de Asistencia", icon: Clock, permissions: ["attendance.manage"] },
       { href: "/app/vacaciones", label: "Solicitudes de Vacaciones", icon: CalendarDays, permissions: ["requests.approve"] },
       { href: "/app/permisos", label: "Permisos y Licencias", icon: FileText, permissions: ["requests.approve"] },
