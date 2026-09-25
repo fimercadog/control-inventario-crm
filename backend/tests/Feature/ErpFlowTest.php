@@ -96,17 +96,19 @@ class ErpFlowTest extends TestCase
         $this->assertSame(100, $this->product->fresh()->stockOnHand($this->warehouse->id));
         $this->assertDatabaseHas('purchase_orders', ['id' => $po['id'], 'status' => 'received']);
 
-        $payableId = (int) $this->getJson('/api/accounts-payable')->json('data.0.id');
+        $payable = $this->getJson('/api/accounts-payable')->json('data.0');
+        $payableId = (int) $payable['id'];
+        $payableBalance = (float) $payable['balance'];
         $this->postJson('/api/payments', [
             'target_type' => 'payable',
             'target_id' => $payableId,
-            'amount' => 24000,
+            'amount' => $payableBalance,
             'cash_session_id' => $cashSession['id'],
             'idempotency_key' => 'payable-payment',
         ])->assertCreated();
 
         $this->assertDatabaseHas('accounts_payable', ['id' => $payableId, 'balance' => 0, 'status' => 'paid']);
-        $this->assertDatabaseHas('cash_movements', ['cash_session_id' => $cashSession['id'], 'type' => 'out', 'amount' => -24000]);
+        $this->assertDatabaseHas('cash_movements', ['cash_session_id' => $cashSession['id'], 'type' => 'out', 'amount' => -$payableBalance]);
     }
 
     public function test_invoice_issue_creates_stock_out_receivable_partial_and_final_payments(): void
