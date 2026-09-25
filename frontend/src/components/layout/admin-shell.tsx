@@ -103,6 +103,7 @@ const navGroups: NavGroup[] = [
     label: "Inmobiliaria & Bienes Raíces",
     items: [
       { href: "/app/propiedades", label: "Propiedades", icon: Building2, permissions: ["properties.manage"] },
+      { href: "/app/arriendos", label: "Contratos de Arriendo & Recaudo ERP", icon: FileText, permissions: ["properties.manage"] },
       { href: "/app/propietarios", label: "Propietarios", icon: UserCheck, permissions: ["owners.manage"] },
       { href: "/app/visitas", label: "Visitas Agendadas", icon: CalendarDays, permissions: ["visits.manage"] },
       { href: "/app/cierres", label: "Cierres & Operaciones", icon: Handshake, permissions: ["deals.manage"] },

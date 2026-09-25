@@ -110,6 +110,11 @@ class Property extends Model
         return $this->hasMany(PropertyImage::class)->orderBy('sort_order');
     }
 
+    public function leases(): HasMany
+    {
+        return $this->hasMany(PropertyLease::class);
+    }
+
     /**
      * Commercial statuses that are still eligible for public visibility.
      * Sold/rented/inactive/draft properties must disappear from the public

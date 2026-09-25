@@ -246,6 +246,8 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('properties', PropertyController::class);
     Route::apiResource('owners', OwnerController::class);
     Route::apiResource('visits', VisitController::class);
+    Route::apiResource('property-leases', \App\Http\Controllers\Api\PropertyLeaseController::class);
+    Route::post('/property-leases/{id}/collect-rent', [\App\Http\Controllers\Api\PropertyLeaseController::class, 'collectRent'])->whereNumber('id');
 
     // El permiso por recurso se valida dentro del controlador.
     Route::get('/exports/{resource}.{format}', ExportController::class)
