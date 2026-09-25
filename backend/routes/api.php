@@ -52,8 +52,15 @@ use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\UnitController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WarehouseController;
+use App\Http\Controllers\Api\WhatsAppWebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+// Webhook WhatsApp Cloud API
+Route::prefix('webhooks/whatsapp')->group(function (): void {
+    Route::get('/', [WhatsAppWebhookController::class, 'verify']);
+    Route::post('/', [WhatsAppWebhookController::class, 'handle']);
+});
 
 Route::get('/user', function (Request $request) {
     return $request->user();
