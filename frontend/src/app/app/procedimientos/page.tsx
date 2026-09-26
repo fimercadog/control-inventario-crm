@@ -18,7 +18,7 @@ const columns: AppColumnDef<Procedure>[] = [
     ),
   },
   { accessorKey: "type", header: "Procedimiento" },
-  { header: "Veterinario", cell: ({ row }) => row.original.vet ?? "—" },
+  { header: "Entrenador / Evaluador", cell: ({ row }) => row.original.vet ?? "—" },
   { header: "Consentimiento", cell: ({ row }) => (row.original.consent_document_url ? "Adjunto" : "—") },
 ];
 

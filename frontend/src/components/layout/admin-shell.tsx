@@ -493,9 +493,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <Menu className="h-4 w-4" />
             </Button>
             <div className="min-w-0 max-w-32 sm:max-w-none">
-              <p className="truncate text-sm font-medium">{user?.company?.name ?? "VetPanel"}</p>
+              <p className="truncate text-sm font-medium">{user?.company?.name ?? "La Cantera FC"}</p>
               <p className="hidden truncate text-xs text-muted-foreground sm:block">
-                Panel de gestión veterinaria
+                Panel de gestión Escuela de Fútbol
               </p>
             </div>
           </div>

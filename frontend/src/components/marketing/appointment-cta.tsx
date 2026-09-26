@@ -7,11 +7,11 @@ import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 /**
  * Banda de cierre oscura con las dos acciones de máxima prioridad del sitio:
- * Agendar cita y WhatsApp. Reutilizada en home, servicios, equipo y contacto.
+ * Solicitar clase de prueba / inscripción y WhatsApp.
  */
 export function AppointmentCta({
-  title = "¿Tu mascota necesita una visita?",
-  lead = "Contanos qué necesita y te confirmamos disponibilidad. Para urgencias, escribinos directo por WhatsApp.",
+  title = "¿Quieres inscribir a tu hijo o agendar una clase de prueba?",
+  lead = "Déjanos tus datos y la coordinación deportiva te confirmará categoría y horarios disponibles.",
 }: {
   title?: string;
   lead?: string;
@@ -29,8 +29,8 @@ export function AppointmentCta({
             <h2 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">{title}</h2>
             <p className="mt-4 text-lg leading-8 text-white/70">{lead}</p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <CtaLink href="/agendar-cita" variant="cta">
-                Agendar cita
+              <CtaLink href="/solicitar-cita" variant="cta">
+                Solicitar clase de prueba
               </CtaLink>
               <CtaLink
                 href={WHATSAPP_URL}

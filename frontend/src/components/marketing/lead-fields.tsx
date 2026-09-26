@@ -14,7 +14,7 @@ const inputClass =
  */
 export function LeadFields({
   messagePlaceholder,
-  secondaryField = { placeholder: "Clínica (opcional)", label: "Clínica" },
+  secondaryField = { placeholder: "Categoría / Alumno (opcional)", label: "Categoría / Alumno" },
 }: {
   messagePlaceholder: string;
   secondaryField?: { placeholder: string; label: string };

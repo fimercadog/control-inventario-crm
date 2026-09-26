@@ -18,7 +18,7 @@ const columns: AppColumnDef<Consultation>[] = [
     ),
   },
   { header: "Motivo", cell: ({ row }) => row.original.reason },
-  { header: "Veterinario", cell: ({ row }) => row.original.vet ?? "—" },
+  { header: "Entrenador / Evaluador", cell: ({ row }) => row.original.vet ?? "—" },
   {
     header: "",
     cell: ({ row }) => (

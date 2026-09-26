@@ -94,8 +94,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       </Section>
 
       <AppointmentCta
-        title="¿Tenés dudas sobre el caso puntual de tu mascota?"
-        lead="Un artículo orienta, pero no reemplaza una consulta. Agendá y lo vemos en persona."
+        title="¿Quieres conocer más sobre nuestros programas de cantera?"
+        lead="Agendá una clase de prueba gratuita y evalúa el nivel deportivo de tu hijo con nuestro cuerpo técnico."
       />
     </MarketingLayout>
   );

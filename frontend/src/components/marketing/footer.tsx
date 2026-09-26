@@ -4,11 +4,11 @@ import { ClinicWordmark } from "@/components/marketing/clinic-brand";
 
 const columns: { title: string; links: [string, string][] }[] = [
   {
-    title: "Clínica",
+    title: "Escuela",
     links: [
-      ["Servicios", "/servicios"],
-      ["Equipo veterinario", "/equipo"],
-      ["Urgencias", "/urgencias"],
+      ["Programas & Categorías", "/servicios"],
+      ["Cuerpo técnico", "/equipo"],
+      ["Tienda & Indumentaria", "/catalogo"],
       ["Nosotros", "/nosotros"],
       ["Preguntas frecuentes", "/preguntas-frecuentes"],
       ["Testimonios", "/testimonios"],
@@ -17,10 +17,10 @@ const columns: { title: string; links: [string, string][] }[] = [
   {
     title: "Recursos",
     links: [
-      ["Blog", "/blog"],
-      ["Agendar cita", "/agendar-cita"],
+      ["Blog Deportivo", "/blog"],
+      ["Clase de prueba", "/solicitar-cita"],
       ["Contacto", "/contacto"],
-      ["Acceso al panel", "/login"],
+      ["Acceso al panel ERP", "/login"],
     ],
   },
   {
@@ -39,13 +39,12 @@ export function MarketingFooter() {
         <div className="max-w-xs">
           <ClinicWordmark />
           <p className="mt-4 text-sm leading-6 text-muted-foreground">
-            Atención veterinaria integral para tu mascota: consulta, vacunación, cirugía y urgencias, con un equipo
-            que la conoce desde la primera visita.
+            Formación deportiva de alto rendimiento para niños y jóvenes: categorías Semillero Sub-8 a Sub-17, entrenamiento de arqueros y competición de liga.
           </p>
           <ul className="mt-5 space-y-2.5 text-sm text-foreground/80">
             <li className="flex items-start gap-2.5">
               <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
-              Calle 93 #14-20, Bogotá
+              Calle 170 #15-30, Bogotá
             </li>
             <li className="flex items-center gap-2.5">
               <Phone className="size-4 shrink-0 text-primary" />
@@ -53,11 +52,11 @@ export function MarketingFooter() {
             </li>
             <li className="flex items-center gap-2.5">
               <Mail className="size-4 shrink-0 text-primary" />
-              recepcion@vetlosandes.co
+              contacto@lacanterafutbol.test
             </li>
             <li className="flex items-start gap-2.5">
               <Clock className="mt-0.5 size-4 shrink-0 text-primary" />
-              Lun a sáb, 8:00 a 19:00 · Urgencias 24/7
+              Lun a sáb, 6:00 a 20:00
             </li>
           </ul>
         </div>
@@ -84,7 +83,7 @@ export function MarketingFooter() {
 
       <div className="bg-ink text-ink-foreground">
         <div className="mx-auto max-w-7xl px-4 py-5 text-xs text-white/60 sm:px-6 lg:px-8">
-          © {new Date().getFullYear()} Clínica Veterinaria Los Andes.
+          © {new Date().getFullYear()} Escuela de Fútbol La Cantera S.A.S.
         </div>
       </div>
     </footer>

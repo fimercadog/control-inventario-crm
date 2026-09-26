@@ -9,9 +9,8 @@ use App\Models\Lead;
 use Illuminate\Http\JsonResponse;
 
 /**
- * Portal público "Solicitá tu cita". NO crea una cita: genera un Lead con
- * `source=appointment` para que recepción revise disponibilidad y agende.
- * Sin auth, CSRF-exento (api/public/*), throttle `appointment-request`.
+ * Portal público "Solicitud de clase de prueba / Inscripción". Genera un Lead con
+ * `source=appointment` para que la coordinación deportiva revise la categoría y contacte al acudiente.
  */
 class PublicAppointmentController extends Controller
 {
@@ -22,7 +21,7 @@ class PublicAppointmentController extends Controller
         $data = $request->validated();
 
         $ok = response()->json([
-            'message' => 'Recibimos tu solicitud. La clínica confirmará disponibilidad y te contactará.',
+            'message' => 'Recibimos tu solicitud. La Escuela de Fútbol confirmará disponibilidad y te contactará para agendar la clase de prueba.',
         ]);
 
         // Honeypot: descarte silencioso.
@@ -30,17 +29,17 @@ class PublicAppointmentController extends Controller
             return $ok;
         }
 
+        $studentName = $data['student_name'] ?? $data['pet_name'] ?? null;
+
         $message = collect([
             $data['message'] ?? null,
-            ! empty($data['pet_name']) ? 'Mascota: '.$data['pet_name'] : null,
-            ! empty($data['reason']) ? 'Motivo: '.$data['reason'] : null,
+            ! empty($studentName) ? 'Alumno/Aspirante: '.$studentName : null,
+            ! empty($data['reason']) ? 'Categoría / Motivo: '.$data['reason'] : null,
             ! empty($data['preferred_date']) ? 'Fecha preferida: '.$data['preferred_date'] : null,
         ])->filter()->implode(' — ');
 
         $companyId = $this->companyId($request);
 
-        // Una solicitud = una fila (la clínica agenda cada una). Solo se
-        // colapsa el doble-click: mismo correo y misma solicitud en 5 minutos.
         $duplicate = Lead::query()
             ->where('company_id', $companyId)
             ->where('email', $data['email'])

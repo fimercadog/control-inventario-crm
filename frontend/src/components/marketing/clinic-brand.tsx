@@ -1,23 +1,23 @@
 import Link from "next/link";
-import { Building2 } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * Identidad del sitio público: ERP PyME & CRM Multi-Servicios.
+ * Identidad del sitio público: Escuela de Fútbol & Cantera Deportiva.
  */
-export const CLINIC_NAME = "ERP PyME Core";
-export const CLINIC_SHORT_NAME = "ERP PyME";
+export const CLINIC_NAME = "Escuela de Fútbol La Cantera";
+export const CLINIC_SHORT_NAME = "La Cantera";
 
 export function ClinicWordmark({ className }: { className?: string }) {
   return (
     <Link href="/" className={cn("flex items-center gap-2.5", className)} aria-label={`${CLINIC_NAME} — inicio`}>
       <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Building2 className="size-4.5" />
+        <Trophy className="size-4.5" />
       </span>
       <span className="text-base font-extrabold leading-tight tracking-tight">
-        ERP<span className="text-primary">.PyME</span>
+        La Cantera<span className="text-primary">.FC</span>
         <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-          Gestión & CRM Core
+          Escuela de Fútbol
         </span>
       </span>
     </Link>

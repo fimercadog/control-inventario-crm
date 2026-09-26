@@ -10,16 +10,15 @@ import { TeamProfileList } from "@/components/marketing/team-profile-row";
 export default function EquipoPage() {
   return (
     <MarketingLayout>
-      {/* Hero: misma familia visual que Servicios/Nosotros. */}
       <SplitHero
-        eyebrow="Equipo"
-        title="El equipo que va a conocer a tu mascota"
-        lead="Veterinarios de planta y un equipo de recepción que coordina tu agenda, tus urgencias y el seguimiento de cada tratamiento."
+        eyebrow="Cuerpo Técnico"
+        title="Formadores comprometidos con el futuro del fútbol juvenil"
+        lead="Directores técnicos, preparadores físicos y coordinadores dedicados al desarrollo deportivo, táctico y humano de tu hijo."
         image="/gallery/illustrations/illustration-4.png"
-        imageAlt="Veterinario sosteniendo en brazos a un cachorro"
+        imageAlt="Entrenador de fútbol con pizarra táctica"
         actions={
-          <CtaLink href="/agendar-cita" variant="cta">
-            Agendar cita
+          <CtaLink href="/solicitar-cita" variant="cta">
+            Solicitar clase de prueba
           </CtaLink>
         }
       />
@@ -27,17 +26,15 @@ export default function EquipoPage() {
       <Section className="pt-0">
         <PhotoFeatureStack
           image="/gallery/pet-13.jpg"
-          imageAlt="Veterinario examinando la pata de un bulldog con instrumental clínico"
+          imageAlt="Entrenadores guiando rutina de agilidad y velocidad"
           reverse
           features={[
-            { title: "Continuidad, no rotación", text: "Cada mascota tiene un veterinario que la conoce visita tras visita, no un turno con quien esté disponible." },
-            { title: "Seguimiento real", text: "Un cambio sutil se nota antes cuando es el mismo equipo el que compara con la visita anterior." },
+            { title: "Continuidad y Formación Integral", text: "Cada categoría cuenta con un cuerpo técnico enfocado en el seguimiento cercano de cada atleta." },
+            { title: "Metodología Actualizada", text: "Planes de entrenamiento basados en estándares modernos de la Federación Colombiana de Fútbol." },
           ]}
         />
       </Section>
 
-      {/* Fila apilada foto+card -- patron "Highly Trained Veterinarians" de
-          About, en vez de un grid de tarjetas parejas. */}
       <Section className="bg-section-cream">
         <TeamProfileList team={team} />
       </Section>

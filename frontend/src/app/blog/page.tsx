@@ -17,14 +17,12 @@ export default function BlogPage() {
 
   return (
     <MarketingLayout>
-      {/* Hero: misma familia visual que Servicios -- para que el blog se sienta
-          parte del mismo sitio, no una seccion aparte. */}
       <SplitHero
-        eyebrow="Blog"
-        title="Cuidado animal, explicado por el equipo que te atiende"
-        lead="Prevención, vacunas, nutrición y qué hacer ante una urgencia — notas prácticas para dueños de mascota, escritas por nuestros veterinarios."
+        eyebrow="Blog Deportivo"
+        title="Consejos de formación, táctica y nutrición para jóvenes futbolistas"
+        lead="Nutrición deportiva, preparación física, técnica individual y psicología del deporte para jóvenes atletas y acudientes."
         image="/gallery/illustrations/illustration-10.png"
-        imageAlt="Gato sobre una laptop junto a un botiquín de primeros auxilios"
+        imageAlt="Balón de fútbol y laptop con táctica deportiva"
       />
 
       <Section className="pt-0">
@@ -60,14 +58,11 @@ export default function BlogPage() {
           </div>
         )}
 
-        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((post, i) => (
-            <BlogCard key={post.slug} post={post} delay={(i % 3) * 0.1} />
+        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((post) => (
+            <BlogCard key={post.slug} post={post} />
           ))}
         </div>
-        {filtered.length === 0 && (
-          <p className="mt-12 text-center text-sm text-muted-foreground">No hay artículos en esta categoría todavía.</p>
-        )}
       </Section>
     </MarketingLayout>
   );

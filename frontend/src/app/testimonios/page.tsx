@@ -11,8 +11,8 @@ export default function TestimoniosPage() {
     <MarketingLayout>
       <PageHero
         eyebrow="Testimonios"
-        title="Lo que cuentan los propietarios que ya nos conocen"
-        lead="Historias reales de mascotas atendidas en consulta, vacunación, cirugía y urgencias."
+        title="Lo que opinan los padres de familia y acudientes"
+        lead="Experiencias reales de alumnos y familias que forman parte de Escuela de Fútbol La Cantera."
       />
 
       <Section className="pt-0">

@@ -35,7 +35,7 @@ function HeroArt() {
         <HeartPulse className="size-4.5 shrink-0 text-chart-3" />
         <div className="leading-tight">
           <p className="text-sm font-extrabold">3.500+</p>
-          <p className="text-[11px] text-muted-foreground">mascotas atendidas</p>
+          <p className="text-[11px] text-muted-foreground">alumnos formados</p>
         </div>
       </div>
     </div>

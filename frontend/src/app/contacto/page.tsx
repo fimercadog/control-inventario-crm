@@ -29,15 +29,14 @@ export default function ContactPage() {
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Contacto</p>
             <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">Escribinos</h1>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-muted-foreground">
-              Para agendar una cita usá el formulario de &ldquo;Agendar cita&rdquo;. Este canal es para consultas
-              generales; ante una urgencia, escribinos directo por WhatsApp.
+              Para agendar una clase de prueba o solicitar cupo usá el formulario de &ldquo;Clase de prueba&rdquo;. Este canal es para consultas generales de inscripciones.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <CtaLink href={WHATSAPP_URL} variant="cta">
                 Escribinos por WhatsApp
               </CtaLink>
-              <CtaLink href="/agendar-cita" variant="outline">
-                Agendar cita
+              <CtaLink href="/solicitar-cita" variant="outline">
+                Clase de prueba
               </CtaLink>
             </div>
           </Reveal>
@@ -74,7 +73,7 @@ export default function ContactPage() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="strict-origin-when-cross-origin"
-              title="Ubicación de Clínica Veterinaria Los Andes en Google Maps"
+              title="Ubicación de Escuela de Fútbol La Cantera en Google Maps"
               className="size-full"
             />
           </div>

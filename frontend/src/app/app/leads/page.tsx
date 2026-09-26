@@ -24,13 +24,13 @@ const SOURCE_LABEL: Record<Lead["source"], string> = {
   demo: "Demo",
   catalog: "Cotizacion",
   manual: "Manual",
-  appointment: "Solicitud de cita",
+  appointment: "Solicitud de prueba",
 };
 const STATUS_LABEL: Record<Lead["status"], string> = { new: "Nuevo", contacted: "Contactado", discarded: "Descartado" };
 
 const columns: AppColumnDef<Lead>[] = [
   { accessorKey: "name", header: "Nombre" },
-  { header: "Mascota / Empresa", cell: ({ row }) => row.original.company_name ?? "—" },
+  { header: "Alumno / Categoría", cell: ({ row }) => row.original.company_name ?? "—" },
   { accessorKey: "email", header: "Correo" },
   { header: "Telefono", cell: ({ row }) => row.original.phone ?? "—" },
   { header: "Origen", cell: ({ row }) => <StatusBadge status={row.original.source} label={SOURCE_LABEL[row.original.source]} /> },
@@ -43,7 +43,7 @@ const columns: AppColumnDef<Lead>[] = [
 
 const fields: CrudField[] = [
   { name: "name", label: "Nombre", required: true },
-  { name: "company_name", label: "Mascota / Empresa" },
+  { name: "company_name", label: "Alumno / Categoría" },
   { name: "email", label: "Correo", type: "email", required: true },
   { name: "phone", label: "Telefono" },
   { name: "message", label: "Mensaje", type: "textarea", colSpan: "full" },

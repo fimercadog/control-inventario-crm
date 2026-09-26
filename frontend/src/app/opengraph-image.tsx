@@ -33,13 +33,13 @@ export default function OpengraphImage() {
             marginBottom: 40,
           }}
         >
-          LA
+          FC
         </div>
         <div style={{ display: "flex", fontSize: 60, fontWeight: 900, color: "#241f19" }}>
-          Clínica Veterinaria Los Andes
+          Escuela de Fútbol La Cantera
         </div>
         <div style={{ display: "flex", marginTop: 20, fontSize: 32, color: "#6b6355", maxWidth: 860 }}>
-          Consulta, vacunación, cirugía y urgencias para tu mascota, con un equipo que la conoce desde la primera visita.
+          Formación deportiva integral, categorías Semillero Sub-8 a Sub-17 y competición en ligas oficiales.
         </div>
       </div>
     ),

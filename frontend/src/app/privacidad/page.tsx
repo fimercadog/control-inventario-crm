@@ -2,74 +2,62 @@ import type { Metadata } from "next";
 import { LegalPage } from "@/components/marketing/legal-page";
 
 export const metadata: Metadata = {
-  title: "Politica de Tratamiento de Datos Personales",
+  title: "Política de Tratamiento de Datos Personales",
   description:
-    "Como la plataforma recolecta, usa y protege los datos personales, y como ejercer tus derechos conforme a la Ley 1581 de 2012.",
+    "Cómo la plataforma recolecta, usa y protege los datos personales, y cómo ejercer tus derechos conforme a la Ley 1581 de 2012.",
 };
 
 export default function PrivacyPage() {
   return (
     <LegalPage
-      title="Politica de Tratamiento de Datos Personales"
-      updated="30 de agosto de 2026"
-      intro="Esta politica describe el tratamiento que la plataforma da a los datos personales que recibe a traves de este sitio web, en cumplimiento de la Ley Estatutaria 1581 de 2012, el Decreto 1074 de 2015 y demas normas concordantes de la Republica de Colombia."
+      title="Política de Tratamiento de Datos Personales"
+      updated="25 de septiembre de 2026"
+      intro="Esta política describe el tratamiento que la plataforma da a los datos personales que recibe a través de este sitio web, en cumplimiento de la Ley Estatutaria 1581 de 2012, el Decreto 1074 de 2015 y demás normas concordantes de la República de Colombia."
       sections={[
         {
           heading: "1. Responsable del tratamiento",
           body: [
-            "Responsable: [Razon social], identificada con NIT [NIT], con domicilio en [direccion], [ciudad], Colombia.",
-            "Canal de atencion para el ejercicio de derechos: [correo de contacto]. Telefono / WhatsApp: [telefono].",
+            "Responsable: Escuela de Fútbol La Cantera S.A.S., identificada con NIT 901.245.880-3, con domicilio en Calle 170 #15-30, Bogotá, Colombia.",
+            "Canal de atención para el ejercicio de derechos: contacto@lacanterafutbol.test. Teléfono / WhatsApp: +57 601 555 0188.",
           ],
         },
         {
           heading: "2. Datos que recolectamos",
           body: [
-            "A traves de los formularios de contacto y de solicitud de cita recolectamos: nombre, nombre de tu mascota, correo electronico, numero de telefono o WhatsApp, motivo de la consulta y el contenido del mensaje que nos envies.",
-            "No solicitamos datos sensibles a traves de este sitio. Si decides incluirlos en un campo de texto libre, se entendera que autorizas su tratamiento para los fines aqui descritos.",
+            "A través de los formularios de contacto y solicitud de clase de prueba recolectamos: nombre del acudiente, nombre del alumno/deportista, correo electrónico, número de teléfono o WhatsApp, categoría de interés y el contenido del mensaje que nos envíes.",
+            "No solicitamos datos sensibles a través de este sitio. Si decides incluirlos en un campo de texto libre, se entenderá que autorizas su tratamiento para los fines aquí descritos.",
           ],
         },
         {
           heading: "3. Finalidades del tratamiento",
           body: [
-            "Los datos se tratan para: (i) responder tus solicitudes de informacion; (ii) confirmar disponibilidad y agendar la cita de tu mascota; (iii) contactarte sobre el seguimiento de una consulta o tratamiento en curso; (iv) enviarte recordatorios de vacunacion u otros avisos relacionados con la atencion de tu mascota; y (v) atender obligaciones legales y requerimientos de autoridades competentes.",
+            "Los datos se tratan para: (i) responder tus solicitudes de información; (ii) confirmar disponibilidad de cupo y agendar la clase de prueba o evaluación del aspirante; (iii) contactarte sobre el seguimiento del proceso de matrícula e inscripción; (iv) enviarte información sobre entrenamientos, torneos y cobros de mensualidades; y (v) atender obligaciones legales y requerimientos de autoridades competentes.",
           ],
         },
         {
-          heading: "4. Autorizacion",
+          heading: "4. Autorización",
           body: [
-            "Al marcar la casilla de autorizacion en el formulario y enviarlo, otorgas tu consentimiento previo, expreso e informado para el tratamiento de tus datos personales conforme a esta politica.",
+            "Al marcar la casilla de autorización en el formulario y enviarlo, otorgas tu consentimiento previo, expreso e informado para el tratamiento de tus datos personales conforme a esta política.",
           ],
         },
         {
           heading: "5. Derechos del titular",
           body: [
-            "Como titular de los datos tienes derecho a: conocer, actualizar y rectificar tus datos; solicitar prueba de la autorizacion otorgada; ser informado sobre el uso que se ha dado a tus datos; presentar quejas ante la Superintendencia de Industria y Comercio; revocar la autorizacion y/o solicitar la supresion de los datos cuando no exista un deber legal o contractual de conservarlos; y acceder de forma gratuita a tus datos.",
+            "Como titular de los datos tienes derecho a: conocer, actualizar y rectificar tus datos; solicitar prueba de la autorización otorgada; ser informado sobre el uso que se ha dado a tus datos; presentar quejas ante la Superintendencia de Industria y Comercio; revocar la autorización y/o solicitar la supresión de los datos cuando no exista un deber legal o contractual de conservarlos; y acceder de forma gratuita a tus datos.",
           ],
         },
         {
           heading: "6. Procedimiento para consultas y reclamos",
           body: [
-            "Puedes ejercer tus derechos escribiendo a [correo de contacto], indicando tu nombre, el derecho que deseas ejercer y una descripcion de tu solicitud.",
-            "Las consultas se atienden en un plazo maximo de diez (10) dias habiles. Los reclamos se atienden en un plazo maximo de quince (15) dias habiles, contados a partir del dia siguiente a su recepcion; si no es posible atenderlos dentro de ese plazo, se te informara sobre los motivos de la demora y la nueva fecha de respuesta, que no superara los ocho (8) dias habiles adicionales.",
+            "Puedes ejercer tus derechos escribiendo a contacto@lacanterafutbol.test, indicando tu nombre, el derecho que deseas ejercer y una descripción de tu solicitud.",
+            "Las consultas se atienden en un plazo máximo de diez (10) días hábiles. Los reclamos se atienden en un plazo máximo de quince (15) días hábiles, contados a partir del día siguiente a su recepción; si no es posible atenderlos dentro de ese plazo, se te informará sobre los motivos de la demora y la nueva fecha de respuesta, que no superará los ocho (8) días hábiles adicionales.",
           ],
         },
         {
-          heading: "7. Conservacion y seguridad",
+          heading: "7. Conservación y seguridad",
           body: [
-            "Los datos se conservan mientras exista una relacion comercial activa o un interes legitimo de contacto, y por el tiempo adicional que exijan las obligaciones legales aplicables.",
-            "Adoptamos medidas tecnicas, humanas y administrativas razonables para proteger los datos contra acceso no autorizado, perdida, alteracion o uso fraudulento.",
-          ],
-        },
-        {
-          heading: "8. Vigencia",
-          body: [
-            "Esta politica rige a partir de su publicacion. Cualquier cambio sustancial sera informado a traves de este sitio web antes de su entrada en vigor.",
-          ],
-        },
-        {
-          heading: "Nota",
-          body: [
-            "Este documento es una plantilla base y debe ser revisada y completada (datos entre corchetes) por un abogado antes de su uso comercial definitivo.",
+            "Los datos se conservan mientras exista una relación comercial activa o un interés legítimo de contacto, y por el tiempo adicional que exijan las obligaciones legales aplicables.",
+            "Adoptamos medidas técnicas, humanas y administrativas razonables para proteger los datos contra acceso no autorizado, pérdida, alteración o uso fraudulento.",
           ],
         },
       ]}

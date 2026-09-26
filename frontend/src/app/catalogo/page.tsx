@@ -74,11 +74,11 @@ export default function CatalogoPage() {
   return (
     <MarketingLayout>
       <SplitHero
-        eyebrow="Catálogo"
-        title="Todo lo que tu mascota necesita, en un solo lugar"
-        lead="Explorá el catálogo, armá tu lista y solicitá una cotización — te respondemos con precios y disponibilidad."
+        eyebrow="Tienda & Indumentaria"
+        title="Kits oficiales, indumentaria y accesorios deportivos"
+        lead="Explorá el catálogo de la tienda oficial de La Cantera: uniformes de competencia, prendas térmicas, balones y accesorios."
         image="/gallery/illustrations/illustration-1.png"
-        imageAlt="Veterinario levantando en brazos a un cachorro"
+        imageAlt="Kits de uniformes deportivos de fútbol"
         actions={
           <>
             <CtaLink href="/catalogo/cotizacion" variant="cta">

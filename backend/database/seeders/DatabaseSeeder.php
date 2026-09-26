@@ -73,12 +73,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $company = Company::firstOrCreate([
-            'name' => 'Empresa Demo ERP S.A.S.',
+            'name' => 'Escuela de Fútbol La Cantera S.A.S.',
         ], [
             'nit' => '901.245.880-3',
-            'email' => 'contacto@erp-pyme.test',
+            'email' => 'contacto@lacanterafutbol.test',
             'phone' => '+57 601 555 0188',
-            'address' => 'Calle 93 #14-20, Bogotá',
+            'address' => 'Calle 170 #15-30, Bogotá',
             'timezone' => 'America/Bogota',
             'locale' => 'es',
         ]);
@@ -147,7 +147,7 @@ class DatabaseSeeder extends Seeder
         $roles = [
             'Super Admin' => $permissionNames,
             'Administrador de empresa' => $permissionNames,
-            'Veterinario/a' => array_merge(['dashboard.view', 'clients.manage', 'orders.manage', 'reports.view'], $clinical),
+            'Entrenador/a D.T.' => array_merge(['dashboard.view', 'clients.manage', 'orders.manage', 'reports.view'], $clinical),
             'Recepción' => [
                 'dashboard.view', 'leads.view', 'clients.manage', 'patients.manage', 'services.manage',
                 'appointments.manage', 'orders.manage', 'invoices.manage', 'accounts_receivable.view',
@@ -171,9 +171,9 @@ class DatabaseSeeder extends Seeder
         $demo = [
             ['superadmin@erp-pyme.test', 'Sofía Mercado', 'Super Admin'],
             ['admin@erp-pyme.test', 'Camila Rojas', 'Administrador de empresa'],
-            ['operaciones@erp-pyme.test', 'Carlos Medina', 'Veterinario/a'],
-            ['operaciones2@erp-pyme.test', 'Laura Peña', 'Veterinario/a'],
-            ['recepcion@erp-pyme.test', 'Marcela Duarte', 'Recepción'],
+            ['operaciones@erp-pyme.test', 'Prof. Javier Morales', 'Entrenador/a D.T.'],
+            ['operaciones2@erp-pyme.test', 'Profe Mateo Ríos', 'Entrenador/a D.T.'],
+            ['recepcion@erp-pyme.test', 'Lic. Sofía Gómez', 'Recepción'],
             ['inventario@erp-pyme.test', 'Valentina Castro', 'Inventario'],
             ['ventas@erp-pyme.test', 'Sebastián Moreno', 'Ventas'],
         ];

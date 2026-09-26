@@ -164,7 +164,7 @@ export default function PortalPage() {
   if (checking) {
     return (
       <MarketingLayout>
-        <PageHero eyebrow="Portal del dueño" title="Tu portal" lead="" />
+        <PageHero eyebrow="Portal del Acudiente" title="Tu portal" lead="" />
         <p className="mx-auto max-w-2xl px-4 pb-24 text-sm text-muted-foreground sm:px-6">Cargando…</p>
       </MarketingLayout>
     );
@@ -172,7 +172,7 @@ export default function PortalPage() {
 
   return (
     <MarketingLayout>
-      <PageHero eyebrow="Portal del dueño" title="Tus citas" lead="Gestioná las citas de tu mascota: reagendá o cancelá cuando lo necesites." />
+      <PageHero eyebrow="Portal del Acudiente" title="Tus Entrenamientos" lead="Gestioná los entrenamientos y evaluaciones de tu alumno: reagendá o cancelá cuando lo necesites." />
       <section className="mx-auto max-w-2xl px-4 pb-24 sm:px-6">
         <div className="mb-4 flex justify-end">
           <button type="button" onClick={logout} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">

@@ -10,21 +10,17 @@ const inputClass =
   "h-11 w-full rounded-lg border border-input bg-card px-3.5 text-sm outline-none transition-colors focus:border-primary";
 
 type Service = { id: number; name: string; description: string | null; estimated_duration_minutes: number | null };
-type Option = { id: number; name: string };
 
 const TODAY = new Date().toISOString().slice(0, 10);
 const MAX_DATE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
 
 export default function AgendarCitaPage() {
   const [services, setServices] = React.useState<Service[]>([]);
-  const [species, setSpecies] = React.useState<Option[]>([]);
-  const [breeds, setBreeds] = React.useState<Option[]>([]);
   const [slots, setSlots] = React.useState<string[]>([]);
 
   const [serviceId, setServiceId] = React.useState("");
   const [date, setDate] = React.useState("");
   const [startTime, setStartTime] = React.useState("");
-  const [speciesId, setSpeciesId] = React.useState("");
 
   const [loadingSlots, setLoadingSlots] = React.useState(false);
   const [submitting, setSubmitting] = React.useState(false);
@@ -33,13 +29,7 @@ export default function AgendarCitaPage() {
 
   React.useEffect(() => {
     api.get("/public/appointments/services").then((res) => setServices(res.data.data ?? []));
-    api.get("/public/appointments/species").then((res) => setSpecies(res.data ?? []));
   }, []);
-
-  React.useEffect(() => {
-    if (!speciesId) return;
-    api.get(`/public/appointments/species/${speciesId}/breeds`).then((res) => setBreeds(res.data ?? []));
-  }, [speciesId]);
 
   React.useEffect(() => {
     if (!serviceId || !date) return;
@@ -63,11 +53,6 @@ export default function AgendarCitaPage() {
     setLoadingSlots(true);
   }
 
-  function selectSpecies(value: string) {
-    setSpeciesId(value);
-    setBreeds([]);
-  }
-
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
@@ -78,9 +63,8 @@ export default function AgendarCitaPage() {
       service_id: Number(serviceId),
       date,
       start_time: startTime,
-      species_id: Number(speciesId),
-      breed_id: fd.get("breed_id") ? Number(fd.get("breed_id")) : null,
-      pet_name: String(fd.get("pet_name") ?? "").trim(),
+      pet_name: String(fd.get("student_name") ?? "").trim(),
+      student_name: String(fd.get("student_name") ?? "").trim(),
       name: String(fd.get("name") ?? "").trim(),
       email: String(fd.get("email") ?? "").trim(),
       phone: String(fd.get("phone") ?? "").trim() || null,
@@ -100,7 +84,7 @@ export default function AgendarCitaPage() {
             ? "Ese horario se acaba de ocupar. Elegí otro."
             : status === 422
               ? "Revisá los datos: todos los campos marcados con * son obligatorios."
-              : "No se pudo agendar. Intentá de nuevo o llamá a la clínica.",
+              : "No se pudo agendar. Intentá de nuevo o contactá a la Escuela de Fútbol.",
       );
     } finally {
       setSubmitting(false);
@@ -110,9 +94,9 @@ export default function AgendarCitaPage() {
   return (
     <MarketingLayout>
       <PageHero
-        eyebrow="Agendá tu cita"
-        title="Elegí día y hora para tu mascota"
-        lead="Disponibilidad real de la clínica: elegí el horario que te sirva y tu cita queda confirmada al instante."
+        eyebrow="Agendá tu Evaluación Cantera"
+        title="Elegí categoría y horario de entrenamiento"
+        lead="Disponibilidad real de la escuela: seleccioná la jornada que prefieras y la asistencia queda agendada."
       />
 
       <section className="mx-auto max-w-2xl px-4 pb-24 sm:px-6">
@@ -120,7 +104,7 @@ export default function AgendarCitaPage() {
           <div className="rounded-2xl border border-border bg-card p-6 shadow-elevation-2">
             <div className="flex items-center gap-2 rounded-lg bg-success/10 px-3 py-2 text-sm text-success">
               <CheckCircle2 className="size-4" />
-              Tu cita quedó confirmada para{" "}
+              Tu entrenamiento o evaluación quedó confirmada para{" "}
               {new Date(confirmed.starts_at).toLocaleString("es-CO", {
                 weekday: "long",
                 day: "numeric",
@@ -136,14 +120,14 @@ export default function AgendarCitaPage() {
             <input type="text" name="company_website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
 
             <label className="block text-sm">
-              <span>Servicio *</span>
+              <span>Categoría / Programa *</span>
               <select
                 className={`mt-1 ${inputClass}`}
                 value={serviceId}
                 onChange={(e) => selectService(e.target.value)}
                 required
               >
-                <option value="">Elegí un servicio</option>
+                <option value="">Elegí un programa</option>
                 {services.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
@@ -171,7 +155,7 @@ export default function AgendarCitaPage() {
               <div className="mt-4">
                 <span className="text-sm">Horario disponible *</span>
                 {loadingSlots ? (
-                  <p className="mt-2 text-sm text-muted-foreground">Buscando horarios…</p>
+                  <p className="mt-2 text-sm text-muted-foreground">Buscando horarios de entrenamiento…</p>
                 ) : slots.length === 0 ? (
                   <p className="mt-2 text-sm text-muted-foreground">No hay horarios disponibles ese día. Probá otra fecha.</p>
                 ) : (
@@ -199,46 +183,19 @@ export default function AgendarCitaPage() {
               <>
                 <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   <label className="block text-sm">
-                    <span>Especie *</span>
-                    <select
-                      className={`mt-1 ${inputClass}`}
-                      value={speciesId}
-                      onChange={(e) => selectSpecies(e.target.value)}
-                      required
-                    >
-                      <option value="">Elegí una especie</option>
-                      {species.map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {s.name}
-                        </option>
-                      ))}
-                    </select>
+                    <span>Nombre del Alumno / Aspirante *</span>
+                    <input name="student_name" required className={`mt-1 ${inputClass}`} placeholder="Ej. Mateo Mendoza" />
                   </label>
                   <label className="block text-sm">
-                    <span>Raza</span>
-                    <select name="breed_id" className={`mt-1 ${inputClass}`} disabled={breeds.length === 0}>
-                      <option value="">{breeds.length === 0 ? "—" : "Elegí una raza (opcional)"}</option>
-                      {breeds.map((b) => (
-                        <option key={b.id} value={b.id}>
-                          {b.name}
-                        </option>
-                      ))}
-                    </select>
+                    <span>Nombre del Acudiente *</span>
+                    <input name="name" required className={`mt-1 ${inputClass}`} placeholder="Ej. Carlos Mendoza" />
                   </label>
                   <label className="block text-sm">
-                    <span>Nombre de tu mascota *</span>
-                    <input name="pet_name" required className={`mt-1 ${inputClass}`} />
-                  </label>
-                  <label className="block text-sm">
-                    <span>Tu nombre *</span>
-                    <input name="name" required className={`mt-1 ${inputClass}`} />
-                  </label>
-                  <label className="block text-sm">
-                    <span>Correo *</span>
+                    <span>Correo de Contacto *</span>
                     <input name="email" type="email" required className={`mt-1 ${inputClass}`} />
                   </label>
                   <label className="block text-sm">
-                    <span>Teléfono</span>
+                    <span>Teléfono / WhatsApp</span>
                     <input name="phone" className={`mt-1 ${inputClass}`} />
                   </label>
                 </div>
@@ -260,7 +217,7 @@ export default function AgendarCitaPage() {
                   disabled={submitting}
                   className="mt-6 h-11 w-full rounded-full bg-primary text-sm font-semibold text-primary-foreground disabled:opacity-60"
                 >
-                  {submitting ? "Agendando…" : "Confirmar cita"}
+                  {submitting ? "Agendando…" : "Confirmar reserva de prueba"}
                 </button>
               </>
             )}

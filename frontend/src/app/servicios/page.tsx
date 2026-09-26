@@ -18,18 +18,18 @@ export default function ServiciosPage() {
   return (
     <MarketingLayout>
       <SplitHero
-        eyebrow="Servicios"
-        title="Atención veterinaria completa, de la consulta a la cirugía"
-        lead="Consulta general, medicina preventiva, laboratorio, cirugía, odontología y más — todo con historia clínica digital por paciente."
+        eyebrow="Programas Formativos"
+        title="Formación deportiva integral, de la iniciación al alto rendimiento"
+        lead="Categorías Sub-8 a Sub-17, escuela de arqueros, preparación física y competición de liga — todo integrado con seguimiento ERP."
         image="/gallery/illustrations/illustration-7.png"
-        imageAlt="Veterinario revisando la boca de un gato en consulta"
+        imageAlt="Entrenador guiando a deportistas jóvenes"
         actions={
           <>
-            <CtaLink href="/agendar-cita" variant="cta">
-              Agendar cita
+            <CtaLink href="/solicitar-cita" variant="cta">
+              Solicitar clase de prueba
             </CtaLink>
             <CtaLink href="#todos-los-servicios" variant="outline">
-              Ver todos los servicios
+              Ver todos los programas
             </CtaLink>
           </>
         }
@@ -38,17 +38,16 @@ export default function ServiciosPage() {
       <Section className="pt-0">
         <CircularPhotoAbout
           image="/gallery/pet-10.jpg"
-          imageAlt="Atención veterinaria de urgencia"
-          eyebrow="Urgencias"
-          title="Prioridad inmediata cuando no puede esperar"
+          imageAlt="Entrenamiento de alto rendimiento en fútbol"
+          eyebrow="Alto Rendimiento"
+          title="Preparación competitiva para torneos oficiales"
         >
           <p>
-            Ante un accidente, una intoxicación o un cuadro que empeora rápido, la prioridad es estabilizar.
-            Escribinos antes de venir para que el equipo esté listo cuando llegues.
+            Nuestras categorías competitivas participan en la Liga Oficial de Fútbol con acompañamiento técnico por líneas, preparación física y seguimiento estadístico por partido.
           </p>
         </CircularPhotoAbout>
         <div className="mt-10">
-          <PriorityBanner label="Urgencias, escribinos ya" detail="+57 601 555 0188" />
+          <PriorityBanner label="Inscripciones abiertas para liga" detail="+57 601 555 0188" />
         </div>
       </Section>
 
@@ -63,34 +62,40 @@ export default function ServiciosPage() {
         />
       </div>
 
-      {/* "Other Services": lista de texto plano sobre foto con duotono azul --
-          patron real de Services en el pack Divi, no otro grid de icon-cards. */}
-      <PhotoOverlayLinks
-        title="Todos los servicios de un vistazo"
-        image="/gallery/paw-procedure.jpg"
-        imageAlt="Procedimiento veterinario"
-        items={services.map((s) => ({ label: s.title, href: `/servicios/${s.slug}` }))}
-      />
-
-      <div className="relative z-10 mx-auto -mt-16 max-w-5xl px-4 sm:px-6 lg:px-8">
-        <FloatingContactCard title="Escribinos cuando quieras" />
-      </div>
-
-      <Section>
+      <Section className="bg-section-cream">
         <Reveal>
-          <SectionHeading eyebrow="FAQ" title="Preguntas frecuentes" center={false} />
+          <SectionHeading eyebrow="Metodología" title="Formación por etapas del desarrollo" />
         </Reveal>
         <div className="mt-12">
-          <FaqColumns faqs={faqs.slice(0, 6)} />
+          <PhotoOverlayLinks
+            title="Formación por etapas del desarrollo"
+            image="/gallery/pet-7.jpg"
+            imageAlt="Entrenamiento de fútbol juvenil"
+            items={services.map((s) => ({
+              label: s.title,
+              href: `/servicios/${s.slug}`,
+            }))}
+          />
         </div>
       </Section>
 
-      <Section className="bg-section-cream">
+      <Section>
         <Reveal>
-          <SectionHeading eyebrow="Testimonios" title="Lo que cuentan nuestros propietarios" />
+          <SectionHeading eyebrow="Testimonios" title="Opiniones de padres de familia" />
         </Reveal>
         <div className="mt-12">
-          <TestimonialGrid testimonials={testimonials} limit={2} />
+          <TestimonialGrid testimonials={testimonials} limit={3} />
+        </div>
+      </Section>
+
+      <FloatingContactCard />
+
+      <Section className="pt-0">
+        <Reveal>
+          <SectionHeading eyebrow="FAQ" title="Preguntas sobre entrenamientos e inscripciones" />
+        </Reveal>
+        <div className="mt-12">
+          <FaqColumns faqs={faqs} />
         </div>
       </Section>
 

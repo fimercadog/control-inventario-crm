@@ -65,7 +65,7 @@ function PortalEntrarContent() {
   if (consumeUrl) {
     return (
       <MarketingLayout>
-        <PageHero eyebrow="Portal del dueño" title="Entrando a tu portal" lead="" />
+        <PageHero eyebrow="Portal del Acudiente" title="Entrando a tu portal" lead="" />
         <section className="mx-auto max-w-md px-4 pb-24 text-center sm:px-6">
           {consuming ? (
             <p className="text-sm text-muted-foreground">Verificando tu enlace…</p>
@@ -83,9 +83,9 @@ function PortalEntrarContent() {
   return (
     <MarketingLayout>
       <PageHero
-        eyebrow="Portal del dueño"
+        eyebrow="Portal del Acudiente"
         title="Entrá a tu portal"
-        lead="Escribí tu correo y te mandamos un enlace para ver y gestionar las citas de tu mascota. Sin contraseña."
+        lead="Escribí tu correo y te mandamos un enlace para ver la asistencia y el estado de mensualidades de tu alumno. Sin contraseña."
       />
       <section className="mx-auto max-w-md px-4 pb-24 sm:px-6">
         {sent ? (

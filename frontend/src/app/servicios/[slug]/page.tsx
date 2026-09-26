@@ -13,13 +13,12 @@ import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 import { WHATSAPP_URL } from "@/components/marketing/whatsapp-link";
 
 const SERVICE_PHOTO: Record<string, string> = {
-  "consulta-veterinaria": "/gallery/hero-bulldog-exam.jpg",
-  vacunacion: "/gallery/pet-4.jpg",
-  cirugia: "/gallery/pet-13.jpg",
-  "laboratorio-clinico": "/gallery/pet-12.jpg",
-  "peluqueria-grooming": "/gallery/pet-8.jpg",
-  nutricion: "/gallery/pet-4.jpg",
-  urgencias: "/gallery/pet-10.jpg",
+  "sub-8-semillero": "/gallery/hero-bulldog-exam.jpg",
+  "sub-12-iniciacion": "/gallery/pet-4.jpg",
+  "sub-15-torneo-liga": "/gallery/pet-13.jpg",
+  "femenino-juvenil": "/gallery/pet-12.jpg",
+  "entrenamiento-arqueros": "/gallery/pet-8.jpg",
+  "tienda-uniformes-indumentaria": "/gallery/pet-4.jpg",
 };
 
 export function generateStaticParams() {
@@ -37,26 +36,23 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
   return (
     <MarketingLayout>
-      {/* Hero: foto de fondo desenfocada + foto nítida recuadrada en capas -- patrón "Service Detail" del pack. */}
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0">
           <Image src={photo} alt="" fill sizes="100vw" className="object-cover opacity-25 blur-2xl" />
         </div>
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1fr_0.9fr] lg:px-8">
           <Reveal mount>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Servicios</p>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Programas Formativos</p>
             <h1 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
               {service.title}
             </h1>
             <p className="mt-5 max-w-md text-lg leading-8 text-muted-foreground">{service.description}</p>
-            {/* Dos botones apilados + link a FAQ -- mismo patron del hero de
-                Service Detail en el pack (Make an Appointment / Chat with a Doctor). */}
             <div className="mt-8 flex flex-col items-start gap-3">
-              <CtaLink href="/agendar-cita" variant="cta">
-                Agendar este servicio
+              <CtaLink href="/solicitar-cita" variant="cta">
+                Solicitar cupo o evaluación
               </CtaLink>
               <CtaLink href={WHATSAPP_URL} variant="default" size="sm">
-                Hablar con un veterinario
+                Hablar con un coordinador deportivo
               </CtaLink>
             </div>
             <CtaLink href="/preguntas-frecuentes" variant="ghost" size="sm" className="mt-3 px-0">
@@ -95,7 +91,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
       <Section className="pt-0">
         <Reveal>
-          <SectionHeading eyebrow="Testimonios" title="Lo que dicen nuestros visitantes" />
+          <SectionHeading eyebrow="Testimonios" title="Lo que expresan las familias canteranas" />
         </Reveal>
         <div className="mt-12">
           <TestimonialGrid testimonials={testimonials} limit={2} />
@@ -104,7 +100,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
 
       <Section className="bg-section-cream pt-0">
         <Reveal>
-          <SectionHeading eyebrow="También te puede interesar" title="Otros servicios de la clínica" />
+          <SectionHeading eyebrow="Otros programas" title="Otras categorías de la escuela" />
         </Reveal>
         <div className="mt-12">
           <ServiceGrid services={related} />
@@ -112,8 +108,8 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
       </Section>
 
       <AppointmentCta
-        title={`¿Agendamos ${service.title.toLowerCase()} para tu mascota?`}
-        lead="Contanos el caso y te confirmamos disponibilidad. Para urgencias, escribinos directo por WhatsApp."
+        title={`¿Quieres agendar ${service.title.toLowerCase()} para tu hijo?`}
+        lead="Déjanos tus datos y la coordinación deportiva te confirmará disponibilidad de cupo en la categoría."
       />
     </MarketingLayout>
   );
