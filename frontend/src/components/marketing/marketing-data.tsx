@@ -1,24 +1,16 @@
 import {
   Activity,
-  Bone,
-  Cross,
-  FlaskConical,
-  HeartPulse,
-  Scissors,
-  Scan,
-  Siren,
+  Award as TrophyIcon,
+  Shirt,
   Smile,
   Sparkles,
-  Stethoscope,
-  Syringe,
+  Users,
   type LucideIcon,
 } from "lucide-react";
 
-// Contenido demo de la vertical veterinaria. Nombres y roles coinciden con el
-// dataset sembrado en el backend (`DatabaseSeeder.php`: "Clínica Veterinaria
-// Los Andes", Dr. Carlos Medina, Dra. Laura Peña, Marcela Duarte) para que el
-// sitio público y el panel cuenten la misma historia. Listo para reemplazar
-// por la información real de la clínica antes de vender/desplegar.
+// Contenido marketing de la vertical Escuela de Fútbol & Cantera Deportiva.
+// Nombres y roles coinciden con el dataset sembrado en el backend (`DatabaseSeeder.php`:
+// "Escuela de Fútbol La Cantera", Prof. Javier Morales, Profe Mateo Ríos, Lic. Sofía Gómez).
 
 export type Service = {
   slug: string;
@@ -32,127 +24,94 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    slug: "consulta-veterinaria",
-    icon: Stethoscope,
-    title: "Consulta veterinaria",
-    short: "Revisión general, diagnóstico y seguimiento con un veterinario de planta.",
-    description:
-      "La consulta general es la puerta de entrada a la atención de tu mascota: examen físico completo, revisión de peso y signos vitales, y una conversación honesta sobre lo que necesita. Queda registrada en su historia clínica para que cada visita siguiente parta de donde quedó la anterior.",
-    bullets: [
-      "Examen físico completo y control de peso",
-      "Historia clínica digital por paciente",
-      "Orientación sobre alimentación y cuidados",
-      "Derivación a especialista si el caso lo requiere",
-    ],
-    featured: true,
-  },
-  {
-    slug: "vacunacion",
-    icon: Syringe,
-    title: "Vacunación",
-    short: "Esquemas de vacunación al día, con recordatorio de la próxima dosis.",
-    description:
-      "Aplicamos los esquemas de vacunación recomendados para perros y gatos según edad y estilo de vida, y dejamos registrado el lote y la fecha exacta para avisarte cuándo toca la próxima dosis, sin que se te pase.",
-    bullets: [
-      "Polivalente, antirrábica y triple felina",
-      "Lote y vencimiento registrados por aplicación",
-      "Recordatorio de la próxima dosis",
-      "Carné de vacunación disponible en cada visita",
-    ],
-    featured: true,
-  },
-  {
-    slug: "desparasitacion",
-    icon: Bone,
-    title: "Desparasitación",
-    short: "Control interno y externo, con calendario según peso y edad.",
-    description:
-      "La desparasitación interna y externa es preventiva: protege a tu mascota y a tu familia. Definimos el producto y la frecuencia según peso, edad y estilo de vida, y lo dejamos anotado en su historia para el próximo control.",
-    bullets: ["Desparasitación interna y externa", "Dosis según peso y edad", "Calendario de refuerzos", "Seguro para cachorros y gatitos"],
-  },
-  {
-    slug: "medicina-preventiva",
-    icon: HeartPulse,
-    title: "Medicina preventiva",
-    short: "Chequeos periódicos para detectar a tiempo lo que todavía no duele.",
-    description:
-      "Un chequeo preventivo anual (o semestral en pacientes senior) detecta cambios antes de que se conviertan en un problema serio: peso, dentadura, piel, corazón y un panel básico de laboratorio si hace falta.",
-    bullets: ["Chequeo anual o semestral", "Panel de laboratorio preventivo", "Plan de salud por etapa de vida", "Seguimiento de pacientes senior"],
-    featured: true,
-  },
-  {
-    slug: "laboratorio-clinico",
-    icon: FlaskConical,
-    title: "Laboratorio clínico",
-    short: "Análisis de sangre, orina y heces con resultados el mismo día.",
-    description:
-      "Contamos con laboratorio propio para los análisis más frecuentes, lo que agiliza el diagnóstico en consultas de urgencia y en el seguimiento de tratamientos en curso.",
-    bullets: ["Hemograma y química sanguínea", "Uroanálisis y coproanálisis", "Resultados el mismo día en la mayoría de los casos", "Interpretación con tu veterinario tratante"],
-  },
-  {
-    slug: "cirugia",
-    icon: Scissors,
-    title: "Cirugía",
-    short: "Cirugías de tejidos blandos y esterilización con protocolo anestésico seguro.",
-    description:
-      "Desde esterilizaciones de rutina hasta cirugías de tejidos blandos, trabajamos con protocolo anestésico monitoreado y control post-operatorio hasta el alta.",
-    bullets: ["Esterilización canina y felina", "Cirugía de tejidos blandos", "Monitoreo anestésico", "Control post-operatorio incluido"],
-    featured: true,
-  },
-  {
-    slug: "odontologia-veterinaria",
-    icon: Smile,
-    title: "Odontología veterinaria",
-    short: "Profilaxis dental bajo anestesia para frenar la enfermedad periodontal.",
-    description:
-      "La enfermedad periodontal es una de las causas más comunes de dolor crónico no diagnosticado en mascotas adultas. La profilaxis dental bajo anestesia controlada, con limpieza y pulido, la previene y trata.",
-    bullets: ["Profilaxis y limpieza bajo anestesia", "Extracciones cuando son necesarias", "Evaluación del estado dental en cada consulta", "Recomendaciones de higiene en casa"],
-  },
-  {
-    slug: "hospitalizacion",
-    icon: Cross,
-    title: "Hospitalización",
-    short: "Internación con monitoreo para pacientes que necesitan observación.",
-    description:
-      "Para pacientes que requieren fluidoterapia, medicación continua u observación post-quirúrgica, contamos con área de hospitalización con seguimiento por el equipo veterinario.",
-    bullets: ["Fluidoterapia y medicación continua", "Observación post-quirúrgica", "Reportes de evolución al propietario", "Alta coordinada con tu veterinario"],
-  },
-  {
-    slug: "urgencias",
-    icon: Siren,
-    title: "Urgencias",
-    short: "Atención prioritaria para las situaciones que no pueden esperar.",
-    description:
-      "Ante un accidente, una intoxicación o un cuadro que empeora rápido, la prioridad es estabilizar. Llamanos antes de venir para que el equipo esté listo cuando llegues.",
-    bullets: ["Atención prioritaria sin cita previa", "Estabilización y manejo del dolor", "Línea directa para casos urgentes", "Derivación si el caso supera nuestra capacidad"],
-    featured: true,
-  },
-  {
-    slug: "nutricion",
-    icon: Activity,
-    title: "Nutrición",
-    short: "Planes de alimentación por etapa de vida o condición clínica.",
-    description:
-      "La nutrición es parte del tratamiento, no un accesorio: acompañamos con planes de alimentación para cachorros, adultos, pacientes senior o con condiciones específicas como renal, digestiva o de control de peso.",
-    bullets: ["Plan nutricional por etapa de vida", "Dietas terapéuticas (renal, digestiva, peso)", "Seguimiento de peso en cada visita", "Recomendación de marca y porción"],
-  },
-  {
-    slug: "diagnostico-por-imagen",
-    icon: Scan,
-    title: "Diagnóstico por imagen",
-    short: "Radiografía y ecografía para ver lo que el examen físico no alcanza.",
-    description:
-      "Cuando el examen físico y el laboratorio no bastan, la imagenología ayuda a confirmar un diagnóstico: fracturas, cuerpos extraños, patologías abdominales o cardíacas.",
-    bullets: ["Radiografía digital", "Ecografía abdominal", "Informe interpretado por el veterinario tratante", "Coordinación con cirugía si el caso lo requiere"],
-  },
-  {
-    slug: "peluqueria-grooming",
+    slug: "sub-8-semillero",
     icon: Sparkles,
-    title: "Peluquería / grooming",
-    short: "Baño y corte de higiene, ideal para combinar con la consulta.",
+    title: "Sub-8 Semillero Cantera",
+    short: "Desarrollo psicomotriz, fundamentos técnicos y juego recreativo de 6 a 8 años.",
     description:
-      "Baño medicado o de rutina, corte de higiene y limpieza de oídos, a cargo de personal capacitado. Se puede combinar con la consulta para aprovechar la misma visita.",
-    bullets: ["Baño de rutina o medicado", "Corte de higiene", "Limpieza de oídos", "Ideal para combinar con la consulta"],
+      "Nuestra categoría Semillero introduce a los más pequeños en los fundamentos del fútbol mediante dinámicas lúdicas, desarrollo de coordinación psicomotora y trabajo en equipo en un ambiente divertido y seguro.",
+    bullets: [
+      "Coordinación motriz y agilidad",
+      "Fundamentos de conducción y pase",
+      "Formatos de juego reducido 5v5",
+      "Entrenadores especializados en iniciación",
+    ],
+    featured: true,
+  },
+  {
+    slug: "sub-12-iniciacion",
+    icon: Activity,
+    title: "Sub-12 Formación Deportiva",
+    short: "Técnica individual, conceptos tácticos básicos y disciplina de 9 a 12 años.",
+    description:
+      "Enfocados en perfeccionar la técnica de golpeo, perfilamiento, toma de decisiones en espacio reducido y los principios básicos del posicionamiento táctico en terreno de juego.",
+    bullets: [
+      "Perfeccionamiento de pase y recepción",
+      "Táctica individual defensiva y ofensiva",
+      "Torneos locales y festivales deportivos",
+      "Preparación física acorde a la edad",
+    ],
+    featured: true,
+  },
+  {
+    slug: "sub-15-torneo-liga",
+    icon: TrophyIcon,
+    title: "Sub-15 Competición de Liga",
+    short: "Competición oficial de liga, preparación física y táctica avanzada de 13 a 15 años.",
+    description:
+      "Categoría competitiva orientada al alto rendimiento y participación en torneos oficiales de liga. Trabajo táctico avanzado por líneas, resistencia física y preparación mental deportiva.",
+    bullets: [
+      "Sistemas de juego 11v11",
+      "Preparación física de alto rendimiento",
+      "Seguimiento estadístico por partido",
+      "Participación en Torneo de Liga oficial",
+    ],
+    featured: true,
+  },
+  {
+    slug: "femenino-juvenil",
+    icon: Smile,
+    title: "Femenino Juvenil Competición",
+    short: "Formación y alto rendimiento deportivo para jugadoras de 12 a 17 años.",
+    description:
+      "Programa integral de fútbol femenino diseñado para desarrollar el talento técnico, acondicionamiento físico y liderazgo en jugadoras jóvenes competitivas.",
+    bullets: [
+      "Metodología táctica especializada",
+      "Preparación física integral",
+      "Torneos femeninos interclubes",
+      "Cuerpo técnico certificado",
+    ],
+    featured: true,
+  },
+  {
+    slug: "entrenamiento-arqueros",
+    icon: Users,
+    title: "Escuela Específica de Arqueros",
+    short: "Entrenamiento especializado para guardametas de todas las categorías.",
+    description:
+      "Sesiones exclusivas para porteros enfocadas en agarre, blocaje, estiradas, juego con los pies, achiques y posicionamiento táctico dentro del área.",
+    bullets: [
+      "Técnica de caídas y blocajes",
+      "Juego con los pies y salida",
+      "Reflejos y toma de decisiones",
+      "Preparación mental de partidos",
+    ],
+    featured: false,
+  },
+  {
+    slug: "tienda-uniformes-indumentaria",
+    icon: Shirt,
+    title: "Uniformes e Indumentaria Oficial",
+    short: "Kits de entrenamiento, competencia y accesorios para todos nuestros deportistas.",
+    description:
+      "Garantizamos la identidad de nuestra escuela brindando kits de alta calidad que incluyen camiseta, pantaloneta, medias y prendas térmicas para competencia y entrenamiento.",
+    bullets: [
+      "Kit oficial de entrenamiento y competencia",
+      "Textiles deportivos de alta durabilidad",
+      "Personalización de número y apellido",
+      "Gestión de tallaje integrada en la matrícula",
+    ],
+    featured: false,
   },
 ];
 
@@ -173,31 +132,31 @@ export type TeamMember = {
 
 export const team: TeamMember[] = [
   {
-    slug: "carlos-medina",
-    name: "Dr. Carlos Medina",
-    role: "Médico veterinario",
-    specialty: "Medicina general y cirugía de tejidos blandos",
-    bio: "Más de 10 años atendiendo perros y gatos, con especial interés en medicina preventiva y cirugía.",
+    slug: "javier-morales",
+    name: "Prof. Javier Morales",
+    role: "Director Técnico & Fundador",
+    specialty: "Licenciado en Educación Física, Entrenador Licencia A UEFA/FCF",
+    bio: "Más de 15 años liderando procesos de formación deportiva y desarrollo de jóvenes talentos.",
     longBio:
-      "El Dr. Carlos Medina lidera la consulta general y el área quirúrgica de la clínica. Cree que la mejor cirugía es la que se evita con un buen chequeo preventivo a tiempo, y dedica parte de cada consulta a explicarle al propietario qué está viendo y por qué.",
+      "El Prof. Javier Morales lidera la dirección metodológica de la escuela. Su enfoque combina la disciplina deportiva con la formación en valores, asegurando que cada atleta desarrolle su máximo potencial físico, técnico y humano.",
   },
   {
-    slug: "laura-pena",
-    name: "Dra. Laura Peña",
-    role: "Médica veterinaria",
-    specialty: "Medicina interna y diagnóstico por imagen",
-    bio: "Se enfoca en casos de medicina interna, laboratorio y diagnóstico por imagen.",
+    slug: "mateo-rios",
+    name: "Profe Mateo Ríos",
+    role: "Preparador Físico & Entrenador Cantera",
+    specialty: "Acondicionamiento físico juvenil y prevención de lesiones",
+    bio: "Especialista en biotipo deportivo juvenil y metodologías de alta intensidad adaptadas.",
     longBio:
-      "La Dra. Laura Peña se especializa en medicina interna: los casos que necesitan laboratorio, ecografía y seguimiento cercano. Trabaja de la mano con el propietario para que el plan de tratamiento sea claro y sostenible en casa.",
+      "El Profe Mateo se encarga del acondicionamiento físico de las categorías Sub-12 a Sub-17. Supervisa las mediciones antropométricas, rutinas de velocidad y agilidad, y planes de prevención de lesiones musculares.",
   },
   {
-    slug: "marcela-duarte",
-    name: "Marcela Duarte",
-    role: "Coordinadora de recepción",
-    specialty: "Agenda, urgencias y atención al propietario",
-    bio: "El primer contacto de la clínica: agenda tu cita, resuelve dudas y coordina las urgencias.",
+    slug: "sofia-gomez",
+    name: "Lic. Sofía Gómez",
+    role: "Coordinadora de Admisiones & Cartera",
+    specialty: "Gestión de matrículas, atención a acudientes y recaudo",
+    bio: "Encargada de la atención a padres de familia, control de mensualidades y admisiones.",
     longBio:
-      "Marcela coordina la recepción y la agenda de la clínica. Es quien contesta el WhatsApp, confirma tu cita y prioriza una urgencia en cuanto entra. Si no sabés por dónde empezar, empezá por ella.",
+      "Sofía coordina los procesos de inscripción, seguimiento de mensualidades y comunicación directa con los acudientes a través del sistema ERP y WhatsApp institucional.",
   },
 ];
 
@@ -207,46 +166,34 @@ export function teamBySlug(slug: string): TeamMember | undefined {
 
 export type Testimonial = {
   name: string;
-  pet: string;
+  pet: string; // Acudiente / Categoría
   text: string;
   rating: number;
 };
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Camila Herrera",
-    pet: "dueña de Luna (golden retriever)",
-    text: "Llevamos a Luna desde cachorra. Siempre nos explican todo antes de hacer cualquier procedimiento, y el seguimiento de las vacunas nos salvó más de un olvido.",
+    name: "Carlos Eduardo Mendoza",
+    pet: "Padre de Mateo (Categoría Sub-12)",
+    text: "Excelente metodología. Mateo ha mejorado notablemente su disciplina, estado físico y trabajo en equipo desde que ingresó a La Cantera.",
     rating: 5,
   },
   {
-    name: "Andrés Vargas",
-    pet: "dueño de Michi (gata)",
-    text: "Michi es súper arisca en el veterinario y acá tienen una paciencia increíble. La cirugía de esterilización fue impecable, con controles post-operatorios muy claros.",
+    name: "Andrea Gutiérrez",
+    pet: "Madre de Lucía (Femenino Sub-15)",
+    text: "El nivel competitivo y la calidad del cuerpo técnico son excepcionales. Las chicas participan en torneos oficiales con un acompañamiento impecable.",
     rating: 5,
   },
   {
-    name: "Marcela Ríos",
-    pet: "dueña de Kiara",
-    text: "Un fin de semana Kiara se lastimó una pata y nos atendieron de urgencia sin drama. Desde entonces no la llevamos a otro lado.",
+    name: "Roberto Gómez",
+    pet: "Padre de Samuel (Sub-8 Semillero)",
+    text: "Mi hijo ama ir a los entrenamientos. Los profesores tienen una paciencia única para enseñar los fundamentos jugando.",
     rating: 5,
   },
   {
-    name: "Felipe Castaño",
-    pet: "dueño de Toby y Rocco",
-    text: "Tengo dos perros con esquemas de vacunación distintos y nunca se me confunden las fechas: siempre me avisan a tiempo.",
-    rating: 5,
-  },
-  {
-    name: "Diana Torres",
-    pet: "dueña de Nina",
-    text: "Nina es una perrita senior y el chequeo preventivo semestral nos ha permitido llegar a tiempo a un par de cosas que ni notábamos.",
-    rating: 4,
-  },
-  {
-    name: "Juan David Peláez",
-    pet: "dueño de Zeus",
-    text: "La profilaxis dental de Zeus le cambió el aliento y, según el veterinario, le evitó un dolor que ni sabíamos que tenía.",
+    name: "Juliana Ospina",
+    pet: "Acudiente de Tomás (Sub-15)",
+    text: "El sistema ERP nos permite pagar la mensualidad y consultar la asistencia en línea sin complicaciones. Muy profesional todo el club.",
     rating: 5,
   },
 ];
@@ -255,53 +202,44 @@ export type Faq = { question: string; answer: string };
 
 export const faqs: Faq[] = [
   {
-    question: "¿Necesito pedir cita o puedo llegar directamente?",
+    question: "¿Cuáles son los requisitos para inscribir a un nuevo alumno?",
     answer:
-      "Para consultas de rutina recomendamos agendar cita (por el sitio, WhatsApp o teléfono) para no hacerte esperar. Las urgencias se atienden siempre, con o sin cita previa.",
+      "Se requiere documento de identidad del alumno y acudiente, certificado médico de aptitud física para alto rendimiento y completar el formulario de inscripción en línea o presencial.",
   },
   {
-    question: "¿Qué hago si es una urgencia fuera de horario?",
+    question: "¿Cómo funciona el pago de matrículas y mensualidades?",
     answer:
-      "Escribinos por WhatsApp o llamá a la línea de la clínica. Te vamos a indicar si podemos recibirte de inmediato o coordinar la atención más cercana.",
+      "La matrícula incluye la inscripción anual y la asignación del kit oficial de uniforme. Las mensualidades se cancelan durante los primeros 5 días de cada mes mediante transferencia, tarjeta o efectivo.",
   },
   {
-    question: "¿Cómo es la primera consulta de mi mascota?",
+    question: "¿Qué días y en qué horarios entrenan las categorías?",
     answer:
-      "Empezamos con una historia clínica completa: antecedentes, alimentación y estilo de vida, seguido de un examen físico general. Si trae vacunas previas, llevá el carné.",
+      "Los entrenamientos se realizan 3 veces por semana (Lunes, Miércoles y Viernes o Martes, Jueves y Sábados) en horarios matutinos y vespertinos según la categoría.",
   },
   {
-    question: "¿Con qué frecuencia hay que vacunar?",
+    question: "¿Los alumnos participan en torneos oficiales?",
     answer:
-      "Depende de la vacuna y la edad: los cachorros y gatitos llevan un esquema inicial de varias dosis, y luego refuerzos anuales. Nosotros llevamos el registro y te avisamos cuándo toca.",
+      "Sí, las categorías Sub-10 a Sub-17 participan en la Liga Oficial de Fútbol y torneos zonales interclubes con acompañamiento médico y técnico.",
   },
   {
-    question: "¿Atienden otras especies además de perros y gatos?",
+    question: "¿Qué incluye el kit de uniforme de la escuela?",
     answer:
-      "Sí, también atendemos aves, conejos y algunos exóticos. Si no estás seguro, escribinos antes con el caso puntual.",
+      "El kit oficial incluye camiseta de entrenamiento, camiseta de competencia, pantaloneta, medias deportivas y tula de la escuela.",
   },
   {
-    question: "¿Qué medios de pago aceptan?",
-    answer: "Efectivo, tarjeta débito/crédito y transferencia. Para procedimientos mayores entregamos presupuesto por escrito antes de proceder.",
-  },
-  {
-    question: "¿Necesito ayuno antes de una cirugía?",
+    question: "¿Puedo agendar una clase de prueba antes de inscribir a mi hijo?",
     answer:
-      "Sí. Para cualquier procedimiento con anestesia te vamos a indicar el ayuno de sólidos y líquidos requerido según el caso, con al menos un día de anticipación.",
-  },
-  {
-    question: "¿Puedo pedir mi cita por WhatsApp?",
-    answer:
-      "Sí, es la vía más rápida. También podés usar el formulario de \"Agendar cita\" del sitio: recepción confirma disponibilidad y te contacta.",
+      "¡Claro que sí! Ofrecemos una clase de evaluación gratuita para que el aspirante conozca el grupo y el profesor evalúe su categoría correspondiente.",
   },
 ];
 
 export type Stat = { value: string; label: string };
 
 export const stats: Stat[] = [
-  { value: "12+", label: "años de trayectoria" },
-  { value: "3.500+", label: "mascotas atendidas" },
-  { value: "2", label: "veterinarios de planta" },
-  { value: "4.9/5", label: "satisfacción de propietarios" },
+  { value: "10+", label: "años formando talentos" },
+  { value: "450+", label: "alumnos activos en cantera" },
+  { value: "14", label: "títulos de liga alcanzados" },
+  { value: "100%", label: "entrenadores certificados FCF" },
 ];
 
 export type BlogPost = {
@@ -316,103 +254,37 @@ export type BlogPost = {
   body: string[];
 };
 
-export const blogCategories = ["Prevención", "Vacunas", "Nutrición", "Cirugía", "Cachorros", "Urgencias"];
+export const blogCategories = ["Nutrición", "Táctica", "Preparación Física", "Formación", "Entrenamiento"];
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "cuando-llevar-a-tu-mascota-al-veterinario",
-    title: "Señales que indican que tu mascota necesita una consulta ya",
-    category: "Urgencias",
-    excerpt: "Decaimiento, vómito persistente, dificultad para respirar: una guía rápida para saber cuándo esperar y cuándo no.",
-    image: "/gallery/pet-7.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-08-12",
-    readMinutes: 4,
-    body: [
-      "No toda molestia es una urgencia, pero algunas señales sí ameritan atención inmediata y no un \"vamos viendo cómo sigue\". La regla general que usamos en consulta: si el síntoma es súbito, si compromete la respiración, o si tu mascota deja de responder como siempre, es momento de venir.",
-      "Decaimiento marcado — que no se levante a comer, que no reaccione a estímulos que normalmente la entusiasman — es de las señales más subestimadas. Un perro o gato que \"está raro\" desde hace más de unas horas ya justifica una consulta, no una espera de \"a ver si mejora solo\".",
-      "El vómito persistente (más de dos o tres episodios en pocas horas, o con sangre) y la dificultad para respirar son motivo de consulta prioritaria siempre. En el segundo caso, cada minuto cuenta: llamanos antes de salir para que el equipo esté listo cuando llegues.",
-      "Otras señales que no deberían esperar: distensión abdominal repentina, convulsiones, imposibilidad de orinar, sangrado que no cede, o un golpe/caída con cojera inmediata. Ante la duda, la llamada no cuesta nada — preferimos revisar de más que de menos.",
-    ],
-  },
-  {
-    slug: "calendario-de-vacunacion-cachorros",
-    title: "El calendario de vacunación de un cachorro, mes a mes",
-    category: "Vacunas",
-    excerpt: "Qué vacuna toca en cada etapa y por qué saltarse una dosis puede dejar una ventana de riesgo.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-07-28",
-    readMinutes: 5,
-    body: [
-      "Un cachorro nace con cierta protección de la madre, pero esa inmunidad baja gradualmente entre las 6 y las 16 semanas de vida — justo la ventana en la que hay que vacunar, y por eso el esquema se aplica en varias dosis, no en una sola.",
-      "El esquema típico arranca alrededor de las 6-8 semanas con la primera dosis de la polivalente (moquillo, parvovirus, hepatitis, entre otras según el laboratorio), se refuerza cada 3-4 semanas hasta las 16 semanas, y la antirrábica se suma desde los 3 meses.",
-      "Saltarse una dosis del esquema inicial no es \"recuperable\" con solo aplicar la siguiente: cada refuerzo depende de que el anterior haya generado la respuesta esperada. Por eso llevamos el registro exacto de lote y fecha, y te avisamos con anticipación cuándo toca la próxima.",
-      "Después del primer año, la mayoría de las vacunas pasan a un esquema de refuerzo anual. Traé siempre el carné de vacunación a cada visita, aunque sea de rutina — es el historial que evita que se repita o se salte una dosis.",
-    ],
-  },
-  {
-    slug: "como-elegir-el-alimento-correcto",
-    title: "Cómo elegir el alimento correcto según la edad y tamaño de tu mascota",
+    slug: "nutricion-deportiva-en-jovenes-futbolistas",
+    title: "Nutrición clave para un joven futbolista antes y después del partido",
     category: "Nutrición",
-    excerpt: "No todos los alimentos \"premium\" son iguales. Qué mirar en la etiqueta antes de decidir.",
-    image: "/gallery/pet-4.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-07-10",
+    excerpt: "Guía práctica de alimentación e hidratación para optimizar el rendimiento y acelerar la recuperación física en canteranos.",
+    image: "/gallery/soccer-1.jpg",
+    authorSlug: "mateo-rios",
+    date: "2026-08-20",
     readMinutes: 4,
     body: [
-      "La palabra \"premium\" en el empaque no está regulada — no garantiza nada por sí sola. Lo que sí importa es la lista de ingredientes (una fuente de proteína animal identificada, no genérica como \"subproductos\") y que el alimento esté formulado para la etapa de vida correcta.",
-      "Un cachorro necesita más proteína y calorías por su crecimiento; un adulto sedentario necesita menos de lo que dice la tabla genérica de la bolsa; un senior suele beneficiarse de fórmulas más livianas para las articulaciones y el riñón. Alimentar con la fórmula de otra etapa no es un ahorro, es un desajuste silencioso.",
-      "El tamaño también importa: las razas grandes necesitan un control más estricto de calcio y fósforo en el crecimiento para evitar problemas articulares a futuro, y las razas pequeñas gastan más energía por kilo de lo que parece.",
-      "Si tu mascota tiene una condición clínica (renal, digestiva, sobrepeso), el alimento pasa a ser parte del tratamiento, no una elección de supermercado — ahí sí conviene una dieta terapéutica indicada en consulta, no una decisión por cuenta propia.",
+      "La nutrición en el fútbol formativo es el combustible fundamental para el desarrollo musculoesquelético y el rendimiento deportivo durante la semana de entrenamientos y partidos oficiales.",
+      "Antes del partido, se recomienda una ingesta rica en carbohidratos de absorción compleja (arroz integral, avena, pasta) consumidos entre 2 y 3 horas antes de saltar a la cancha.",
+      "La hidratación constante con electrolitos antes, durante y después del juego previene calambres y mantiene la agilidad mental en momentos decisivos del partido.",
     ],
   },
   {
-    slug: "preparar-a-tu-mascota-para-una-cirugia",
-    title: "Cómo preparar a tu mascota (y a vos) para una cirugía programada",
-    category: "Cirugía",
-    excerpt: "Ayuno, traslado y qué esperar el día de la cirugía y en el post-operatorio.",
-    image: "/gallery/pet-13.jpg",
-    authorSlug: "carlos-medina",
-    date: "2026-06-22",
+    slug: "la-importancia-de-la-tecnica-individual",
+    title: "Por qué la técnica individual se debe pulir antes de los 12 años",
+    category: "Formación",
+    excerpt: "El control orientado, el perfilamiento y el pase corto como cimientos del futbolista moderno.",
+    image: "/gallery/soccer-2.jpg",
+    authorSlug: "javier-morales",
+    date: "2026-07-15",
     readMinutes: 5,
     body: [
-      "Toda cirugía con anestesia requiere ayuno previo — típicamente de sólidos desde la noche anterior y de agua unas horas antes, aunque el esquema exacto varía según el paciente y te lo confirmamos al agendar. Un estómago lleno durante la anestesia es un riesgo real de aspiración, así que esta indicación no es opcional.",
-      "El día de la cirugía, traé a tu mascota temprano y con tiempo: hacemos una revisión pre-anestésica antes de proceder. Es normal sentir ansiedad — la mayoría de los propietarios la sienten más que sus mascotas — y preferimos que preguntes todo lo que necesites antes, no durante la espera.",
-      "Durante el procedimiento trabajamos con monitoreo anestésico continuo (frecuencia cardíaca, oxigenación, temperatura) y te llamamos apenas termina para contarte cómo salió y coordinar el retiro.",
-      "El post-operatorio es donde más se juega la recuperación: reposo estricto los primeros días, collar isabelino si aplica para que no se lastime el punto, y los controles que te indiquemos sin saltarte ninguno, aunque la herida se vea bien.",
-    ],
-  },
-  {
-    slug: "chequeos-preventivos-mascotas-senior",
-    title: "Por qué los chequeos preventivos importan más después de los 7 años",
-    category: "Prevención",
-    excerpt: "Los cambios en una mascota senior son graduales — el chequeo semestral detecta lo que el día a día no muestra.",
-    image: "/gallery/pet-3.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-30",
-    readMinutes: 4,
-    body: [
-      "A partir de los 7 años (antes en razas grandes), el metabolismo, las articulaciones, los riñones y el corazón empiezan a cambiar de forma gradual — tan gradual que en casa es difícil notarlo, porque lo ves todos los días.",
-      "Por eso pasamos de un chequeo anual a uno semestral en pacientes senior: duplicar la frecuencia de control multiplica las chances de detectar algo a tiempo, cuando todavía es manejable con un ajuste de dieta o tratamiento, y no cuando ya se volvió una urgencia.",
-      "Un chequeo senior típico incluye examen físico completo, control de peso y masa muscular, revisión dental, y un panel básico de laboratorio (función renal, hepática, hemograma) al menos una vez al año, más seguido si el caso lo amerita.",
-      "No es alarmismo: es la misma lógica que un chequeo médico humano después de cierta edad. La mascota no te va a decir que algo le duele distinto — el chequeo periódico es la forma de enterarte antes de que sea evidente.",
-    ],
-  },
-  {
-    slug: "primeros-dias-de-un-cachorro-en-casa",
-    title: "Los primeros días de un cachorro en casa: checklist veterinario",
-    category: "Cachorros",
-    excerpt: "Primera visita, desparasitación, socialización y los errores más comunes de los primeros dueños.",
-    image: "/gallery/pet-1.jpg",
-    authorSlug: "laura-pena",
-    date: "2026-05-08",
-    readMinutes: 5,
-    body: [
-      "La primera visita veterinaria debería pasar en la primera semana en casa, aunque el cachorro se vea perfectamente sano: revisamos peso, examen físico general, y armamos el esquema de vacunación y desparasitación desde cero con fechas concretas.",
-      "La desparasitación interna en cachorros empieza más temprano y con más frecuencia de lo que la mayoría espera — cada 2-3 semanas hasta los 3 meses, después mensual hasta el año. No es opcional ni algo que se resuelve \"cuando se vea algo raro\".",
-      "La socialización tiene una ventana crítica entre las 3 y las 14 semanas: es cuando el cachorro aprende qué es normal (otras personas, otros animales, ruidos, superficies) sin miedo. Perderse esa ventana no es irreversible, pero cuesta mucho más trabajo después.",
-      "El error más común de los primeros dueños: esperar a que \"se vea algo mal\" para consultar. La medicina preventiva en un cachorro no es un gasto extra, es la base de toda la salud que va a tener de adulto — y sale más barata que resolver lo que se pudo prevenir.",
+      "Entre los 6 y los 12 años, el cerebro de los niños presenta una plasticidad neuromuscular ideal para la adquisición de patrones técnicos automatizados.",
+      "En La Cantera enfatizamos el trabajo repetitivo consciente del control orientado con ambos perfiles, permitiendo que el jugador resuelva situaciones complejas en espacios reducidos.",
+      "Un jugador con una técnica depurada toma decisiones más rápidas y sufre menos desgaste físico durante la competencia.",
     ],
   },
 ];

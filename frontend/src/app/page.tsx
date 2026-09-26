@@ -1,7 +1,6 @@
-import { ArrowRight, Bird, Cat, Dog, Rabbit, Sparkles } from "lucide-react";
+import { ArrowRight, Trophy, Users, ShieldCheck, Activity, Sparkles } from "lucide-react";
 import { AppointmentCta } from "@/components/marketing/appointment-cta";
 import { CtaLink } from "@/components/marketing/cta-link";
-import { EmergencyBanner } from "@/components/marketing/emergency-banner";
 import { FaqAccordion } from "@/components/marketing/faq-accordion";
 import { HomeHero } from "@/components/marketing/home-hero";
 import { GradientBlob } from "@/components/marketing/gradient-blob";
@@ -18,17 +17,17 @@ import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 import { VetGrid } from "@/components/marketing/vet-card";
 
 const whyUs = [
-  { icon: "/gallery/icons/icon-16.png", title: "Equipo con experiencia", text: "Veterinarios de planta, no rotativos: conocen a tu mascota visita tras visita." },
-  { icon: "/gallery/icons/icon-15.png", title: "Historia clínica digital", text: "Vacunas, consultas y tratamientos quedan registrados y no se pierden." },
-  { icon: "/gallery/icons/icon-13.png", title: "Laboratorio propio", text: "Análisis básicos con resultados el mismo día, sin derivar a otro lado." },
-  { icon: "/gallery/icons/icon-11.png", title: "Trato cercano", text: "Te explicamos cada diagnóstico en lenguaje claro, sin apuro." },
+  { icon: "/gallery/icons/icon-16.png", title: "Cuerpo técnico FCF", text: "Entrenadores y preparadores físicos licenciados dedicados a la formación integral." },
+  { icon: "/gallery/icons/icon-15.png", title: "Seguimiento ERP Cantera", text: "Ficha deportiva digital, control de asistencia y estado de mensualidades en tiempo real." },
+  { icon: "/gallery/icons/icon-13.png", title: "Competencia oficial", text: "Participación en Torneos de Liga y festivales zonales en todas las categorías." },
+  { icon: "/gallery/icons/icon-11.png", title: "Formación en valores", text: "Disciplina, trabajo en equipo, fair play y superación personal como pilares." },
 ];
 
-const speciesTreated = [
-  { icon: Dog, label: "Perros" },
-  { icon: Cat, label: "Gatos" },
-  { icon: Rabbit, label: "Conejos" },
-  { icon: Bird, label: "Aves" },
+const categories = [
+  { icon: Sparkles, label: "Sub-8 Semillero" },
+  { icon: Activity, label: "Sub-12 Formación" },
+  { icon: Trophy, label: "Sub-15 Liga" },
+  { icon: Users, label: "Femenino Juvenil" },
 ];
 
 export default function Home() {
@@ -36,13 +35,13 @@ export default function Home() {
     <MarketingLayout>
       <HomeHero />
 
-      {/* Servicios principales */}
+      {/* Categorías y Programas */}
       <Section>
         <Reveal>
           <SectionHeading
-            eyebrow="Servicios"
-            title="Todo lo que tu mascota necesita, en un solo lugar"
-            lead="Desde el control de rutina hasta la cirugía: estos son los servicios que más solicitan nuestros pacientes."
+            eyebrow="Programas Formativos"
+            title="Formación integral para todas las edades"
+            lead="Desde la iniciación psicomotriz hasta el alto rendimiento en ligas oficiales de fútbol."
           />
         </Reveal>
         <div className="mt-14">
@@ -50,30 +49,30 @@ export default function Home() {
         </div>
         <div className="mt-10 flex justify-center">
           <CtaLink href="/servicios" variant="outline">
-            Ver todos los servicios
+            Ver todas las categorías y servicios
           </CtaLink>
         </div>
       </Section>
 
-      {/* Presentación de la clínica */}
+      {/* Presentación de la Sede */}
       <Section className="bg-section-cream">
         <Reveal>
-          <SectionHeading eyebrow="La clínica" title="Más de una década cuidando mascotas del barrio" center={false} />
+          <SectionHeading eyebrow="Nuestra Sede" title="Más de una década formando jóvenes campeones" center={false} />
         </Reveal>
         <div className="mt-12">
           <PhotoFeatureStack
             image="/gallery/pet-7.jpg"
-            imageAlt="Veterinario con bata blanca y estetoscopio revisando a un bulldog en la camilla"
+            imageAlt="Entrenador guiando a niños en cancha de fútbol"
             features={[
-              { title: "Consultorios equipados", text: "Laboratorio propio y quirófano — sin derivar cada caso a otro lado." },
-              { title: "Pocas mascotas, no muchas apuradas", text: "Cada consulta tiene el tiempo que necesita, no un cronómetro." },
-              { title: "Calle 93 #14-20, Bogotá", text: "A dos cuadras de la Zona T. Lun a sáb, 8:00 a 19:00." },
+              { title: "Canchas con iluminación LED", text: "Terrenos de césped sintético y natural habilitados para entrenamientos diurnos y nocturnos." },
+              { title: "Acompañamiento físico y médico", text: "Seguimiento antropométrico, fisioterapia preventiva y planes de nutrición." },
+              { title: "Sede Bogotá Cantera", text: "Calle 170 #15-30, Bogotá. Lunes a sábados de 6:00 a 20:00." },
             ]}
           />
         </div>
         <div className="mt-8 flex justify-center lg:justify-start">
           <CtaLink href="/nosotros" variant="outline" size="sm">
-            Conocer la clínica
+            Conocer nuestra sede y filosofía
           </CtaLink>
         </div>
       </Section>
@@ -82,20 +81,20 @@ export default function Home() {
       <Section className="pb-0">
         <Reveal>
           <SectionHeading
-            eyebrow="Por qué elegirnos"
-            title="Cuatro razones que notan nuestros propietarios"
+            eyebrow="Diferenciales Cantera"
+            title="Cuatro razones por las que los padres confían en nuestra escuela"
           />
         </Reveal>
       </Section>
       <IconFeatureFloatCard items={whyUs} />
 
-      {/* Equipo */}
+      {/* Cuerpo Técnico */}
       <Section dark>
         <Reveal>
           <SectionHeading
-            eyebrow="Equipo profesional"
-            title="Quién va a atender a tu mascota"
-            lead="Veterinarios de planta y un equipo de recepción que coordina tu agenda y tus urgencias."
+            eyebrow="Cuerpo Técnico"
+            title="Profesionales apasionados por la formación"
+            lead="Directores técnicos, preparadores físicos y coordinadores dedicados al desarrollo de tu hijo."
             dark
           />
         </Reveal>
@@ -104,44 +103,41 @@ export default function Home() {
         </div>
         <div className="mt-10 flex justify-center">
           <CtaLink href="/equipo" variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
-            Conocer al equipo completo
+            Conocer a todos los entrenadores
             <ArrowRight className="size-4" />
           </CtaLink>
         </div>
       </Section>
 
-      {/* Atención preventiva */}
+      {/* Alto Rendimiento */}
       <OffsetBlobBlock
-        eyebrow="Atención preventiva"
-        title="Prevenir cuesta menos que curar"
+        eyebrow="Preparación Integral"
+        title="Formación técnica, táctica y física de nivel"
         image="/gallery/paw-procedure.jpg"
-        imageAlt="Veterinario con guantes revisando la pata de un paciente"
+        imageAlt="Entrenamiento de velocidad y agilidad con conos"
         actions={
-          <CtaLink href="/servicios/medicina-preventiva" variant="outline" size="sm">
-            Ver medicina preventiva
+          <CtaLink href="/servicios/sub-15-torneo-liga" variant="outline" size="sm">
+            Ver programa competitivo
           </CtaLink>
         }
       >
         <p className="text-lg leading-8 text-muted-foreground">
-          Vacunación al día, desparasitación programada y un chequeo periódico detectan a tiempo lo que todavía no
-          duele. Es la diferencia entre un control de rutina y una urgencia evitable.
+          Nuestra metodología propia estructura el desarrollo del atleta respetando su madurez biológica, alternando
+          ejercicios de técnica individual con esquemas tácticos de alta competencia.
         </p>
         <ul className="mt-6 space-y-3 text-sm leading-6">
-          {["Esquema de vacunación con recordatorio de próxima dosis", "Desparasitación interna y externa por peso y edad", "Chequeo anual (o semestral en pacientes senior)"].map(
-            (item) => (
-              <li key={item} className="flex gap-3">
-                <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" />
-                <span>{item}</span>
-              </li>
-            ),
-          )}
+          {[
+            "Ficha deportiva digital e historial de asistencia en el ERP",
+            "Evaluaciones nutricionales y test de resistencia periódicos",
+            "Participación garantizada en torneos oficiales y copas locales",
+          ].map((item) => (
+            <li key={item} className="flex gap-3">
+              <Sparkles className="mt-0.5 size-4 shrink-0 text-primary" />
+              <span>{item}</span>
+            </li>
+          ))}
         </ul>
       </OffsetBlobBlock>
-
-      {/* Urgencias */}
-      <Section>
-        <EmergencyBanner />
-      </Section>
 
       {/* Estadísticas */}
       <Section dark>
@@ -151,27 +147,27 @@ export default function Home() {
       {/* Testimonios */}
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="Testimonios" title="Lo que cuentan nuestros propietarios" />
+          <SectionHeading eyebrow="Testimonios" title="Lo que expresan los padres y acudientes" />
         </Reveal>
         <div className="mt-14">
           <TestimonialGrid testimonials={testimonials} limit={3} />
         </div>
         <div className="mt-10 flex justify-center">
           <CtaLink href="/testimonios" variant="outline">
-            Ver todos los testimonios
+            Ver todas las opiniones
           </CtaLink>
         </div>
       </Section>
 
-      {/* Mascotas atendidas */}
+      {/* Categorías Formativas */}
       <Section className="relative isolate overflow-hidden">
         <GradientBlob className="-right-24 -bottom-24 size-[110%] opacity-30" />
         <Reveal>
-          <SectionHeading eyebrow="A quién atendemos" title="Mascotas de todo tipo, un mismo estándar de cuidado" />
+          <SectionHeading eyebrow="Nuestras Ramas" title="Divisiones diseñadas para cada etapa del crecimiento" />
         </Reveal>
         <Reveal delay={0.08}>
           <div className="relative z-10 mt-12 grid grid-cols-2 gap-x-4 gap-y-10 rounded-[2.5rem] bg-card p-8 shadow-elevation-4 sm:grid-cols-4 sm:p-12">
-            {speciesTreated.map((item) => (
+            {categories.map((item) => (
               <div key={item.label} className="flex flex-col items-center gap-3 text-center">
                 <span className="grid size-14 place-items-center rounded-full bg-secondary text-primary">
                   <item.icon className="size-7" />
@@ -186,7 +182,7 @@ export default function Home() {
       {/* FAQ */}
       <Section>
         <Reveal>
-          <SectionHeading eyebrow="Preguntas frecuentes" title="Dudas comunes antes de tu primera visita" />
+          <SectionHeading eyebrow="Preguntas Frecuentes" title="Dudas habituales antes de inscribir a tu hijo" />
         </Reveal>
         <div className="mt-14">
           <FaqAccordion faqs={faqs.slice(0, 5)} />
@@ -198,26 +194,26 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* CTA agendar */}
+      {/* CTA Agendar Clase Gratis */}
       <AppointmentCta />
 
-      {/* Contacto / ubicación */}
+      {/* Ubicación */}
       <Section>
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Visitanos</p>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-cta">Visítanos</p>
             <h2 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
-              Te esperamos en la clínica
+              Te esperamos en nuestra sede deportiva
             </h2>
             <p className="mt-4 text-lg leading-8 text-muted-foreground">
-              Calle 93 #14-20, Bogotá. Lunes a sábado de 8:00 a 19:00 — urgencias los 7 días.
+              Calle 170 #15-30, Bogotá. Lunes a sábados de 6:00 a 20:00.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <CtaLink href="/contacto" variant="outline">
                 Ir a contacto
               </CtaLink>
               <CtaLink
-                href="https://www.google.com/maps/search/?api=1&query=Calle+93+%2314-20%2C+Bogot%C3%A1"
+                href="https://www.google.com/maps/search/?api=1&query=Calle+170+%2315-30%2C+Bogot%C3%A1"
                 variant="ghost"
               >
                 Ver en el mapa
@@ -234,7 +230,7 @@ export default function Home() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="strict-origin-when-cross-origin"
-                title="Ubicación de Clínica Veterinaria Los Andes en Google Maps"
+                title="Ubicación de Escuela de Fútbol La Cantera en Google Maps"
                 className="size-full"
               />
             </div>

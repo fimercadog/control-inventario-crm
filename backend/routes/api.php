@@ -49,6 +49,10 @@ use App\Http\Controllers\Api\StockAlertController;
 use App\Http\Controllers\Api\StockMovementController;
 use App\Http\Controllers\Api\StockTransferController;
 use App\Http\Controllers\Api\SupplierController;
+use App\Http\Controllers\Api\AttendanceController;
+use App\Http\Controllers\Api\EnrollmentController;
+use App\Http\Controllers\Api\StudentController;
+use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\UnitController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WarehouseController;
@@ -194,6 +198,12 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::apiResource('cash-sessions', CashSessionController::class)->only(['index', 'show', 'store'])->middleware('can:cash.manage');
     Route::post('/cash-sessions/{cash_session}/close', [CashSessionController::class, 'close'])->middleware('can:cash.manage');
     Route::apiResource('cash-movements', CashMovementController::class)->only(['index', 'show'])->middleware('can:cash.manage');
+
+    // --- Escuela de Fútbol ---
+    Route::apiResource('teams', TeamController::class)->middleware('can:clients.manage');
+    Route::apiResource('students', StudentController::class)->middleware('can:clients.manage');
+    Route::apiResource('enrollments', EnrollmentController::class)->middleware('can:clients.manage');
+    Route::apiResource('attendances', AttendanceController::class)->only(['index', 'store'])->middleware('can:clients.manage');
 
     // --- Clínica veterinaria ---
     Route::apiResource('services', ServiceController::class)->middleware('can:services.manage');

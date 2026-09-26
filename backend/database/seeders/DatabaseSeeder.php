@@ -40,6 +40,10 @@ use App\Models\Species;
 use App\Models\StockMovement;
 use App\Models\StockTransfer;
 use App\Models\Supplier;
+use App\Models\Attendance;
+use App\Models\Enrollment;
+use App\Models\Student;
+use App\Models\Team;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Warehouse;
@@ -1152,6 +1156,195 @@ class DatabaseSeeder extends Seeder
                     'due_date' => now()->addDays(rand(10, 30))->toDateString(),
                 ]);
             }
+        }
+
+        $this->seedSportsSchool($company, $clients);
+    }
+
+    private function seedSportsSchool(Company $company, Collection $clients): void
+    {
+        if (Team::where('company_id', $company->id)->exists()) {
+            return;
+        }
+
+        $sub8 = Team::create([
+            'company_id' => $company->id,
+            'name' => 'Sub-8 Semillero Cantera',
+            'category_code' => 'SUB-8',
+            'min_age' => 6,
+            'max_age' => 8,
+            'coach_name' => 'Profe Mateo Ríos',
+            'training_schedule' => 'Martes y Jueves 15:00 - 16:30',
+            'monthly_fee' => 180000,
+            'status' => 'active',
+        ]);
+
+        $sub12 = Team::create([
+            'company_id' => $company->id,
+            'name' => 'Sub-12 Iniciación y Desarrollo',
+            'category_code' => 'SUB-12',
+            'min_age' => 9,
+            'max_age' => 12,
+            'coach_name' => 'Profe David Torres',
+            'training_schedule' => 'Lunes y Miércoles 16:00 - 18:00',
+            'monthly_fee' => 200000,
+            'status' => 'active',
+        ]);
+
+        $sub15 = Team::create([
+            'company_id' => $company->id,
+            'name' => 'Sub-15 Torneo de Liga',
+            'category_code' => 'SUB-15',
+            'min_age' => 13,
+            'max_age' => 15,
+            'coach_name' => 'Profe Carlos Mendoza',
+            'training_schedule' => 'Martes, Jueves y Sábados 16:00 - 18:00',
+            'monthly_fee' => 220000,
+            'status' => 'active',
+        ]);
+
+        $femenino = Team::create([
+            'company_id' => $company->id,
+            'name' => 'Femenino Juvenil Competición',
+            'category_code' => 'FEM-JUV',
+            'min_age' => 12,
+            'max_age' => 17,
+            'coach_name' => 'Profe Valentina Gómez',
+            'training_schedule' => 'Miércoles y Viernes 16:00 - 18:00',
+            'monthly_fee' => 200000,
+            'status' => 'active',
+        ]);
+
+        $client1 = $clients->first();
+        $client2 = $clients->skip(1)->first() ?? $client1;
+
+        $student1 = Student::create([
+            'company_id' => $company->id,
+            'client_id' => $client1->id,
+            'team_id' => $sub12->id,
+            'first_name' => 'Santiago',
+            'last_name' => 'Gómez Ramírez',
+            'birth_date' => '2015-05-14',
+            'identification_number' => '1098234561',
+            'position' => 'Mediocampista',
+            'shirt_number' => 10,
+            'shirt_size' => '12',
+            'rh_factor' => 'O+',
+            'eps_health' => 'EPS Sura',
+            'medical_notes' => 'Apto para alto rendimiento. Sin alergias.',
+            'status' => 'active',
+        ]);
+
+        $student2 = Student::create([
+            'company_id' => $company->id,
+            'client_id' => $client2->id,
+            'team_id' => $sub15->id,
+            'first_name' => 'Mateo',
+            'last_name' => 'Fernández Silva',
+            'birth_date' => '2012-09-20',
+            'identification_number' => '1095432109',
+            'position' => 'Delantero Centro',
+            'shirt_number' => 9,
+            'shirt_size' => 'S',
+            'rh_factor' => 'A+',
+            'eps_health' => 'Sanitas EPS',
+            'medical_notes' => 'Usa plantilla ortopédica deportiva.',
+            'status' => 'active',
+        ]);
+
+        $student3 = Student::create([
+            'company_id' => $company->id,
+            'client_id' => $client1->id,
+            'team_id' => $sub8->id,
+            'first_name' => 'Lucas',
+            'last_name' => 'Gómez Ramírez',
+            'birth_date' => '2018-03-10',
+            'identification_number' => '1099887766',
+            'position' => 'Guardameta',
+            'shirt_number' => 1,
+            'shirt_size' => '10',
+            'rh_factor' => 'O+',
+            'eps_health' => 'EPS Sura',
+            'status' => 'active',
+        ]);
+
+        $student4 = Student::create([
+            'company_id' => $company->id,
+            'client_id' => $client2->id,
+            'team_id' => $femenino->id,
+            'first_name' => 'Valentina',
+            'last_name' => 'Fernández Silva',
+            'birth_date' => '2011-11-05',
+            'identification_number' => '1094321876',
+            'position' => 'Extrema Izquierda',
+            'shirt_number' => 7,
+            'shirt_size' => 'M',
+            'rh_factor' => 'O-',
+            'eps_health' => 'Compensar EPS',
+            'status' => 'active',
+        ]);
+
+        foreach ([
+            [$student1, $sub12],
+            [$student2, $sub15],
+            [$student3, $sub8],
+            [$student4, $femenino],
+        ] as [$st, $tm]) {
+            $enrollment = Enrollment::create([
+                'company_id' => $company->id,
+                'student_id' => $st->id,
+                'team_id' => $tm->id,
+                'enrollment_number' => 'INS-'.strtoupper(\Illuminate\Support\Str::random(6)),
+                'monthly_fee' => $tm->monthly_fee,
+                'enrollment_fee' => 50000,
+                'billing_day' => 5,
+                'start_date' => now()->startOfMonth()->toDateString(),
+                'status' => 'active',
+                'notes' => 'Inscripción anual Cantera Real 2026',
+            ]);
+
+            $totalAmount = $tm->monthly_fee + 50000;
+            $invoice = Invoice::create([
+                'company_id' => $company->id,
+                'client_id' => $st->client_id,
+                'number' => 'FAC-INS-'.strtoupper(\Illuminate\Support\Str::random(5)),
+                'status' => 'posted',
+                'issue_date' => now()->startOfMonth()->toDateString(),
+                'due_date' => now()->addDays(5)->toDateString(),
+                'subtotal' => $totalAmount,
+                'tax' => 0,
+                'total' => $totalAmount,
+            ]);
+
+            InvoiceItem::create([
+                'invoice_id' => $invoice->id,
+                'product_name' => "Inscripción y Mensualidad Cantera Real - Alumno: {$st->first_name} {$st->last_name}",
+                'quantity' => 1,
+                'unit_price' => $totalAmount,
+                'discount' => 0,
+                'tax' => 0,
+                'line_total' => $totalAmount,
+            ]);
+
+            AccountReceivable::create([
+                'company_id' => $company->id,
+                'client_id' => $st->client_id,
+                'invoice_id' => $invoice->id,
+                'original_amount' => $totalAmount,
+                'paid_amount' => 0,
+                'balance' => $totalAmount,
+                'due_date' => $invoice->due_date,
+                'status' => 'pending',
+            ]);
+
+            Attendance::create([
+                'company_id' => $company->id,
+                'student_id' => $st->id,
+                'team_id' => $tm->id,
+                'date' => now()->subDays(2)->toDateString(),
+                'status' => 'present',
+                'notes' => 'Entrenamiento táctico y físico',
+            ]);
         }
     }
 }
